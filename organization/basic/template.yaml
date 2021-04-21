@@ -8,7 +8,7 @@ contributor: ThreatConnect
 # One or more templates to pre-download before loading current template.
 # These templates will be pulled in the order that they are defined.
 template_parents:
-  - _app_common:
+  - _app_common
 # These are files that the App developer "should" not be
 # editing and are typically safe to overwrite without prompt.
 template_files:

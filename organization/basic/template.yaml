@@ -1,22 +1,18 @@
-# short summary of App
-summary: A basic template of working Organization App
-# a full description of the App and it's functionality
-description: A basic template of working Organization App
+# A short summary of the Template
+summary: A basic template of a working Organization App.
+# A full description of the Template and it's functionality
+description: A basic template of a working Organization App.
 # The provider of this template (name or email)
 provider: ThreatConnect
+contributor: ThreatConnect
 # One or more templates to pre-download before loading current template.
 # These templates will be pulled in the order that they are defined.
 template_parents:
-  - _app_common
-# The minimum version of TcEx supported by this template.
-tcex_min_version: 2.1.0
-# The maximum version of TcEx supported by this template.
-tcex_max_version: 2.2.0
+  - _app_common:
 # These are files that the App developer "should" not be
 # editing and are typically safe to overwrite without prompt.
 template_files:
-  - app.py
   - job_app.py
   - run.py
 # The current version number of this template
-template_version: 1.0.0
+version: 1.0.0

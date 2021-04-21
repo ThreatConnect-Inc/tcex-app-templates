@@ -19,3 +19,5 @@ App Templates for the TcEx framework.
 * trigger_service         - tcvc
 * web_api_service         - tcvp
 * webhook_trigger_service - tcvw
+
+## Template Guidelines

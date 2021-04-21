@@ -1,0 +1,44 @@
+template:
+  # short summary of App
+  summary: A basic template of working Organization App
+  # a full description of the App and it's functionality
+  description: A basic template of working Organization App
+  # One or more templates to pre-download before loading current template.
+  # These templates will be pulled in the order that they are defined.
+  template_parents:
+    - app_common
+  # The minimum version of TcEx supported by this template.
+  tcex_min_version: 2.1.0
+  # The maximum version of TcEx supported by this template.
+  tcex_max_version: 2.2.0
+  # The current version number of this template
+  version: 1.0.0
+  # ??? files not listed here are safe to overwrite ???
+  prompt_overwite:
+    - app.py
+    - input.py
+  file_definitions:
+    - filename: app.py
+      prompt_overwrite: true
+    - filename: input.py
+      prompt_overwrite: true
+    - filename: install.json
+      prompt_overwrite: true
+    - filename: job_app.py
+      prompt_overwrite: false
+    - filename: run.py
+      prompt_overwrite: false
+    - filename: tcex.json
+      prompt_overwrite: true
+    - filename: tcex.json
+      prompt_overwrite: true
+# > tc template create --type tcpb --template basic
+# > tc template create --type playbook --template basic
+# > tc template list
+# > tc template list --type tcpb
+# template type, name, and version are stored in tcex.json (update checks version)
+# > tc template update
+# defined types are App prefixes (e.g. tcpb, tc, tcvc, etc). could map these to names if needed (e.g. playbook)
+#
+# to list all tcpb templates (where type is "dir") -> https://api.github.com/repos/ThreatConnect-Inc/tcex-app-templates/contents/tcpb
+

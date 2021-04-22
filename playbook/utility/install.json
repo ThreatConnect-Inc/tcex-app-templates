@@ -1,14 +1,16 @@
 {
   "allowOnDemand": true,
+  "appId": "230b94ee-2144-588c-94b7-711724ab1d75",
   "displayName": "JSON Pretty",
   "features": [
     "aotExecutionEnabled",
     "appBuilderCompliant",
-    "secureParams"
+    "fileParams"
   ],
+  "labels": [],
   "languageVersion": "3.6",
   "listDelimiter": "|",
-  "note": "Take raw JSON string and output \"pretty\" with provide indent level.",
+  "note": "Take raw JSON string and output \"pretty\" version with provide indent level. Optionally sort the keys.",
   "params": [
     {
       "label": "JSON Data",

@@ -1,12 +1,15 @@
 {
   "allowOnDemand": true,
   "apiUserTokenParam": true,
+  "appId": "1eb3f8a9-08ae-5c50-994a-72ff44f0046e",
   "displayName": "String Operation",
   "features": [
     "aotExecutionEnabled",
     "appBuilderCompliant",
-    "secureParams"
+    "secureParams",
+    "layoutEnabledApp"
   ],
+  "labels": [],
   "languageVersion": "3.6",
   "listDelimiter": "|",
   "note": "Takes a String or StringArrays and perform operations to each value returning the update value. All operations are performed on the individual strings and not the array.",
@@ -36,11 +39,68 @@
       "validValues": [
         "Capitalize",
         "Lowercase",
+        "Prepend",
         "Reverse",
+        "Starts With",
         "Strip",
         "Swap Case",
         "Title Case",
         "Uppercase"
+      ]
+    },
+    {
+      "label": "Prepend Character(s)",
+      "name": "prepend_chars",
+      "note": "The character(s) to get prepended to the provided string(s) (e.g., **pre-**). ",
+      "playbookDataType": [
+        "String"
+      ],
+      "required": true,
+      "sequence": 3,
+      "type": "String",
+      "validValues": [
+        "${TEXT}"
+      ]
+    },
+    {
+      "label": "Starts With Character(s)",
+      "name": "starts_with_chars",
+      "note": "The character(s) to check for in the provided string(s) (e.g., **https**). ",
+      "playbookDataType": [
+        "String"
+      ],
+      "required": true,
+      "sequence": 4,
+      "type": "String",
+      "validValues": [
+        "${TEXT}"
+      ]
+    },
+    {
+      "default": "0",
+      "label": "Starts With Start",
+      "name": "starts_with_start",
+      "note": "The 0-based index position at which to start the **Starts With** search. The start position can be used to skip the first *n* characters before starting the search.",
+      "playbookDataType": [
+        "String"
+      ],
+      "sequence": 5,
+      "type": "String",
+      "validValues": [
+        "${TEXT}"
+      ]
+    },
+    {
+      "label": "Starts With Stop",
+      "name": "starts_with_stop",
+      "note": "The 0-based index position at which to stop the **Starts With** search. The stop position can be used to stop the search after *n* characters.",
+      "playbookDataType": [
+        "String"
+      ],
+      "sequence": 6,
+      "type": "String",
+      "validValues": [
+        "${TEXT}"
       ]
     }
   ],
@@ -51,16 +111,16 @@
         "type": "String"
       },
       {
-        "name": "string.outputs",
-        "type": "StringArray"
-      },
-      {
         "name": "string.outputs.0",
         "type": "String"
       },
       {
         "name": "string.outputs.count",
         "type": "String"
+      },
+      {
+        "name": "string.outputs",
+        "type": "StringArray"
       }
     ],
     "type": "Utility"

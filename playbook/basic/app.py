@@ -1,11 +1,11 @@
-"""ThreatConnect Playbook App"""
+"""ThreatConnect Exchange Playbook App"""
 
 # first-party
 from playbook_app import PlaybookApp  # Import default Playbook App Class (Required)
 
 
 class App(PlaybookApp):
-    """Playbook App"""
+    """ThreatConnect Exchange App"""
 
     def run(self) -> None:
         """Run the App main logic.

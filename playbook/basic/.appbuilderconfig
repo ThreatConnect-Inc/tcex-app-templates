@@ -1,10 +1,7 @@
 {
   "appType": "Playbook",
   "description": "This template provides the structure for a Playbook App without any App logic.",
-  "files": [{
-      "path": "__main__.py",
-      "editable": false
-    },
+  "files": [
     {
       "path": "playbook_app.py",
       "editable": false

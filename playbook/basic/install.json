@@ -1,19 +1,20 @@
 {
   "allowOnDemand": true,
+  "appId": "6e26ba55-0300-5462-aca7-ea049494c8a5",
   "displayName": "",
   "features": [
     "aotExecutionEnabled",
     "appBuilderCompliant",
-    "secureParams"
+    "fileParams"
   ],
   "labels": [],
-  "languageVersion": "3.6",
+  "languageVersion": "3.9",
   "listDelimiter": "|",
-  "note": "",
+  "note": "A template that provides the structure for a Playbook App without any App logic.",
   "params": [],
   "playbook": {
     "outputVariables": [],
-    "type": ""
+    "type": "Utility"
   },
   "programLanguage": "PYTHON",
   "programMain": "run",

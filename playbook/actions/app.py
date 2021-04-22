@@ -1,7 +1,8 @@
-"""ThreatConnect Playbook App"""
+"""ThreatConnect Exchange Playbook App"""
 
 # third-party
-from tcex import IterateOnArg, OnException, OnSuccess, Output
+from tcex import TcEx
+from tcex import FailOnOutput, OnException, OnSuccess, Output
 
 # first-party
 from playbook_app import PlaybookApp  # Import default Playbook App Class (Required)
@@ -11,66 +12,101 @@ from playbook_app import PlaybookApp  # Import default Playbook App Class (Requi
 class App(PlaybookApp):
     """Playbook App"""
 
-    def __init__(self, _tcex):
+    def __init__(self, _tcex: TcEx) -> None:
         """Initialize class properties."""
         super().__init__(_tcex)
         self.output_strings = []
 
-    @IterateOnArg(arg='input_strings')
+    @OnException(exit_msg='Failed to run "append" operation.')
+    @OnSuccess(exit_msg='Successfully ran "append" operation.')
+    @Output(attribute='output_strings')
+    def append(self):
+        """Return string with appended character(s)."""
+        for input_string in self.input.data.input_string:
+            return f'{input_string}{self.input.data.append_chars}'
+
     @OnException(exit_msg='Failed to run capitalize action.')
     @OnSuccess(exit_msg='Successfully ran capitalize action.')
     @Output(attribute='output_strings')
-    def capitalize(self, input_strings) -> str:
+    def capitalize(self) -> str:
         """Return capitalized string."""
-        return input_strings.capitalize()
+        for input_string in self.input.data.input_string:
+            return input_string.capitalize()
 
-    @IterateOnArg(arg='input_strings')
     @OnException(exit_msg='Failed to run lowercase action.')
     @OnSuccess(exit_msg='Successfully ran lowercase action.')
     @Output(attribute='output_strings')
-    def lowercase(self, input_strings) -> str:
+    def lowercase(self) -> str:
         """Return string in lowercase."""
-        return input_strings.lower()
+        for input_string in self.input.data.input_string:
+            return input_string.lower()
 
-    @IterateOnArg(arg='input_strings')
+    @OnException(exit_msg='Failed to run "prepend" operation.')
+    @OnSuccess(exit_msg='Successfully ran "prepend" operation.')
+    @Output(attribute='output_strings')
+    def prepend(self):
+        """Return string with prepended character(s)."""
+        for input_string in self.input.data.input_string:
+            return f'{self.input.data.prepend_chars}{input_string}'
+
     @OnException(exit_msg='Failed to run reverse action.')
     @OnSuccess(exit_msg='Successfully ran reverse action.')
     @Output(attribute='output_strings')
-    def reverse(self, input_strings) -> str:
+    def reverse(self) -> str:
         """Return string reversed."""
-        return input_strings[::-1]
+        for input_string in self.input.data.input_string:
+            return input_string[::-1]
 
-    @IterateOnArg(arg='input_strings')
+    @OnException(exit_msg='Failed to run "starts with" operation.')
+    @FailOnOutput(
+        fail_enabled='fail_on_false',
+        fail_on=['false'],
+        fail_msg='Operation "starts with" returned "false".',
+    )
+    @OnSuccess(exit_msg='Successfully ran "starts with" operation.')
+    @Output(attribute='output_strings')
+    def starts_with(self):
+        """Return true if string starts with provided characters."""
+        for input_string in self.input.data.input_string:
+            return str(
+                input_string.startswith(
+                    self.input.data.starts_with_chars,
+                    self.input.starts_with_start,
+                    self.input.starts_with_stop,
+                )
+            ).lower()
+
     @OnException(exit_msg='Failed to run strip action.')
     @OnSuccess(exit_msg='Successfully ran strip action.')
     @Output(attribute='output_strings')
-    def strip(self, input_strings) -> str:
+    def strip(self) -> str:
         """Return string stripping any whitespaces at beginning and end."""
-        return input_strings.strip()
+        for input_string in self.input.data.input_string:
+            return input_string.strip()
 
-    @IterateOnArg(arg='input_strings')
     @OnException(exit_msg='Failed to run swap case action.')
     @OnSuccess(exit_msg='Successfully ran swap case action.')
     @Output(attribute='output_strings')
-    def swap_case(self, input_strings) -> str:
+    def swap_case(self) -> str:
         """Return string with the case swapped."""
-        return input_strings.swapcase()
+        for input_string in self.input.data.input_string:
+            return input_string.swapcase()
 
-    @IterateOnArg(arg='input_strings')
     @OnException(exit_msg='Failed to run title case action.')
     @OnSuccess(exit_msg='Successfully ran title case action.')
     @Output(attribute='output_strings')
-    def title_case(self, input_strings) -> str:
+    def title_case(self) -> str:
         """Return string in title case."""
-        return input_strings.title()
+        for input_string in self.input.data.input_string:
+            return input_string.title()
 
-    @IterateOnArg(arg='input_strings')
     @OnException(exit_msg='Failed to run uppercase action.')
     @OnSuccess(exit_msg='Successfully ran uppercase action.')
     @Output(attribute='output_strings')
-    def uppercase(self, input_strings) -> str:
+    def uppercase(self) -> str:
         """Return string in uppercase."""
-        return input_strings.upper()
+        for input_string in self.input.data.input_string:
+            return input_string.upper()
 
     def write_output(self):
         """Write the Playbook output variables."""

@@ -2,12 +2,11 @@
 # standard library
 import json
 
+# third-party
+from tcex import TcEx
+
 # first-party
 from playbook_app import PlaybookApp  # Import default Playbook App Class (Required)
-
-
-# pylint: disable=attribute-defined-outside-init
-from tcex import TcEx
 
 
 class App(PlaybookApp):
@@ -28,14 +27,14 @@ class App(PlaybookApp):
         """
         # read inputs
         try:
-            indent: str = self.tcex.playbook.read(self.args.indent)
+            indent: str = self.tcex.playbook.read(self.inputs.data.indent)
             indent = int(indent)
         except ValueError:
             self.tcex.exit(1, f'Invalid value ("{indent}") passed for indent.')
-        json_data = self.tcex.playbook.read(self.args.json_data)
+        json_data = self.tcex.playbook.read(self.inputs.data.json_data)
 
         # get the playbook variable type
-        json_data_type: str = self.tcex.playbook.variable_type(self.args.json_data)
+        json_data_type: str = self.tcex.playbook.variable_type(self.inputs.data.json_data)
 
         # convert string input to dict
         try:
@@ -47,7 +46,7 @@ class App(PlaybookApp):
         # generate the new "pretty" json (this will be used as an option variable)
         try:
             self.pretty_json: str = json.dumps(
-                json_data, indent=indent, sort_keys=self.args.sort_keys
+                json_data, indent=indent, sort_keys=self.inputs.data.sort_keys
             )
         except ValueError:
             self.tcex.exit(1, 'Failed parsing JSON data.')

@@ -1,11 +1,11 @@
-"""ThreatConnect Job App"""
+"""ThreatConnect Exchange Job App"""
 
 # first-party
 from job_app import JobApp  # Import default Job App Class (Required)
 
 
 class App(JobApp):
-    """Job App"""
+    """ThreatConnect Exchange App"""
 
     def run(self) -> None:
         """Run the App main logic.

@@ -1,0 +1,16 @@
+# The contributor of this template (company name or user alias).
+contributor: ThreatConnect
+# A full description of the template and it's functionality.
+description: All files in this directory are common between all App types.
+# A short summary of the Template
+summary: The App Common template.
+# These are files that the App developer "should" not be
+# editing and will be overwritten without prompt during updating.
+template_files:
+  - .pre-commit-config.yaml.py
+  - app_lib.py
+  - coveragerc
+  - pyproject.toml
+  - setup.cfg
+# The current version number of this template.
+version: 1.0.0

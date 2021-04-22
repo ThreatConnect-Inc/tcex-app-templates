@@ -1,13 +1,16 @@
 {
   "allowOnDemand": true,
+  "appId": null,
   "displayName": "",
   "features": [
     "aotExecutionEnabled",
     "appBuilderCompliant",
     "secureParams"
   ],
-  "languageVersion": "3.6",
+  "labels": [],
+  "languageVersion": "3.9",
   "listDelimiter": "|",
+  "note": "A template that provides the structure for a Job App without any App logic.",
   "params": [],
   "programLanguage": "PYTHON",
   "programMain": "run",

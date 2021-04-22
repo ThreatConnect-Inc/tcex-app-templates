@@ -2,25 +2,27 @@
 # standard library
 import csv
 
-# first-party
-from job_app import JobApp  # Import default Job App Class (Required)
-
+# third-party
+from tcex import TcEx
 from tcex.batch import Batch
 from tcex.sessions import ExternalSession
+
+# first-party
+from job_app import JobApp  # Import default Job App Class (Required)
 
 
 class App(JobApp):
     """Job App"""
 
-    def __init__(self, _tcex):
+    def __init__(self, _tcex: TcEx) -> None:
         """Initialize class properties."""
         super().__init__(_tcex)
 
         # properties
-        self.batch: Batch = self.tcex.batch(self.args.tc_owner)
+        self.batch: Batch = self.tcex.batch(self.input.data.tc_owner)
         self.session = None
 
-    def setup(self):
+    def setup(self) -> None:
         """Perform prep/setup logic."""
         # using tcex session_external to get built-in features (e.g., proxy, logging, retries)
         self.session: ExternalSession = self.tcex.session_external
@@ -29,7 +31,7 @@ class App(JobApp):
         # providing the API endpoint/path.
         self.session.base_url = 'https://feodotracker.abuse.ch'
 
-    def run(self):
+    def run(self) -> None:
         """Run main App logic."""
 
         with self.session as s:
@@ -63,7 +65,7 @@ class App(JobApp):
 
         # submit batch job
         batch_status: list = self.batch.submit_all()
-        print(batch_status)
+        self.log.info(f'batch-status={batch_status}')
 
         self.exit_message = (  # pylint: disable=attribute-defined-outside-init
             'Downloaded data and create batch job.'

@@ -1,19 +1,23 @@
 {
   "allowOnDemand": true,
+  "appId": "50e2a95a-ab43-5c77-9123-d05d4aad7ae5",
   "displayName": "Batch Template",
   "features": [
     "aotExecutionEnabled",
     "appBuilderCompliant",
     "secureParams"
   ],
-  "languageVersion": "3.6",
+  "labels": [],
+  "languageVersion": "3.9",
   "listDelimiter": "|",
+  "note": "A template of a working ingress Organization App.",
   "params": [
     {
       "label": "ThreatConnect Owner",
       "name": "tc_owner",
-      "note": "The owner from which indicators (and maybe groups) will be counted",
+      "note": "The destination Owner in the ThreatConnect Platform.",
       "required": true,
+      "sequence": 1,
       "type": "Choice",
       "validValues": [
         "${OWNERS}"

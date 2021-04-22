@@ -1,9 +1,9 @@
 # The contributor of this template (company name or user alias).
 contributor: ThreatConnect
 # A full description of the template and it's functionality.
-description: A template that provides the structure for a Job App without any App logic.
+description: A template that provides an example of downloading remote threat intel (md5 hash indicators) and writing the data in the ThreatConnect Platform using the TcEx batch module.
 # A short summary of the Template
-summary: A template that provides the structure for a Job App without any App logic.
+summary: A template of a working ingress Organization App.
 # These are files that the App developer "should" not be
 # editing and will be overwritten without prompt during updating.
 template_files:
@@ -14,5 +14,6 @@ template_files:
 # the later templates having precedent over the prior templates.
 template_parents:
   - _app_common
+  - basic
 # The current version number of this template.
 version: 1.0.0

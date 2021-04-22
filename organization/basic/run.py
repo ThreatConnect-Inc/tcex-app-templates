@@ -37,8 +37,8 @@ def run() -> None:
         # explicitly call the exit method
         tcex.exit(msg=app.exit_message)
 
-    except Exception as e:
-        main_err = f'Generic Error.  See logs for more details ({e}).'
+    except Exception as ex:
+        main_err = f'Generic Error.  See logs for more details ({ex}).'
         tcex.log.error(traceback.format_exc())
         tcex.exit(1, main_err)
 

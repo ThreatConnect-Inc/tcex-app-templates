@@ -1,0 +1,18 @@
+{
+  "package": {
+    "app_name": "TCPB_-_Utility_Template",
+    "excludes": [
+      ".gitignore",
+      ".pre-commit-config.yaml",
+      "app.yaml",
+      "local-*",
+      "pyproject.toml",
+      "setup.cfg",
+      "tcex.json"
+    ],
+    "output_dir": "target"
+  },
+  "template_name": "utility",
+  "template_repo_hash": null,
+  "template_type": "playbook"
+}

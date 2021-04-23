@@ -1,37 +1,3 @@
-#=================================================
-# Python Module Template
-# Version: 1.0.0
-# Last Updated: 2018/01/19
-#=================================================
-
-#-------------------------------------------------
-# Language Exclusions
-#-------------------------------------------------
-__pycache__
-.pytest_cache
-*.env
-*.pyc
-.coverage
-.tox
-
-#-------------------------------------------------
-# Build Exclusions
-#-------------------------------------------------
-build
-dist
-lib_*
-target
-temp
-*.egg-info
-
-#-------------------------------------------------
-# Documentation Exclusion
-#-------------------------------------------------
-docs/src/*example
-docs/src/_build
-docs/src/_static
-docs/src/_templates
-
 #-------------------------------------------------
 # IDE Exclusions
 #-------------------------------------------------
@@ -49,21 +15,9 @@ nbproject
 #-------------------------------------------------
 # Module Specific Exclusions
 #-------------------------------------------------
-__main__.py
-lib*
-*.log
+app.yaml
 local-*
-log/*
-requirements.txt
-permutations.json
-tcex.json
-tcex.d
-templates
-threatconnect*
-tests/reports/*
-TODO.md
 
 #-------------------------------------------------
 # Other Nonsense
 #-------------------------------------------------
-app.yaml

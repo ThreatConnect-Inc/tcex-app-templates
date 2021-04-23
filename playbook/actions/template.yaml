@@ -1,7 +1,7 @@
 # The contributor of this template (company name or user alias).
 contributor: ThreatConnect
 # A full description of the template and it's functionality.
-description: A template that provides an example of \"actions\" in a Playbook App. Using the \"actions\" feature a single Playbook App can have multiple actions to perform different operations on the provided data.
+description: A template that provides an example of "actions" in a Playbook App. Using the "actions" feature a single Playbook App can have multiple actions to perform different operations on the provided data.
 # A short summary of the Template
 summary: A template of a working Playbook Action App.
 # These are files that the App developer "should" not be

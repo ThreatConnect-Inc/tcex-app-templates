@@ -1,7 +1,7 @@
 {
   "allowOnDemand": true,
-  "appId": null,
-  "displayName": "",
+  "appId": "6e26ba55-0300-5462-aca7-ea049494c8a5",
+  "displayName": "Example Basic Organization App",
   "features": [
     "aotExecutionEnabled",
     "appBuilderCompliant",

@@ -1,6 +1,6 @@
 {
   "package": {
-    "app_name": null,
+    "app_name": "TC_-_",
     "excludes": [
       ".gitignore",
       ".pre-commit-config.yaml",

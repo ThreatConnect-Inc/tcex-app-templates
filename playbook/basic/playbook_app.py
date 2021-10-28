@@ -3,7 +3,7 @@
 from tcex import TcEx
 
 # first-party
-from app_inputs import App_Inputs
+from app_inputs import AppInputs
 
 
 class PlaybookApp:
@@ -23,7 +23,7 @@ class PlaybookApp:
 
     def _update_inputs(self) -> None:
         """Add an custom App models and run validation."""
-        App_Inputs(inputs=self.tcex.inputs)
+        AppInputs(inputs=self.tcex.inputs)
 
     def run(self) -> None:
         """Run the App main logic."""

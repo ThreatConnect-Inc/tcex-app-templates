@@ -6,7 +6,8 @@ import traceback
 from app_lib import AppLib
 
 
-# pylint: disable=no-member
+
+
 def run(**kwargs) -> None:
     """Update path and run the App."""
 
@@ -37,6 +38,8 @@ def run(**kwargs) -> None:
         tcex.service.delete_config_callback = app.delete_config_callback
         tcex.service.shutdown_callback = app.shutdown_callback
 
+        from app_inputs import TriggerConfigModel
+        tcex.service.trigger_input_model = TriggerConfigModel
         # perform prep/setup operations
         app.setup(**{})
 
@@ -50,18 +53,18 @@ def run(**kwargs) -> None:
         tcex.service.ready = True
 
         # run app logic
-        app.run(**{})
+        app.run()
 
         # perform cleanup/teardown operations
-        app.teardown(**{})
+        app.teardown()
 
         # explicitly call the exit method
-        tcex.playbook.exit(msg=app.exit_message)
+        tcex.exit(msg=app.exit_message)
 
     except Exception as e:
         main_err = f'Generic Error.  See logs for more details ({e}).'
         tcex.log.error(traceback.format_exc())
-        tcex.playbook.exit(1, main_err)
+        tcex.exit(1, main_err)
 
 
 if __name__ == '__main__':

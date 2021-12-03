@@ -1,5 +1,8 @@
 """Service App module for TcEx App."""
 # first-party
+from app_inputs import ServiceConfigInputs
+from tcex.input.input import Input
+
 from args import Args
 
 
@@ -17,24 +20,22 @@ class ServiceApp:
     def __init__(self, _tcex: TcEx):
         """Initialize class properties."""
         self.tcex: TcEx = _tcex
-        self.args = None
+        self.inputs = self.tcex.inputs
         self.exit_message = 'Success'
 
         # automatically parse args on init
-        self.parse_args()
+        self._update_inputs()
 
-    def parse_args(self) -> None:
-        """Parse CLI args."""
-        Args(self.tcex.parser)
-        self.args = self.tcex.args
-        self.tcex.log.info('Parsed Args.')
+    def _update_inputs(self) -> None:
+        """Add an custom App models and run validation."""
+        ServiceConfigInputs(inputs=self.tcex.inputs)
 
-    def create_config_callback(self, trigger_id: str, config: dict, **kwargs) -> dict:
+    def create_config_callback(self, trigger_id: str, trigger_input: Input, **kwargs) -> dict:
         """Handle create config messages.
 
         Args:
             trigger_id: The ID of the playbook.
-            config: The playbook config inputs.
+            trigger_input: The playbook config inputs.
             url (str, kwargs): The URL for a webhook trigger.
 
         Returns:

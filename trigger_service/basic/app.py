@@ -5,7 +5,7 @@ from service_app import ServiceApp  # Import default Service App Class (Required
 
 
 # pylint: disable=unused-argument
-from tcex.playbooks import Playbooks
+from tcex.playbook import Playbook
 
 
 class App(ServiceApp):
@@ -23,7 +23,7 @@ class App(ServiceApp):
             self.tcex.service.fire_event(self.trigger_callback, my_data='data')
 
     def trigger_callback(
-        self, playbook: Playbooks, trigger_id: int, config: dict, **kwargs
+        self, playbook: Playbook, trigger_id: int, config: dict, **kwargs
     ) -> None:
         """Execute trigger callback for all current configs.
 

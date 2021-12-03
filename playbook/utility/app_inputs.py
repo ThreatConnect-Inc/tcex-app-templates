@@ -34,4 +34,4 @@ class AppInputs:
 
     def update_inputs(self) -> None:
         """Add custom App models to inputs. Validation will run at the same time."""
-        self.inputs.add_models([AppBaseModel])
+        self.inputs.add_model(AppBaseModel)

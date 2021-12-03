@@ -63,4 +63,5 @@ class AppInputs:
             models.append(ActionModelPrepend)
         elif self.inputs.tc_action == 'starts_with':
             models.append(ActionModelStartsWith)
-        self.inputs.add_models(models)
+        for model in models:
+            self.inputs.add_model(model)

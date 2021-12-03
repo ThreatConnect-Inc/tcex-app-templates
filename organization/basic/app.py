@@ -12,3 +12,5 @@ class App(JobApp):
 
         This method should contain the core logic of the App.
         """
+        self.tcex.log.info(f'Sample Input is: {self.inputs.model.sample_input}')
+

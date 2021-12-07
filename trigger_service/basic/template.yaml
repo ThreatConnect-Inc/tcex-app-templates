@@ -1,9 +1,9 @@
 # The contributor of this template (company name or user alias).
 contributor: ThreatConnect
 # A full description of the template and it's functionality.
-description: A template that provides an example WebHook Trigger Service
+description: A template that provides an example Custom Trigger Service
 # A short summary of the Template
-summary: A template of a working WebHook Trigger App.
+summary: A template of a working Custom Trigger App.
 # These are files that the App developer "should" not be
 # editing and will be overwritten without prompt during updating.
 template_files:

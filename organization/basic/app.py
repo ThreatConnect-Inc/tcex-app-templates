@@ -1,7 +1,7 @@
 """ThreatConnect Exchange Job App"""
 
 # first-party
-from job_app import JobApp  # Import default Job App Class (Required)
+from job_app import JobApp
 
 
 class App(JobApp):
@@ -12,5 +12,4 @@ class App(JobApp):
 
         This method should contain the core logic of the App.
         """
-        self.tcex.log.info(f'Sample Input is: {self.inputs.model.sample_input}')
-
+        self.log.info(f'Sample Input is: {self.inputs.model.dict()}')

@@ -1,12 +1,13 @@
 # The contributor of this template (company name or user alias).
 contributor: ThreatConnect
 # A full description of the template and it's functionality.
-description: A template that provides the structure for an API Serive app.
+description: A template that provides the structure for an API Service app.
 # A short summary of the Template
 summary: An API Service App template.
 # These are files that the App developer "should" not be
 # editing and will be overwritten without prompt during updating.
 template_files:
+  - .appbuilderconfig
   - api_service_app.py
   - run.py
 # One or more parent templates for the current template. The parent

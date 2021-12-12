@@ -3,8 +3,8 @@
 from typing import List, Union
 
 # third-party
-from tcex.input.models import KeyValueModel, TCEntityModel
 from pydantic import BaseModel
+from tcex.input.models import KeyValueModel, TCEntityModel
 
 
 class AppBaseModel(BaseModel):
@@ -30,6 +30,8 @@ class AppInputs:
     def __init__(self, inputs: BaseModel) -> None:
         """Initialize class properties."""
         self.inputs = inputs
+
+        # update with custom models and run validation
         self.update_inputs()
 
     def update_inputs(self) -> None:

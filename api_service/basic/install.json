@@ -1,7 +1,7 @@
 {
   "allowOnDemand": true,
   "displayName": "ApiService",
-  "displayPath": "myapi",
+  "displayPath": "my_api",
   "features": [
     "appBuilderCompliant",
     "secureParams"

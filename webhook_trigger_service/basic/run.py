@@ -17,6 +17,7 @@ def run(**kwargs) -> None:
     # import modules after path has been updated
 
     # third-party
+    from app_inputs import AppInputs
     from tcex import TcEx  # pylint: disable=import-outside-toplevel
 
     # first-party
@@ -37,6 +38,9 @@ def run(**kwargs) -> None:
         tcex.service.delete_config_callback = app.delete_config_callback
         tcex.service.shutdown_callback = app.shutdown_callback
         tcex.service.webhook_event_callback = app.webhook_event_callback
+
+        # set the createConfig model
+        tcex.service.trigger_input_model = AppInputs
 
         # perform prep/setup operations
         app.setup(**{})

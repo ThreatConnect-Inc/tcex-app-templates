@@ -13,28 +13,21 @@
   "note": "A template that provides the structure for a Job App without any App logic.",
   "params": [
     {
-      "default": "Default value",
-      "label": "A Sample Input",
-      "name": "sample_input",
-      "required": true,
-      "type": "String"
-    },
-    {
       "default": "warning",
       "label": "Logging Level",
       "name": "tc_log_level",
-      "sequence": 16,
+      "sequence": 99,
       "type": "Choice",
       "validValues": [
         "debug",
         "info",
         "warning",
-        "error",
-        "critical"
+        "error"
       ]
     }
   ],
   "programLanguage": "PYTHON",
   "programMain": "run",
   "programVersion": "1.0.0",
-  "runtimeLevel": "Organization"}
+  "runtimeLevel": "Organization"
+}

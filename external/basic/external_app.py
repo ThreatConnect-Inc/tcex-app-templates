@@ -1,35 +1,47 @@
 """External App Template."""
-from tcex import TcEx
+# standard library
+from typing import TYPE_CHECKING
+
+# third-party
+from app_inputs import AppInputs
+from pydantic import ValidationError
+
+if TYPE_CHECKING:
+    # standard library
+
+    # third-party
+    from tcex import TcEx
+    from tcex.input.input import Input
+    from tcex.logger.trace_logger import TraceLogger
 
 
 class ExternalApp:
     """Get the owners and indicators in the given owner."""
 
-    def __init__(self, _tcex: TcEx):
+    def __init__(self, _tcex: 'TcEx'):
         """Initialize class properties."""
-        self.tcex: TcEx = _tcex
+        self.tcex: 'TcEx' = _tcex
 
         # properties
-        self.args = None
         self.exit_message = 'Success'
-        self.args: object = self.tcex.args
+        self.inputs: 'Input' = self.tcex.inputs
+        self.log: 'TraceLogger' = self.tcex.log
+
+    def _update_inputs(self) -> None:
+        """Add an custom App models and run validation."""
+        try:
+            AppInputs(inputs=self.tcex.inputs)
+        except ValidationError as ex:
+            self.tcex.exit(code=1, msg=ex)
 
     def run(self) -> None:
-        """Run the App main logic."""
-        self.tcex.log.info('No run logic provided.')
+        """Perform run actions."""
+        self.log.info('No run logic provided.')
 
     def setup(self) -> None:
-        """Perform prep/setup logic."""
-        # run legacy method
-        if hasattr(self, 'start'):
-            self.tcex.log.warning('calling legacy start method')
-            self.start()  # pylint: disable=no-member
-        self.tcex.log.trace('setup')
+        """Perform setup actions."""
+        self.log.trace('feature=app, event=setup')
 
     def teardown(self) -> None:
-        """Perform cleanup/teardown logic."""
-        # run legacy method
-        if hasattr(self, 'done'):
-            self.tcex.log.warning('calling legacy done method')
-            self.done()  # pylint: disable=no-member
-        self.tcex.log.trace('teardown')
+        """Perform teardown actions."""
+        self.log.trace('feature=app, event=teardown')

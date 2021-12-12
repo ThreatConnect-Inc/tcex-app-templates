@@ -1,2 +1,2 @@
-tcex~=3.0.0
 pydantic
+tcex~=3.0.0

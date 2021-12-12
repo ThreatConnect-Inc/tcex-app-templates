@@ -1,18 +1,20 @@
 """ThreatConnect Playbook App"""
 # standard library
 import json
-
-# third-party
-from tcex import TcEx
+from typing import TYPE_CHECKING
 
 # first-party
 from playbook_app import PlaybookApp  # Import default Playbook App Class (Required)
+
+if TYPE_CHECKING:
+    # third-party
+    from tcex import TcEx
 
 
 class App(PlaybookApp):
     """Playbook App"""
 
-    def __init__(self, _tcex: TcEx):
+    def __init__(self, _tcex: 'TcEx'):
         """Initialize class properties.
 
         This method can be OPTIONALLY overridden.
@@ -27,14 +29,14 @@ class App(PlaybookApp):
         """
         # read inputs
         try:
-            indent: str = self.tcex.playbook.read(self.inputs.data.indent)
+            indent: str = self.playbook.read(self.inputs.data.indent)
             indent = int(indent)
         except ValueError:
             self.tcex.exit(1, f'Invalid value ("{indent}") passed for indent.')
-        json_data = self.tcex.playbook.read(self.inputs.data.json_data)
+        json_data = self.playbook.read(self.inputs.data.json_data)
 
         # get the playbook variable type
-        json_data_type: str = self.tcex.playbook.variable_type(self.inputs.data.json_data)
+        json_data_type: str = self.playbook.variable_type(self.inputs.data.json_data)
 
         # convert string input to dict
         try:
@@ -56,11 +58,11 @@ class App(PlaybookApp):
 
     # def setup(self):
     #     """Perform prep/setup work before running App main logic."""
-    #     self.tcex.log.debug('Running setup.')
+    #     self.log.debug('Running setup.')
 
     # def teardown(self):
     #     """Perform cleanup/teardown work before after App main logic."""
-    #     self.tcex.log.debug('Running teardown.')
+    #     self.log.debug('Running teardown.')
 
     def write_output(self):
         """Write the Playbook output variables.
@@ -68,5 +70,5 @@ class App(PlaybookApp):
         This method should be overridden with the output variables defined in the install.json
         configuration file.
         """
-        self.tcex.log.info('Writing Output')
-        self.tcex.playbook.create_output('json.pretty', self.pretty_json)
+        self.log.info('Writing Output')
+        self.playbook.create_output('json.pretty', self.pretty_json)

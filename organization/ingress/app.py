@@ -1,31 +1,33 @@
 """ThreatConnect Job App"""
 # standard library
 import csv
-
-# third-party
-from tcex import TcEx
-from tcex.batch import Batch
-from tcex.sessions import ExternalSession
+from typing import TYPE_CHECKING
 
 # first-party
 from job_app import JobApp  # Import default Job App Class (Required)
+
+if TYPE_CHECKING:
+    # third-party
+    from tcex import TcEx
+    from tcex.api.tc.v2.batch import Batch
+    from tcex.sessions.external_session import ExternalSession
 
 
 class App(JobApp):
     """Job App"""
 
-    def __init__(self, _tcex: TcEx) -> None:
+    def __init__(self, _tcex: 'TcEx') -> None:
         """Initialize class properties."""
         super().__init__(_tcex)
 
         # properties
-        self.batch: Batch = self.tcex.batch(self.input.data.tc_owner)
+        self.batch: 'Batch' = self.tcex.batch(self.inputs.data.tc_owner)
         self.session = None
 
     def setup(self) -> None:
         """Perform prep/setup logic."""
         # using tcex session_external to get built-in features (e.g., proxy, logging, retries)
-        self.session: ExternalSession = self.tcex.session_external
+        self.session: 'ExternalSession' = self.tcex.session_external
 
         # setting the base url allow for subsequent API call to be made by only
         # providing the API endpoint/path.

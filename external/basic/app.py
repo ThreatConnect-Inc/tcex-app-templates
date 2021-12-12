@@ -1,5 +1,4 @@
 """ThreatConnect External App"""
-
 # first-party
 from external_app import ExternalApp  # Import default External App Class (Required)
 

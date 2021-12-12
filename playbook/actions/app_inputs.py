@@ -1,67 +1,65 @@
 """App Inputs"""
 # standard library
-from typing import List, Optional, Union
+from typing import Optional
 
 # third-party
-from pydantic import BaseModel, validator
+from pydantic import BaseModel, PositiveInt
+from pydantic.types import constr
+from tcex.input.field_types.string_array import StringArray
 
 
 class AppBaseModel(BaseModel):
     """Base model for the App containing any common inputs."""
 
     # playbookDataType = String, StringArray
-    input_string: Union[List[str], str]
+    input_string: StringArray
     tc_action: str
 
-    @validator('input_string', pre=True)
-    def always_array(cls, v):  # pylint: disable=E0213,R0201
-        """Return an array even if string provided."""
-        if isinstance(v, str):
-            return [v]
-        return v
 
-
-class ActionModelAppend(BaseModel):
+class Append(AppBaseModel):
     """Action Model"""
 
     # playbookDataType = String
-    append_chars: str
+    append_chars: constr(min_length=1)
 
 
-class ActionModelPrepend(BaseModel):
+class Prepend(AppBaseModel):
     """Action Model"""
 
     # playbookDataType = String
-    prepend_chars: str
+    prepend_chars: constr(min_length=1)
 
 
-class ActionModelStartsWith(BaseModel):
+class StartsWith(AppBaseModel):
     """Action Model"""
 
     # playbookDataType = String
-    starts_with_chars: str
+    starts_with_chars: constr(min_length=1)
     # playbookDataType = String
-    starts_with_start: int = 0
+    starts_with_start: PositiveInt = 0
     # playbookDataType = String
-    starts_with_stop: Optional[int]
+    starts_with_stop: Optional[PositiveInt]
 
 
 class AppInputs:
     """App Inputs"""
 
-    def __init__(self, inputs: BaseModel) -> None:
+    def __init__(self, inputs: 'BaseModel') -> None:
         """Initialize class properties."""
         self.inputs = inputs
+
+        # update with custom models and run validation
         self.update_inputs()
 
     def update_inputs(self) -> None:
-        """Add custom App models to inputs. Validation will run at the same time."""
-        models = [AppBaseModel]
-        if self.inputs.tc_action == 'append':
-            models.append(ActionModelAppend)
-        elif self.inputs.tc_action == 'prepend':
-            models.append(ActionModelPrepend)
-        elif self.inputs.tc_action == 'starts_with':
-            models.append(ActionModelStartsWith)
-        for model in models:
-            self.inputs.add_model(model)
+        """Add custom App models to inputs.
+
+        Input will be validate when the model is added an any exceptions will
+        cause the App to exit with a status code of 1.
+        """
+        action_model_map = {
+            'append': Append,
+            'prepend': Prepend,
+            'starts_with': StartsWith,
+        }
+        self.inputs.add_model(action_model_map.get(self.inputs.model_unresolved.tc_action))

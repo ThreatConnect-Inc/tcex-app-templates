@@ -1,25 +1,35 @@
 """Playbook App"""
 # standard library
 import traceback
+
 # first-party
 from app_lib import AppLib
+
+
 # pylint: disable=no-member
 def run() -> None:
     """Update path and run the App."""
     # update the path to ensure the App has access to required modules
     app_lib = AppLib()
     app_lib.update_path()
+
     # import modules after path has been updated
+
     # third-party
     from tcex import TcEx  # pylint: disable=import-outside-toplevel
+
     # first-party
     from app import App  # pylint: disable=import-outside-toplevel
+
     tcex = TcEx()
+
     try:
         # load App class
         app = App(tcex)
+
         # perform prep/setup operations
         app.setup(**{})
+
         # run the App logic
         if hasattr(app.inputs.model, 'tc_action') and app.inputs.model.tc_action is not None:
             # if the args NameSpace has the reserved arg of "tc_action", this arg value is used to
@@ -29,6 +39,7 @@ def run() -> None:
             tc_action: str = app.inputs.model.tc_action
             tc_action_formatted: str = tc_action.lower().replace(' ', '_')
             tc_action_map = 'tc_action_map'  # reserved property name for action to method map
+
             # run action method
             if hasattr(app, tc_action):
                 getattr(app, tc_action)()
@@ -41,16 +52,21 @@ def run() -> None:
         else:
             # default to run method
             app.run(**{})
+
         # write requested value for downstream Apps
         app.write_output()  # pylint: disable=no-member
+
         # perform cleanup/teardown operations
         app.teardown(**{})
+
         # explicitly call the exit method
         tcex.exit(msg=app.exit_message)
     except Exception as e:
         main_err = f'Generic Error.  See logs for more details ({e}).'
         tcex.log.error(traceback.format_exc())
         tcex.exit(1, main_err)
+
+
 if __name__ == '__main__':
     # Run the App
     run()

@@ -1,4 +1,4 @@
-"""Job App"""
+"""External App"""
 # standard library
 import os
 import traceback

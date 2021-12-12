@@ -1,44 +1,50 @@
-"""Service App module for TcEx App."""
-# first-party
-from args import Args
+"""App Module"""
+# standard library
+from typing import TYPE_CHECKING
 
+# third-party
+from app_inputs import AppInputs
+from pydantic import ValidationError
 
-# pylint: disable=unused-argument
-from tcex import TcEx
+if TYPE_CHECKING:
+    # standard library
+
+    # third-party
+    from tcex import TcEx
+    from tcex.input.input import Input
+    from tcex.logger.trace_logger import TraceLogger
 
 
 class ApiServiceApp:
-    """Service App Class.
+    """Service App Class"""
 
-    Args:
-        _tcex (tcex.TcEx): An instance of tcex.
-    """
-
-    def __init__(self, _tcex: TcEx):
+    def __init__(self, _tcex: 'TcEx'):
         """Initialize class properties."""
-        self.tcex: TcEx = _tcex
+        self.tcex: 'TcEx' = _tcex
 
         # properties
-        self.args = None
         self.exit_message = 'Success'
+        self.inputs: 'Input' = self.tcex.inputs
+        self.log: 'TraceLogger' = self.tcex.log
 
         # automatically parse args on init
-        self.parse_args()
+        self._update_inputs()
 
-    def parse_args(self) -> None:
-        """Parse CLI args."""
-        Args(self.tcex.parser)
-        self.args = self.tcex.args
-        self.tcex.log.info('feature=app, event=args-parsed')
+    def _update_inputs(self) -> None:
+        """Add an custom App models and run validation."""
+        try:
+            AppInputs(inputs=self.tcex.inputs)
+        except ValidationError as ex:
+            self.tcex.exit(code=1, msg=ex)
 
     def setup(self) -> None:
-        """Perform prep/startup operations."""
-        self.tcex.log.trace('feature=app, event=setup')
+        """Perform setup actions."""
+        self.log.trace('feature=app, event=setup')
 
     def shutdown_callback(self) -> None:
-        """Handle shutdown messages."""
-        self.tcex.log.trace('feature=app, event=shutdown-callback')
+        """Handle the shutdown message."""
+        self.log.trace('feature=app, event=shutdown-callback')
 
     def teardown(self) -> None:
-        """Perform cleanup operations and gracefully exit the App."""
-        self.tcex.log.trace('feature=app, event=teardown')
+        """Perform teardown actions."""
+        self.log.trace('feature=app, event=teardown')

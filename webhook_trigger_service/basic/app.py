@@ -1,5 +1,6 @@
 """ThreatConnect Playbook App"""
-from typing import Union, List, Dict
+# standard library
+from typing import Dict, List, Union
 
 # first-party
 from service_app import ServiceApp

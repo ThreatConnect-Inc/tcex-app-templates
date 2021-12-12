@@ -6,8 +6,6 @@ import traceback
 from app_lib import AppLib
 
 
-
-
 def run(**kwargs) -> None:
     """Update path and run the App."""
 
@@ -18,6 +16,7 @@ def run(**kwargs) -> None:
     # import modules after path has been updated
 
     # third-party
+    from app_inputs import AppInputs
     from tcex import TcEx  # pylint: disable=import-outside-toplevel
 
     # first-party
@@ -38,8 +37,9 @@ def run(**kwargs) -> None:
         tcex.service.delete_config_callback = app.delete_config_callback
         tcex.service.shutdown_callback = app.shutdown_callback
 
-        from app_inputs import TriggerConfigModel
-        tcex.service.trigger_input_model = TriggerConfigModel
+        # set the createConfig model
+        tcex.service.trigger_input_model = AppInputs
+
         # perform prep/setup operations
         app.setup(**{})
 

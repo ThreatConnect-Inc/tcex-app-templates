@@ -1,38 +1,50 @@
 """App Template."""
-# third-party
-from tcex import TcEx
+# standard library
+from typing import TYPE_CHECKING
 
-# first-party
+# third-party
 from app_inputs import AppInputs
+from pydantic import ValidationError
+
+if TYPE_CHECKING:
+    # standard library
+
+    # third-party
+    from tcex import TcEx
+    from tcex.input.input import Input
+    from tcex.logger.trace_logger import TraceLogger
 
 
 class JobApp:
-    """Get the owners and indicators in the given owner."""
+    """Job App Class"""
 
-    def __init__(self, _tcex: TcEx) -> None:
+    def __init__(self, _tcex: 'TcEx') -> None:
         """Initialize class properties."""
-        self.tcex: TcEx = _tcex
+        self.tcex: 'TcEx' = _tcex
 
         # properties
         self.exit_message = 'Success'
-        self.inputs = self.tcex.inputs
-        self.log = self.tcex.log
+        self.inputs: 'Input' = self.tcex.inputs
+        self.log: 'TraceLogger' = self.tcex.log
 
         # automatically parse args on init
         self._update_inputs()
 
     def _update_inputs(self) -> None:
         """Add an custom App models and run validation."""
-        AppInputs(inputs=self.tcex.inputs)
+        try:
+            AppInputs(inputs=self.tcex.inputs)
+        except ValidationError as ex:
+            self.tcex.exit(code=1, msg=ex)
 
     def run(self) -> None:
         """Run the App main logic."""
         self.log.info('No run logic provided.')
 
     def setup(self) -> None:
-        """Perform prep/setup logic."""
-        self.log.trace('setup')
+        """Perform setup actions."""
+        self.log.trace('feature=app, event=setup')
 
     def teardown(self) -> None:
-        """Perform cleanup/teardown logic."""
-        self.log.trace('teardown')
+        """Perform teardown actions."""
+        self.log.trace('feature=app, event=teardown')

@@ -1,39 +1,33 @@
 """ThreatConnect API Service App"""
+# standard library
+from typing import TYPE_CHECKING
+
 # third-party
 import falcon
 
 # first-party
-from api_service_app import ApiServiceApp  # Import default API Service Class (Required)
+from api_service_app import ApiServiceApp
 
-from tcex import TcEx
+if TYPE_CHECKING:
+    # third-party
+    from tcex import TcEx
+    from tcex.input.input import Input
 
 
 class TcExMiddleware:
-    """TcEx middleware module.
+    """TcEx middleware module"""
 
-    Adds access to self.args, self.tcex and self.log in resource Class.
-
-    """
-
-    def __init__(self, args: object, tcex: TcEx):
-        """Initialize class properties.
-
-        Args:
-            args: The argparser arg namespace.
-            tcex: An instance of tcex
-        """
-        self.args = args
+    def __init__(self, inputs: 'Input', tcex: 'TcEx'):
+        """Initialize class properties"""
+        self.inputs = inputs
         self.tcex = tcex
 
-        # properties
-        self.log = tcex.log
-
-    def process_resource(  # pylint: disable=no-self-use,unused-argument
-        self, req: falcon.Request, resp: falcon.Response, resource: object, params: dict
+    def process_resource(  # pylint: disable=unused-argument
+        self, req: 'falcon.Request', resp: 'falcon.Response', resource: object, params: dict
     ):
         """Process resource method."""
-        resource.args = self.args
-        resource.log = self.log
+        resource.inputs = self.inputs
+        resource.log = self.tcex.log
         resource.tcex = self.tcex
 
 
@@ -73,12 +67,12 @@ class App(ApiServiceApp):
         super().__init__(_tcex)
 
         # create Falcon API with tcex middleware
-        self.api = falcon.API(middleware=[TcExMiddleware(args=self.args, tcex=self.tcex)])
+        self.api = falcon.APP(middleware=[TcExMiddleware(inputs=self.inputs, tcex=self.tcex)])
 
         # Add routes
         self.api.add_route('/one', OneResource())
         self.api.add_route('/two', TwoResource())
-        self.tcex.log.trace(f'args: {self.tcex.args}')
+        self.tcex.log.trace(f'inputs: {self.inputs.model.dict()}')
 
     def api_event_callback(self, environ, response_handler):
         """Run the trigger logic."""

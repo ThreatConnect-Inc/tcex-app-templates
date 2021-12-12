@@ -21,7 +21,7 @@ def run(**kwargs) -> None:
 
     # first-party
     from app import App  # pylint: disable=import-outside-toplevel
-    from app_inputs import AppInputs
+    from app_inputs import AppInputs  # pylint: disable=import-outside-toplevel
 
     tcex = TcEx()
 

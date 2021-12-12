@@ -8,7 +8,7 @@ summary: The App Common template.
 # editing and will be overwritten without prompt during updating.
 template_files:
   - .coveragerc
-  - .pre-commit-config.yaml.py
+  - .pre-commit-config.yaml
   - app_lib.py
   - pyproject.toml
   - setup.cfg

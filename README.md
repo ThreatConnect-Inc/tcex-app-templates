@@ -3,6 +3,7 @@ App Templates for the TcEx framework.
 
 ## Directory Tree
 
+```
 ├── _app_common             - Common files shared between all App types.
 ├── api_service             - Templates for API Service Apps.
 ├── external                - Templates for external Apps (App that don't run in ThreatConnect Exchange).
@@ -11,6 +12,7 @@ App Templates for the TcEx framework.
 ├── trigger_service         - Templates for Trigger Service Apps.
 ├── web_api_service         - Templates for Web (API service with UI) Service Apps.
 └── webhook_trigger_service - Templates for Webhook Trigger Service Apps.
+```
 
 ## App type to prefix map
 * api_service             - tcva

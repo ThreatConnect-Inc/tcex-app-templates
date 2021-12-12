@@ -11,5 +11,8 @@
       "*.install.json",
       "tcex.d"
     ]
-  }
+  },
+  "template_name": "basic",
+  "template_repo_hash": null,
+  "template_type": "api_service"
 }

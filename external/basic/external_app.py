@@ -1,10 +1,12 @@
-"""External App Template."""
+"""External App Template"""
 # standard library
 from typing import TYPE_CHECKING
 
 # third-party
-from app_inputs import AppInputs
 from pydantic import ValidationError
+
+# first-party
+from app_inputs import AppInputs
 
 if TYPE_CHECKING:
     # standard library

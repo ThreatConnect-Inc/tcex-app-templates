@@ -20,7 +20,7 @@ repos:
       - id: no-commit-to-branch
         args:
           - --branch
-          - master
+          - main
           - --branch
           - qa
       - id: pretty-format-json

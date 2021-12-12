@@ -7,6 +7,7 @@ summary: A template that provides the structure for a Job App without any App lo
 # These are files that the App developer "should" not be
 # editing and will be overwritten without prompt during updating.
 template_files:
+  - __main__.py
   - job_app.py
   - run.py
 # One or more parent templates for the current template. The parent

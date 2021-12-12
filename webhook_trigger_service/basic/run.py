@@ -17,11 +17,11 @@ def run(**kwargs) -> None:
     # import modules after path has been updated
 
     # third-party
-    from app_inputs import AppInputs
     from tcex import TcEx  # pylint: disable=import-outside-toplevel
 
     # first-party
     from app import App  # pylint: disable=import-outside-toplevel
+    from app_inputs import AppInputs
 
     tcex = TcEx()
 

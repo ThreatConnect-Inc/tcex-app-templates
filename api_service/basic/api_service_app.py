@@ -3,12 +3,12 @@
 from typing import TYPE_CHECKING
 
 # third-party
-from app_inputs import AppInputs
 from pydantic import ValidationError
 
-if TYPE_CHECKING:
-    # standard library
+# first-party
+from app_inputs import AppInputs
 
+if TYPE_CHECKING:
     # third-party
     from tcex import TcEx
     from tcex.input.input import Input

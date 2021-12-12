@@ -33,15 +33,16 @@ temp
 # IDE Exclusions
 #-------------------------------------------------
 .c9
+.history
 .idea
 .project
 .python-version
 .settings
 .vscode
 *.iml
-nbproject
 *.swp
 *.vim
+nbproject
 
 #-------------------------------------------------
 # OS Exclusions

@@ -4,11 +4,13 @@
     "excludes": [
       ".gitignore",
       ".pre-commit-config.yaml",
+      "app.yaml",
       "local-*",
       "pyproject.toml",
-      "setup.cfg",
-      "*.install.json",
-      "tcex.d"
+      "setup.cfg"
     ]
-  }
+  },
+  "template_name": "basic",
+  "template_repo_hash": null,
+  "template_type": "webhook_trigger_service"
 }

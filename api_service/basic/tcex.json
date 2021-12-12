@@ -4,12 +4,10 @@
     "excludes": [
       ".gitignore",
       ".pre-commit-config.yaml",
+      "app.yaml",
       "local-*",
       "pyproject.toml",
-      "setup.cfg",
-      "tcex.json",
-      "*.install.json",
-      "tcex.d"
+      "setup.cfg"
     ]
   },
   "template_name": "basic",

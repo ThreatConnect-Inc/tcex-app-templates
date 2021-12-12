@@ -7,8 +7,7 @@
       "app.yaml",
       "local-*",
       "pyproject.toml",
-      "setup.cfg",
-      "tcex.json"
+      "setup.cfg"
     ],
     "outdir": "target"
   },

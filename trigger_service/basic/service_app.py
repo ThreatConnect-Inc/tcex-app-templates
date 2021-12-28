@@ -35,9 +35,9 @@ class ServiceApp:
     def _update_inputs(self) -> None:
         """Add an custom App models and run validation."""
         try:
-            AppInputs(inputs=self.tcex.inputs)
+            AppInputs(inputs=self.tcex.inputs).update_inputs()
         except ValidationError as ex:
-            self.tcex.exit(code=1, msg=ex)
+            self.tcex.exit(code=1, msg=self.inputs.validation_exit_message(ex))
 
     # pylint: disable=unused-argument
     def create_config_callback(self, trigger_id: str, trigger_input: 'Input', **kwargs) -> dict:

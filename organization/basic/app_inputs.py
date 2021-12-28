@@ -14,9 +14,6 @@ class AppInputs:
         """Initialize class properties."""
         self.inputs = inputs
 
-        # update with custom models and run validation
-        self.update_inputs()
-
     def update_inputs(self) -> None:
         """Add custom App models to inputs.
 

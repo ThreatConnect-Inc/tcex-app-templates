@@ -4,7 +4,7 @@ from typing import List, Union
 
 # third-party
 from pydantic import BaseModel
-from tcex.input.input import Input
+from tcex.input.field_types import String
 
 
 class ServiceConfigModel(BaseModel):
@@ -17,7 +17,7 @@ class ServiceConfigModel(BaseModel):
     configuration in the Platform.
     """
 
-    service_input: Union[List[str], str]
+    service_input: Union[List[String], String]
 
 
 class TriggerConfigModel(BaseModel):
@@ -29,13 +29,13 @@ class TriggerConfigModel(BaseModel):
     when a Playbook is enabled (createConfig).
     """
 
-    playbook_input: str
+    playbook_input: String
 
 
 class AppInputs:
     """App Inputs"""
 
-    def __init__(self, inputs: Input) -> None:
+    def __init__(self, inputs: 'BaseModel') -> None:
         """Initialize class properties."""
         self.inputs = inputs
 

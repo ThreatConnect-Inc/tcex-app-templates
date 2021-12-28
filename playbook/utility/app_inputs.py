@@ -4,7 +4,7 @@ from typing import List, Union
 
 # third-party
 from pydantic import BaseModel
-from tcex.input.models import KeyValueModel, TCEntityModel
+from tcex.input.field_types import KeyValue, TCEntity
 
 
 class AppBaseModel(BaseModel):
@@ -18,21 +18,16 @@ class AppBaseModel(BaseModel):
     # StringArray   - List[str]
     # TCEntity      - TCEntityModel
     # TCEntityArray - List[TCEntityModel]
-    json_data: Union[
-        KeyValueModel, List[KeyValueModel], str, List[str], TCEntityModel, List[TCEntityModel]
-    ]
+    json_data: Union[KeyValue, List[KeyValue], str, List[str], TCEntity, List[TCEntity]]
     sort_keys: bool = False
 
 
 class AppInputs:
     """App Inputs"""
 
-    def __init__(self, inputs: BaseModel) -> None:
+    def __init__(self, inputs: 'BaseModel') -> None:
         """Initialize class properties."""
         self.inputs = inputs
-
-        # update with custom models and run validation
-        self.update_inputs()
 
     def update_inputs(self) -> None:
         """Add custom App models to inputs. Validation will run at the same time."""

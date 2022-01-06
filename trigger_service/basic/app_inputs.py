@@ -5,6 +5,7 @@ from typing import List, Union
 # third-party
 from pydantic import BaseModel
 from tcex.input.field_types import String
+from tcex.input.models import CreateConfigModel
 
 
 class ServiceConfigModel(BaseModel):
@@ -20,7 +21,7 @@ class ServiceConfigModel(BaseModel):
     service_input: Union[List[String], String]
 
 
-class TriggerConfigModel(BaseModel):
+class TriggerConfigModel(CreateConfigModel):
     """Base model for Trigger (playbook) config.
 
     Trigger Playbook inputs do not take playbookDataType.

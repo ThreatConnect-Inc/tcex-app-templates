@@ -4,12 +4,15 @@ import csv
 from typing import TYPE_CHECKING
 
 # first-party
+from tcex.exit import ExitCode
+
 from job_app import JobApp  # Import default Job App Class (Required)
 
 if TYPE_CHECKING:
     # third-party
     from tcex import TcEx
     from tcex.api.tc.v2.batch import Batch
+    from tcex.api.tc.v2.batch.indicator import File
     from tcex.sessions.external_session import ExternalSession
 
 
@@ -21,7 +24,7 @@ class App(JobApp):
         super().__init__(_tcex)
 
         # properties
-        self.batch: 'Batch' = self.tcex.batch(self.inputs.data.tc_owner)
+        self.batch: 'Batch' = self.tcex.v2.batch(self.inputs.model.tc_owner)
         self.session = None
 
     def setup(self) -> None:
@@ -53,7 +56,7 @@ class App(JobApp):
 
                     # create batch entry
                     indicator_value: str = row[1]
-                    file_hash: object = self.batch.file(
+                    file_hash: File = self.batch.file(
                         indicator_value, rating='4.0', confidence='100'
                     )
                     file_hash.tag(row[2])
@@ -63,7 +66,7 @@ class App(JobApp):
                     occurrence.date = row[0]
                     self.batch.save(file_hash)  # optionally save object to disk
             else:
-                self.tcex.exit(1, 'Failed to download CSV data.')
+                self.tcex.exit(ExitCode.SUCCESS, 'Failed to download CSV data.')
 
         # submit batch job
         batch_status: list = self.batch.submit_all()

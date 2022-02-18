@@ -16,6 +16,9 @@ if TYPE_CHECKING:
     from tcex.input.input import Input
     from tcex.logger.trace_logger import TraceLogger
 
+    # first-party
+    from app_inputs import TriggerConfigModel
+
 
 class ServiceApp:
     """Service App Class"""
@@ -40,7 +43,7 @@ class ServiceApp:
             self.tcex.exit(code=1, msg=self.inputs.validation_exit_message(ex))
 
     # pylint: disable=unused-argument
-    def create_config_callback(self, trigger_id: str, trigger_input: 'Input', **kwargs) -> dict:
+    def create_config_callback(self, trigger_input: 'TriggerConfigModel', **kwargs) -> dict:
         """Handle create config messages.
 
         Args:
@@ -52,7 +55,7 @@ class ServiceApp:
             dict: A dict containing a **msg** field that can be used to relay error context back to
                 playbook and a status boolean. True indicates configuration was successful.
         """
-        self.log.trace('create config callback')
+        self.log.trace(f'create config callback for {trigger_input.}')
         return {'msg': 'Success', 'status': True}
 
     # pylint: disable=unused-argument

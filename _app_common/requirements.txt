@@ -1,2 +1,2 @@
 pydantic
-tcex~=3.0.0
+tcex==3.0.0b1

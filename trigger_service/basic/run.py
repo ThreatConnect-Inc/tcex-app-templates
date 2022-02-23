@@ -20,7 +20,6 @@ def run(**kwargs) -> None:
 
     # first-party
     from app import App  # pylint: disable=import-outside-toplevel
-    from app_inputs import AppInputs  # pylint: disable=import-outside-toplevel
 
     tcex = TcEx()
 
@@ -38,7 +37,8 @@ def run(**kwargs) -> None:
         tcex.service.shutdown_callback = app.shutdown_callback
 
         # set the createConfig model
-        tcex.service.trigger_input_model = AppInputs
+        from app_inputs import TriggerConfigModel
+        tcex.service.trigger_input_model = TriggerConfigModel
 
         # perform prep/setup operations
         app.setup(**{})

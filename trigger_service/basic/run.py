@@ -36,8 +36,10 @@ def run(**kwargs) -> None:
         tcex.service.delete_config_callback = app.delete_config_callback
         tcex.service.shutdown_callback = app.shutdown_callback
 
+        # first-party
+        from app_inputs import TriggerConfigModel  # pylint: disable=no-name-in-module
+
         # set the createConfig model
-        from app_inputs import TriggerConfigModel
         tcex.service.trigger_input_model = TriggerConfigModel
 
         # perform prep/setup operations

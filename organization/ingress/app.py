@@ -3,9 +3,10 @@
 import csv
 from typing import TYPE_CHECKING
 
-# first-party
+# third-party
 from tcex.exit import ExitCode
 
+# first-party
 from job_app import JobApp  # Import default Job App Class (Required)
 
 if TYPE_CHECKING:
@@ -56,7 +57,7 @@ class App(JobApp):
 
                     # create batch entry
                     indicator_value: str = row[1]
-                    file_hash: File = self.batch.file(
+                    file_hash: 'File' = self.batch.file(
                         indicator_value, rating='4.0', confidence='100'
                     )
                     file_hash.tag(row[2])

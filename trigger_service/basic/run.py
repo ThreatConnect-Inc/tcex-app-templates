@@ -32,6 +32,7 @@ def run(**kwargs) -> None:
             kwargs.get('set_app')(app)
 
         # configure custom trigger message handler
+        # pylint: disable=no-member
         tcex.service.create_config_callback = app.create_config_callback
         tcex.service.delete_config_callback = app.delete_config_callback
         tcex.service.shutdown_callback = app.shutdown_callback

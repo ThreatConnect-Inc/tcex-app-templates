@@ -54,7 +54,7 @@ class App(PlaybookApp):
             self.tcex.exit(1, 'Failed parsing JSON data.')
 
         # set the App exit message
-        self.exit_message = 'JSON prettified.'
+        self.exit_message = 'JSON prettified.'  # pylint: disable=attribute-defined-outside-init
 
     # def setup(self):
     #     """Perform prep/setup work before running App main logic."""

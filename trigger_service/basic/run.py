@@ -32,12 +32,15 @@ def run(**kwargs) -> None:
             kwargs.get('set_app')(app)
 
         # configure custom trigger message handler
+        # pylint: disable=no-member
         tcex.service.create_config_callback = app.create_config_callback
         tcex.service.delete_config_callback = app.delete_config_callback
         tcex.service.shutdown_callback = app.shutdown_callback
 
+        # first-party
+        from app_inputs import TriggerConfigModel  # pylint: disable=no-name-in-module
+
         # set the createConfig model
-        from app_inputs import TriggerConfigModel
         tcex.service.trigger_input_model = TriggerConfigModel
 
         # perform prep/setup operations

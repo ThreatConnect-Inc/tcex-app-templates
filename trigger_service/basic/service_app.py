@@ -55,7 +55,7 @@ class ServiceApp:
             dict: A dict containing a **msg** field that can be used to relay error context back to
                 playbook and a status boolean. True indicates configuration was successful.
         """
-        self.log.trace(f'create config callback for {trigger_input.}')
+        self.log.trace(f'create config callback for {trigger_input}')
         return {'msg': 'Success', 'status': True}
 
     # pylint: disable=unused-argument

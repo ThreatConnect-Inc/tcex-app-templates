@@ -1,0 +1,17 @@
+{
+  "package": {
+    "app_name": "TC_-_",
+    "excludes": [
+      ".gitignore",
+      ".pre-commit-config.yaml",
+      "app.yaml",
+      "local-*",
+      "pyproject.toml",
+      "setup.cfg"
+    ],
+    "output_dir": "target"
+  },
+  "template_name": "egress",
+  "template_repo_hash": null,
+  "template_type": "organization"
+}

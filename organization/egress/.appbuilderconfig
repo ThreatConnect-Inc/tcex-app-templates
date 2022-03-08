@@ -1,0 +1,16 @@
+{
+  "appType": "Job",
+  "description": "This template provides a structure for downloading IOCs from ThreatConnect and uploading them to an external service.",
+  "files": [
+    {
+      "path": "job_app.py",
+      "editable": false
+    },
+    {
+      "path": "run.py",
+      "editable": false
+    }
+  ],
+  "language": "Python",
+  "templateName": "Ingress"
+}

@@ -3,7 +3,6 @@
 from typing import TYPE_CHECKING
 
 # first-party
-from tcex.api.tc.v3.indicators.indicator import Indicator
 from tcex.api.tc.v3.tql.tql_operator import TqlOperator
 from tcex.exit import ExitCode
 
@@ -16,6 +15,7 @@ if TYPE_CHECKING:
 
     # third-party
     from tcex import TcEx
+    from tcex.api.tc.v3.indicators.indicator import Indicator
     from tcex.sessions.external_session import ExternalSession
 
 
@@ -73,7 +73,7 @@ class App(JobApp):
             minimum_confidence: 'Optional[int]' = None,
             minimum_rating: 'Optional[int]' = None,
             minimum_threatassess_score: 'Optional[int]' = None,
-            last_modified: 'Optional[datetime]' = None) -> Iterable[Indicator]:
+            last_modified: 'Optional[datetime]' = None) -> 'Iterable[Indicator]':
         """Retrieve indicators from ThreatConnect based on filter params."""
 
         indicators = self.tcex.v3.indicators()

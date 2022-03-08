@@ -1,4 +1,4 @@
-# Egress Template 
+# Egress Template
 
 # Release Notes
 
@@ -10,4 +10,3 @@
 # Description
 
 A template for apps that export indicators from ThreatConnect into an external service.
-

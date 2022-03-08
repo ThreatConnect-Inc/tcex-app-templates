@@ -2,16 +2,17 @@
 # standard library
 from typing import TYPE_CHECKING
 
-# first-party
+# third-party
 from tcex.api.tc.v3.tql.tql_operator import TqlOperator
 from tcex.exit import ExitCode
 
+# first-party
 from job_app import JobApp  # Import default Job App Class (Required)
 
 if TYPE_CHECKING:
     # standard library
     from datetime import datetime
-    from typing import List, Iterable, Optional
+    from typing import Iterable, List, Optional
 
     # third-party
     from tcex import TcEx
@@ -50,7 +51,7 @@ class App(JobApp):
             minimum_confidence=self.inputs.model.minimum_confidence,
             minimum_rating=self.inputs.model.minimum_rating,
             minimum_threatassess_score=self.inputs.model.minimum_threatassess_score,
-            last_modified=self.inputs.model.last_modified
+            last_modified=self.inputs.model.last_modified,
         ):
             resp = self.session.post('/iocs/submit', json=indicator.model.dict())
             if resp.ok:
@@ -60,20 +61,21 @@ class App(JobApp):
 
         self.tcex.exit(
             ExitCode.SUCCESS,
-            f'Added {success} IOCs and failed to add {error} IOCs to external service.'
+            f'Added {success} IOCs and failed to add {error} IOCs to external service.',
         )
 
     def get_indicators(
-            self,
-            tql: 'Optional[str]' = None,
-            owners: 'Optional[List[str]]' = None,
-            indicator_types: 'Optional[List[str]]' = None,
-            tags: 'Optional[List[str]]' = None,
-            max_false_positives: 'Optional[int]' = None,
-            minimum_confidence: 'Optional[int]' = None,
-            minimum_rating: 'Optional[int]' = None,
-            minimum_threatassess_score: 'Optional[int]' = None,
-            last_modified: 'Optional[datetime]' = None) -> 'Iterable[Indicator]':
+        self,
+        tql: 'Optional[str]' = None,
+        owners: 'Optional[List[str]]' = None,
+        indicator_types: 'Optional[List[str]]' = None,
+        tags: 'Optional[List[str]]' = None,
+        max_false_positives: 'Optional[int]' = None,
+        minimum_confidence: 'Optional[int]' = None,
+        minimum_rating: 'Optional[int]' = None,
+        minimum_threatassess_score: 'Optional[int]' = None,
+        last_modified: 'Optional[datetime]' = None,
+    ) -> 'Iterable[Indicator]':
         """Retrieve indicators from ThreatConnect based on filter params."""
 
         indicators = self.tcex.v3.indicators()
@@ -93,13 +95,15 @@ class App(JobApp):
 
             if minimum_confidence:
                 self.tcex.log.info(
-                    f'Adding filter confidence {TqlOperator.GEQ} {minimum_confidence}')
+                    f'Adding filter confidence {TqlOperator.GEQ} {minimum_confidence}'
+                )
                 indicators.filter.confidence(TqlOperator.GEQ, minimum_confidence)
 
             if minimum_threatassess_score:
                 self.tcex.log.info(
                     f'Adding filter threatAssessScore {TqlOperator.GEQ} '
-                    f'{minimum_threatassess_score}')
+                    f'{minimum_threatassess_score}'
+                )
                 indicators.filter.threat_assess_score(TqlOperator.GEQ, minimum_threatassess_score)
 
             if indicator_types:

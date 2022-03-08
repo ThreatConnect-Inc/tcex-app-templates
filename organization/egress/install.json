@@ -12,7 +12,6 @@
   "listDelimiter": "|",
   "note": "A template of a working ingress Organization App.",
   "params": [
-
     {
       "label": "TQL",
       "name": "tql",

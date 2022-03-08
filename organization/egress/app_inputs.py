@@ -1,13 +1,15 @@
 """App Inputs"""
-# third-party
-from typing import Optional, List
+# standard library
+from typing import List, Optional
 
+# third-party
 from pydantic import BaseModel, validator
-from tcex.input.field_types import always_array, Choice, DateTime, integer,  string
+from tcex.input.field_types import Choice, DateTime, always_array, integer, string
 
 
 class TCFiltersModel(BaseModel):
     """Standard inputs to filter indicators pulled from ThreatConnect."""
+
     tql: Optional[string(allow_empty=False)]
     indicator_types: List[string(allow_empty=False)]
     owners: Optional[List[Choice]]

@@ -56,7 +56,7 @@
     },
     {
       "label": "Maximum False Positive Count",
-      "name": "max_false_positive",
+      "name": "max_false_positives",
       "note": "Indicators must have fewer than this number of False Positives to be exported.",
       "sequence": 5,
       "type": "String",
@@ -104,6 +104,19 @@
       "type": "String",
       "validValues": [
         "${TEXT}"
+      ]
+    },
+    {
+      "default": "warning",
+      "label": "Logging Level",
+      "name": "tc_log_level",
+      "sequence": 99,
+      "type": "Choice",
+      "validValues": [
+        "debug",
+        "info",
+        "warning",
+        "error"
       ]
     }
   ],

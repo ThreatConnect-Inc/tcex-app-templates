@@ -1,5 +1,6 @@
 """ThreatConnect Job App"""
 # standard library
+import itertools
 from typing import TYPE_CHECKING
 
 # third-party
@@ -11,13 +12,14 @@ from job_app import JobApp  # Import default Job App Class (Required)
 
 if TYPE_CHECKING:
     # standard library
-    from datetime import datetime
-    from typing import Iterable, List, Optional
+    from typing import Iterable
 
     # third-party
     from tcex import TcEx
     from tcex.api.tc.v3.indicators.indicator import Indicator
     from tcex.sessions.external_session import ExternalSession
+
+    from .app_inputs import TCFiltersModel
 
 
 class App(JobApp):
@@ -37,85 +39,84 @@ class App(JobApp):
 
         # setting the base url allow for subsequent API calls to be made by only
         # providing the API endpoint/path.
-        self.session.base_url = 'https://my.external_service.com/api'
+        self.session.base_url = 'https://httpbin.org'
 
     def run(self) -> None:
         """Run main App logic."""
         success, error = (0, 0)
-        for indicator in self.get_indicators(
-            tql=self.inputs.model.tql,
-            owners=self.inputs.model.owners,
-            indicator_types=self.inputs.model.indicator_types,
-            tags=self.inputs.model.tags,
-            max_false_positives=self.inputs.model.max_false_positive,
-            minimum_confidence=self.inputs.model.minimum_confidence,
-            minimum_rating=self.inputs.model.minimum_rating,
-            minimum_threatassess_score=self.inputs.model.minimum_threatassess_score,
-            last_modified=self.inputs.model.last_modified,
-        ):
-            resp = self.session.post('/iocs/submit', json=indicator.model.dict())
+        # httbin used for demonstration only, we don't want to bombard it with traffic, so
+        # send AT MOST 10 requests per run. Replace this code with your target service ASAP
+        for indicator in self.get_indicators(self.inputs.model, 10):
+            resp = self.session.post('/post', data=indicator.model.json())
             if resp.ok:
                 success += 1
             else:
                 error += 1
 
-        self.tcex.exit(
-            ExitCode.SUCCESS,
-            f'Added {success} IOCs and failed to add {error} IOCs to external service.',
-        )
+        exit_msg = f'Added {success} IOCs '
+        if error:
+            exit_msg += f'and failed to add {error} IOCs '
+        else:
+            exit_msg += 'to external service.'
 
-    def get_indicators(
-        self,
-        tql: 'Optional[str]' = None,
-        owners: 'Optional[List[str]]' = None,
-        indicator_types: 'Optional[List[str]]' = None,
-        tags: 'Optional[List[str]]' = None,
-        max_false_positives: 'Optional[int]' = None,
-        minimum_confidence: 'Optional[int]' = None,
-        minimum_rating: 'Optional[int]' = None,
-        minimum_threatassess_score: 'Optional[int]' = None,
-        last_modified: 'Optional[datetime]' = None,
-    ) -> 'Iterable[Indicator]':
-        """Retrieve indicators from ThreatConnect based on filter params."""
+        self.tcex.exit(ExitCode.SUCCESS, exit_msg)
+
+    def get_indicators(self, model: 'TCFiltersModel', max_results=None) -> 'Iterable[Indicator]':
+        """Retrieve indicators from ThreatConnect based on filter params.
+
+        Args:
+            model - filters for indicator retrieval
+            max_results - the max number of indicators to return.
+
+        Returns:
+            A generator of v3 indicator objects.
+        """
 
         indicators = self.tcex.v3.indicators()
-        if tql:
-            indicators = self.tcex.v3.indicators(tql=tql)
-            indicators.filter.owner_name(TqlOperator.IN, owners)
+        if model.tql:
+            indicators = self.tcex.v3.indicators(tql=model.tql)
+            if model.owners:
+                indicators.filter.owner_name(TqlOperator.IN, model.owners)
         else:
-            indicators.filter.owner_name(TqlOperator.IN, owners)
+            indicators.filter.owner_name(TqlOperator.IN, model.owners)
 
-            if max_false_positives:
-                self.tcex.log.info(f'Adding filter false positive count <= {max_false_positives}')
-                indicators.filter.false_positive_count(TqlOperator.LT, max_false_positives)
-
-            if minimum_rating:
-                self.tcex.log.info(f'Adding filter rating {TqlOperator.GEQ} {minimum_rating}')
-                indicators.filter.rating(TqlOperator.GEQ, minimum_rating)
-
-            if minimum_confidence:
+            if model.max_false_positives:
                 self.tcex.log.info(
-                    f'Adding filter confidence {TqlOperator.GEQ} {minimum_confidence}'
+                    f'Adding filter false positive count <= {model.max_false_positives}'
                 )
-                indicators.filter.confidence(TqlOperator.GEQ, minimum_confidence)
+                indicators.filter.false_positive_count(TqlOperator.LT, model.max_false_positives)
 
-            if minimum_threatassess_score:
+            if model.minimum_rating:
+                self.tcex.log.info(f'Adding filter rating {TqlOperator.GEQ} {model.minimum_rating}')
+                indicators.filter.rating(TqlOperator.GEQ, model.minimum_rating)
+
+            if model.minimum_confidence:
+                self.tcex.log.info(
+                    f'Adding filter confidence {TqlOperator.GEQ} {model.minimum_confidence}'
+                )
+                indicators.filter.confidence(TqlOperator.GEQ, model.minimum_confidence)
+
+            if model.minimum_threatassess_score:
                 self.tcex.log.info(
                     f'Adding filter threatAssessScore {TqlOperator.GEQ} '
-                    f'{minimum_threatassess_score}'
+                    f'{model.minimum_threatassess_score}'
                 )
-                indicators.filter.threat_assess_score(TqlOperator.GEQ, minimum_threatassess_score)
+                indicators.filter.threat_assess_score(
+                    TqlOperator.GEQ, model.minimum_threatassess_score
+                )
 
-            if indicator_types:
-                self.tcex.log.info(f'Adding filter types {indicator_types}')
-                indicators.filter.type_name(TqlOperator.IN, indicator_types)
+            if model.indicator_types:
+                self.tcex.log.info(f'Adding filter types {model.indicator_types}')
+                indicators.filter.type_name(TqlOperator.IN, model.indicator_types)
 
-            if tags:
-                self.tcex.log.debug(f'filtering for tags: {tags}')
-                indicators.filter.has_tag.name(TqlOperator.IN, tags)
+            if model.tags:
+                self.tcex.log.debug(f'filtering for tags: {model.tags}')
+                indicators.filter.has_tag.name(TqlOperator.IN, model.tags)
 
-            if last_modified:
-                self.tcex.log.info(f'Adding filter modified since = {last_modified}')
-                indicators.filter.last_modified(TqlOperator.GT, last_modified)
-
+            if model.last_modified:
+                self.tcex.log.info(f'Adding filter modified since = {model.last_modified}')
+                indicators.filter.last_modified(TqlOperator.GT, model.last_modified)
+        if max_results:
+            yield from itertools.islice(indicators, max_results)
+        else:
             yield from indicators

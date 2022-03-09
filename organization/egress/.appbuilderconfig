@@ -12,5 +12,5 @@
     }
   ],
   "language": "Python",
-  "templateName": "Ingress"
+  "templateName": "Egress"
 }

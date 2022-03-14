@@ -11,7 +11,7 @@ class TCFiltersModel(BaseModel):
     """Standard inputs to filter indicators pulled from ThreatConnect."""
 
     tql: Optional[string(allow_empty=False)]
-    indicator_types: List[string(allow_empty=False)]
+    indicator_types: List[Choice]
     owners: Optional[List[Choice]]
     tags: List[string(allow_empty=False)] = []
     max_false_positives: Optional[integer(gt=0)]
@@ -20,7 +20,7 @@ class TCFiltersModel(BaseModel):
     minimum_threatassess_score: Optional[integer(gt=0)]
     last_modified: DateTime
 
-    _always_array = validator('tags', allow_reuse=True)(always_array())
+    _always_array = validator('tags', allow_reuse=True)(always_array(split_csv=True))
 
 
 class AppBaseModel(TCFiltersModel):

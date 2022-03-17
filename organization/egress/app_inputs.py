@@ -13,13 +13,14 @@ class TCFiltersModel(BaseModel):
     tql: Optional[string(allow_empty=False)]
     indicator_types: List[Choice]
     owners: Optional[List[Choice]]
-    tags: List[string(allow_empty=False)] = []
     max_false_positives: Optional[integer(gt=0)]
     minimum_confidence: Optional[integer(ge=0, le=100)]
     minimum_rating: Optional[integer(ge=1, le=5)]
     minimum_threatassess_score: Optional[integer(gt=0, le=1_000)]
     last_modified: DateTime
 
+    # validates what we get from core and then transpose to array
+    tags: Optional[string(allow_empty=False)]
     _always_array = validator('tags', allow_reuse=True)(always_array(split_csv=True))
 
 

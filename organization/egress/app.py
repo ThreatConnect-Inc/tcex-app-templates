@@ -82,9 +82,10 @@ class App(JobApp):
 
             if model.max_false_positives:
                 self.tcex.log.info(
-                    f'Adding filter false positive count <= {model.max_false_positives}'
+                    f'Adding filter false positive count {TqlOperator.LEQ} '
+                    f'{model.max_false_positives}'
                 )
-                indicators.filter.false_positive_count(TqlOperator.LT, model.max_false_positives)
+                indicators.filter.false_positive_count(TqlOperator.LEQ, model.max_false_positives)
 
             if model.minimum_rating:
                 self.tcex.log.info(f'Adding filter rating {TqlOperator.GEQ} {model.minimum_rating}')
@@ -116,6 +117,7 @@ class App(JobApp):
             if model.last_modified:
                 self.tcex.log.info(f'Adding filter modified since = {model.last_modified}')
                 indicators.filter.last_modified(TqlOperator.GT, model.last_modified)
+
         if max_results:
             yield from itertools.islice(indicators, max_results)
         else:

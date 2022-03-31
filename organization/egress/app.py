@@ -72,9 +72,28 @@ class App(JobApp):
             A generator of v3 indicator objects.
         """
 
-        indicators = self.tcex.v3.indicators()
+        # Retrieve all fields associated with IOCs. Can customize when needed.
+        additional_fields = {
+            'fields': [
+                'threatAssess',
+                'observations',
+                'attributes',
+                'falsePositives',
+                'observations',
+                'tags',
+                'securityLabels',
+            ]
+        }
+        indicators = self.tcex.v3.indicators(params=additional_fields)
         if model.tql:
-            indicators = self.tcex.v3.indicators(tql=model.tql)
+            indicators = self.tcex.v3.indicators(params=additional_fields)
+
+            # For now set TQL directly. Eventually
+            # setting it as a param passed into constructor
+            # will work.
+            indicators.tql.raw_tql = model.tql
+
+            # if user specified owners, add them too
             if model.owners:
                 indicators.filter.owner_name(TqlOperator.IN, model.owners)
         else:
@@ -84,7 +103,7 @@ class App(JobApp):
                 self.tcex.log.info(
                     f'Adding filter false positive count <= {model.max_false_positives}'
                 )
-                indicators.filter.false_positive_count(TqlOperator.LT, model.max_false_positives)
+                indicators.filter.false_positive_count(TqlOperator.LEQ, model.max_false_positives)
 
             if model.minimum_rating:
                 self.tcex.log.info(f'Adding filter rating {TqlOperator.GEQ} {model.minimum_rating}')
@@ -116,6 +135,7 @@ class App(JobApp):
             if model.last_modified:
                 self.tcex.log.info(f'Adding filter modified since = {model.last_modified}')
                 indicators.filter.last_modified(TqlOperator.GT, model.last_modified)
+
         if max_results:
             yield from itertools.islice(indicators, max_results)
         else:

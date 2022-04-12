@@ -1,5 +1,6 @@
 """Playbook App"""
 # standard library
+import os
 import traceback
 
 # first-party
@@ -21,7 +22,12 @@ def run() -> None:
     # first-party
     from app import App  # pylint: disable=import-outside-toplevel
 
-    tcex = TcEx()
+    config_file = os.environ.get('TCEX_APP_CONFIG_DEV')
+    if config_file:
+        if not os.path.isfile(config_file):
+            raise RuntimeError(f'Missing {config_file} config file.')
+
+    tcex = TcEx(config_file=config_file)
 
     try:
         # load App class

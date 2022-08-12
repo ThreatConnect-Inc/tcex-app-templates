@@ -9,7 +9,7 @@ from service_app import ServiceApp
 class App(ServiceApp):
     """Service App Template."""
 
-    # pylint: disable=no-self-use,unused-argument
+    # pylint: disable=unused-argument
     def webhook_event_callback(
         self,
         body: Union[bytes, str],
@@ -59,7 +59,7 @@ class App(ServiceApp):
 
         return response
 
-    # pylint: disable=no-self-use,unused-argument
+    # pylint: disable=unused-argument
     def webhook_marshall_event_callback(
         self,
         body: Union[bytes, str],

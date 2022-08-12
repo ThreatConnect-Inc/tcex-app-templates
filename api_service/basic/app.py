@@ -39,7 +39,7 @@ class OneResource:
     log = None
     tcex = None
 
-    def on_get(self, req, resp):  # pylint: disable=no-self-use,unused-argument
+    def on_get(self, req, resp):  # pylint: disable=unused-argument
         """Handle GET requests"""
         data = {'data': 'one'}
         resp.media = data
@@ -53,7 +53,7 @@ class TwoResource:
     log = None
     tcex = None
 
-    def on_get(self, req, resp):  # pylint: disable=no-self-use,unused-argument
+    def on_get(self, req, resp):  # pylint: disable=unused-argument
         """Handle GET requests"""
         data = {'data': 'two'}
         resp.media = data

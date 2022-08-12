@@ -4,7 +4,7 @@ repos:
     rev: v4.0.1
     hooks:
       - id: check-added-large-files
-        args: ["--maxkb=500"]
+        args: ['--maxkb=500']
       - id: check-ast
       - id: check-byte-order-marker
       - id: check-builtin-literals
@@ -39,7 +39,7 @@ repos:
       - id: bandit
         args: [--exclude, tests]
   - repo: https://github.com/psf/black
-    rev: 21.11b1
+    rev: 22.3.0
     hooks:
       - id: black
   - repo: https://gitlab.com/pycqa/flake8
@@ -65,12 +65,7 @@ repos:
     rev: v0.1
     hooks:
       - id: xenon
-        args:
-          [
-            "--max-average=B",
-            "--exclude=local*",
-            "--ignore=lib_*,local*,target,tests",
-          ]
+        args: ['--max-average=B', '--exclude=local*', '--ignore=lib_*,local*,target,tests']
   - repo: local
     hooks:
       - id: pylint
@@ -79,4 +74,4 @@ repos:
         language: system
         name: pylint
         types: [python]
-        args: ["--jobs=0"]
+        args: ['--jobs=0']

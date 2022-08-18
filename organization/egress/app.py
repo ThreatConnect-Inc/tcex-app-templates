@@ -88,14 +88,20 @@ class App(JobApp):
         if model.tql:
             indicators = self.tcex.v3.indicators(params=additional_fields)
 
-            # For now set TQL directly. Eventually
-            # setting it as a param passed into constructor
-            # will work.
-            indicators.tql.raw_tql = model.tql
+            # Check to see if user picked one or more owners as we
+            # will add those into the TQL if owner is not already in
+            # the TQL. Can't use params for adding in owner here as that
+            # only supports 1 owner and we might have multiple to add.
+            tql = model.tql
+            if model.owners and 'ownerName' not in tql:
+                tql += (
+                    ' and ownerName IN ('
+                    + ', '.join(f'"{item}"' for item in self.inputs.model.owners)
+                    + ')'
+                )
 
-            # if user specified owners, add them too
-            if model.owners:
-                indicators.filter.owner_name(TqlOperator.IN, model.owners)
+            # Set TQL directly.
+            indicators.tql.raw_tql = tql
         else:
             indicators.filter.owner_name(TqlOperator.IN, model.owners)
 

@@ -89,11 +89,12 @@ class App(JobApp):
             indicators = self.tcex.v3.indicators(params=additional_fields)
 
             # Check to see if user picked one or more owners as we
-            # will add those into the TQL if owner is not already in
-            # the TQL. Can't use params for adding in owner here as that
-            # only supports 1 owner and we might have multiple to add.
+            # will add those into the TQL. The owner is not already in
+            # the TQL as that is checked by pydantic. Can't use params
+            # for adding in owner here as that only supports 1 owner and
+            # we might have multiple to add.
             tql = model.tql
-            if model.owners and 'ownerName' not in tql:
+            if model.owner:
                 tql += (
                     ' and ownerName IN ('
                     + ', '.join(f'"{item}"' for item in self.inputs.model.owners)

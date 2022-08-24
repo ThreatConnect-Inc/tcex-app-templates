@@ -13,6 +13,7 @@ def run() -> None:
     # update the path to ensure the App has access to required modules
     app_lib = AppLib()
     app_lib.update_path()
+    running_locally = False
 
     # import modules after path has been updated
 
@@ -22,12 +23,31 @@ def run() -> None:
     # first-party
     from app import App  # pylint: disable=import-outside-toplevel
 
+    # Enable local run with configuration file.
+    config = {}
     config_file = os.environ.get('TCEX_APP_CONFIG_DEV')
     if config_file:
         if not os.path.isfile(config_file):
             raise RuntimeError(f'Missing {config_file} config file.')
 
-    tcex = TcEx(config_file=config_file)
+        context = '7979'
+        # standard library
+        import json
+
+        config = {
+            'tc_playbook_db_type': 'Mock',
+            'tc_playbook_db_context': context,
+        }
+        with open('install.json') as f:
+            install_json = json.load(f)
+            config['tc_playbook_out_variables'] = [
+                f'#App:{context}:{o.get("name")}!{o.get("type", "").title()}'
+                for o in install_json.get('playbook', {}).get('outputVariables', [])
+            ]
+
+        running_locally = True
+
+    tcex = TcEx(config_file=config_file, config=config)
 
     try:
         # load App class
@@ -64,6 +84,11 @@ def run() -> None:
 
         # perform cleanup/teardown operations
         app.teardown(**{})
+
+        if running_locally:
+            msg = tcex.key_value_store.context_to_string(context)
+            print(msg)
+            tcex.log.info(msg)
 
         # explicitly call the exit method
         tcex.exit(msg=app.exit_message)

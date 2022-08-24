@@ -23,7 +23,6 @@ def run() -> None:
     # first-party
     from app import App  # pylint: disable=import-outside-toplevel
 
-    # Enable local run with configuration file.
     config = {}
     config_file = os.environ.get('TCEX_APP_CONFIG_DEV')
     if config_file:
@@ -86,7 +85,10 @@ def run() -> None:
         app.teardown(**{})
 
         if running_locally:
-            msg = tcex.key_value_store.context_to_string(context)
+            msg = (
+                f'Output variables written:\n'
+                f'{json.dumps(tcex.key_value_store.get_all(context), indent=2)}'
+            )
             print(msg)
             tcex.log.info(msg)
 

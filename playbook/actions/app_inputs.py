@@ -59,7 +59,7 @@ class AppInputs:
         # Quick check to make sure we have a model to add. Should never happen
         # but does during development.
         if tc_action not in action_model_map:
-            raise Exception('No model found for action: {}'.format(self.inputs.tc_action))
+            raise Exception(f'No model found for action: {self.inputs.tc_action}')
 
         return action_model_map.get(tc_action)
 

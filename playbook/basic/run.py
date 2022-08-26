@@ -3,6 +3,9 @@
 import os
 import traceback
 
+# third-party
+from tcex.app_config.install_json import InstallJson
+
 # first-party
 from app_lib import AppLib
 
@@ -36,6 +39,7 @@ def run() -> None:
         config = {
             'tc_playbook_db_type': 'Mock',
             'tc_playbook_db_context': context,
+            'tc_playbook_out_variables': InstallJson().tc_playbook_out_variables,
         }
         with open('install.json') as f:
             install_json = json.load(f)

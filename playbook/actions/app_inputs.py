@@ -55,6 +55,12 @@ class AppInputs:
             'prepend': Prepend,
             'starts_with': StartsWith,
         }
+
+        # Quick check to make sure we have a model to add. Should never happen
+        # but does during development.
+        if tc_action not in action_model_map:
+            raise Exception('No model found for action: {}'.format(self.inputs.tc_action))
+
         return action_model_map.get(tc_action)
 
     def update_inputs(self) -> None:

@@ -34,7 +34,6 @@ def run() -> None:
 
         context = '7979'
         # standard library
-        import json
 
         config = {
             'tc_playbook_db_type': 'Mock',
@@ -82,6 +81,9 @@ def run() -> None:
         app.teardown(**{})
 
         if running_locally:
+            # standard library
+            import json
+
             msg = (
                 f'Output variables written:\n'
                 f'{json.dumps(tcex.key_value_store.get_all(context), indent=2)}'

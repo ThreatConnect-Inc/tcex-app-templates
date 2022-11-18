@@ -34,11 +34,11 @@ repos:
               ^tests/
           )
   - repo: https://github.com/psf/black
-    rev: 22.6.0
+    rev: 22.10.0
     hooks:
       - id: black
-  - repo: https://gitlab.com/pycqa/flake8
-    rev: 3.9.2
+  - repo: https://github.com/PyCQA/flake8
+    rev: 5.0.4
     hooks:
       - id: flake8
   - repo: https://github.com/pre-commit/mirrors-isort
@@ -62,7 +62,7 @@ repos:
               ^tests/
           )
   - repo: https://github.com/asottile/pyupgrade
-    rev: v2.37.3
+    rev: v3.2.2
     hooks:
       - id: pyupgrade
         args:
@@ -72,7 +72,7 @@ repos:
     rev: v0.1
     hooks:
       - id: xenon
-        args: ["--max-average=B", "-e=tests*"]
+        args: ['--max-average=B', '-e=tests*']
   - repo: local
     hooks:
       - id: pylint
@@ -80,4 +80,4 @@ repos:
         language: system
         name: pylint
         types: [python]
-        args: ["--jobs=0"]
+        args: ['--jobs=0']

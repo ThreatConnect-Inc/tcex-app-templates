@@ -15,8 +15,6 @@ if TYPE_CHECKING:
     from tcex import TcEx
     from tcex.input.input import Input
     from tcex.logger.trace_logger import TraceLogger
-
-    # first-party
     from wsgi_types import WSGIApplication
 
 

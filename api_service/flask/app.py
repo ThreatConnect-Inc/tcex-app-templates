@@ -2,12 +2,14 @@
 # standard library
 from typing import TYPE_CHECKING
 
-# first-party
-from api_service_app import ApiServiceApp
+# third-party
 from flask_app import create_app
 
+# first-party
+from api_service_app import ApiServiceApp
+
 if TYPE_CHECKING:
-    # first-party
+    # third-party
     from wsgi_types import WSGIApplication
 
 

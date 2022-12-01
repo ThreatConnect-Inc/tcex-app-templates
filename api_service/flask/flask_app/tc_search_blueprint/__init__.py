@@ -5,7 +5,7 @@ Note: this is demo code only.
 # standard library
 from typing import TYPE_CHECKING
 
-# first-party
+# third-party
 from flask import Blueprint, render_template
 from flask_app.tc_search_blueprint.tc_search_view import TCSearchView
 

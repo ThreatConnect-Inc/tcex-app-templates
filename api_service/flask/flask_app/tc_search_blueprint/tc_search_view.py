@@ -1,9 +1,12 @@
-"""View for ThreatConnect Search Results"""
+"""View for ThreatConnect Search Results.
+
+isort:skip_file
+"""
 # standard library
 from itertools import islice
 from typing import TYPE_CHECKING
 
-# first-party
+# third-party
 from flask import render_template, request
 from flask.views import View
 

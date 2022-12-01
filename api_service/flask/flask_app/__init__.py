@@ -1,8 +1,11 @@
-"""Create and configure Flask app."""
+"""Create and configure Flask app.
+
+isort:skip_file
+"""
 # standard library
 from typing import TYPE_CHECKING
 
-# first-party
+# third-party
 from flask import Flask
 from flask_app.tc_search_blueprint import create_blueprint as create_tc_search_blueprint
 

@@ -1,6 +1,6 @@
 {
   "allowOnDemand": true,
-  "displayName": "ApiService",
+  "displayName": "FlaskApiService",
   "displayPath": "my_api",
   "features": [
     "appBuilderCompliant",

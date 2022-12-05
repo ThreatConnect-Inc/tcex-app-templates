@@ -1,0 +1,33 @@
+{% extends "base.html.jinja" %}
+{% block content %}
+    <!-- <form method="POST" action="query">
+        <label>
+            TQL Query
+            <input type="text" name="tqlQuery" length="1000" value="rating > 4 and confidence > 80"/>
+        </label>
+
+        <label>
+            Retrieve Attributes
+            <input type="checkbox" name="attributes" checked/>
+        </label>
+
+        <button type="submit">Submit</button>
+    </form> -->
+
+<form class="pure-form pure-form-stacked" action="search" method="POST">
+    <fieldset>
+        <legend>Query ThreatConnect Indicators</legend>
+        <label>
+            TQL Query
+            <input type="text" name="tqlQuery" size="100" value="rating > 4 and confidence > 80"/>
+        </label>
+
+        <label>
+            Retrieve Attributes
+            <input type="checkbox" name="attributes" checked/>
+        </label>
+
+        <button type="submit" class="pure-button pure-button-primary">Submit</button>
+    </fieldset>
+</form
+{% endblock %}

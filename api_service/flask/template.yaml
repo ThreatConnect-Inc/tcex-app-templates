@@ -1,18 +1,20 @@
 # The contributor of this template (company name or user alias).
 contributor: ThreatConnect
 # A full description of the template and it's functionality.
-description: A template that provides an example WebHook Trigger Service
+description: A template that provides the structure for a Flask-based API service app.
 # A short summary of the Template
-summary: A template of a working WebHook Trigger App.
+summary: A Flask-based API Service App template.
 # These are files that the App developer "should" not be
 # editing and will be overwritten without prompt during updating.
 template_files:
-  - service_app.py
+  - .appbuilderconfig
+  - api_service_app.py
   - run.py
+
 # One or more parent templates for the current template. The parent
 # template files will be pulled in the order that they are defined with
 # the later templates having precedent over the prior templates.
 template_parents:
   - _app_common
 # The current version number of this template.
-version: 1.0.1
+version: 1.0.0

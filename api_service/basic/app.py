@@ -67,6 +67,7 @@ class App(ApiServiceApp):
         super().__init__(_tcex)
 
         # create Falcon API with tcex middleware
+        # pylint: disable=not-callable
         self.api = falcon.APP(middleware=[TcExMiddleware(inputs=self.inputs, tcex=self.tcex)])
 
         # Add routes

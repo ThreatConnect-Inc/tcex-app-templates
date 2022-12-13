@@ -1,6 +1,6 @@
 # Release Notes
 
-## 1.0.0 (2021-05-31)
+## 1.0.0 (2022-12-13)
 * Initial Release
 
 # Description

@@ -3,6 +3,9 @@
 import os
 import traceback
 
+# third-party
+from tcex.app_config.install_json import InstallJson
+
 # first-party
 from app_lib import AppLib
 
@@ -13,6 +16,7 @@ def run() -> None:
     # update the path to ensure the App has access to required modules
     app_lib = AppLib()
     app_lib.update_path()
+    running_locally = False
 
     # import modules after path has been updated
 
@@ -22,12 +26,23 @@ def run() -> None:
     # first-party
     from app import App  # pylint: disable=import-outside-toplevel
 
+    config = {}
     config_file = os.environ.get('TCEX_APP_CONFIG_DEV')
     if config_file:
         if not os.path.isfile(config_file):
             raise RuntimeError(f'Missing {config_file} config file.')
 
-    tcex = TcEx(config_file=config_file)
+        context = '7979'
+        # standard library
+
+        config = {
+            'tc_playbook_db_type': 'Mock',
+            'tc_playbook_db_context': context,
+            'tc_playbook_out_variables': InstallJson().tc_playbook_out_variables,
+        }
+        running_locally = True
+
+    tcex = TcEx(config_file=config_file, config=config)
 
     try:
         # load App class
@@ -64,6 +79,17 @@ def run() -> None:
 
         # perform cleanup/teardown operations
         app.teardown(**{})
+
+        if running_locally:
+            # standard library
+            import json
+
+            msg = (
+                f'Output variables written:\n'
+                f'{json.dumps(tcex.key_value_store.get_all(context), indent=2)}'
+            )
+            print(msg)
+            tcex.log.info(msg)
 
         # explicitly call the exit method
         tcex.exit(msg=app.exit_message)

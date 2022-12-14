@@ -1,0 +1,47 @@
+{% extends "base.html.jinja" %}
+{% block content %}
+    <!-- TQL: {{ tql_query }} <br />
+    Attributes: {{ attributes }} <br />
+    Result Limit: {{ result_limit }} <br />
+    Result Start: {{ result_start }} <br /> -->
+
+    <div style="display: flex; flex-direction: column; width: 80%;">
+        <a href=".">Go Back</a>
+        <table class="pure-table pure-table-horizontal" style="width: 100%;">
+            <thead>
+                <tr>
+                    <th>Summary</th>
+                    <th>Rating</th>
+                    <th>Confidence</th>
+                    {% if attributes %}
+                        <th>Attributes</th>
+                    {% endif %}
+                </tr>
+            </thead>
+            {% for r in results %}
+                <tr>
+                    <td>{{ r.summary }}</td>
+                    <td>{{ r.rating }}</td>
+                    <td>{{ r.confidence }}</td>
+                    {% if attributes %}
+                        <td>
+                        {% for attribute in r.attributes.data %}
+                            <b>{{ attribute.type }}</b>: {{ attribute.value }} <br />
+                        {% endfor %}
+                        </td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+        </table>
+
+        <form method="POST" action="search">
+            <input type="hidden" name="tqlQuery" length="1000" value="{{ tql_query|e }}"/>
+
+            <input type="hidden" name="attributes" value="{{ attributes }}" />
+
+            <input type="hidden" name="resultLimit" value="{{ result_limit }}"/>
+            <input type="hidden" name="resultStart" value="{{ result_start }}"/>
+            <button type="submit">Next</button> Showing results {{result_start - result_limit + 1}} to {{result_start}}
+        </form>
+    </div>
+{% endblock %}

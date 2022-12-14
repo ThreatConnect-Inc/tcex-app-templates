@@ -22,6 +22,33 @@ def validate_tql(cls, values: dict):  # pylint: disable=unused-argument
             raise ValueError('indicator_types must have 1 type selected')
         if not values.get('owners', None):
             raise ValueError('owners must have at least 1 selected')
+    else:
+        # TQL has a value.
+        # Verify that none of the filters (except owners) have values as they are ignored.
+        # Was decided so we have feedback to the user rather then silently
+        # having fields they picked ignored.
+        #
+        # If they have selected owners, then check there is no ownerName within the TQL string.
+        if any(
+            [
+                values.get('indicator_types', None),
+                values.get('max_false_positives', None),
+                values.get('minimum_confidence', None),
+                values.get('minimum_rating', None),
+                values.get('minimum_threatassess_score', None),
+                values.get('last_modified', None),
+                values.get('tags', None),
+            ]
+        ):
+            raise ValueError(
+                'TQL is not allowed when other filters are selected except for owners.'
+            )
+
+        if values.get('owner', None) and 'ownerName' in values.get('tql'):
+            # They have selected an owner, check if the TQL contains ownerName
+            raise ValueError(
+                'There is an owner selected, but the TQL contains ownerName. This is not allowed.'
+            )
     return values
 
 
@@ -45,6 +72,10 @@ class TCFiltersModel(BaseModel):
     # 1. last_modified is required
     # 2. indicator_type is required
     # 3. owners is required
+    # validate if tql is not empty, then
+    # 1. no other filters are allowed (except owners)
+    # validate if tql is not empty and contains ownerName, then
+    # 1. no owner is selected
     _tql_none_validation = root_validator(allow_reuse=True)(validate_tql)
 
 

@@ -1,0 +1,10 @@
+<!doctype html>
+<html>
+  <head>
+  <link rel="stylesheet" href="{{ url_for('tc_search.static', filename='pure-min.css') }}" integrity="sha384-X38yfunGUhNzHpBaEBsWLO+A0HDYOQi8ufWDkZ0k9e0eXz/tH3II7uKZ9msv++Ls">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+    <div id="content" style="display: flex; justify-content: center;">{% block content %}{% endblock %}</div>
+  </body>
+</html>

@@ -15,4 +15,4 @@ template_files:
 template_parents:
   - _app_common
 # The current version number of this template.
-version: 1.0.0
+version: 1.0.1

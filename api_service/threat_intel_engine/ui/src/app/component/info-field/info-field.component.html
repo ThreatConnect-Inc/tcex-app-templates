@@ -1,0 +1,12 @@
+<div class="container" *ngIf="data">
+    <div class="label">{{ label }}</div>
+    <ng-container *ngIf="formatType === 'date'">
+        <div class="data">{{ data | date: 'yyyy-MM-dd hh:mm:ss aa' }}</div>
+    </ng-container>
+    <ng-container *ngIf="formatType === 'number'">
+        <div class="data">{{ data | number: '1.0-0' }}</div>
+    </ng-container>
+    <ng-container *ngIf="formatType === null && (data !== null || data !== undefined)">
+        <div class="data">{{ data }}</div>
+    </ng-container>
+</div>

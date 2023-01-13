@@ -1,0 +1,84 @@
+:host {
+
+    mat-toolbar {
+        // box-shadow: 0 14px 28px rgb(0 0 0 / 25%), 0 10px 10px rgb(0 0 0 / 22%);
+        font-size: 1rem;
+        justify-content: space-between;
+        left: 0;
+        overflow: hidden;
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 5
+    }
+
+    section.container {
+        padding-top: 5rem;
+        height: 100%;
+        margin-left: 100px;
+        margin-right: 100px;
+    }
+
+    ul.nav-links {
+        color: var(--text-tertiary);
+        display: flex;
+        height: 100%;
+        margin: 0 0 0 2rem;
+        padding: 0;
+
+        li.active a,
+        li.active button {
+            color: var(--text-on-primary);
+        }
+
+        li {
+            align-items: center;
+            color: var(--text-tertiary);
+            display: flex;
+            list-style: none;
+            position: relative;
+
+            a {
+                color: var(--text-tertiary);
+                padding: 0 1rem;
+                text-transform: uppercase;
+            }
+
+
+            &:hover:before,
+            &.active:before {
+                background: var(--primary-gradient);
+                bottom: 0;
+                content: '';
+                height: 5px;
+                position: absolute;
+                width: 100%;
+            }
+
+            // report menu button
+            button {
+                text-transform: uppercase;
+                font-size: 16px;
+            }
+        }
+    }
+
+    .app-title a,
+    a:link,
+    .project-title a:visited {
+        text-decoration: none !important;
+        color: #fc0000;
+    }
+
+    .app-title span {
+        color: var(--text-tertiary);
+        font-size: 20px;
+        font-weight: bold;
+        margin-left: 15px;
+    }
+
+    .logo {
+        height: 30px;
+        fill: #fc0000;
+    }
+}

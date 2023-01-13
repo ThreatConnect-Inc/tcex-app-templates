@@ -1,0 +1,36 @@
+<mat-toolbar>
+    <a [routerLink]="['/']" class="app-title">
+        <img class="logo" src="assets/images/cs-falcon-logo.svg" />
+        <span>ThreatConnect Intel Manager</span>
+    </a>
+
+    <!-- Navigation Items -->
+
+    <ul class="nav-links">
+        <li [class.active]="activeTab.includes('ui/dashboard') || activeTab === '/'">
+            <a [routerLink]="['ui/dashboard']">Dashboard</a>
+        </li>
+        <li [class.active]="activeTab.includes('ui/job')">
+            <a [routerLink]="['ui/job']">Jobs</a>
+        </li>
+        <li [class.active]="activeTab.includes('ui/tasks')">
+            <a [routerLink]="['ui/tasks']">Tasks</a>
+        </li>
+        <li [class.active]="activeTab.includes('ui/download')">
+            <a [routerLink]="['ui/download']">Download</a>
+        </li>
+        <li [class.active]="activeTab.includes('ui/report')">
+            <button mat-button [matMenuTriggerFor]="menu">Reports</button>
+            <mat-menu #menu="matMenu" backdropClass="nav-menu-sub-menu">
+                <button mat-menu-item>
+                    <a [routerLink]="['ui/report/batch-error']" class="nav-link">Batch Errors</a>
+                </button>
+            </mat-menu>
+        </li>
+    </ul>
+</mat-toolbar>
+
+<!-- Outlet -->
+<section class="container">
+    <router-outlet></router-outlet>
+</section>

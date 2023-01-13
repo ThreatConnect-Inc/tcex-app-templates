@@ -1,0 +1,201 @@
+/* Top level styles shared w/ material.less */
+body {
+    /* UX defined colors */
+
+    // Base Colors
+
+    --base-01: #111111;
+    --base-02: #1D1D1D;
+    --base-03: #252525;
+    --base-04: #575757;
+
+    --icons-actionable: #6B7A90;
+    --primary-gradient: linear-gradient(to left, #336CF9, #174BCC);
+    --primary: #336CF9;
+
+    // Hover/Active Colors
+
+    --hover-main: #191D26;
+    --hover-accent: #2b3550;
+    --active-main: #1E222C;
+
+    // Border/Divider Colors
+
+    --border-01: #3E3F45;
+    --border-03: #6F737C;
+    --border-focus: #3a59a6;
+    --border-focus-opaque: rgba(56, 89, 166, 0.2);
+
+    // Text Colors
+
+    --text-body: #efefef;
+    --text-secondary: #cae6ff;
+    --text-tertiary: #949494;
+    --text-on-primary: #FFFFFF;
+    --text-link: #76b8ff;
+
+    // Status Colors
+
+    --info: #b0cbff;
+    --success: #82E3C0;
+    --warning: #ffa000;
+    --error: #fe5252;
+
+    /* defined schema */
+    background-color: var(--base-03);
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    margin: 0;
+
+    /* extend material definition */
+    // --primary-medium-color: #393939;
+    // --tc-blue: #336cf9;
+    // background-color: var(--primary-color);
+    // color: var(--primary-lighter-color) !important;
+    // margin: 0;
+
+    * {
+        box-sizing: border-box;
+    }
+}
+
+.status-info {
+    color: var(--info) !important;
+}
+
+.status-error {
+    color: var(--error) !important;
+}
+
+.status-success {
+    color: var(--success) !important;
+}
+
+.status-warning {
+    color: var(--warning) !important;
+}
+
+
+.flex {
+    display: flex;
+
+    &.between {
+        justify-content: space-between;
+    }
+
+    &.around {
+        justify-content: space-around;
+    }
+
+    &.evenly {
+        justify-content: space-evenly;
+    }
+}
+
+// nav menu button.mat-menu
+.nav-menu-sub-menu+* .mat-menu-panel {
+    a.nav-link {
+        color: var(--text-primary-color) !important;
+        font-size: 16px !important;
+        text-decoration: none;
+    }
+}
+
+html,
+body {
+    height: 100%;
+}
+
+/* global css */
+
+.clickable {
+    cursor: pointer;
+}
+
+/* configuration for mat-tooltip */
+
+.mat-tooltip {
+    // global tooltip style
+    font-size: 14px;
+}
+
+.multi-line-tooltip {
+    white-space: pre-line;
+}
+
+.date-last-updated-delta {
+    background: var(--base-01);
+    border: 3px solid var(--border-01);
+    color: var(--text-primary-color) !important;
+    font-size: 1rem;
+}
+
+.help-text {
+    background: var(--base-01);
+    border: 3px solid var(--border-01);
+    color: var(--text-primary-color) !important;
+    font-size: 1rem;
+}
+
+.single-value-number {
+    background: var(--base-01);
+    border: 3px solid var(--border-01);
+    color: var(--text-primary-color) !important;
+    font-size: 2rem;
+}
+
+/* used to truncate string w/ ellipsis */
+
+.trunc {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* -- used for animating icons to spin indefinitely -- */
+
+/* button spinner */
+@keyframes spinner {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.spinner:before {
+    content: '';
+    box-sizing: border-box;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin-top: -10px;
+    margin-left: -10px;
+    border-radius: 50%;
+    border: 2px solid #ffffff;
+    border-top-color: #000000;
+    animation: spinner .8s linear infinite;
+}
+
+/* change scrollbar */
+
+/* width */
+::-webkit-scrollbar {
+    width: .5rem;
+}
+
+/* track */
+::-webkit-scrollbar-track {
+    // box-shadow: inset 0 0 5px var(--icons-actionable);
+    border-radius: 10px;
+}
+
+/* handle */
+::-webkit-scrollbar-thumb {
+    background: var(--icons-actionable) !important;
+    border-radius: 10px;
+}
+
+/* handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: var(--icons-actionable) !important;
+}

@@ -16,7 +16,6 @@
       ".pre-commit-config.yaml",
       "app.yaml",
       "local-*",
-      "node_modules",
       "pyproject.toml",
       "setup.cfg",
       "tcex.json",

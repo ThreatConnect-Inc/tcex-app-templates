@@ -3,7 +3,7 @@ contributor: ThreatConnect
 # A full description of the template and it's functionality.
 description: '[BETA] A template that provides the structure for a Feed API Service app.'
 # A short summary of the Template
-summary: An API Service App template.
+summary: Threat Intel Engine app template.
 # These are files that the App developer "should" not be
 # editing and will be overwritten without prompt during updating.
 template_files:

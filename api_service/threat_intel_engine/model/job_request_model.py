@@ -14,11 +14,11 @@ class JobRequestModel(JobRequestBaseModel):
     """Model Definition"""
 
     # metrics
-    count_batch_error = int = Field(0, description='')
-    count_batch_group_success = int = Field(0, description='')
-    count_batch_indicator_success = int = Field(0, description='')
-    count_download_group = int = Field(0, description='')
-    count_download_indicator = int = Field(0, description='')
+    count_batch_error: int = Field(0, description='')
+    count_batch_group_success: int = Field(0, description='')
+    count_batch_indicator_success: int = Field(0, description='')
+    count_download_group: int = Field(0, description='')
+    count_download_indicator: int = Field(0, description='')
 
     # metrics
     date_convert_start: Optional[arrow.Arrow] = Field(None, description='')

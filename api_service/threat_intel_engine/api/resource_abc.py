@@ -18,8 +18,8 @@ from more import Paginator
 
 if TYPE_CHECKING:
     # third-party
-    from falconpy import Intel
     from tcex import TcEx
+    from sqlalchemy.orm import scoped_session
 
     # first-party
     from model import SettingsModel
@@ -32,14 +32,13 @@ class ResourceABC(ABC):
     """Resource Base Class"""
 
     # define middleware properties for linting
-    provider_sdk: 'Intel'
     error = callable
-    log = logger
+    log: 'logging.Logger' = logger
     response_media = callable  # more->validation->response_media
-    session = None
-    settings: 'SettingsModel' = None
-    tasks: 'Tasks' = None
-    tcex: 'TcEx' = None
+    session: 'scoped_session'
+    settings: 'SettingsModel'
+    tasks: 'Tasks'
+    tcex: 'TcEx'
 
     def _db_add_record(self, record: Any, error_description: str):
         """Add DB record."""
@@ -198,17 +197,3 @@ class ResourceABC(ABC):
         if sort == 'version':
             return cast(func.string_to_array(sort_field, '.'), ARRAY(Integer))
         return sort_field
-
-    # def _upload_file(self, req: falcon.Request, package_path: str, file_content: bytes) -> str:
-    #     """Upload the file."""
-    #     file_io = BytesIO(file_content)
-    #     try:
-    #         return self.save_file(file_io, package_path, content_type='application/zip')
-    #     except Exception as ex:
-    #         err = self.error(
-    #             description='Unexpected error occurred while uploading file.',
-    #             exception=traceback.format_exc().split('\n'),
-    #             req=req,
-    #             title='Internal Server Error',
-    #         )
-    #         raise falcon.HTTPInternalServerError(**err) from ex

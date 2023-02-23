@@ -18,15 +18,17 @@ class SettingsModel(BaseModel):
 
     # Common Settings (same across most apps of this type)
     owner: str = Field(..., description='TC Owner to ingest data into.')
-    base_path: Path = Field(..., description='Base path for storing files.  Should be tc out path.')
-    initial_backfill_days: int = Field(30, description='How many days of backfill when first '
-                                                       'started.')
-    time_chunk_size_hours: int = Field(1,
-                                       description='Size of time chunks for normal scheduled '
-                                                   'requests.')
-    time_chunk_size_hours_backfill: int = Field(24,
-                                                description='Size of time chunks for backfill '
-                                                            'requests.')
+    base_path: Path = Field(..., description='Base path for storing files. Should be tc out path.')
+    initial_backfill_days: int = Field(
+        30, description='How many days of backfill when first started.'
+    )
+    time_chunk_size_hours: int = Field(
+        1, description='Size of time chunks for normal scheduled requests.'
+    )
+    time_chunk_size_hours_backfill: int = Field(
+        24, description='Size of time chunks for backfill requests.'
+    )
+
     #
     # Framework Inputs
     #

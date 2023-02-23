@@ -3,6 +3,7 @@
 import logging
 import os
 import traceback
+from types import TracebackType
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -13,7 +14,7 @@ if TYPE_CHECKING:
 logger = logging.getLogger('tcex')
 
 
-def build_log_traceback(tb: traceback) -> list:
+def build_log_traceback(tb: Optional[TracebackType]) -> list:
     """."""
     frames = []
     for frame, lineno in traceback.walk_tb(tb):

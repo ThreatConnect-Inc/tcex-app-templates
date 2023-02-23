@@ -18,7 +18,10 @@ if TYPE_CHECKING:
 
 
 class GetQueryParamModel(FilterParamModel):
-    """Params Model"""
+    """Params Model
+
+    These fields match the form fields in the UI.
+    """
 
     convert: bool = Field(False, description='Convert to TC format.')
     enrich: bool = Field(False, description='Add to ThreatConnect.')
@@ -31,7 +34,15 @@ class GetQueryParamModel(FilterParamModel):
 
 
 class DownloadFalconTiResource(ResourceABC):
-    """Class for /api/download/falcon-ti endpoint"""
+    """Class for /api/download/falcon-ti endpoint
+
+    This endpoint is used to support the Download feature of the UI. It should share some of
+    the task functionality; for example the download of TI data, converting/processing, and
+    submitting to TC batch API.
+
+    This code is code is a shell of what the endpoint should look like. It is not complete
+    and is not intended to be used as-is.
+    """
 
     validation_models = {
         'GET': {
@@ -42,7 +53,11 @@ class DownloadFalconTiResource(ResourceABC):
     }
 
     def _type_mapping(self, ti_type: str) -> dict:
-        """Return type mapping."""
+        """Return type mapping.
+
+        The type mapping is used to determine the SDK method to use and the transform to use
+        based on the type the user selects in the UI.
+        """
         _mapping = {
             'indicator': {
                 'convert_transform': IndicatorTransform,
@@ -82,6 +97,7 @@ class DownloadFalconTiResource(ResourceABC):
         # process results
         response_media = data
 
+        # handle the conversion/processing, if the user selected the option in the UI
         if any([req.context.params.convert, req.context.params.enrich]):
             ti_transform: 'TransformABC' = convert_transform(
                 self.settings, self.tcex
@@ -89,7 +105,8 @@ class DownloadFalconTiResource(ResourceABC):
             transform = self.tcex.api.tc.ti_transforms(response_media, ti_transform.transform)
             response_media = transform.batch
 
-            # send to batch
+            # handle sending the TI object to the batch API,
+            # if the user selected the option in the UI
             if req.context.params.enrich is True:
                 ti_transform.create_ti_batch(response_media)
 

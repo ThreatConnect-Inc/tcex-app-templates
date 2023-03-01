@@ -16,5 +16,6 @@ template_files:
 # the later templates having precedent over the prior templates.
 template_parents:
   - _app_common
+  - basic
 # The current version number of this template.
-version: 1.0.0
+version: 1.0.1

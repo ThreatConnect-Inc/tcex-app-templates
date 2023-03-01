@@ -4,7 +4,8 @@
   "displayPath": "my_api",
   "features": [
     "appBuilderCompliant",
-    "fileParams"
+    "fileParams",
+    "linkApiPath"
   ],
   "labels": [],
   "languageVersion": "3.6",

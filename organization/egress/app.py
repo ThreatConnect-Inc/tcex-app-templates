@@ -94,7 +94,7 @@ class App(JobApp):
             # for adding in owner here as that only supports 1 owner and
             # we might have multiple to add.
             tql = model.tql
-            if model.owners:
+            if model.owner:
                 tql += (
                     ' and ownerName IN ('
                     + ', '.join(f'"{item}"' for item in self.inputs.model.owners)

@@ -16,6 +16,7 @@ from tasks.task_path_pipe_abc import TaskPathPipeABC
 if TYPE_CHECKING:
     # standard library
     from pathlib import Path
+    from typing import Dict
 
     # third-party
     from pydantic import BaseModel
@@ -78,7 +79,35 @@ class ConvertPathPipe(TaskPathPipeABC):
                 if self._has_ti_data(data):
                     # use built-in method to write the data to
                     # disk, this method also updates heartbeat
-                    self._write_results(data, output_dir, 'domain')
+                    self._write_batch_data(data, output_dir, 'domain')
+
+    @staticmethod
+    def _lazy_chunk(iterable, chunk_size=5_000):
+        """Break iterable into chunks without consuming it first."""
+        chunk = []
+        for i in iterable:
+            chunk.append(i)
+            if len(chunk) >= chunk_size:
+                yield chunk
+                chunk = []
+
+        yield chunk
+
+    def _write_batch_data(self, data: 'Dict', output_dir: 'Path', type_: str):
+        """Write results to a compressed file."""
+        # update the task heartbeat
+        self.update_heartbeat()
+
+        total_data_length = len(data.get('group', [])) + len(data.get('indicator', []))
+
+        if total_data_length < 5_000:
+            self._write_results(data, output_dir, type_)
+        else:
+            if data.get('group', []):
+                self._write_results({'group': data['group']}, output_dir, type_)
+            if data.get('indicator', []):
+                for chunk in self._lazy_chunk(data['indicator']):
+                    self._write_results({'indicator': chunk}, output_dir, type_)
 
     @cached_property
     def task_settings(self) -> 'TaskSettingPipeModel':  # pylint: disable=no-self-use

@@ -1,4 +1,3 @@
-{
   "package": {
     "app_name": "TCVA_-_Flask_API_Service",
     "excludes": [
@@ -14,4 +13,3 @@
   "template_name": "flask",
   "template_repo_hash": null,
   "template_type": "api_service"
-}

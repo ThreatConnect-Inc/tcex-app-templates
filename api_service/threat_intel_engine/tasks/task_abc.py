@@ -11,25 +11,21 @@ from typing import TYPE_CHECKING, Optional
 # third-party
 import arrow
 import schedule
+from more import DbUtil, session
 from pydantic import BaseModel
+from schema import JobRequestSchema
+from tasks.process_metadata import Metadata, ProcessMetadata
 from tcex.logger.rotating_file_handler_custom import (  # pylint: disable=no-name-in-module
     RotatingFileHandlerCustom,
 )
 from tcex.logger.trace_logger import TraceLogger  # pylint: disable=no-name-in-module
 
-# first-party
-from more import DbUtil, session
-from schema import JobRequestSchema
-from tasks.process_metadata import Metadata, ProcessMetadata
-
 if TYPE_CHECKING:
     # third-party
-    from sqlalchemy.orm import Session
-    from tcex import TcEx
-
-    # first-party
     from model import SettingsModel
+    from sqlalchemy.orm import Session
     from tasks.model import TaskSettingModel
+    from tcex import TcEx
 
 
 # pylint: disable=no-member

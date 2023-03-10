@@ -9,7 +9,7 @@ from pydantic import Field, validator
 from .job_request_base_model import JobRequestBaseModel
 
 
-# pylint: disable=no-self-argument,no-self-use
+# pylint: disable=no-self-argument
 class JobRequestModel(JobRequestBaseModel):
     """Model Definition"""
 

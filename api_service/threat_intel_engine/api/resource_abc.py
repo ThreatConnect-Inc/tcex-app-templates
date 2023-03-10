@@ -7,23 +7,19 @@ from typing import TYPE_CHECKING, Any, List, Optional, Union
 
 # third-party
 import falcon
+from more import Paginator
 from pydantic import BaseModel
 from sqlalchemy import ARRAY, Integer, cast, func
 from sqlalchemy.dialects import sqlite
 from sqlalchemy.exc import IntegrityError, NoResultFound
 from sqlalchemy.orm import Query
 
-# first-party
-from more import Paginator
-
 if TYPE_CHECKING:
     # third-party
-    from tcex import TcEx
-    from sqlalchemy.orm import scoped_session
-
-    # first-party
     from model import SettingsModel
+    from sqlalchemy.orm import scoped_session
     from tasks import Tasks
+    from tcex import TcEx
 
 logger = logging.getLogger('tcex')
 

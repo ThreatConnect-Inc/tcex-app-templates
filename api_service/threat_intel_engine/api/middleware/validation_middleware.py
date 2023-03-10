@@ -2,7 +2,7 @@
 # standard library
 from typing import TYPE_CHECKING
 
-# first-party
+# third-party
 from more.validation import (
     response_media,
     validate_request_body,
@@ -18,7 +18,7 @@ if TYPE_CHECKING:
     import falcon
 
 
-# pylint: disable=no-self-use,unused-argument
+# pylint: disable=unused-argument
 class ValidationMiddleware:
     """Request and Response validation middleware."""
 

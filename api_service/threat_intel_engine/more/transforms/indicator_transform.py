@@ -5,26 +5,15 @@ from typing import TYPE_CHECKING
 # third-party
 from tcex.backports import cached_property
 
-# first-party
 from .transform_abc import TransformABC
 
 if TYPE_CHECKING:
     # third-party
-    from pydantic import BaseModel
-    from tcex import TcEx
     from tcex.api.tc.ti_transform.model import IndicatorTransformModel
 
 
 class IndicatorTransform(TransformABC):
     """Transform for Actor"""
-
-    def __init__(
-        self,
-        settings: 'BaseModel',
-        tcex: 'TcEx',
-    ):
-        """Initialize class properties."""
-        super().__init__(settings, tcex)
 
     @cached_property
     def transform(self) -> 'IndicatorTransformModel':
@@ -62,11 +51,6 @@ class IndicatorTransform(TransformABC):
                         },
                     }
                 ],
-                'xid': {
-                    'path': 'id',
-                    'transform': {
-                        'method': lambda i: f'{i} - external'
-                    }
-                }
+                'xid': {'path': 'id', 'transform': {'method': lambda i: f'{i} - external'}},
             }
         )

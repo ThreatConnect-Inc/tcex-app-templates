@@ -7,18 +7,14 @@ from typing import TYPE_CHECKING, List, Optional, Union
 
 # third-party
 import falcon
-from pydantic import ValidationError, parse_obj_as
-
-# first-party
 from model import PaginatorResponseModel
 from more import error
+from pydantic import ValidationError, parse_obj_as
 
 if TYPE_CHECKING:
     # third-party
-    from pydantic import BaseModel
-
-    # first-party
     from more import Base, Paginator
+    from pydantic import BaseModel
 
 # get primary API logger
 logger = logging.getLogger('tcex')

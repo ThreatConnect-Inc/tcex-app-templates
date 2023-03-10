@@ -1,5 +1,5 @@
 """Middleware module"""
-# first-party
+# third-party
 from more import error
 
 
@@ -7,7 +7,6 @@ from more import error
 class ErrorMiddleware:
     """Middleware module"""
 
-    # pylint: disable=no-self-use
     def process_resource(self, _req, _resp, resource, _params):
         """Process resource method."""
         resource.error = error

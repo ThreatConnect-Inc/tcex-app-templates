@@ -1,17 +1,17 @@
 {
-    "package": {
-        "app_name": "TCVA_-_Flask_API_Service",
-        "excludes": [
-            ".gitignore",
-            ".pre-commit-config.yaml",
-            "app.yaml",
-            "local-*",
-            "pyproject.toml",
-            "setup.cfg",
-            "tcex.json"
-        ]
-    },
-    "template_name": "flask",
-    "template_repo_hash": null,
-    "template_type": "api_service"
+  "package": {
+    "app_name": "TCVA_-_Flask_API_Service",
+    "excludes": [
+      ".gitignore",
+      ".pre-commit-config.yaml",
+      "app.yaml",
+      "local-*",
+      "pyproject.toml",
+      "setup.cfg",
+      "tcex.json"
+    ]
+  },
+  "template_name": "flask",
+  "template_repo_hash": null,
+  "template_type": "api_service"
 }

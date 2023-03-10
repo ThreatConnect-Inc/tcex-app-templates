@@ -1,10 +1,8 @@
 """Database Schema Definition"""
 # third-party
+from schema.arrow_date_time import ArrowDateTime
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.ext.hybrid import hybrid_property
-
-# first-party
-from schema.arrow_date_time import ArrowDateTime
 
 from .job_request_base_schema import JobRequestBaseSchema
 

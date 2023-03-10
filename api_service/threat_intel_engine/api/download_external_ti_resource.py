@@ -5,15 +5,13 @@ from typing import TYPE_CHECKING, List
 
 # third-party
 import falcon
-from pydantic import Field, validator
-
-# first-party
 from api.resource_abc import ResourceABC
 from model import FilterParamModel, param_to_list
 from more.transforms import IndicatorTransform
+from pydantic import Field, validator
 
 if TYPE_CHECKING:
-    # first-party
+    # third-party
     from more.transforms.transform_abc import TransformABC
 
 
@@ -52,6 +50,12 @@ class DownloadFalconTiResource(ResourceABC):
         },
     }
 
+    def __init__(self, provider_sdk):
+        """Initialize instance properties."""
+        super().__init__()
+
+        self.provider_sdk = provider_sdk
+
     def _type_mapping(self, ti_type: str) -> dict:
         """Return type mapping.
 
@@ -83,7 +87,7 @@ class DownloadFalconTiResource(ResourceABC):
 
         # download the data
         data = []
-        for i in req.context.params.ids:
+        for _ in req.context.params.ids:
             try:
                 data.append(sdk_method(indicators=req.context.params.ids).get('data', {}))
             except Exception:
@@ -99,9 +103,7 @@ class DownloadFalconTiResource(ResourceABC):
 
         # handle the conversion/processing, if the user selected the option in the UI
         if any([req.context.params.convert, req.context.params.enrich]):
-            ti_transform: 'TransformABC' = convert_transform(
-                self.settings, self.tcex
-            )
+            ti_transform: 'TransformABC' = convert_transform(self.settings, self.tcex)
             transform = self.tcex.api.tc.ti_transforms(response_media, ti_transform.transform)
             response_media = transform.batch
 

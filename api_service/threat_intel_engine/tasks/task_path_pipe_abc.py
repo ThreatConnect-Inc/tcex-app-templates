@@ -12,8 +12,6 @@ from typing import TYPE_CHECKING, List, Optional
 
 # third-party
 import arrow
-
-# first-party
 from more.database import request_fork_lock
 from schema import JobRequestSchema
 from tasks.model import TaskSettingPipeModel

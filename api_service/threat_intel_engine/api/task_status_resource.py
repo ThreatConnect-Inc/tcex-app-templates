@@ -2,7 +2,7 @@
 # standard library
 from typing import TYPE_CHECKING
 
-# first-party
+# third-party
 from tasks import TaskPathPipeABC
 
 from .resource_abc import ResourceABC

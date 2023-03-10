@@ -4,11 +4,9 @@ from typing import List
 
 # third-party
 import falcon
-from sqlalchemy.orm import Query
-
-# first-party
 from model import FilterParamPaginatedModel, TiProcessingMetricModel
 from schema import TiProcessingMetricSchema
+from sqlalchemy.orm import Query
 
 from .resource_abc import ResourceABC
 

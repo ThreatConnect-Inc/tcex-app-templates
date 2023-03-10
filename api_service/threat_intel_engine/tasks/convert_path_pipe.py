@@ -5,13 +5,11 @@ import json
 from typing import TYPE_CHECKING
 
 # third-party
-from tcex.backports import cached_property
-
-# first-party
 from more.transforms import IndicatorTransform
 from schema import JobRequestSchema
 from tasks.model import TaskSettingPipeModel
 from tasks.task_path_pipe_abc import TaskPathPipeABC
+from tcex.backports import cached_property
 
 if TYPE_CHECKING:
     # standard library
@@ -110,7 +108,7 @@ class ConvertPathPipe(TaskPathPipeABC):
                     self._write_results({'indicator': chunk}, output_dir, type_)
 
     @cached_property
-    def task_settings(self) -> 'TaskSettingPipeModel':  # pylint: disable=no-self-use
+    def task_settings(self) -> 'TaskSettingPipeModel':
         """Return the task settings.
 
         Tasks have standard model that is used to define the task settings. This method returns

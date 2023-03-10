@@ -3,12 +3,11 @@
 # standard library
 from typing import TYPE_CHECKING
 
-# first-party
+# third-party
 from api.middleware.middleware_abc import MiddlewareABC
 
 if TYPE_CHECKING:
     # third-party
-    import falcon
     from tcex import TcEx
 
     # first-party

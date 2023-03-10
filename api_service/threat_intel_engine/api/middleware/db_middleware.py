@@ -3,7 +3,7 @@
 import logging
 from typing import TYPE_CHECKING
 
-# first-party
+# third-party
 from api.middleware.middleware_abc import MiddlewareABC
 from more import session
 

@@ -1,12 +1,10 @@
 """Database Schema Definition"""
 # third-party
 import arrow
-from sqlalchemy import Column, String
-from sqlalchemy.ext.hybrid import hybrid_property
-
-# first-party
 from more import Base
 from schema.arrow_date_time import ArrowDateTime
+from sqlalchemy import Column, String
+from sqlalchemy.ext.hybrid import hybrid_property
 
 
 class JobRequestBaseSchema(Base):
@@ -23,6 +21,6 @@ class JobRequestBaseSchema(Base):
     status = Column(String, default='pending')  # should match status in app.py:settings
 
     @hybrid_property
-    def status_icon(self):  # pylint: disable=no-self-use
+    def status_icon(self):
         """Return status icon for UI."""
         return 'question_mark'

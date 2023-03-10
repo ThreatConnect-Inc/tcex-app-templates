@@ -4,13 +4,11 @@ from typing import List, Optional
 
 # third-party
 import falcon
-from pydantic import Field
-from sqlalchemy.orm import Query
-
-# first-party
 from api.resource_abc import ResourceABC
 from model import BatchErrorModel, FilterParamPaginatedModel
+from pydantic import Field
 from schema import BatchErrorSchema
+from sqlalchemy.orm import Query
 
 
 class GetQueryParamModel(FilterParamPaginatedModel):

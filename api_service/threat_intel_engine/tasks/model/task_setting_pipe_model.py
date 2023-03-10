@@ -11,7 +11,7 @@ from sqlalchemy.orm.attributes import InstrumentedAttribute
 from .task_setting_model import TaskSettingModel
 
 
-# pylint: disable=no-self-argument,no-self-use
+# pylint: disable=no-self-argument
 class TaskSettingPipeModel(TaskSettingModel):
     """Model Definition"""
 

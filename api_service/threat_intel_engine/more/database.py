@@ -44,15 +44,15 @@ def get_scoped_session(engine_):
 
 engine = get_engine()
 session = get_scoped_session(engine)
-session.execute('PRAGMA foreign_keys = ON;')
-session.commit()
+session.execute('PRAGMA foreign_keys = ON;')  # pylint: disable=no-member
+session.commit()  # pylint: disable=no-member
 
 
 def vacuum_db():
     """Vacuum the database."""
     try:
-        session.execute('VACUUM')  # Execute the vacuum command
-        session.commit()
+        session.execute('VACUUM')  # pylint: disable=no-member
+        session.commit()  # pylint: disable=no-member
         logger.info('feature=initialize-db, event=vacuum-db')
     except Exception as e:
         logger.warning(f'feature=initialize-db, event=vacuum-db-failed, reason={e}')

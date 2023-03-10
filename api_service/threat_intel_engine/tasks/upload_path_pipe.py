@@ -6,12 +6,10 @@ import re
 from typing import TYPE_CHECKING, Dict
 
 # third-party
-from tcex.backports import cached_property
-
-# first-party
 from schema import BatchErrorSchema, JobRequestSchema
 from tasks.model import TaskSettingPipeModel
 from tasks.task_path_pipe_abc import TaskPathPipeABC
+from tcex.backports import cached_property
 
 if TYPE_CHECKING:
     # standard library
@@ -218,7 +216,7 @@ class UploadPathPipe(TaskPathPipeABC):
             self._submit_batch(batch_file, request_id, output_dir)
 
     @cached_property
-    def task_settings(self) -> 'TaskSettingPipeModel':  # pylint: disable=no-self-use
+    def task_settings(self) -> 'TaskSettingPipeModel':
         """Return the task settings."""
 
         return TaskSettingPipeModel(

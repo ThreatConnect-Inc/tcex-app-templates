@@ -6,13 +6,13 @@ from tcex.input.field_types import Choice, sensitive, string
 
 class AppBaseModel(BaseModel):
     """Base model for the App containing any common inputs."""
+
     external_tc_url: string(allow_empty=False, strip=True)
     external_tc_api_access_id: string(allow_empty=False, strip=True)
     external_tc_api_secret_key: sensitive(allow_empty=False)
     external_tc_owner: string(allow_empty=False, strip=True)
     tql: string(allow_empty=False, strip=True)
     tc_owner: Choice
-
 
 
 class AppInputs:

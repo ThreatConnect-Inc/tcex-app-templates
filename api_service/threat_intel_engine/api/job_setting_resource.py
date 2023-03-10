@@ -1,8 +1,6 @@
 """Class for /api/1.0/job/setting endpoint"""
 # third-party
 import falcon
-
-# first-party
 from api.resource_abc import ResourceABC
 from model import FilterParamPaginatedModel
 

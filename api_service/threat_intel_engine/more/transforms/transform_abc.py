@@ -5,10 +5,8 @@ from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING, Union
 
 # third-party
-from tcex.backports import cached_property
-
-# first-party
 from more import DbUtil, Metrics, session
+from tcex.backports import cached_property
 
 if TYPE_CHECKING:
     # third-party
@@ -48,7 +46,7 @@ class TransformABC(ABC):
         return f'{ti_type}-{id_}'.upper()
 
     @cached_property
-    def _map_target_country(self):  # pylint: disable=no-self-use
+    def _map_target_country(self):
         """Return target country map."""
         return {
             'Iran': 'Iran, Islamic Republic Of',

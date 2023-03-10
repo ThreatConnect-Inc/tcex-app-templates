@@ -6,15 +6,13 @@ from uuid import uuid4
 # third-party
 import arrow
 import falcon
+from api.resource_abc import ResourceABC
+from model import FilterParamPaginatedModel, JobRequestModel
 from pydantic import BaseModel, Field, validator
+from schema import JobRequestSchema
 from sqlalchemy import func
 from sqlalchemy.orm import Query
 from tcex.utils import Utils
-
-# first-party
-from api.resource_abc import ResourceABC
-from model import FilterParamPaginatedModel, JobRequestModel
-from schema import JobRequestSchema
 
 
 class GetQueryParamModel(FilterParamPaginatedModel):
@@ -31,7 +29,7 @@ class PostBodyModel(BaseModel, arbitrary_types_allowed=True):
     range_start: arrow.Arrow = Field(alias='rangeStart')
     range_end: arrow.Arrow = Field(alias='rangeEnd')
 
-    # pylint: disable=no-self-argument,no-self-use
+    # pylint: disable=no-self-argument,
     @validator('range_start', 'range_end', pre=True)
     def validate_time_input(cls, value: str) -> 'arrow.Arrow':
         """Validate time input.

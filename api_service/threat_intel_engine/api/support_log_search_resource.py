@@ -7,11 +7,9 @@ import sys
 from typing import IO, TYPE_CHECKING, Optional
 
 # third-party
-from pydantic import BaseModel, Field
-
-# first-party
 from api.resource_abc import ResourceABC
 from model.filter_param_model import FilterParamPaginatedModel
+from pydantic import BaseModel, Field
 
 if TYPE_CHECKING:
     # third-party

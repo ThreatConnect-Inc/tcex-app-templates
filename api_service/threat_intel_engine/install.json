@@ -79,7 +79,9 @@
       "sequence": 5,
       "serviceConfig": true,
       "type": "String",
-      "validValues": ["${OWNERS}"]
+      "validValues": [
+        "${OWNERS}"
+      ]
     }
   ],
   "programLanguage": "PYTHON",

@@ -136,7 +136,7 @@ class SortOrder(str, Enum):
     desc = 'desc'
 
 
-# pylint: disable=no-self-argument,no-self-use
+# pylint: disable=no-self-argument
 class FilterParamPaginatedModel(FilterParamModel):
     """Model and validation for on_get() method."""
 

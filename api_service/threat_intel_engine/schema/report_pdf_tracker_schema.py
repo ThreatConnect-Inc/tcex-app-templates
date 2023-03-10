@@ -1,11 +1,9 @@
 """Database Schema Definition"""
 # third-party
 import arrow
-from sqlalchemy import Column, Integer, String
-
-# first-party
 from more import Base
 from schema.arrow_date_time import ArrowDateTime
+from sqlalchemy import Column, Integer, String
 
 
 class ReportPdfTrackerSchema(Base):

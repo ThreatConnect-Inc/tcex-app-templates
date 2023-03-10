@@ -35,7 +35,7 @@ class TaskSettingModel(BaseModel):
     # the type of task (e.g., path_pipe, standalone)
     task_type: str = Field('standalone', description='The type of task (e.g., pipe, single).')
 
-    # pylint: disable=no-self-argument,no-self-use
+    # pylint: disable=no-self-argument
     @validator('slug', always=True, pre=True)
     def _create_slug(cls, _, values):
         return values.get('name').lower().replace(' ', '-')

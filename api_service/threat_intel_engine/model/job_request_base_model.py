@@ -19,7 +19,7 @@ class JobRequestBaseModel(BaseModel):
     status: str = Field(..., description='')
     status_icon: Optional[str] = Field(None, description='The status icon to show in UI.')
 
-    # pylint: disable=no-self-argument,no-self-use
+    # pylint: disable=no-self-argument
     @validator('status')
     def _title_case(cls, v):
         return ' '.join([w.title() for w in v.split(' ')])

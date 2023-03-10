@@ -6,11 +6,9 @@ from pathlib import Path
 from typing import TYPE_CHECKING
 
 # third-party
-from tcex.backports import cached_property
-
-# first-party
 from schema import JobRequestSchema
 from tasks.model import TaskSettingModel
+from tcex.backports import cached_property
 
 from .task_abc import TaskABC
 
@@ -19,7 +17,6 @@ if TYPE_CHECKING:
     from pydantic import BaseModel
     from tcex import TcEx
 
-    # first-party
     from .tasks import Tasks
 
 
@@ -95,7 +92,7 @@ class Cleaner(TaskABC):
     def _clean_job_requests(self):
         """Remove job requests from DB older than mx_ttl_job_request."""
         try:
-            query = self.session.query(JobRequestSchema)
+            query = self.session.query(JobRequestSchema)  # pylint: disable=no-member
             jobs = self.db.get_record(query, 'all', 'Unexpected error querying job requests.')
             for job in jobs:
                 done_date = job.date_completed or job.date_failed
@@ -103,8 +100,8 @@ class Cleaner(TaskABC):
                     done_date is not None
                     and time.time() - done_date.timestamp() > self.task_settings.max_ttl_job_request
                 ):
-                    self.session.delete(job)
-                    self.session.commit()
+                    self.session.delete(job)  # pylint: disable=no-member
+                    self.session.commit()  # pylint: disable=no-member
         except Exception:
             # log exception
             self.log.exception('failure=failed-cleaning-job-request')
@@ -165,7 +162,7 @@ class Cleaner(TaskABC):
             task.cleaner()
 
     @cached_property
-    def task_settings(self) -> 'TaskSettingCustomModel':  # pylint: disable=no-self-use
+    def task_settings(self) -> 'TaskSettingCustomModel':
         """Return the task settings.
 
         Tasks have standard model that is used to define the task settings. This method returns

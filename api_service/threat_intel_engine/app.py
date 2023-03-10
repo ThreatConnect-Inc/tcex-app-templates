@@ -5,7 +5,16 @@ from typing import TYPE_CHECKING
 
 # third-party
 import schedule
-from api import *
+from api import (
+    JobRequestResource,
+    JobSettingResource,
+    MetricProcessingResource,
+    MetricTaskResource,
+    ReportBatchErrorResource,
+    SupportLogSearchResource,
+    TaskResource,
+    TaskStatusResource,
+)
 from api.middleware import InjectablesMiddleware
 from api_service_falcon import ApiServiceFalcon
 from model import SettingsModel
@@ -196,6 +205,7 @@ class App(ApiServiceFalcon):
                         return
 
             def get(self, indicator: str):
+                """Return a single indicator."""
                 return self.tc_session.get(f'/v3/indicators/{indicator}').json()
 
         return ProviderSdk(

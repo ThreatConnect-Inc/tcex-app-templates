@@ -3,15 +3,13 @@
 from typing import TYPE_CHECKING
 
 # third-party
-from tcex.backports import cached_property
-
-# first-party
 from model.job_request_model import JobRequestModel
 from more import Metrics, session
 from schema import JobRequestSchema
 from tasks.model import TaskSettingPipeModel
 from tasks.task_path_pipe_abc import TaskPathPipeABC
 from tasks.tasks import Tasks
+from tcex.backports import cached_property
 
 if TYPE_CHECKING:
     # standard library
@@ -90,7 +88,7 @@ class DownloadPathPipe(TaskPathPipeABC):
         # the Tasks.status_final is a list of all final statuses calculated in the tasks.py
         throttle_statutes.extend(Tasks.status_final)
 
-        query = session.query(JobRequestSchema).filter(
+        query = session.query(JobRequestSchema).filter(  # pylint: disable=no-member
             JobRequestSchema.status.not_in(throttle_statutes)
         )
         count = self.db.get_record(query, 'count', 'Unexpected error getting job count.')
@@ -121,7 +119,7 @@ class DownloadPathPipe(TaskPathPipeABC):
         # process "scheduled" tasks first, then ad-hoc request,
         # and finally by the date the job request was queued
         query = (
-            session.query(JobRequestSchema)
+            session.query(JobRequestSchema)  # pylint: disable=no-member
             .filter(
                 (JobRequestSchema.status == self.settings.status_pending)
                 | (JobRequestSchema.status == self.task_settings.status_active)
@@ -163,12 +161,16 @@ class DownloadPathPipe(TaskPathPipeABC):
         # for this example, we will assume that the remote API accepts start and end dates, as well
         # as a TQL query and owner
         last_modified_filter_start = self.tcex.utils.any_to_datetime(
-            request.last_modified_filter_start).strftime('%Y-%m-%d %H:%M:%S')
+            request.last_modified_filter_start
+        ).strftime('%Y-%m-%d %H:%M:%S')
         last_modified_filter_end = self.tcex.utils.any_to_datetime(
-            request.last_modified_filter_end).strftime('%Y-%m-%d %H:%M:%S')
+            request.last_modified_filter_end
+        ).strftime('%Y-%m-%d %H:%M:%S')
 
-        tql = f'{self.settings.tql} AND lastModified GEQ "{last_modified_filter_start}" ' \
-              f'AND lastModified LT "{last_modified_filter_end}"'
+        tql = (
+            f'{self.settings.tql} AND lastModified GEQ "{last_modified_filter_start}" '
+            f'AND lastModified LT "{last_modified_filter_end}"'
+        )
 
         # collect the counts of all the TI types to be written as count in job
         # request table  and metrics for the dashboard in the metrics table
@@ -189,7 +191,7 @@ class DownloadPathPipe(TaskPathPipeABC):
         self._process_counts(request_id, ti_type_counts)
 
     @cached_property
-    def task_settings(self) -> 'TaskSettingPipeModel':  # pylint: disable=no-self-use
+    def task_settings(self) -> 'TaskSettingPipeModel':
         """Return the task settings.
 
         Tasks have standard model that is used to define the task settings. This method returns

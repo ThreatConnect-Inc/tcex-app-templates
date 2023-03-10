@@ -5,10 +5,8 @@ from typing import Optional
 
 # third-party
 import falcon
-from pydantic import Field
-
-# first-party
 from model import FilterParamModel
+from pydantic import Field
 
 from .resource_abc import ResourceABC
 

@@ -7,10 +7,8 @@ from typing import List, Optional
 # third-party
 import arrow
 import falcon
-from sqlalchemy.orm import Query
-
-# first-party
 from schema import JobRequestSchema
+from sqlalchemy.orm import Query
 
 from .resource_abc import ResourceABC
 

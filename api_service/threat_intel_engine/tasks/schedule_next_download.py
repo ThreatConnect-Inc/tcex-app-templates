@@ -6,13 +6,11 @@ from uuid import uuid4
 
 # third-party
 import arrow
-from tcex.backports import cached_property
-
-# first-party
 from model import JobRequestModel
 from schema import JobRequestSchema
 from tasks.model import TaskSettingModel
 from tasks.task_abc import TaskABC
+from tcex.backports import cached_property
 
 
 class ScheduleNextDownload(TaskABC):
@@ -130,7 +128,7 @@ class ScheduleNextDownload(TaskABC):
             self._add_job_backfill(last_download_time)
 
     @cached_property
-    def task_settings(self) -> 'TaskSettingModel':  # pylint: disable=no-self-use
+    def task_settings(self) -> 'TaskSettingModel':
         """Return the task settings.
 
         Tasks have standard model that is used to define the task settings. This method returns

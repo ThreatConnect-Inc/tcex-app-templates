@@ -14,7 +14,7 @@ if TYPE_CHECKING:
 logger = logging.getLogger('tcex')
 
 
-def build_log_traceback(tb: Optional[TracebackType]) -> list:
+def build_log_traceback(tb: 'Optional[TracebackType]') -> list:
     """."""
     frames = []
     for frame, lineno in traceback.walk_tb(tb):

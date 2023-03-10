@@ -12,7 +12,7 @@ import arrow
 import schedule
 
 if TYPE_CHECKING:
-    # first-party
+    # third-party
     from tasks import TaskABC
 
 logger = logging.getLogger('tcex')

@@ -1,5 +1,5 @@
 """Metrics Module"""
-# first-party
+# third-party
 from more import DbUtil, session
 from schema import TiProcessingMetricSchema
 

@@ -12,10 +12,8 @@ from tcex.backports import cached_property
 
 if TYPE_CHECKING:
     # third-party
-    from sqlalchemy.orm.query import Query
-
-    # first-party
     from model import PaginatorResponseModel
+    from sqlalchemy.orm.query import Query
 
 # get primary API logger
 logger = logging.getLogger('APP_REGISTRY')

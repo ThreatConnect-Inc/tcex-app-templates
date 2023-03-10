@@ -1,0 +1,64 @@
+<page-title title="DOWNLOADS"></page-title>
+
+<div class="container">
+    <form [formGroup]="form" (ngSubmit)="saveDetails(form)">
+        <mat-form-field appearance="fill" color="accent">
+            <mat-label>Type</mat-label>
+            <mat-select matNativeControl name="type" formControlName="type">
+                <mat-option value="indicator">Indicator</mat-option>
+            </mat-select>
+            <mat-error *ngIf="form.controls['type'].errors"> Select a type </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>ID(s)</mat-label>
+            <textarea
+                matInput
+                placeholder="Enter one or more IDs, separated with commas."
+                rows="10"
+                [formControl]="form.controls['ids']"
+            ></textarea>
+        </mat-form-field>
+
+        <!--
+        <section class="toggle-section">
+            <mat-checkbox color="accent" formControlName="convert">Convert</mat-checkbox>
+        </section>
+
+        <section class="toggle-section">
+            <mat-checkbox color="accent" formControlName="enrich">Enrich</mat-checkbox>
+        </section>
+        -->
+
+        <section class="toggle-section">
+            <mat-checkbox formControlName="convert"><mat-label>Convert</mat-label></mat-checkbox>
+            <help
+                position="right"
+                text="Convert the threat intel data to ThreatConnect batch format."
+            ></help>
+        </section>
+
+        <section class="toggle-section">
+            <mat-checkbox formControlName="enrich"><mat-label>Enrich</mat-label></mat-checkbox>
+            <help
+                position="right"
+                text="Submit the threat intel data to ThreatConnect batch API."
+            ></help>
+        </section>
+
+        <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            name="submit"
+            [class.spinner]="downloading"
+            [disabled]="form.invalid"
+        >
+            Submit
+        </button>
+    </form>
+
+    <div class="response-data">
+        <pre><code [highlight]="response" [lineNumbers]="true"></code></pre>
+    </div>
+</div>

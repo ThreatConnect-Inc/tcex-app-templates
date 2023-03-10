@@ -1,0 +1,89 @@
+<page-title title="BATCH ERRORS"></page-title>
+
+<mat-form-field appearance="fill" class="full-width" color="text-link">
+    <mat-label>Request ID</mat-label>
+    <input
+        matInput
+        placeholder="Request ID"
+        type="text"
+        [(ngModel)]="requestId"
+        (ngModelChange)="loadBatchErrorData()"
+    />
+</mat-form-field>
+
+<div class="table-container">
+    <table
+        mat-table
+        matSort
+        color="accent"
+        class="mat-elevation-z8"
+        [dataSource]="dataSource$ | async"
+    >
+        <ng-container matColumnDef="request_id">
+            <th mat-header-cell *matHeaderCellDef>Request Id</th>
+            <td mat-cell *matCellDef="let element">
+                {{ element.request_id }}
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="date_added">
+            <th mat-header-cell *matHeaderCellDef>Date Added</th>
+            <td mat-cell *matCellDef="let element">
+                {{ element.date_added | date: 'yyyy-MM-dd H:mm:ss' }}
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="code">
+            <th mat-header-cell *matHeaderCellDef>Error Code</th>
+            <td mat-cell *matCellDef="let element">
+                {{ element.code }}
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="message">
+            <th mat-header-cell *matHeaderCellDef>Error Message</th>
+            <td mat-cell *matCellDef="let element">
+                {{ element.message }}
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="reason">
+            <th mat-header-cell *matHeaderCellDef>Error Reason</th>
+            <ng-container *matCellDef="let element">
+                <!--
+            <td mat-cell [matTooltip]="element.reason">
+                {{
+                    element.reason?.length > 100
+                        ? (element.reason | slice: 0:100) + ' ...'
+                        : element.reason
+                }}
+            </td>
+            -->
+                <td mat-cell>
+                    {{ element.reason }}
+                </td>
+            </ng-container>
+        </ng-container>
+
+        <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" [attr.colspan]="displayedColumns.length">
+                There is currently no data to display.
+            </td>
+        </tr>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+</div>
+<mat-paginator
+    showFirstLastButtons
+    aria-label="Show page"
+    class="mat-paginator-sticky"
+    color="accent"
+    [length]="pageTotal$ | async"
+    [pageIndex]="pageIndex"
+    [pageSize]="pageSize"
+    [pageSizeOptions]="[20, 40, 80]"
+    (page)="pageChanged($event)"
+>
+</mat-paginator>

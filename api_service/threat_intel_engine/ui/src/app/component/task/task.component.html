@@ -1,0 +1,19 @@
+<page-title title="TASKS"></page-title>
+
+<div *ngIf="tasksPathPipe$ | async as tasksPathPipe">
+    <h2 class="sub-title">INGESTION PIPELINE</h2>
+    <div class="container">
+        <span *ngFor="let task of tasksPathPipe">
+            <task-card [task]="task" (onChange)="loadTasksData()"> </task-card>
+        </span>
+    </div>
+</div>
+<br /><br />
+<div *ngIf="tasksStandalone$ | async as tasksStandalone">
+    <h2 class="sub-title">STANDALONE</h2>
+    <div class="container">
+        <span *ngFor="let task of tasksStandalone">
+            <task-card [task]="task" (onChange)="loadTasksData()"> </task-card>
+        </span>
+    </div>
+</div>

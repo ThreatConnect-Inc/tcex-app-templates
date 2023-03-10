@@ -1,0 +1,4 @@
+falcon<3.1.0
+schedule
+sqlalchemy<2.0.0
+tcex>=3.0.5,<3.1.0

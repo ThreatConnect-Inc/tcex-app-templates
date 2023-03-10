@@ -1,0 +1,71 @@
+<div>
+    <!--
+        "convert_runtime": 15.760896,
+        "count_batch_error": 0,
+        "count_batch_group_success": 0,
+        "count_batch_indicator_success": 0,
+        "count_download_group": 0,
+        "count_download_indicator": 0,
+        "date_completed": "2022-09-21 18:12:02",
+        "date_convert_complete": "2022-09-21 18:11:34",
+        "date_convert_start": "2022-09-21 18:11:18",
+        "date_download_complete": "2022-09-21 18:11:18",
+        "date_download_start": "2022-09-21 18:11:08",
+        "date_queued": "2022-09-21 18:10:58",
+        "date_started": "2022-09-21 18:11:18",
+        "date_upload_complete": "2022-09-21 18:12:02",
+        "date_upload_start": "2022-09-21 18:11:38",
+        "download_runtime": 9.716095,
+        "job_type": "scheduled",
+        "last_modified_filter_end": "2022-08-23 06:10:58",
+        "last_modified_filter_start": "2022-08-22 18:10:58",
+        "request_id": "dcbcc4b7-2c4a-4414-948a-9b19d6d65587",
+        "status": "job complete",
+        "upload_runtime": 24.109839
+    -->
+
+    <!-- Download -->
+    <mat-icon
+        [class]="downloadClass"
+        [fontIcon]="downloadIcon"
+        matTooltipClass="multi-line-tooltip"
+        [matTooltip]="downloadTooltip"
+        >{{ downloadIcon }}</mat-icon
+    >
+
+    <!-- Arrow -->
+    <mat-icon class="process-arrow" fontIcon="trending_flat"></mat-icon>
+
+    <!-- Processing -->
+    <mat-icon
+        [class]="processClass"
+        [fontIcon]="processIcon"
+        matTooltipClass="multi-line-tooltip"
+        [matTooltip]="processTooltip"
+        >{{ processIcon }}</mat-icon
+    >
+
+    <!-- Arrow -->
+    <mat-icon class="process-arrow" fontIcon="trending_flat"></mat-icon>
+
+    <!-- Upload -->
+    <mat-icon
+        [class]="uploadClass"
+        [fontIcon]="uploadIcon"
+        matTooltipClass="multi-line-tooltip"
+        [matTooltip]="uploadTooltip"
+        >{{ uploadIcon }}</mat-icon
+    >
+
+    <!-- Arrow -->
+    <mat-icon class="process-arrow" fontIcon="trending_flat"></mat-icon>
+
+    <!-- Status -->
+    <mat-icon
+        [class]="statusClass"
+        [fontIcon]="statusIcon"
+        matTooltipClass="multi-line-tooltip"
+        [matTooltip]="statusTooltip"
+        >{{ statusIcon }}</mat-icon
+    >
+</div>

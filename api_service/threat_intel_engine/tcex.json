@@ -1,6 +1,6 @@
 {
   "package": {
-    "app_name": "TCVA_-_Flask_API_Service",
+    "app_name": "TCVF_-_ThreatConnect_Egress",
     "excludes": [
       ".gitignore",
       ".pre-commit-config.yaml",
@@ -8,10 +8,10 @@
       "local-*",
       "pyproject.toml",
       "setup.cfg",
-      "tcex.json"
+      "tcex.json",
+      "ui"
     ]
   },
-  "template_name": "flask",
-  "template_repo_hash": null,
+  "template_name": "basic",
   "template_type": "api_service"
 }

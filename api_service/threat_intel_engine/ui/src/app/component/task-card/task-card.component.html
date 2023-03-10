@@ -1,0 +1,68 @@
+<mat-card class="task-card" [class]="cardClass">
+    <mat-card-title>
+        <div class="task-card-title" [class]="cardClass">
+            {{ task.name }} <help position="right" [text]="task.description"></help>
+        </div>
+    </mat-card-title>
+    <mat-card-content>
+        <app-info-field [data]="schedule" label="Schedule"></app-info-field>
+        <app-info-field
+            [data]="task.max_execution_minutes"
+            label="Timeout Minutes"
+        ></app-info-field>
+        <app-info-field *ngIf="task.process" [data]="task.process?.last_heartbeat | date : 'yyyy-MM-dd hh:mm:ss aa'" label="Last Heartbeat">
+        </app-info-field>
+        <mat-progress-bar
+            *ngIf="task.process"
+            color="accent"
+            mode="determinate"
+
+            [value]="task.process?.expires_percent"
+        ></mat-progress-bar>
+    </mat-card-content>
+    <mat-card-actions>
+        <div class="task-status">
+            <div *ngIf="task.process && !task.paused" class="status" > Running ... </div>
+            <div *ngIf="task.process && task.paused" class="status" > Finishing Run... </div>
+            <div *ngIf="task.paused" class="status" > Pending Jobs Paused... </div>
+        </div>
+        <div class="button-row">
+            <button
+                mat-flat-button
+                aria-label="Kill Task"
+                color="primary"
+                *ngIf="task.process"
+                (click)="killTask()"
+            >
+                Kill
+            </button>
+            <button
+                mat-flat-button
+                aria-label="Pause Task"
+                color="primary"
+                *ngIf="!task.paused"
+                (click)="pauseTask()"
+            >
+                Pause
+            </button>
+            <button
+                mat-flat-button
+                aria-label="Resume Task"
+                color="primary"
+                *ngIf="task.paused"
+                (click)="resumeTask()"
+            >
+                Resume
+            </button>
+            <button
+                mat-flat-button
+                aria-label="Run Task"
+                color="primary"
+                *ngIf="!task.process && !task.paused"
+                (click)="runTask()"
+            >
+                Run
+            </button>
+        </div>
+    </mat-card-actions>
+</mat-card>

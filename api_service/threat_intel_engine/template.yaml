@@ -1,0 +1,101 @@
+# The contributor of this template (company name or user alias).
+contributor: ThreatConnect
+# A full description of the template and it's functionality.
+description: '[BETA] A template that provides the structure for a Feed API Service app.'
+# A short summary of the Template
+summary: Threat Intel Engine app template.
+# These are files that the App developer "should" not be
+# editing and will be overwritten without prompt during updating.
+template_files:
+  - .appbuilderconfig
+  - .prettierrc.toml
+  - api_service_falcon.py
+  - run.py
+  - model/batch_error_model.py
+  - model/filter_param_model.py
+  - model/job_request_base_model.py
+  - model/multipart_form_data_model.py
+  - model/paginator_response_model.py
+  - model/ti_processing_metric_model.py
+  - more/app_exception.py
+  - more/database.py
+  - more/db_util.py
+  - more/error.py
+  - more/metrics.py
+  - more/paginator.py
+  - more/transforms/transform_abc.py
+  - more/validation.py
+  - schema/arrow_date_time.py
+  - schema/batch_error_schema.py
+  - schema/job_request_base_schema.py
+  - schema/ti_processing_metric_schema.py
+  - tasks/cleaner.py
+  - tasks/model/__init__.py
+  - tasks/model/task_setting_model.py
+  - tasks/model/task_setting_pipe_model.py
+  - tasks/process_metadata.py
+  - tasks/task_abc.py
+  - tasks/task_path_pipe_abc.py
+  - tasks/tasks.py
+  - tasks/upload_path_pipe.py
+  - ui/src/app/component/card-single-value/card-single-value.component.html
+  - ui/src/app/component/card-single-value/card-single-value.component.less
+  - ui/src/app/component/card-single-value/card-single-value.component.ts
+  - ui/src/app/component/dashboard/dashboard.component.html
+  - ui/src/app/component/dashboard/dashboard.component.less
+  - ui/src/app/component/dashboard/dashboard.component.ts
+  - ui/src/app/component/help/help.component.html
+  - ui/src/app/component/help/help.component.less
+  - ui/src/app/component/help/help.component.ts
+  - ui/src/app/component/info-field/info-field.component.html
+  - ui/src/app/component/info-field/info-field.component.less
+  - ui/src/app/component/info-field/info-field.component.ts
+  - ui/src/app/component/job-process-flow/job-process-flow.component.html
+  - ui/src/app/component/job-process-flow/job-process-flow.component.less
+  - ui/src/app/component/job-process-flow/job-process-flow.component.ts
+  - ui/src/app/component/page-title/page-title.component.html
+  - ui/src/app/component/page-title/page-title.component.less
+  - ui/src/app/component/page-title/page-title.component.ts
+  - ui/src/app/component/report/report.component.html
+  - ui/src/app/component/report/report.component.less
+  - ui/src/app/component/report/report.component.ts
+  - ui/src/app/component/task-card/task-card.component.html
+  - ui/src/app/component/task-card/task-card.component.less
+  - ui/src/app/component/task-card/task-card.component.ts
+  - ui/src/app/pipes/safe-html/safe-html.pipe.ts
+  - ui/src/app/pipes/string-append/string-append.pipe.ts
+  - ui/src/app/pipes/string-truncate/string-truncate.pipe.ts
+  - ui/src/app/service/base-service/base.service.ts
+  - ui/src/app/service/base-service/pagination-param-interface.ts
+  - ui/src/app/service/base-service/standard-param-interface.ts
+  - ui/src/app/service/download-service/download.service.ts
+  - ui/src/app/service/http-interceptor-service/http-interceptor.service.ts
+  - ui/src/app/service/job-service/job.service.ts
+  - ui/src/app/service/job-service/param-interface.ts
+  - ui/src/app/service/metric-service/metric.service.ts
+  - ui/src/app/service/metric-service/param-interface.ts
+  - ui/src/app/service/report-service/param-interface.ts
+  - ui/src/app/service/report-service/report.service.ts
+  - ui/src/app/service/task-service/param-interface.ts
+  - ui/src/app/service/task-service/task.service.ts
+  - ui/src/assets/styles/highlight.css
+  - ui/src/environments/environment.prod.ts
+  - ui/src/environments/environment.ts
+  - ui/src/favicon.ico
+  - ui/src/index.html
+  - ui/src/main.ts
+  - ui/src/material.less
+  - ui/src/polyfills.ts
+  - ui/src/proxy.conf.json
+  - ui/src/styles.less
+  - ui/src/test.ts
+  - ui/tsconfig.app.json
+  - ui/tsconfig.json
+  - ui/tsconfig.spec.json
+# One or more parent templates for the current template. The parent
+# template files will be pulled in the order that they are defined with
+# the later templates having precedent over the prior templates.
+template_parents:
+  - _app_common
+# The current version number of this template.
+version: 1.0.0

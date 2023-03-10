@@ -12,6 +12,6 @@
     ]
   },
   "template_name": "flask",
-  "template_repo_hash": "89861782036fbf606b1c041f98c855da0948c0f6",
+  "template_repo_hash": null,
   "template_type": "api_service"
 }

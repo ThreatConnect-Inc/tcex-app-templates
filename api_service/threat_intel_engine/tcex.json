@@ -1,0 +1,17 @@
+{
+  "package": {
+    "app_name": "TCVF_-_ThreatConnect_Egress",
+    "excludes": [
+      ".gitignore",
+      ".pre-commit-config.yaml",
+      "app.yaml",
+      "local-*",
+      "pyproject.toml",
+      "setup.cfg",
+      "tcex.json",
+      "ui"
+    ]
+  },
+  "template_name": "basic",
+  "template_type": "api_service"
+}

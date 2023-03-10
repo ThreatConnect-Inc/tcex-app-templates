@@ -10,7 +10,7 @@ template_files:
   - .appbuilderconfig
   - api_service_app.py
   - run.py
-
+  - wsgi_types.py
 # One or more parent templates for the current template. The parent
 # template files will be pulled in the order that they are defined with
 # the later templates having precedent over the prior templates.

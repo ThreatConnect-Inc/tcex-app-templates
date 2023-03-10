@@ -109,6 +109,7 @@ class DownloadPathPipe(TaskPathPipeABC):
         that are in the "pending" state or if the throttle limit has been reached, then the this
         task will not be launched.
         """
+        # pylint: disable=no-member
         if self._throttle_download():
             self.log.trace(
                 f'task-event=launch-preflight-check-skip, action={self.task_settings.name}, '

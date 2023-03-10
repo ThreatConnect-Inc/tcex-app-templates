@@ -87,7 +87,7 @@ class Paginator:
     def next_url(self) -> str:
         """Return the next URL for pagination."""
         offset = self.params.offset + self.params.limit
-        if offset < self.total_count:
+        if offset < self.total_count:  # pylint: disable=comparison-with-callable
             return f'{self.url}?{self.query_params(offset)}'
         return None
 

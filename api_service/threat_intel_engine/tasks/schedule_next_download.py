@@ -104,6 +104,7 @@ class ScheduleNextDownload(TaskABC):
 
         # last download time should never get ahead of "now", and should be at least 2 hours ago
         now = arrow.utcnow()
+        # pylint: disable=no-member
         if last_download_time < now and now - last_download_time > timedelta(hours=2):
             self.log.info(f'task-event=launch-preflight-check, action={self.task_settings.name}')
             self.launch(last_download_time)
@@ -116,6 +117,7 @@ class ScheduleNextDownload(TaskABC):
 
     def run(self, last_download_time: 'arrow.Arrow'):
         """Schedule next download."""
+        # pylint: disable=no-member
         self.tcex.log.trace(f'task-event=run, action={self.task_settings.slug}')
 
         # if the last download time is less than the configured time chunk

@@ -131,6 +131,7 @@ class App(ApiServiceFalcon):
         """Perform preflight check for external API."""
         try:
             # get_all returns a generator, so make sure we consume it to know if it fails or not.
+            # pylint: disable=no-member
             list(
                 self.provider_sdk.get_all(
                     tql='typeName EQ "Email Address"', owner=self.inputs.model.external_tc_owner
@@ -142,6 +143,7 @@ class App(ApiServiceFalcon):
 
     def _preflight_check_filesystem(self):
         """Perform preflight check."""
+        # pylint: disable=no-member
         preflight_check_file = self.settings.base_path / 'preflight'
 
         try:

@@ -25,6 +25,7 @@ class TaskSettingCustomModel(TaskSettingModel):
 
     max_disk_percent_usage: int
     max_ttl_job_request: int
+    slug: str
 
 
 class Cleaner(TaskABC):
@@ -92,16 +93,18 @@ class Cleaner(TaskABC):
     def _clean_job_requests(self):
         """Remove job requests from DB older than mx_ttl_job_request."""
         try:
-            query = self.session.query(JobRequestSchema)  # pylint: disable=no-member
+            query = self.session.query(JobRequestSchema)
             jobs = self.db.get_record(query, 'all', 'Unexpected error querying job requests.')
             for job in jobs:
                 done_date = job.date_completed or job.date_failed
+
+                # pylint: disable=no-member
                 if (
                     done_date is not None
                     and time.time() - done_date.timestamp() > self.task_settings.max_ttl_job_request
                 ):
-                    self.session.delete(job)  # pylint: disable=no-member
-                    self.session.commit()  # pylint: disable=no-member
+                    self.session.delete(job)
+                    self.session.commit()
         except Exception:
             # log exception
             self.log.exception('failure=failed-cleaning-job-request')
@@ -117,6 +120,7 @@ class Cleaner(TaskABC):
         """Launch the task."""
         self.process = self.process_metadata()
         self.process.start()
+        # pylint: disable=no-member
         self.log.info(f'task-event={self.task_settings.name}, pid={self.process.pid}')
 
     def launch_preflight_checks(self):
@@ -130,6 +134,7 @@ class Cleaner(TaskABC):
 
         # only launch cleaner if disk usage is greater than defined percentage
         # remove directories until disk usage is less than defined percentage or 2 days
+        # pylint: disable=no-member
         for days in reversed(range(2, 31)):
             percent_used = self._disk_usage
             seconds = self._days_to_seconds(days)
@@ -162,7 +167,7 @@ class Cleaner(TaskABC):
             task.cleaner()
 
     @cached_property
-    def task_settings(self) -> 'TaskSettingCustomModel':
+    def task_settings(self) -> TaskSettingCustomModel:
         """Return the task settings.
 
         Tasks have standard model that is used to define the task settings. This method returns

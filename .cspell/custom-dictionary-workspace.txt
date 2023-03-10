@@ -1,2 +1,4 @@
 # Custom Dictionary Words
+coveragerc
+datamodel
 wsgi

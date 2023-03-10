@@ -1,104 +1,106 @@
-"""Playbook App"""
+"""Run App"""
 # standard library
-import os
+import sys
 import traceback
+from functools import cached_property
+from pathlib import Path
+from typing import TYPE_CHECKING
 
-# third-party
-from tcex.app_config.install_json import InstallJson
-
-# first-party
-from app_lib import AppLib
-
-
-# pylint: disable=no-member
-def run() -> None:
-    """Update path and run the App."""
-    # update the path to ensure the App has access to required modules
-    app_lib = AppLib()
-    app_lib.update_path()
-    running_locally = False
-
-    # import modules after path has been updated
-
+if TYPE_CHECKING:
     # third-party
-    from tcex import TcEx  # pylint: disable=import-outside-toplevel
+    from tcex import TcEx
 
     # first-party
-    from app import App  # pylint: disable=import-outside-toplevel
+    from app import App
 
-    config = {}
-    config_file = os.environ.get('TCEX_APP_CONFIG_DEV')
-    if config_file:
-        if not os.path.isfile(config_file):
-            raise RuntimeError(f'Missing {config_file} config file.')
 
-        context = '7979'
-        # standard library
+class Run:
+    """Run App"""
 
-        config = {
-            'tc_playbook_db_type': 'Mock',
-            'tc_playbook_db_context': context,
-            'tc_playbook_out_variables': InstallJson().tc_playbook_out_variables,
-        }
-        running_locally = True
+    @staticmethod
+    def _configure_deps_directory():
+        """Handle the deps directory."""
+        # for TcEx 4 and above, all additional packages are in the "deps" directory
+        deps_dir = Path.cwd() / 'deps'
+        if not deps_dir.is_dir():
+            raise RuntimeError(f'Missing {deps_dir} directory.')
+        sys.path.insert(0, str(deps_dir))  # insert deps directory at the front of the path
 
-    tcex = TcEx(config_file=config_file, config=config)
+    def _run_tc_action_method(self):
+        # if the datamodel has the reserved arg of "tc_action", this value is
+        # used to trigger a call to the app.<tc_action>() method. an exact match
+        # to the method is tried first, followed by a normalization of the tc_action
+        # value, and finally an attempt is made to find the reserved "tc_action_map"
+        # property to map value to method.
+        tc_action: str = self.app.model.tc_action  # type: ignore
+        tc_action_formatted = tc_action.lower().replace(' ', '_')
+        tc_action_map = 'tc_action_map'  # reserved property name for action to method map
 
-    try:
-        # load App class
-        app = App(tcex)
-
-        # perform prep/setup operations
-        app.setup(**{})
-
-        # run the App logic
-        if hasattr(app.inputs.model, 'tc_action') and app.inputs.model.tc_action is not None:
-            # if the args NameSpace has the reserved arg of "tc_action", this arg value is used to
-            # triggers a call to the app.<tc_action>() method.  an exact match to the method is
-            # tried first, followed by a normalization of the tc_action value, and finally an
-            # attempt is made to find the reserved "tc_action_map" property to map value to method.
-            tc_action: str = app.inputs.model.tc_action
-            tc_action_formatted: str = tc_action.lower().replace(' ', '_')
-            tc_action_map = 'tc_action_map'  # reserved property name for action to method map
-
-            # run action method
-            if hasattr(app, tc_action):
-                getattr(app, tc_action)()
-            elif hasattr(app, tc_action_formatted):
-                getattr(app, tc_action_formatted)()
-            elif hasattr(app, tc_action_map):
-                app.tc_action_map.get(tc_action)()  # pylint: disable=no-member
-            else:
-                tcex.exit(1, f'Action method ({app.inputs.model.tc_action}) was not found.')
+        # run action method
+        if hasattr(self.app, tc_action):
+            getattr(self.app, tc_action)()
+        elif hasattr(self.app, tc_action_formatted):
+            getattr(self.app, tc_action_formatted)()
+        elif hasattr(self.app, tc_action_map):
+            self.app.tc_action_map.get(tc_action)()  # type: ignore
         else:
-            # default to run method
-            app.run(**{})
+            self.exit(1, f'Action method ({tc_action}) was not found.')
 
-        # write requested value for downstream Apps
-        app.write_output()  # pylint: disable=no-member
+    @cached_property
+    def app(self) -> 'App':
+        """Return a properly configured App instance."""
+        # first-party
+        from app import App  # pylint: disable=import-outside-toplevel
 
-        # perform cleanup/teardown operations
-        app.teardown(**{})
+        return App(self.tcex)
 
-        if running_locally:
-            # standard library
-            import json
+    def exit(self, code: int, msg: str):
+        """Exit the App."""
+        self.tcex.exit.exit(code, msg)
 
-            msg = (
-                f'Output variables written:\n'
-                f'{json.dumps(tcex.key_value_store.get_all(context), indent=2)}'
-            )
-            print(msg)
-            tcex.log.info(msg)
+    @cached_property
+    def tcex(self) -> 'TcEx':
+        """Return a properly configured TcEx instance."""
+        # third-party
+        from tcex import TcEx  # pylint: disable=import-outside-toplevel
 
-        # explicitly call the exit method
-        tcex.exit(msg=app.exit_message)
-    except Exception as e:
-        main_err = f'Generic Error.  See logs for more details ({e}).'
-        tcex.log.error(traceback.format_exc())
-        tcex.exit(1, main_err)
+        return TcEx()
+
+    def launch(self):
+        """Launch the App"""
+        # configure the deps directory before importing any third-party packages
+        self._configure_deps_directory()
+
+        try:
+            # perform prep/setup operations
+            self.app.setup(**{})
+
+            # run the App logic
+            if (
+                hasattr(self.app.inputs.model, 'tc_action')
+                and self.app.model.tc_action is not None  # type: ignore
+            ):
+                self._run_tc_action_method()
+            else:
+                # default to run method
+                self.app.run(**{})
+
+            # write requested value for downstream Apps
+            self.app.write_output()
+
+            # perform cleanup/teardown operations
+            self.app.teardown(**{})
+
+            # explicitly call the exit method
+            return self.app.exit_message
+        except Exception as e:
+            main_err = f'Generic Error.  See logs for more details ({e}).'
+            self.tcex.log.error(traceback.format_exc())
+            self.exit(1, main_err)
 
 
 if __name__ == '__main__':
-    # Run the App
-    run()
+    # Launch the App
+    run = Run()
+    exit_msg = run.launch()
+    run.exit(0, msg=exit_msg)

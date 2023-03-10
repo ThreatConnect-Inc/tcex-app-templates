@@ -1,10 +1,9 @@
 [run]
 omit =
-    __main__.py
-    app_lib.py
-    lib_*
+    deps
     job_app.py
     playbook_app.py
     run.py
+    run_locally.py
     service_app.py
     tests*

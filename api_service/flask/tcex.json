@@ -1,27 +1,17 @@
 {
-  "lib_versions": [
-    {
-      "lib_dir": "lib_${env:PY36}",
-      "python_executable": "~/.pyenv/versions/${env:PY36}/bin/python"
+    "package": {
+        "app_name": "TCVA_-_Flask_API_Service",
+        "excludes": [
+            ".gitignore",
+            ".pre-commit-config.yaml",
+            "app.yaml",
+            "local-*",
+            "pyproject.toml",
+            "setup.cfg",
+            "tcex.json"
+        ]
     },
-    {
-      "lib_dir": "lib_${env:PY39}",
-      "python_executable": "~/.pyenv/versions/${env:PY39}/bin/python"
-    }
-  ],
-  "package": {
-    "app_name": "TCVA_-_Flask_API_Service",
-    "excludes": [
-      ".gitignore",
-      ".pre-commit-config.yaml",
-      "app.yaml",
-      "local-*",
-      "pyproject.toml",
-      "setup.cfg",
-      "tcex.json"
-    ]
-  },
-  "template_name": "basic",
-  "template_repo_hash": "89861782036fbf606b1c041f98c855da0948c0f6",
-  "template_type": "api_service"
+    "template_name": "flask",
+    "template_repo_hash": null,
+    "template_type": "api_service"
 }

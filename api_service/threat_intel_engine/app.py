@@ -1,20 +1,10 @@
 """ThreatConnect Feed API Service App"""
 # standard library
-from pathlib import Path
 from time import sleep, time
 from typing import TYPE_CHECKING
 
 # third-party
-import arrow
 import schedule
-from pydantic import BaseModel
-from tcex.api.tc.v3.tql.tql_operator import TqlOperator
-from tcex.backports import cached_property
-from tcex.exit import ExitCode
-from tcex.sessions.auth.hmac_auth import HmacAuth
-from tcex.sessions.tc_session import TcSession
-
-# first-party
 from api import *
 from api.middleware import InjectablesMiddleware
 from api_service_falcon import ApiServiceFalcon
@@ -28,6 +18,10 @@ from tasks import (
     Tasks,
     UploadPathPipe,
 )
+from tcex.backports import cached_property
+from tcex.exit import ExitCode
+from tcex.sessions.auth.hmac_auth import HmacAuth
+from tcex.sessions.tc_session import TcSession
 
 if TYPE_CHECKING:
     # standard library
@@ -74,11 +68,17 @@ class App(ApiServiceFalcon):
         # schedule next download
         self.tasks.add_task(ScheduleNextDownload(self.settings, self.tcex))
 
+        # initialize the db
+        self._initialize_db()
+
+    def build_falcon_app(self):
+        """Construct a new falcon app."""
+        app = super().build_falcon_app()
         #
         # Add APP middleware and routes
         #
 
-        self.app.add_middleware(
+        app.add_middleware(
             InjectablesMiddleware(
                 provider_sdk=self.provider_sdk,
                 settings=self.settings,
@@ -90,19 +90,17 @@ class App(ApiServiceFalcon):
         # Add Routes
         #
 
-        self.app.add_route('/api/job/request', JobRequestResource())
-        self.app.add_route('/api/job/setting', JobSettingResource())
-        self.app.add_route('/api/metric/processing', MetricProcessingResource())
-        self.app.add_route('/api/metric/task', MetricTaskResource())
-        self.app.add_route('/api/report/batch-error', ReportBatchErrorResource())
+        app.add_route('/api/job/request', JobRequestResource())
+        app.add_route('/api/job/setting', JobSettingResource())
+        app.add_route('/api/metric/processing', MetricProcessingResource())
+        app.add_route('/api/metric/task', MetricTaskResource())
+        app.add_route('/api/report/batch-error', ReportBatchErrorResource())
         # self.app.add_route('/api/report/pdf-tracker', ReportPdfTrackerResource())
-        self.app.add_route('/api/support/log-search', SupportLogSearchResource())
-        self.app.add_route('/api/task', TaskResource())
-        self.app.add_route('/api/task/{task_name}', TaskResource())
-        self.app.add_route('/api/task/status', TaskStatusResource())
-
-        # initialize the db
-        self._initialize_db()
+        app.add_route('/api/support/log-search', SupportLogSearchResource())
+        app.add_route('/api/task', TaskResource())
+        app.add_route('/api/task/{task_name}', TaskResource())
+        app.add_route('/api/task/status', TaskStatusResource())
+        return app
 
     @staticmethod
     def _initialize_db():
@@ -124,8 +122,11 @@ class App(ApiServiceFalcon):
         """Perform preflight check for external API."""
         try:
             # get_all returns a generator, so make sure we consume it to know if it fails or not.
-            list(self.provider_sdk.get_all(tql='typeName EQ "Email Address"',
-                                           owner=self.inputs.model.external_tc_owner))
+            list(
+                self.provider_sdk.get_all(
+                    tql='typeName EQ "Email Address"', owner=self.inputs.model.external_tc_owner
+                )
+            )
         except Exception as ex:
             self.log.error(f'event=preflight-check-cs-api-failed, error={ex}')
             raise RuntimeError('Preflight check for CS API failed.') from ex
@@ -168,10 +169,7 @@ class App(ApiServiceFalcon):
             """Provider SDK class."""
 
             def __init__(self, tc_url: str, access_id: str, secret_key: 'Sensitive', log):
-                self.tc_session = TcSession(
-                    HmacAuth(access_id, secret_key),
-                    tc_url
-                )
+                self.tc_session = TcSession(HmacAuth(access_id, secret_key), tc_url)
                 self.log = log
 
             def get_all(self, tql: str, owner: str):
@@ -186,7 +184,7 @@ class App(ApiServiceFalcon):
                             'owner': owner,
                             'resultLimit': limit,
                             'resultStart': offset,
-                        }
+                        },
                     )
                     offset += limit
                     response.raise_for_status()
@@ -240,7 +238,6 @@ class App(ApiServiceFalcon):
 
         self.tcex.exit(ExitCode.SUCCESS, 'App has been successfully stopped')
 
-
     @cached_property
     def settings(self):
         """Return settings"""
@@ -249,6 +246,5 @@ class App(ApiServiceFalcon):
             owner=self.inputs.model.tc_owner,
             base_path=self.inputs.model.tc_out_path,
             external_owner=self.inputs.model.external_tc_owner,
-            tql = self.inputs.model.tql
+            tql=self.inputs.model.tql,
         )
-

@@ -29,3 +29,6 @@ extension-pkg-whitelist = "pydantic"
 
 [tool.pytest.ini_options]
 junit_family = "xunit2"
+testpaths = [
+  "tests",
+]

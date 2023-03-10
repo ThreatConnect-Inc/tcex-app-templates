@@ -39,18 +39,3 @@ class TcExMiddleware(MiddlewareABC):
         resource.args = self.args
         resource.log = self.log
         resource.tcex = self.tcex
-
-    def process_request(self, req: 'falcon.Request', _resp: 'falcon.Response'):
-        """Process the request before routing it."""
-
-        self.log.debug(f'Handling request: {req}')
-
-    def process_response(
-        self,
-        req: 'falcon.Request',
-        resp: 'falcon.Response',
-        _resource: object,
-        _req_succeeded: bool,
-    ):
-        """Post-processing of the response (after routing)."""
-        self.log.debug(f'Returning response: {req} ==> {resp}')

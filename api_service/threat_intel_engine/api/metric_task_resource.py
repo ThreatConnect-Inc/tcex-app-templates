@@ -2,7 +2,7 @@
 # standard library
 import json
 from datetime import timedelta
-from typing import List
+from typing import List, Optional
 
 # third-party
 import arrow
@@ -29,7 +29,7 @@ class MetricTaskResource(ResourceABC):
             query, 'all', 'Unexpected error occurred while retrieving metrics.'
         )
 
-    def _calculate_average(self, values: List[int]) -> int:
+    def _calculate_average(self, values: List[int]) -> Optional[float]:
         """Calculate average."""
         try:
             if not values:
@@ -39,7 +39,7 @@ class MetricTaskResource(ResourceABC):
             self.log.error(f'values={values}')
             return None
 
-    def _calculate_timedelta_average(self, values: List[timedelta]) -> timedelta:
+    def _calculate_timedelta_average(self, values: List[timedelta]) -> Optional[timedelta]:
         """Calculate average."""
         try:
             if not values:
@@ -79,16 +79,6 @@ class MetricTaskResource(ResourceABC):
 
         return {
             'count_metrics': {
-                # 'average_batch_group_count': self._calculate_average(values['count_batch_group']),
-                # 'average_batch_indicator_count': self._calculate_average(
-                #     values['count_batch_indicator']
-                # ),
-                # 'average_download_group_count': self._calculate_average(
-                #     values['count_download_group']
-                # ),
-                # 'average_download_indicator_count': self._calculate_average(
-                #     values['count_download_indicator']
-                # ),
                 'total_count_batch_group': sum(values['count_batch_group']),
                 'total_count_batch_indicator': sum(values['count_batch_indicator']),
                 'total_count_download_group': sum(values['count_download_group']),

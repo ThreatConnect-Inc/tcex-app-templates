@@ -1,16 +1,11 @@
 """ThreatConnect Exchange Playbook App"""
-# standard library
-from typing import TYPE_CHECKING
 
 # third-party
-from tcex.decorators import FailOnOutput, OnException, OnSuccess, Output
+from tcex import TcEx
+from tcex.app.decorator import FailOnOutput, OnException, OnSuccess, Output
 
 # first-party
-from playbook_app import PlaybookApp  # Import default Playbook App Class (Required)
-
-if TYPE_CHECKING:
-    # third-party
-    from tcex import TcEx
+from playbook_app import PlaybookApp
 
 
 class App(PlaybookApp):
@@ -117,8 +112,8 @@ class App(PlaybookApp):
         # output
         self.log.debug(f'output_strings: {self.output_strings}')
 
-        self.playbook.create_output('string.action', self.inputs.model_unresolved.tc_action)
-        self.playbook.create_output('string.outputs', self.output_strings)
+        self.playbook.create.variable('string.action', self.inputs.model_unresolved.tc_action)
+        self.playbook.create.variable('string.outputs', self.output_strings)
         if self.output_strings:
-            self.playbook.create_output('string.outputs.0', self.output_strings[0])
-        self.playbook.create_output('string.outputs.count', len(self.output_strings))
+            self.playbook.create.variable('string.outputs.0', self.output_strings[0])
+        self.playbook.create.variable('string.outputs.count', len(self.output_strings))

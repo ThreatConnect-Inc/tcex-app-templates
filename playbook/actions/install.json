@@ -6,11 +6,10 @@
   "features": [
     "aotExecutionEnabled",
     "appBuilderCompliant",
-    "secureParams",
     "layoutEnabledApp"
   ],
   "labels": [],
-  "languageVersion": "3.6",
+  "languageVersion": "3.11",
   "listDelimiter": "|",
   "note": "Takes a String or StringArrays and perform operations to each value returning the update value. All operations are performed on the individual strings and not the array.",
   "params": [

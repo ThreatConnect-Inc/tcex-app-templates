@@ -23,11 +23,14 @@ class Run:
         # for TcEx 4 and above, all additional packages are in the "deps" directory
         deps_dir = Path.cwd() / 'deps'
         if not deps_dir.is_dir():
-            raise RuntimeError(f'Missing {deps_dir} directory.')
+            sys.exit(
+                f'Running an App requires a "deps" directory. Could not find the {deps_dir} '
+                'directory.\n\nTry running "tcex deps" to install dependencies.'
+            )
         sys.path.insert(0, str(deps_dir))  # insert deps directory at the front of the path
 
     def _run_tc_action_method(self):
-        # if the datamodel has the reserved arg of "tc_action", this value is
+        # if the data model has the reserved arg of "tc_action", this value is
         # used to trigger a call to the app.<tc_action>() method. an exact match
         # to the method is tried first, followed by a normalization of the tc_action
         # value, and finally an attempt is made to find the reserved "tc_action_map"

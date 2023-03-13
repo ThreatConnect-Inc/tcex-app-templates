@@ -18,6 +18,7 @@ venv
 # App Specific Exclusions
 #-------------------------------------------------
 *.log
+app_inputs.json
 local-*
 log
 sample-*.json
@@ -26,6 +27,7 @@ sample-*.json
 # Build Exclusions
 #-------------------------------------------------
 build
+deps
 lib_*
 permutations.json
 target
@@ -58,11 +60,6 @@ nbproject
 .pytest_cache
 artifacts
 junit.xml
-py36.xml
-py37.xml
-py38.xml
-py39.xml
-py310.xml
 py311.xml
 dump.rdb
 SERVICE_STARTED

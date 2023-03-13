@@ -4,14 +4,14 @@ import sys
 import traceback
 from functools import cached_property
 from pathlib import Path
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, NoReturn
 
 if TYPE_CHECKING:
     # third-party
-    from tcex import TcEx
+    from tcex import TcEx  # must be imported later, but also needed typing hints
 
     # first-party
-    from app import App
+    from app import App  # must be imported later, but also needed typing hints
 
 
 class Run:
@@ -57,9 +57,9 @@ class Run:
 
         return App(self.tcex)
 
-    def exit(self, code: int, msg: str):
+    def exit(self, code: int, msg: str) -> NoReturn:
         """Exit the App."""
-        self.tcex.exit.exit(code, msg)
+        self.tcex.exit.exit(code, msg)  # pylint: disable=no-member
 
     @cached_property
     def tcex(self) -> 'TcEx':

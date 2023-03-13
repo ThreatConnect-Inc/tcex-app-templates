@@ -4,6 +4,6 @@ omit =
     job_app.py
     playbook_app.py
     run.py
-    run_locally.py
+    run_local.py
     service_app.py
     tests*

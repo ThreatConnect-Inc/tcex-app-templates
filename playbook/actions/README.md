@@ -1,182 +1,224 @@
-# Action Playbook Template
+# String Operation
 
-# Release Notes
+## Release Notes
 
-### 1.0.0 (2021-04-22)
+### 1.0.0
 
-* Initial Release
+-   Initial Release
 
+# Category
+
+-   Utility
 
 # Description
 
 Takes a String or StringArrays and perform operations to each value returning the update value. All operations are performed on the individual strings and not the array.
+
 # Actions
 
-___
+---
+
 ## Capitalize
+
 ### Inputs
 
 ### *Configure*
 
-  **Strings** *(String)*
-  The input String or StringArray.
-  > **Allows:** String, StringArray
+**Strings** *(TypeEnum.String)*
+
+The input String or StringArray.
+
+> **Allows:** String, StringArray
 
 ### Outputs
 
-  - string.action *(String)*
-  - string.outputs.0 *(String)*
-  - string.outputs.count *(String)*
-  - string.outputs *(StringArray)*
+-   string.action *(String)*
+-   string.outputs *(StringArray)*
+-   string.outputs.0 *(String)*
+-   string.outputs.count *(String)*
 
-___
+---
+
 ## Lowercase
+
 ### Inputs
 
 ### *Configure*
 
-  **Strings** *(String)*
-  The input String or StringArray.
-  > **Allows:** String, StringArray
+**Strings** *(TypeEnum.String)*
+
+The input String or StringArray.
+
+> **Allows:** String, StringArray
 
 ### Outputs
 
-  - string.action *(String)*
-  - string.outputs.0 *(String)*
-  - string.outputs.count *(String)*
-  - string.outputs *(StringArray)*
+-   string.action *(String)*
+-   string.outputs *(StringArray)*
+-   string.outputs.0 *(String)*
+-   string.outputs.count *(String)*
 
-___
+---
+
 ## Prepend
+
 ### Inputs
 
 ### *Configure*
 
-  **Strings** *(String)*
-  The input String or StringArray.
-  > **Allows:** String, StringArray
+**Strings** *(TypeEnum.String)*
 
-  **Prepend Character(s)** *(String)*
-  The character(s) to get prepended to the provided string(s) (e.g., **pre-**).
+The input String or StringArray.
+
+> **Allows:** String, StringArray
+
+**Prepend Character(s)** *(TypeEnum.String)*
+
+The character(s) to get prepended to the provided string(s) (e.g., **pre-**).
 
 ### Outputs
 
-  - string.action *(String)*
-  - string.outputs.0 *(String)*
-  - string.outputs.count *(String)*
-  - string.outputs *(StringArray)*
+-   string.action *(String)*
+-   string.outputs *(StringArray)*
+-   string.outputs.0 *(String)*
+-   string.outputs.count *(String)*
 
-___
+---
+
 ## Reverse
+
 ### Inputs
 
 ### *Configure*
 
-  **Strings** *(String)*
-  The input String or StringArray.
-  > **Allows:** String, StringArray
+**Strings** *(TypeEnum.String)*
+
+The input String or StringArray.
+
+> **Allows:** String, StringArray
 
 ### Outputs
 
-  - string.action *(String)*
-  - string.outputs.0 *(String)*
-  - string.outputs.count *(String)*
-  - string.outputs *(StringArray)*
+-   string.action *(String)*
+-   string.outputs *(StringArray)*
+-   string.outputs.0 *(String)*
+-   string.outputs.count *(String)*
 
-___
+---
+
 ## Starts With
+
 ### Inputs
 
 ### *Configure*
 
-  **Strings** *(String)*
-  The input String or StringArray.
-  > **Allows:** String, StringArray
+**Strings** *(TypeEnum.String)*
 
-  **Starts With Character(s)** *(String)*
-  The character(s) to check for in the provided string(s) (e.g., **https**).
+The input String or StringArray.
 
-  _**Starts With Start**_ *(String, Optional, Default: 0)*
-  The 0-based index position at which to start the **Starts With** search. The start position can be used to skip the first *n* characters before starting the search.
+> **Allows:** String, StringArray
 
-  _**Starts With Stop**_ *(String, Optional)*
-  The 0-based index position at which to stop the **Starts With** search. The stop position can be used to stop the search after *n* characters.
+**Starts With Character(s)** *(TypeEnum.String)*
+
+The character(s) to check for in the provided string(s) (e.g., **https**).
+
+_**Starts With Start**_ *(TypeEnum.String, Optional, Default: 0)*
+
+The 0-based index position at which to start the **Starts With** search. The start position can be used to skip the first *n* characters before starting the search.
+
+_**Starts With Stop**_ *(TypeEnum.String, Optional)*
+
+The 0-based index position at which to stop the **Starts With** search. The stop position can be used to stop the search after *n* characters.
 
 ### Outputs
 
-  - string.action *(String)*
-  - string.outputs.0 *(String)*
-  - string.outputs.count *(String)*
-  - string.outputs *(StringArray)*
+-   string.action *(String)*
+-   string.outputs *(StringArray)*
+-   string.outputs.0 *(String)*
+-   string.outputs.count *(String)*
 
-___
+---
+
 ## Strip
+
 ### Inputs
 
 ### *Configure*
 
-  **Strings** *(String)*
-  The input String or StringArray.
-  > **Allows:** String, StringArray
+**Strings** *(TypeEnum.String)*
+
+The input String or StringArray.
+
+> **Allows:** String, StringArray
 
 ### Outputs
 
-  - string.action *(String)*
-  - string.outputs.0 *(String)*
-  - string.outputs.count *(String)*
-  - string.outputs *(StringArray)*
+-   string.action *(String)*
+-   string.outputs *(StringArray)*
+-   string.outputs.0 *(String)*
+-   string.outputs.count *(String)*
 
-___
+---
+
 ## Swap Case
+
 ### Inputs
 
 ### *Configure*
 
-  **Strings** *(String)*
-  The input String or StringArray.
-  > **Allows:** String, StringArray
+**Strings** *(TypeEnum.String)*
+
+The input String or StringArray.
+
+> **Allows:** String, StringArray
 
 ### Outputs
 
-  - string.action *(String)*
-  - string.outputs.0 *(String)*
-  - string.outputs.count *(String)*
-  - string.outputs *(StringArray)*
+-   string.action *(String)*
+-   string.outputs *(StringArray)*
+-   string.outputs.0 *(String)*
+-   string.outputs.count *(String)*
 
-___
+---
+
 ## Title Case
+
 ### Inputs
 
 ### *Configure*
 
-  **Strings** *(String)*
-  The input String or StringArray.
-  > **Allows:** String, StringArray
+**Strings** *(TypeEnum.String)*
+
+The input String or StringArray.
+
+> **Allows:** String, StringArray
 
 ### Outputs
 
-  - string.action *(String)*
-  - string.outputs.0 *(String)*
-  - string.outputs.count *(String)*
-  - string.outputs *(StringArray)*
+-   string.action *(String)*
+-   string.outputs *(StringArray)*
+-   string.outputs.0 *(String)*
+-   string.outputs.count *(String)*
 
-___
+---
+
 ## Uppercase
+
 ### Inputs
 
 ### *Configure*
 
-  **Strings** *(String)*
-  The input String or StringArray.
-  > **Allows:** String, StringArray
+**Strings** *(TypeEnum.String)*
+
+The input String or StringArray.
+
+> **Allows:** String, StringArray
 
 ### Outputs
 
-  - string.action *(String)*
-  - string.outputs.0 *(String)*
-  - string.outputs.count *(String)*
-  - string.outputs *(StringArray)*
+-   string.action *(String)*
+-   string.outputs *(StringArray)*
+-   string.outputs.0 *(String)*
+-   string.outputs.count *(String)*
 
-# Category
-
-Utility
+---

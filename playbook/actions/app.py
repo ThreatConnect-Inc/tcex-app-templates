@@ -75,38 +75,6 @@ class App(PlaybookApp):
                 )
             ).lower()
 
-    @OnException(exit_msg='Failed to run strip action.')
-    @OnSuccess(exit_msg='Successfully ran strip action.')
-    @Output(attribute='output_strings')
-    def strip(self) -> str:
-        """Return string stripping any whitespaces at beginning and end."""
-        for input_string in self.inputs.model.input_string:
-            return input_string.strip()
-
-    @OnException(exit_msg='Failed to run swap case action.')
-    @OnSuccess(exit_msg='Successfully ran swap case action.')
-    @Output(attribute='output_strings')
-    def swap_case(self) -> str:
-        """Return string with the case swapped."""
-        for input_string in self.inputs.model.input_string:
-            return input_string.swapcase()
-
-    @OnException(exit_msg='Failed to run title case action.')
-    @OnSuccess(exit_msg='Successfully ran title case action.')
-    @Output(attribute='output_strings')
-    def title_case(self) -> str:
-        """Return string in title case."""
-        for input_string in self.inputs.model.input_string:
-            return input_string.title()
-
-    @OnException(exit_msg='Failed to run uppercase action.')
-    @OnSuccess(exit_msg='Successfully ran uppercase action.')
-    @Output(attribute='output_strings')
-    def uppercase(self) -> str:
-        """Return string in uppercase."""
-        for input_string in self.inputs.model.input_string:
-            return input_string.upper()
-
     def write_output(self):
         """Write the Playbook output variables."""
         # output
@@ -114,6 +82,4 @@ class App(PlaybookApp):
 
         self.playbook.create.variable('string.action', self.inputs.model_unresolved.tc_action)
         self.playbook.create.variable('string.outputs', self.output_strings)
-        if self.output_strings:
-            self.playbook.create.variable('string.outputs.0', self.output_strings[0])
         self.playbook.create.variable('string.outputs.count', len(self.output_strings))

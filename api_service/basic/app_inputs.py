@@ -1,6 +1,7 @@
 """App Inputs"""
 # third-party
 from pydantic import BaseModel
+from tcex.input.input import Input
 
 
 class AppBaseModel(BaseModel):
@@ -10,7 +11,7 @@ class AppBaseModel(BaseModel):
 class AppInputs:
     """App Inputs"""
 
-    def __init__(self, inputs: 'BaseModel') -> None:
+    def __init__(self, inputs: Input) -> None:
         """Initialize class properties."""
         self.inputs = inputs
 

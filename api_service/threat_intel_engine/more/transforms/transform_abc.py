@@ -2,11 +2,11 @@
 # standard library
 import logging
 from abc import ABC, abstractmethod
-from typing import TYPE_CHECKING, Union
+from typing import TYPE_CHECKING
 
 # third-party
 from more import DbUtil, Metrics, session
-from tcex.backports import cached_property
+from tcex.pleb import cached_property
 
 if TYPE_CHECKING:
     # third-party
@@ -41,7 +41,7 @@ class TransformABC(ABC):
         }
 
     @staticmethod
-    def _generate_xid(id_: Union[int, str], ti_type: str) -> str:
+    def _generate_xid(id_: int | str, ti_type: str) -> str:
         """Generate group xids."""
         return f'{ti_type}-{id_}'.upper()
 

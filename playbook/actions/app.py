@@ -21,7 +21,7 @@ class App(PlaybookApp):
     @Output(attribute='output_strings')
     def append(self):
         """Return string with appended character(s)."""
-        for input_string in self.inputs.model.input_string:
+        for input_string in self.inputs.model.input_strings:
             return f'{input_string}{self.inputs.model.append_chars}'
 
     @OnException(exit_msg='Failed to run capitalize action.')
@@ -29,7 +29,7 @@ class App(PlaybookApp):
     @Output(attribute='output_strings')
     def capitalize(self) -> str:
         """Return capitalized string."""
-        for input_string in self.inputs.model.input_string:
+        for input_string in self.inputs.model.input_strings:
             return input_string.capitalize()
 
     @OnException(exit_msg='Failed to run lowercase action.')
@@ -37,7 +37,7 @@ class App(PlaybookApp):
     @Output(attribute='output_strings')
     def lowercase(self) -> str:
         """Return string in lowercase."""
-        for input_string in self.inputs.model.input_string:
+        for input_string in self.inputs.model.input_strings:
             return input_string.lower()
 
     @OnException(exit_msg='Failed to run "prepend" operation.')
@@ -45,7 +45,7 @@ class App(PlaybookApp):
     @Output(attribute='output_strings')
     def prepend(self):
         """Return string with prepended character(s)."""
-        for input_string in self.inputs.model.input_string:
+        for input_string in self.inputs.model.input_strings:
             return f'{self.inputs.model.prepend_chars}{input_string}'
 
     @OnException(exit_msg='Failed to run reverse action.')
@@ -53,7 +53,7 @@ class App(PlaybookApp):
     @Output(attribute='output_strings')
     def reverse(self) -> str:
         """Return string reversed."""
-        for input_string in self.inputs.model.input_string:
+        for input_string in self.inputs.model.input_strings:
             return input_string[::-1]
 
     @OnException(exit_msg='Failed to run "starts with" operation.')
@@ -66,7 +66,7 @@ class App(PlaybookApp):
     @Output(attribute='output_strings')
     def starts_with(self):
         """Return true if string starts with provided characters."""
-        for input_string in self.inputs.model.input_string:
+        for input_string in self.inputs.model.input_strings:
             return str(
                 input_string.startswith(
                     self.inputs.model.starts_with_chars,

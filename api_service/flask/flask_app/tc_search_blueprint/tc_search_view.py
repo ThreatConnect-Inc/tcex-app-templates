@@ -4,15 +4,11 @@ isort:skip_file
 """
 # standard library
 from itertools import islice
-from typing import TYPE_CHECKING
 
 # third-party
 from flask import render_template, request
 from flask.views import View
-
-if TYPE_CHECKING:
-    # third-party
-    from tcex import TcEx
+from tcex import TcEx
 
 
 class TCSearchView(View):

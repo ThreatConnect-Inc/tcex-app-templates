@@ -3,13 +3,13 @@
 import gzip
 import json
 import re
-from typing import TYPE_CHECKING, Dict
+from typing import TYPE_CHECKING
 
 # third-party
 from schema import BatchErrorSchema, JobRequestSchema
 from tasks.model import TaskSettingPipeModel
 from tasks.task_path_pipe_abc import TaskPathPipeABC
-from tcex.backports import cached_property
+from tcex.pleb import cached_property
 
 if TYPE_CHECKING:
     # standard library
@@ -23,7 +23,7 @@ class UploadPathPipe(TaskPathPipeABC):
     """Process to submit JSON files to TC batch API."""
 
     @staticmethod
-    def _batch_error_codes(code: str) -> Dict[str, str]:
+    def _batch_error_codes(code: str) -> dict[str, str]:
         """Return static list of Batch error codes and short description"""
         _error_codes = {
             '0x1001': 'General Error',

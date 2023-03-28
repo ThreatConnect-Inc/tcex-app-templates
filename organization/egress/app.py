@@ -12,7 +12,7 @@ from job_app import JobApp  # Import default Job App Class (Required)
 
 if TYPE_CHECKING:
     # standard library
-    from typing import Iterable
+    from collections.abc import Iterable
 
     # third-party
     from tcex import TcEx

@@ -1,4 +1,4 @@
 {
-  "input_string": "capital me",
+  "input_strings": "capital me",
   "tc_action": "Capitalize"
 }

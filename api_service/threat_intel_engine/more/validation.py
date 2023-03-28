@@ -3,7 +3,7 @@
 import json
 import logging
 import traceback
-from typing import TYPE_CHECKING, List, Optional, Union
+from typing import TYPE_CHECKING, Optional, Union
 
 # third-party
 import falcon
@@ -66,7 +66,7 @@ def format_validation_errors(
 
 def response_media(
     req: 'falcon.Request',
-    db_data: Union['Base', List['Base']],
+    db_data: Union['Base', list['Base']],
     model: 'BaseModel',
     params: 'BaseModel',
     paginator: Optional['Paginator'] = None,
@@ -127,7 +127,7 @@ def validate_request_body(req: 'falcon.Request', model: 'BaseModel'):
             media = req.get_media()
 
             if isinstance(media, list):
-                req.context.body = parse_obj_as(List[model], media)
+                req.context.body = parse_obj_as(list[model], media)
             elif isinstance(media, dict):
                 req.context.body = model(**media)
 

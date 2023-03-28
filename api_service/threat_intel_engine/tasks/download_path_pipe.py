@@ -9,7 +9,7 @@ from schema import JobRequestSchema
 from tasks.model import TaskSettingPipeModel
 from tasks.task_path_pipe_abc import TaskPathPipeABC
 from tasks.tasks import Tasks
-from tcex.backports import cached_property
+from tcex.pleb import cached_property
 
 if TYPE_CHECKING:
     # standard library

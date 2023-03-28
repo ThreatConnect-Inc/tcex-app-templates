@@ -2,7 +2,6 @@
 # standard library
 import json
 from datetime import timedelta
-from typing import List, Optional
 
 # third-party
 import arrow
@@ -21,13 +20,13 @@ class MetricTaskResource(ResourceABC):
         """Return DB query."""
         return self.session.query(JobRequestSchema)
 
-    def _db_result_get(self, query: Query) -> List[JobRequestSchema]:
+    def _db_result_get(self, query: Query) -> list[JobRequestSchema]:
         """Return DB records."""
         return self._db_get_record(
             query, 'all', 'Unexpected error occurred while retrieving metrics.'
         )
 
-    def _calculate_average(self, values: List[int]) -> Optional[float]:
+    def _calculate_average(self, values: list[int]) -> float | None:
         """Calculate average."""
         try:
             if not values:
@@ -37,7 +36,7 @@ class MetricTaskResource(ResourceABC):
             self.log.error(f'values={values}')
             return None
 
-    def _calculate_timedelta_average(self, values: List[timedelta]) -> Optional[timedelta]:
+    def _calculate_timedelta_average(self, values: list[timedelta]) -> timedelta | None:
         """Calculate average."""
         try:
             if not values:
@@ -47,7 +46,7 @@ class MetricTaskResource(ResourceABC):
             self.log.error(f'values={values}')
             return None
 
-    def _generate_metrics(self, jobs: List[JobRequestSchema]) -> dict:
+    def _generate_metrics(self, jobs: list[JobRequestSchema]) -> dict:
         """Process metrics."""
         values = {
             'count_batch_group': [],

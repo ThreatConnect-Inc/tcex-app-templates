@@ -1,6 +1,4 @@
 """ThreatConnect Playbook App"""
-# standard library
-from typing import Dict, List, Union
 
 # first-party
 from service_app import ServiceApp
@@ -12,10 +10,10 @@ class App(ServiceApp):
     # pylint: disable=unused-argument
     def webhook_event_callback(
         self,
-        body: Union[bytes, str],
-        headers: List[Dict[str, str]],
+        body: bytes | str,
+        headers: list[dict[str, str]],
         method: str,
-        params: List[Dict[str, str]],
+        params: list[dict[str, str]],
         **kwargs,
     ):
         """Run the trigger logic.
@@ -39,13 +37,13 @@ class App(ServiceApp):
                 the method should provide different response.
         """
         response = None
-        if self.tcex.ij.has_feature('WebhookResponseMarshall'):
+        if self.tcex.app.ij.has_feature('WebhookResponseMarshall'):
             # * Callable - Playbook will be launched and if marshall
             #              callback will be set to response.
             # * True - Playbook will be launched.
             # * Else - Playbook will NOT be launched.
             response = True
-        elif self.tcex.ij.has_feature('WebhookServiceEndpoint'):
+        elif self.tcex.app.ij.has_feature('WebhookServiceEndpoint'):
             # * Dict - Playbook will be launched and provided data
             #          will be used in the response to the client.
             # * Else - Response will be set to default of statusCode=200, body=None, and headers=[].
@@ -62,8 +60,8 @@ class App(ServiceApp):
     # pylint: disable=unused-argument
     def webhook_marshall_event_callback(
         self,
-        body: Union[bytes, str],
-        headers: List[Dict[str, str]],
+        body: bytes | str,
+        headers: list[dict[str, str]],
         request_key: str,
         status_code: int,
         trigger_id: int,

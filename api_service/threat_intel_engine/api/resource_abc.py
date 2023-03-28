@@ -3,7 +3,7 @@
 import logging
 import traceback
 from abc import ABC
-from typing import TYPE_CHECKING, Any, List, Optional, Union
+from typing import TYPE_CHECKING, Any
 
 # third-party
 import falcon
@@ -93,9 +93,7 @@ class ResourceABC(ABC):
             )
             raise falcon.HTTPInternalServerError(**err) from ex
 
-    def _db_get_record(
-        self, query: Query, method: str, error_description: str
-    ) -> Union[Any, List[Any]]:
+    def _db_get_record(self, query: Query, method: str, error_description: str) -> Any | list[Any]:
         """Return DB record(s)."""
         try:
             return getattr(query, method)()
@@ -169,8 +167,8 @@ class ResourceABC(ABC):
         self,
         params: BaseModel,
         schema: Any,
-        schema_alt: Optional[Any] = None,
-        default_sort: Optional[str] = 'name',
+        schema_alt: Any | None = None,
+        default_sort: str | None = 'name',
     ) -> callable:
         """Return DB sort."""
         # customize sort for this endpoint

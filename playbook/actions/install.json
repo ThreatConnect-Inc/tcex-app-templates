@@ -14,7 +14,7 @@
   "note": "Takes a String or StringArrays and perform operations to each value returning the update value. All operations are performed on the individual strings and not the array.\n",
   "params": [
     {
-      "label": "Strings",
+      "label": "Input Strings",
       "name": "input_strings",
       "note": "The input String or StringArray.",
       "playbookDataType": [
@@ -107,10 +107,6 @@
     "outputVariables": [
       {
         "name": "string.action",
-        "type": "String"
-      },
-      {
-        "name": "string.outputs.0",
         "type": "String"
       },
       {

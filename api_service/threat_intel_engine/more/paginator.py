@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING
 # third-party
 from sqlalchemy import func
 from sqlalchemy.exc import ProgrammingError
-from tcex.backports import cached_property
+from tcex.pleb import cached_property
 
 if TYPE_CHECKING:
     # third-party

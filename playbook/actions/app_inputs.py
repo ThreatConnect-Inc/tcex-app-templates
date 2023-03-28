@@ -4,7 +4,7 @@ from typing import Annotated
 
 # third-party
 from pydantic import BaseModel, validator
-from tcex.input.field_type import String, always_array, integer, string
+from tcex.input.field_type import Choice, always_array, integer, string
 from tcex.input.input import Input
 from tcex.input.model.app_playbook_model import AppPlaybookModel
 
@@ -13,13 +13,13 @@ class AppBaseModel(AppPlaybookModel):
     """Base model for the App containing any common inputs."""
 
     # playbookDataType = String, StringArray
-    input_string: list[String]
-    tc_action: String
+    input_strings: list[string(min_length=1)]
+    tc_action: Choice
 
     # the App takes both String and StringArray as input, ensure that the input
     # is always an array. splitting the value on a comma is also supported.
-    _always_array = validator('input_string', allow_reuse=True, pre=True)(
-        always_array(split_csv=True)
+    _always_array = validator('input_strings', allow_reuse=True, pre=True)(
+        always_array(allow_empty=False, split_csv=True)
     )
 
 

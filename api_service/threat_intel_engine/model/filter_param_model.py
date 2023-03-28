@@ -2,7 +2,6 @@
 # standard library
 import logging
 from enum import Enum
-from typing import Optional, Type
 
 # third-party
 from pydantic import BaseModel, Extra, Field, conint, validator
@@ -85,9 +84,7 @@ def param_to_model_filter(values) -> dict:
 class FilterParamModel(BaseModel, extra=Extra.forbid):
     """Model and validation for on_get() method."""
 
-    exclude: Optional[list] = Field(
-        None, description='One or more fields to exclude from response.'
-    )
+    exclude: list | None = Field(None, description='One or more fields to exclude from response.')
     exclude_defaults: bool = Field(False, description='Exclude any field that has a default value.')
     exclude_none: bool = Field(
         True,
@@ -95,7 +92,7 @@ class FilterParamModel(BaseModel, extra=Extra.forbid):
         description='Exclude any field that has a null value.',
     )
     exclude_unset: bool = Field(True, description='Exclude any field that was not explicitly set.')
-    include: Optional[list] = Field(
+    include: list | None = Field(
         None,
         alias='field',
         description='One or more fields to include in response (alias for include).',
@@ -125,8 +122,8 @@ class FilterParamModel(BaseModel, extra=Extra.forbid):
 
 
 # define pagination inputs
-LimitInt: Type[int] = conint(ge=0, le=500)
-OffsetInt: Type[int] = conint(ge=0)
+LimitInt: type[int] = conint(ge=0, le=500)
+OffsetInt: type[int] = conint(ge=0)
 
 
 class SortOrder(str, Enum):
@@ -140,10 +137,10 @@ class SortOrder(str, Enum):
 class FilterParamPaginatedModel(FilterParamModel):
     """Model and validation for on_get() method."""
 
-    limit: Optional[LimitInt] = 50
-    offset: Optional[OffsetInt] = 0
-    sort: Optional[str] = Field(None, description='The field name used to sort the results.')
-    sort_order: Optional[SortOrder] = Field(SortOrder.asc, description='The sort order: asc|desc.')
+    limit: LimitInt | None = 50
+    offset: OffsetInt | None = 0
+    sort: str | None = Field(None, description='The field name used to sort the results.')
+    sort_order: SortOrder | None = Field(SortOrder.asc, description='The sort order: asc|desc.')
 
     @validator('sort_order', always=True)
     def _sort_order(cls, v):

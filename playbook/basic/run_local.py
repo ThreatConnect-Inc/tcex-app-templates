@@ -13,7 +13,7 @@ from pydantic import BaseSettings, Extra
 from tcex import TcEx
 from tcex.app.config.install_json import InstallJson
 from tcex.app.key_value_store.key_value_redis import KeyValueRedis
-from tcex.pleb.registry import registry
+from tcex.registry import registry
 
 # first-party
 from run import Run
@@ -111,18 +111,29 @@ class RunLocal(Run):
         print('Exit Message:', msg)
         super().exit(code, msg)
 
-    def log_output_data(self):
+    def print_input_data(self):
+        """Print the inputs."""
+        input_data = json.dumps(self.app_inputs, indent=4, sort_keys=True)
+        msg = f'Playbook Input Data:\n' f'{input_data}'
+        print(msg)
+        self.tcex.log.info(msg)
+
+    def print_output_data(self):
         """Log the playbook output data."""
 
         output_data = self.client.get_all(self.context)
         if output_data:
-            output_data = {k: json.loads(v) for k, v in output_data.items()}
-            msg = f'Playbook Output Data:\n' f'{json.dumps(output_data, indent=2)}'
+            output_data = json.dumps(
+                {k.decode(): json.loads(v.decode()) for k, v in output_data.items()},
+                indent=4,
+                sort_keys=True,
+            )
+            msg = f'\nPlaybook Output Data:\n' f'{output_data}'
             print(msg)
             self.tcex.log.info(msg)
 
     @cached_property
-    def tcex(self) -> 'TcEx':
+    def tcex(self) -> TcEx:
         """Return a properly configured TcEx instance."""
         try:
             # in order to launch locally, configuration data needs to be passed to TcEx
@@ -138,22 +149,25 @@ class RunLocal(Run):
         except Exception as ex:
             sys.exit(f'Failed to initialize TcEx: {ex}')
 
-    def launch(self) -> str:
-        """Launch the App"""
+    def setup(self):
+        """Handle the deps directory."""
+        super().setup()
+
         # special code to handle executing TcEx in a jupyter notebook
         registry._reset()  # pylint: disable=protected-access
 
-        # launch the App
-        exit_msg_ = super().launch()
+    def teardown(self):
+        """Teardown the App."""
+        self.print_input_data()
+        self.print_output_data()
 
-        # log outputs
-        self.log_output_data()
-
-        return exit_msg_
+        # explicitly call the exit method
+        self.exit(0, msg=self.app.exit_message)
 
 
 if __name__ == '__main__':
     # Launch the App
     run = RunLocal()
-    exit_msg = run.launch()
-    run.exit(0, msg=exit_msg)
+    run.setup()
+    run.launch()
+    run.teardown()

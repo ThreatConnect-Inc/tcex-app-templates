@@ -17,7 +17,7 @@ class PutQueryParamModel(FilterParamModel):
     """Params Model"""
 
     # task_name: str = Field(..., description='Filter by Task Name.')
-    pause: Optional[bool] = Field(None, description='Pause or Resume the Task.')
+    pause: bool | None = Field(None, description='Pause or Resume the Task.')
     run: bool = Field(False, description='When True, run the Task.')
 
 

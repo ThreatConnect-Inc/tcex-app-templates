@@ -1,7 +1,7 @@
 """DB Util Module"""
 # standard library
 import logging
-from typing import TYPE_CHECKING, Any, List, Union
+from typing import TYPE_CHECKING, Any
 
 # third-party
 from sqlalchemy.dialects import sqlite
@@ -77,7 +77,7 @@ class DbUtil:
 
     def get_record(
         self, query: Query, method: str, error_description: str, raise_exception: bool = False
-    ) -> Union[Any, List[Any]]:
+    ) -> Any | list[Any]:
         """Return DB record(s)."""
         try:
             return getattr(query, method)()

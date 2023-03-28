@@ -17,18 +17,6 @@ if TYPE_CHECKING:
 class Run:
     """Run App"""
 
-    @staticmethod
-    def _configure_deps_directory():
-        """Handle the deps directory."""
-        # for TcEx 4 and above, all additional packages are in the "deps" directory
-        deps_dir = Path.cwd() / 'deps'
-        if not deps_dir.is_dir():
-            sys.exit(
-                f'Running an App requires a "deps" directory. Could not find the {deps_dir} '
-                'directory.\n\nTry running "tcex deps" to install dependencies.'
-            )
-        sys.path.insert(0, str(deps_dir))  # insert deps directory at the front of the path
-
     def _run_tc_action_method(self):
         # if the data model has the reserved arg of "tc_action", this value is
         # used to trigger a call to the app.<tc_action>() method. an exact match
@@ -71,9 +59,6 @@ class Run:
 
     def launch(self):
         """Launch the App"""
-        # configure the deps directory before importing any third-party packages
-        self._configure_deps_directory()
-
         try:
             # perform prep/setup operations
             self.app.setup(**{})
@@ -94,16 +79,32 @@ class Run:
             # perform cleanup/teardown operations
             self.app.teardown(**{})
 
-            # explicitly call the exit method
-            return self.app.exit_message
         except Exception as e:
             main_err = f'Generic Error.  See logs for more details ({e}).'
             self.tcex.log.error(traceback.format_exc())
             self.exit(1, main_err)
 
+    def setup(self):
+        """Handle the deps directory."""
+        # configure the deps directory before importing any third-party packages
+        # for TcEx 4 and above, all additional packages are in the "deps" directory
+        deps_dir = Path.cwd() / 'deps'
+        if not deps_dir.is_dir():
+            sys.exit(
+                f'Running an App requires a "deps" directory. Could not find the {deps_dir} '
+                'directory.\n\nTry running "tcex deps" to install dependencies.'
+            )
+        sys.path.insert(0, str(deps_dir))  # insert deps directory at the front of the path
+
+    def teardown(self):
+        """Teardown the App."""
+        # explicitly call the exit method
+        self.exit(0, msg=self.app.exit_message)
+
 
 if __name__ == '__main__':
     # Launch the App
     run = Run()
-    exit_msg = run.launch()
-    run.exit(0, msg=exit_msg)
+    run.setup()
+    run.launch()
+    run.teardown()

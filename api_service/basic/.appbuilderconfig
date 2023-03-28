@@ -1,19 +1,16 @@
 {
-  "appType": "ApiService",
-  "description": "This template provides the structure for an APIService app without any app logic.",
-  "files": [{
-      "path": "app_lib.py",
-      "editable": false
-    },
-    {
-      "path": "api_service_app.py",
-      "editable": false
-    },
-    {
-      "path": "run.py",
-      "editable": false
-    }
-  ],
-  "language": "Python",
-  "templateName": "Flask"
+    "appType": "ApiService",
+    "description": "This template provides the structure for an APIService app without any app logic.",
+    "files": [
+        {
+            "path": "api_service_app.py",
+            "editable": false
+        },
+        {
+            "path": "run.py",
+            "editable": false
+        }
+    ],
+    "language": "Python",
+    "templateName": "basic"
 }

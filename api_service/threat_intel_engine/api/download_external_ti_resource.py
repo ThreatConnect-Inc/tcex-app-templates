@@ -1,7 +1,7 @@
 """Class for /api/download/falcon-ti endpoint"""
 # standard library
 import traceback
-from typing import TYPE_CHECKING, List
+from typing import TYPE_CHECKING
 
 # third-party
 import falcon
@@ -23,7 +23,7 @@ class GetQueryParamModel(FilterParamModel):
 
     convert: bool = Field(False, description='Convert to TC format.')
     enrich: bool = Field(False, description='Add to ThreatConnect.')
-    ids: List[str] = Field(..., description='One or more ID to retrieve.')
+    ids: list[str] = Field(..., description='One or more ID to retrieve.')
     type: str = Field(..., description='The TI type to retrieve.')
 
     # convert params with multiple value (e.g., ?id=1,id=2)

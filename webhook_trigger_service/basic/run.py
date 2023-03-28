@@ -34,44 +34,44 @@ def run(**kwargs) -> None:
             kwargs.get('set_app')(app)
 
         # configure custom trigger message handler
-        tcex.service.create_config_callback = app.create_config_callback
-        tcex.service.delete_config_callback = app.delete_config_callback
-        tcex.service.shutdown_callback = app.shutdown_callback
-        tcex.service.webhook_event_callback = app.webhook_event_callback
+        tcex.app.service.create_config_callback = app.create_config_callback
+        tcex.app.service.delete_config_callback = app.delete_config_callback
+        tcex.app.service.shutdown_callback = app.shutdown_callback
+        tcex.app.service.webhook_event_callback = app.webhook_event_callback
 
         # set the createConfig model
-        tcex.service.trigger_input_model = AppInputs
+        tcex.app.service.trigger_input_model = AppInputs
 
         # perform prep/setup operations
         app.setup(**{})
 
         # listen on channel/topic
-        tcex.service.listen()
+        tcex.app.service.listen()
 
         # start heartbeat threads
-        tcex.service.heartbeat()
+        tcex.app.service.heartbeat()
 
         # inform TC that micro-service is Ready
-        tcex.service.ready = True
+        tcex.app.service.ready = True
 
         # loop until exit
         if hasattr(app, 'loop_forever'):
             app.loop_forever()  # pylint: disable=no-member
         else:
             tcex.log.info('Looping until shutdown')
-            while tcex.service.loop_forever(sleep=1):
+            while tcex.app.service.loop_forever(sleep=1):
                 pass
 
         # perform cleanup/teardown operations
         app.teardown(**{})
 
         # explicitly call the exit method
-        tcex.playbook.exit(msg=app.exit_message)
+        tcex.exit.exit(msg=app.exit_message)
 
     except Exception as e:
         main_err = f'Generic Error.  See logs for more details ({e}).'
         tcex.log.error(traceback.format_exc())
-        tcex.playbook.exit(1, main_err)
+        tcex.exit.exit(1, main_err)
 
 
 if __name__ == '__main__':

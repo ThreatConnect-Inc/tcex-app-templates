@@ -1,4 +1,4 @@
-exclude: ^lib
+exclude: ^deps
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.4.0
@@ -42,10 +42,6 @@ repos:
     rev: 23.1.0
     hooks:
       - id: black
-  - repo: https://github.com/PyCQA/flake8
-    rev: 6.0.0
-    hooks:
-      - id: flake8
   - repo: https://github.com/pre-commit/mirrors-isort
     rev: v5.10.1
     hooks:
@@ -60,11 +56,6 @@ repos:
       - id: pyupgrade
         args:
           - --py311-plus
-  - repo: https://github.com/yunojuno/pre-commit-xenon
-    rev: v0.1
-    hooks:
-      - id: xenon
-        args: ['--max-average=B', '--exclude=local*', '--ignore=lib_*,local*,target,tests']
   - repo: local
     hooks:
       - id: pylint

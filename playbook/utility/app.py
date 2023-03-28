@@ -1,14 +1,12 @@
 """ThreatConnect Playbook App"""
 # standard library
 import json
-from typing import TYPE_CHECKING
+
+# third-party
+from tcex import TcEx
 
 # first-party
 from playbook_app import PlaybookApp  # Import default Playbook App Class (Required)
-
-if TYPE_CHECKING:
-    # third-party
-    from tcex import TcEx
 
 
 class App(PlaybookApp):

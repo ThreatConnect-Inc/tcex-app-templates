@@ -1,11 +1,10 @@
 """App Inputs"""
-# standard library
-from typing import List, Union
 
 # third-party
 from pydantic import BaseModel
-from tcex.input.field_types import String
-from tcex.input.models import CreateConfigModel
+from tcex.input.field_type import String
+from tcex.input.input import Input
+from tcex.input.model.create_config_model import CreateConfigModel
 
 
 class ServiceConfigModel(BaseModel):
@@ -18,7 +17,7 @@ class ServiceConfigModel(BaseModel):
     configuration in the Platform.
     """
 
-    service_input: Union[List[String], String]
+    service_input: list[String] | String
 
 
 class TriggerConfigModel(CreateConfigModel):
@@ -36,7 +35,7 @@ class TriggerConfigModel(CreateConfigModel):
 class AppInputs:
     """App Inputs"""
 
-    def __init__(self, inputs: 'BaseModel') -> None:
+    def __init__(self, inputs: Input) -> None:
         """Initialize class properties."""
         self.inputs = inputs
 

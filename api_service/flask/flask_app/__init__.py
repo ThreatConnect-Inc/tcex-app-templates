@@ -2,17 +2,13 @@
 
 isort:skip_file
 """
-# standard library
-from typing import TYPE_CHECKING
 
 # third-party
 from flask import Flask
 from flask_app.tc_search_blueprint import create_blueprint as create_tc_search_blueprint
+from tcex import TcEx
+from tcex.input.input import Input
 
-if TYPE_CHECKING:
-    # third-party
-    from tcex import TcEx
-    from tcex.input.input import Input
 
 __all__ = ['create_app']
 

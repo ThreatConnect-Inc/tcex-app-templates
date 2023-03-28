@@ -1,6 +1,4 @@
 """Class for /api/metric/processing endpoint"""
-# standard library
-from typing import List
 
 # third-party
 import falcon
@@ -27,7 +25,7 @@ class MetricProcessingResource(ResourceABC):
         """Return DB query."""
         return self.session.query(TiProcessingMetricSchema)
 
-    def _db_result_get(self, query: Query) -> List[TiProcessingMetricSchema]:
+    def _db_result_get(self, query: Query) -> list[TiProcessingMetricSchema]:
         """Return DB records."""
         return self._db_get_record(
             query, 'all', 'Unexpected error occurred while retrieving metrics.'

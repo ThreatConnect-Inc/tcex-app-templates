@@ -1,21 +1,17 @@
 """App Module"""
 # standard library
 from abc import ABC, abstractmethod
-from typing import TYPE_CHECKING
 from urllib.parse import urlparse
 
 # third-party
 from pydantic import ValidationError
+from tcex import TcEx
+from tcex.input.input import Input
+from tcex.logger.trace_logger import TraceLogger
+from wsgi_types import WSGIApplication
 
 # first-party
 from app_inputs import AppInputs
-
-if TYPE_CHECKING:
-    # third-party
-    from tcex import TcEx
-    from tcex.input.input import Input
-    from tcex.logger.trace_logger import TraceLogger
-    from wsgi_types import WSGIApplication
 
 
 class ApiServiceApp(ABC):

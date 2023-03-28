@@ -2,7 +2,6 @@
 # standard library
 import re
 from pathlib import Path
-from typing import Optional
 
 # third-party
 from pydantic import Field, validator
@@ -28,7 +27,7 @@ class TaskSettingPipeModel(TaskSettingModel):
     )
 
     # this index or order of the tasks in the pipe
-    index: Optional[int] = Field(None, description='The index of the task in the pipe.')
+    index: int | None = Field(None, description='The index of the task in the pipe.')
 
     # pipe setting
     pipe_task_complete: bool = Field(
@@ -39,13 +38,13 @@ class TaskSettingPipeModel(TaskSettingModel):
     )
 
     # used to create input directory
-    previous_task_name: Optional[str] = Field(None, description='The name of the previous task.')
+    previous_task_name: str | None = Field(None, description='The name of the previous task.')
 
     # the type of task (e.g., path_pipe, standalone)
     task_type: str = Field('path_pipe', description='The type of task (e.g., pipe, single).')
 
     # set the working directory for the task
-    working_dir_out: Optional[Path] = Field(
+    working_dir_out: Path | None = Field(
         None, description='The output working directory for the task. Set by tasks.add_task_pipe.'
     )
 

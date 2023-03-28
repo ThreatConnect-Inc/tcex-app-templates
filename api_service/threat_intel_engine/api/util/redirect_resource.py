@@ -1,6 +1,6 @@
 """Defines a resource to do redirects."""
 # standard library
-from typing import Callable, Union
+from collections.abc import Callable
 
 # third-party
 from falcon import HTTPPermanentRedirect  # pylint: disable=no-name-in-module
@@ -23,7 +23,7 @@ class RedirectResource(ResourceABC):
         'PATCH',
     ]
 
-    def __init__(self, redirect_to: Union[Callable, str]):
+    def __init__(self, redirect_to: Callable | str):
         """Create this resource.
 
         Args:

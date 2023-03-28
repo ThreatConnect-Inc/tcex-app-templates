@@ -1,6 +1,4 @@
 """Class for /api/report/batch-error endpoint"""
-# standard library
-from typing import List, Optional
 
 # third-party
 import falcon
@@ -14,7 +12,7 @@ from sqlalchemy.orm import Query
 class GetQueryParamModel(FilterParamPaginatedModel):
     """Params Model"""
 
-    request_id: Optional[str] = Field(None, description='Filter by Request ID.')
+    request_id: str | None = Field(None, description='Filter by Request ID.')
 
 
 # pylint: disable=unused-argument
@@ -31,7 +29,7 @@ class ReportBatchErrorResource(ResourceABC):
 
     def _db_query_get(
         self,
-        request_id: Optional[str],
+        request_id: str | None,
     ) -> Query:
         """Return DB query."""
         query = self.session.query(BatchErrorSchema)
@@ -42,7 +40,7 @@ class ReportBatchErrorResource(ResourceABC):
 
         return query
 
-    def _db_result_get(self, query: Query) -> List[BatchErrorSchema]:
+    def _db_result_get(self, query: Query) -> list[BatchErrorSchema]:
         """Return DB records."""
         return self._db_get_record(
             query, 'all', 'Unexpected error occurred while retrieving Batch Errors.'

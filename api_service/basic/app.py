@@ -1,23 +1,18 @@
 """ThreatConnect API Service App"""
-# standard library
-from typing import TYPE_CHECKING
 
 # third-party
 import falcon
+from tcex import TcEx
+from tcex.input.input import Input
 
 # first-party
 from api_service_app import ApiServiceApp
-
-if TYPE_CHECKING:
-    # third-party
-    from tcex import TcEx
-    from tcex.input.input import Input
 
 
 class TcExMiddleware:
     """TcEx middleware module"""
 
-    def __init__(self, inputs: 'Input', tcex: 'TcEx'):
+    def __init__(self, inputs: Input, tcex: TcEx):
         """Initialize class properties"""
         self.inputs = inputs
         self.tcex = tcex

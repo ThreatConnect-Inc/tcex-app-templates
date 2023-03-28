@@ -1,13 +1,10 @@
 """ThreatConnect Trigger Service App"""
-# standard library
-from typing import TYPE_CHECKING
+
+# third-party
+from tcex.app.playbook import Playbook
 
 # first-party
 from service_app import ServiceApp  # Import default Service App Class (Required)
-
-if TYPE_CHECKING:
-    # third-party
-    from tcex.playbook import Playbook
 
 
 class App(ServiceApp):
@@ -15,13 +12,13 @@ class App(ServiceApp):
 
     def run(self) -> None:
         """Run the trigger logic."""
-        while self.tcex.service.loop_forever(sleep=30):
+        while self.tcex.app.service.loop_forever(sleep=30):
             # startup inputs, access via self.inputs.model.service_input
             self.log.debug(f'Server configuration service_input {self.inputs.model.dict()}')
 
             # any "extra" args passed to fire_event will be
             # available in kwargs in the callback method
-            self.tcex.service.fire_event(self.trigger_callback, my_data='data')
+            self.tcex.app.service.fire_event(self.trigger_callback, my_data='data')
 
     # pylint: disable=unused-argument
     def trigger_callback(
@@ -46,6 +43,6 @@ class App(ServiceApp):
         self.log.debug(f'''Playbook configuration playbook_input {config.get('playbook_input')}''')
 
         # write output variable
-        playbook.create_output('example.service_input', self.inputs.model.service_input)
-        playbook.create_output('example.playbook_input', config.get('playbook_input'))
+        playbook.create.variable('example.service_input', self.inputs.model.service_input)
+        playbook.create.variable('example.playbook_input', config.get('playbook_input'))
         return True

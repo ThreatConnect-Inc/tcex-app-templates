@@ -12,7 +12,7 @@ from playbook_app import PlaybookApp  # Import default Playbook App Class (Requi
 class App(PlaybookApp):
     """Playbook App"""
 
-    def __init__(self, _tcex: 'TcEx'):
+    def __init__(self, _tcex: TcEx):
         """Initialize class properties.
 
         This method can be OPTIONALLY overridden.
@@ -20,7 +20,7 @@ class App(PlaybookApp):
         super().__init__(_tcex)
         self.pretty_json = {}
 
-    def run(self) -> None:
+    def run(self):
         """Run the App main logic.
 
         This method should contain the core logic of the App.

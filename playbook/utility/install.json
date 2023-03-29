@@ -66,5 +66,6 @@
   "programLanguage": "PYTHON",
   "programMain": "run",
   "programVersion": "1.0.0",
-  "runtimeLevel": "Playbook"
+  "runtimeLevel": "Playbook",
+  "sdkVersion": "4.0.0"
 }

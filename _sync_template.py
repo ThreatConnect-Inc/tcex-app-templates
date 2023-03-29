@@ -21,6 +21,7 @@ class SyncTemplate:
         self.app_common_dst_path = Path('_app_common/')
         self.playbook_action_dst_path = Path('playbook/actions/')
         self.playbook_basic_dst_path = Path('playbook/basic/')
+        self.playbook_utility_dst_path = Path('playbook/utility/')
 
     def _copy_file(self, src_file, dst_file):
         """."""
@@ -66,20 +67,26 @@ class SyncTemplate:
             if file.parent != src_path:
                 continue
 
-            if file.is_file():
+            if file.is_dir():
+                if file.name.startswith('.'):
+                    continue
+
+                if file.name in ['app_notebook', 'tests']:
+                    shutil.rmtree(self.playbook_action_dst_path / file.name)
+                    shutil.copytree(file, self.playbook_action_dst_path / file.name)
+            elif file.is_file():
                 filename = file.name
                 if file.name == '.gitignore':
                     filename = 'gitignore'
 
                 # send to most specific location first
                 if file.name in [
-                    'README.md',
-                    'app.py',
                     'app_inputs.json',
                     'app_inputs.py',
-                    'app_notebook',
+                    'app.py',
                     'install.json',
                     'layout.json',
+                    'README.md',
                 ]:
                     self._copy_file(file, self.playbook_action_dst_path / filename)
                 # send to parent location
@@ -101,14 +108,7 @@ class SyncTemplate:
             if file.parent != src_path:
                 continue
 
-            if file.is_dir():
-                if file.name.startswith('.'):
-                    continue
-
-                if file.name in ['app_notebook', 'tests']:
-                    shutil.rmtree(self.playbook_action_dst_path / file.name)
-                    shutil.copytree(file, self.playbook_action_dst_path / file.name)
-            elif file.is_file():
+            if file.is_file():
                 filename = file.name
                 if file.name == '.gitignore':
                     filename = 'gitignore'
@@ -126,6 +126,46 @@ class SyncTemplate:
                     self._copy_file(file, self.playbook_basic_dst_path / filename)
                 # send to parent location
                 elif filename in self.app_common_template_files:
+                    self._copy_file(file, self.app_common_dst_path / filename)
+
+    def sync_playbook_utility(self):
+        """."""
+        src_path = self.base_path / 'tcpb-tcex-4-utility-template/'
+        for file in src_path.rglob('*'):
+            # only process items at the top level
+            if file.parent != src_path:
+                continue
+
+            if file.is_dir():
+                if file.name.startswith('.'):
+                    continue
+
+                if file.name in ['app_notebook', 'tests']:
+                    shutil.rmtree(self.playbook_utility_dst_path / file.name)
+                    shutil.copytree(file, self.playbook_utility_dst_path / file.name)
+            elif file.is_file():
+                filename = file.name
+                if file.name == '.gitignore':
+                    filename = 'gitignore'
+
+                # send to most specific location first
+                if file.name in [
+                    'app_inputs.json',
+                    'app_inputs.py',
+                    'app.py',
+                    'install.json',
+                    'README.md',
+                ]:
+                    self._copy_file(file, self.playbook_utility_dst_path / filename)
+                # send to parent location
+                elif file.name in [
+                    'playbook_app.py',
+                    'run.py',
+                    'run_local.py',
+                ]:
+                    self._copy_file(file, self.playbook_basic_dst_path / filename)
+                # send to parent location
+                elif file.name in self.app_common_template_files:
                     self._copy_file(file, self.app_common_dst_path / filename)
 
 
@@ -150,11 +190,14 @@ def sync(
     match template_type:
         case 'playbook':
             match template_name:
+                case 'actions':
+                    sync_template.sync_playbook_actions()
+
                 case 'basic':
                     sync_template.sync_playbook_basic()
 
-                case 'actions':
-                    sync_template.sync_playbook_actions()
+                case 'utility':
+                    sync_template.sync_playbook_utility()
 
                 case _:
                     typer.secho(f'Invalid template name: {template_name}')

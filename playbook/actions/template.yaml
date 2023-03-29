@@ -6,7 +6,7 @@ description: A template that provides an example of "actions" in a Playbook App.
 summary: A template of a working Playbook Action App.
 # These are files that the App developer "should" not be
 # editing and will be overwritten without prompt during updating.
-template_files:
+template_files: []
 # One or more parent templates for the current template. The parent
 # template files will be pulled in the order that they are defined with
 # the later templates having precedent over the prior templates.

@@ -1,5 +1,5 @@
 """Validate custom test case class."""
-# third-party
+# first-party
 from tests.validate import Validate
 
 

@@ -1,5 +1,5 @@
 """Validate feature test case class."""
-# third-party
+# first-party
 from tests.validate_custom import ValidateCustom
 
 

@@ -13,7 +13,6 @@ from pydantic import BaseSettings, Extra
 from tcex import TcEx
 from tcex.app.config.install_json import InstallJson
 from tcex.app.key_value_store.key_value_redis import KeyValueRedis
-from tcex.registry import registry
 
 # first-party
 from run import Run
@@ -148,13 +147,6 @@ class RunLocal(Run):
             return TcEx(config_file=config_file, config=self.app_inputs)
         except Exception as ex:
             sys.exit(f'Failed to initialize TcEx: {ex}')
-
-    def setup(self):
-        """Handle the deps directory."""
-        super().setup()
-
-        # special code to handle executing TcEx in a jupyter notebook
-        registry._reset()  # pylint: disable=protected-access
 
     def teardown(self):
         """Teardown the App."""

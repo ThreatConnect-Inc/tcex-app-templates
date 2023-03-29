@@ -6,6 +6,7 @@ import sys
 from functools import cached_property
 from pathlib import Path
 from typing import cast
+from uuid import uuid4
 
 # third-party
 from dotenv import load_dotenv
@@ -50,7 +51,7 @@ class AppInputModel(BaseSettings):
     tc_kvstore_host: str = 'localhost'
     tc_kvstore_port: int = 6379
     tc_kvstore_type: str = 'Mock'
-    tc_playbook_kvstore_context: str = '7979'
+    tc_playbook_kvstore_context: str = str(uuid4())
     tc_playbook_out_variables: list[str] = InstallJson().tc_playbook_out_variables
 
     # proxy inputs
@@ -74,7 +75,6 @@ class RunLocal(Run):
     """Run the App locally."""
 
     _app_inputs: dict = None
-    context: str = '7979'
 
     @cached_property
     def client(self) -> KeyValueRedis:
@@ -120,7 +120,7 @@ class RunLocal(Run):
     def print_output_data(self):
         """Log the playbook output data."""
 
-        output_data = self.client.get_all(self.context)
+        output_data = self.client.get_all(self.app_inputs.get('tc_playbook_kvstore_context'))
         if output_data:
             output_data = json.dumps(
                 {k.decode(): json.loads(v.decode()) for k, v in output_data.items()},

@@ -4,7 +4,7 @@ import gzip
 import os
 import re
 import sys
-from typing import IO, TYPE_CHECKING, Optional
+from typing import IO, TYPE_CHECKING
 
 # third-party
 from api.resource_abc import ResourceABC
@@ -25,8 +25,8 @@ class LogEventModel(BaseModel):
     message: str = Field(..., description='The message of the log event.')
     method_name: str = Field(..., description='The method name of the log event.')
     line_number: int = Field(..., description='The line number of the log event.')
-    request_id: Optional[str] = Field(..., description='The request ID of the log event.')
-    task_name: Optional[str] = Field(..., description='The name of the task for the log event.')
+    request_id: str | None = Field(..., description='The request ID of the log event.')
+    task_name: str | None = Field(..., description='The name of the task for the log event.')
     thread_name: str = Field(..., description='The thread name of the log event.')
 
 

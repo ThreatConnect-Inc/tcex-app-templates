@@ -33,27 +33,27 @@ def run(**kwargs) -> None:
 
         # configure custom trigger message handler
         # pylint: disable=no-member
-        tcex.service.create_config_callback = app.create_config_callback
-        tcex.service.delete_config_callback = app.delete_config_callback
-        tcex.service.shutdown_callback = app.shutdown_callback
+        tcex.app.service.create_config_callback = app.create_config_callback
+        tcex.app.service.delete_config_callback = app.delete_config_callback
+        tcex.app.service.shutdown_callback = app.shutdown_callback
 
         # first-party
         from app_inputs import TriggerConfigModel  # pylint: disable=no-name-in-module
 
         # set the createConfig model
-        tcex.service.trigger_input_model = TriggerConfigModel
+        tcex.app.service.trigger_input_model = TriggerConfigModel
 
         # perform prep/setup operations
         app.setup(**{})
 
         # listen on channel/topic
-        tcex.service.listen()
+        tcex.app.service.listen()
 
         # start heartbeat threads
-        tcex.service.heartbeat()
+        tcex.app.service.heartbeat()
 
         # inform TC that micro-service is Ready
-        tcex.service.ready = True
+        tcex.app.service.ready = True
 
         # run app logic
         app.run()
@@ -62,12 +62,12 @@ def run(**kwargs) -> None:
         app.teardown()
 
         # explicitly call the exit method
-        tcex.exit(msg=app.exit_message)
+        tcex.exit.exit(msg=app.exit_message)
 
     except Exception as e:
         main_err = f'Generic Error.  See logs for more details ({e}).'
         tcex.log.error(traceback.format_exc())
-        tcex.exit(1, main_err)
+        tcex.exit.exit(1, main_err)
 
 
 if __name__ == '__main__':

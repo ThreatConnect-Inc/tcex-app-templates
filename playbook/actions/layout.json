@@ -25,25 +25,25 @@
           "name": "starts_with_stop"
         }
       ],
-      "sequence": 2,
+      "sequence": 1,
       "title": "Configure"
     }
   ],
   "outputs": [
     {
-      "display": "tc_action not in ('')",
+      "display": "1",
       "name": "string.action"
     },
     {
-      "display": "tc_action not in ('')",
+      "display": "1",
       "name": "string.outputs.0"
     },
     {
-      "display": "tc_action not in ('')",
+      "display": "1",
       "name": "string.outputs.count"
     },
     {
-      "display": "tc_action not in ('')",
+      "display": "1",
       "name": "string.outputs"
     }
   ]

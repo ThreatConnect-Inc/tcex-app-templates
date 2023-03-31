@@ -40,7 +40,7 @@ class ServiceApp:
         try:
             AppInputs(inputs=self.tcex.inputs).update_inputs()
         except ValidationError as ex:
-            self.tcex.exit(code=1, msg=self.inputs.validation_exit_message(ex))
+            self.tcex.exit.exit(code=1, msg=self.inputs.validation_exit_message(ex))
 
     # pylint: disable=unused-argument
     def create_config_callback(self, trigger_input: 'TriggerConfigModel', **kwargs) -> dict:

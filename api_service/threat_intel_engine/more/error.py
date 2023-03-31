@@ -37,10 +37,10 @@ def get_frames():
 def error(
     title: str,
     description: str,
-    headers: Optional[dict] = None,
-    href: Optional[str] = None,
-    href_text: Optional[str] = None,
-    exception: Optional[str] = None,
+    headers: dict | None = None,
+    href: str | None = None,
+    href_text: str | None = None,
+    exception: str | None = None,
     req: Optional['falcon.Request'] = None,
 ) -> dict:
     """Build and return an error dict containing all fields for an HTTPError in falcon.

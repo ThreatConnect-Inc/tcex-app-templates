@@ -2,32 +2,62 @@
 line-length = 100
 skip-string-normalization = true
 
+[codespell]
+# ignore-words-list=
+skip = "*.history,lib_*,local-*"
+
+[tool.pydocstyle]
+ignore = [
+  "D202", # no blank lines allowed after function docstring
+  "D203", # 1 blank line required before class docstring (found 0)
+  "D213", # Multi-line docstring summary should start at the second line
+  "D400", # First line should end with a period ...
+  "D406", # Section name should end with a newline ...
+  "D407", # Missing dashed underline after section ...
+  "D413", # Missing blank line after last section ...
+  "D415", # First line should end with a period, question mark, or exclamation point ...
+]
+
+[tool.isort]
+dedup_headings = false
+import_heading_firstparty = "first-party"
+import_heading_stdlib = "standard library"
+import_heading_thirdparty = "third-party"
+include_trailing_comma = true
+known_first_party = ""
+known_local_folder = "."
+known_third_party = ""
+line_length = 100
+profile = "black"
+
 [tool.pylint.master]
-init-hook = "import sys;sys.path.insert(0, 'lib_latest')"
+init-hook = "import sys;sys.path.insert(0, 'deps')"
 
 [tool.pylint.messages_control]
-# C0103 - invalid-name
-# C0116 - missing-function-docstring
-# C0302 - too-many-lines
-# C0330 - bad-continuation
-# C0401 - wrong-spelling-in-comment
-# C0411 - wrong-import-order
-# E0401 - import-error (checked after tclib)
-# R0801 - duplicate-code
-# R0902 - too-many-instance-attributes
-# R0903 - too-few-public-methods
-# R0904 - too-many-public-methods
-# R0912 - too-many-branches
-# R0913 - too-many-arguments
-# R0914 - too-many-locals
-# R0915 - too-many-statements
-# W0511 - fixme
-# W0703 - broad-except
-# W1203 - logging-fstring-interpolation
-disable = "C0103,C0116,C0302,C0330,C0401,C0411,E0401,R0801,R0902,R0903,R0904,R0912,R0913,R0914,R0915,W0511,W0703,W1203"
+disable = [
+  "broad-except",
+  "duplicate-code",
+  "fixme",
+  "import-error",
+  "invalid-name",
+  "logging-fstring-interpolation",
+  "missing-function-docstring",
+  "too-few-public-methods",
+  "too-many-ancestors",
+  "too-many-arguments",
+  "too-many-branches",
+  "too-many-instance-attributes",
+  "too-many-lines",
+  "too-many-locals",
+  "too-many-public-methods",
+  "too-many-statements",
+  "wrong-spelling-in-comment",
+  "wrong-import-order",
+]
 extension-pkg-whitelist = "pydantic"
 
 [tool.pytest.ini_options]
+addopts = "--tb=short --show-capture=no"
 junit_family = "xunit2"
 testpaths = [
   "tests",

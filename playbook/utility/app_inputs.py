@@ -1,10 +1,9 @@
 """App Inputs"""
-# standard library
-from typing import List, Union
 
 # third-party
 from pydantic import BaseModel
-from tcex.input.field_types import KeyValue, TCEntity
+from tcex.input.field_type import KeyValue, TCEntity
+from tcex.input.input import Input
 
 
 class AppBaseModel(BaseModel):
@@ -18,14 +17,14 @@ class AppBaseModel(BaseModel):
     # StringArray   - List[str]
     # TCEntity      - TCEntityModel
     # TCEntityArray - List[TCEntityModel]
-    json_data: Union[KeyValue, List[KeyValue], str, List[str], TCEntity, List[TCEntity]]
+    json_data: KeyValue | list[KeyValue] | str | list[str] | TCEntity | list[TCEntity]
     sort_keys: bool = False
 
 
 class AppInputs:
     """App Inputs"""
 
-    def __init__(self, inputs: 'BaseModel') -> None:
+    def __init__(self, inputs: Input) -> None:
         """Initialize class properties."""
         self.inputs = inputs
 

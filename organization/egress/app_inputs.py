@@ -1,11 +1,9 @@
 """App Inputs"""
-# standard library
-from typing import List, Optional
 
 # third-party
 from pydantic import BaseModel, validator
 from pydantic.class_validators import root_validator
-from tcex.input.field_types import Choice, DateTime, always_array, integer, string
+from tcex.input.field_type import Choice, DateTime, always_array, integer, string
 
 
 def validate_tql(cls, values: dict):  # pylint: disable=unused-argument
@@ -55,17 +53,17 @@ def validate_tql(cls, values: dict):  # pylint: disable=unused-argument
 class TCFiltersModel(BaseModel):
     """Standard inputs to filter indicators pulled from ThreatConnect."""
 
-    tql: Optional[string(allow_empty=False)]
-    indicator_types: List[Choice]
-    owners: Optional[List[Choice]]
-    max_false_positives: Optional[integer(gt=0)]
-    minimum_confidence: Optional[integer(ge=0, le=100)]
-    minimum_rating: Optional[integer(ge=1, le=5)]
-    minimum_threatassess_score: Optional[integer(gt=0, le=1_000)]
+    tql: string(allow_empty=False) | None
+    indicator_types: list[Choice]
+    owners: list[Choice] | None
+    max_false_positives: integer(gt=0) | None
+    minimum_confidence: integer(ge=0, le=100) | None
+    minimum_rating: integer(ge=1, le=5) | None
+    minimum_threatassess_score: integer(gt=0, le=1_000) | None
     last_modified: DateTime
 
     # validates what we get from core and then turns to array
-    tags: Optional[string(allow_empty=False)]
+    tags: string(allow_empty=False) | None
     _always_array = validator('tags', allow_reuse=True)(always_array(split_csv=True))
 
     # validate that if tql is empty, then

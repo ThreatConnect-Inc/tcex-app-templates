@@ -1,6 +1,5 @@
 """Class for /api/1.0/job/request endpoint"""
 # standard library
-from typing import List, Optional
 from uuid import uuid4
 
 # third-party
@@ -18,9 +17,9 @@ from tcex.utils import Utils
 class GetQueryParamModel(FilterParamPaginatedModel):
     """Params Model"""
 
-    job_type: Optional[str] = Field(None, description='Filter by Job Type.')
-    request_id: Optional[str] = Field(None, description='Filter by Request ID.')
-    status: Optional[str] = Field(None, description='Filter by Status.')
+    job_type: str | None = Field(None, description='Filter by Job Type.')
+    request_id: str | None = Field(None, description='Filter by Request ID.')
+    status: str | None = Field(None, description='Filter by Status.')
 
 
 class PostBodyModel(BaseModel, arbitrary_types_allowed=True):
@@ -58,9 +57,9 @@ class JobRequestResource(ResourceABC):
 
     def _db_query_get(
         self,
-        job_type: Optional[str],
-        request_id: Optional[str],
-        status: Optional[str],
+        job_type: str | None,
+        request_id: str | None,
+        status: str | None,
     ) -> Query:
         """Return DB query."""
         query = self.session.query(JobRequestSchema)
@@ -79,7 +78,7 @@ class JobRequestResource(ResourceABC):
 
         return query
 
-    def _db_result_get(self, query: Query) -> List[JobRequestSchema]:
+    def _db_result_get(self, query: Query) -> list[JobRequestSchema]:
         """Return DB records."""
         return self._db_get_record(
             query, 'all', 'Unexpected error occurred while retrieving Job Requests.'

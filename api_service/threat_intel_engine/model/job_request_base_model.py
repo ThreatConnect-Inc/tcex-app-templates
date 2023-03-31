@@ -1,6 +1,4 @@
 """Model Definition"""
-# standard library
-from typing import Optional
 
 # third-party
 import arrow
@@ -10,14 +8,14 @@ from pydantic import BaseModel, Extra, Field, validator
 class JobRequestBaseModel(BaseModel):
     """Model Definition"""
 
-    date_completed: Optional[arrow.Arrow] = Field(None, description='')
-    date_failed: Optional[arrow.Arrow] = Field(None, description='')
+    date_completed: arrow.Arrow | None = Field(None, description='')
+    date_failed: arrow.Arrow | None = Field(None, description='')
     date_queued: arrow.Arrow = Field(..., description='')
-    date_started: Optional[arrow.Arrow] = Field(None, description='')
+    date_started: arrow.Arrow | None = Field(None, description='')
     job_type: str = Field(..., description='')
     request_id: str = Field(..., description='')
     status: str = Field(..., description='')
-    status_icon: Optional[str] = Field(None, description='The status icon to show in UI.')
+    status_icon: str | None = Field(None, description='The status icon to show in UI.')
 
     # pylint: disable=no-self-argument
     @validator('status')

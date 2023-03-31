@@ -3,7 +3,6 @@
 import logging
 import multiprocessing
 import platform
-from typing import Optional
 
 # third-party
 import arrow
@@ -27,7 +26,7 @@ class Metadata(BaseModel, arbitrary_types_allowed=True, extra=Extra.allow):
 
     max_execution_time_minutes: int
     last_heartbeat: arrow.Arrow
-    expires_percent: Optional[int]
+    expires_percent: int | None
     is_alive: bool
     is_daemon: bool
     name: str

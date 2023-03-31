@@ -10,7 +10,7 @@ from model import JobRequestModel
 from schema import JobRequestSchema
 from tasks.model import TaskSettingModel
 from tasks.task_abc import TaskABC
-from tcex.backports import cached_property
+from tcex.pleb import cached_property
 
 
 class ScheduleNextDownload(TaskABC):
@@ -72,7 +72,7 @@ class ScheduleNextDownload(TaskABC):
         end_date = last_download_time.shift(hours=+self.settings.time_chunk_size_hours)
         self._add_job(start_date, end_date)
 
-    def _get_job(self) -> Optional[JobRequestModel]:
+    def _get_job(self) -> JobRequestModel | None:
         """Return the newest job if there is one."""
         query = (
             self.session.query(JobRequestSchema)
@@ -83,7 +83,7 @@ class ScheduleNextDownload(TaskABC):
         return self.db.get_record(query, 'one_or_none', 'Unexpected error getting last download.')
 
     def _get_last_download_time(
-        self, last_download: Optional[JobRequestSchema] = None
+        self, last_download: JobRequestSchema | None = None
     ) -> Optional['arrow.Arrow']:
         """Get the last download time from the DB or use the initial backfill time."""
         last_download_time = arrow.utcnow().shift(days=-self.settings.initial_backfill_days)

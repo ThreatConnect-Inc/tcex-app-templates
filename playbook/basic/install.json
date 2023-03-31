@@ -1,6 +1,7 @@
 {
   "allowOnDemand": true,
   "appId": "6e26ba55-0300-5462-aca7-ea049494c8a5",
+  "category": "Utility",
   "displayName": "Example Basic Playbook App",
   "features": [
     "aotExecutionEnabled",
@@ -8,7 +9,7 @@
     "fileParams"
   ],
   "labels": [],
-  "languageVersion": "3.9",
+  "languageVersion": "3.11.0",
   "listDelimiter": "|",
   "note": "A template that provides the structure for a Playbook App without any App logic.",
   "params": [],
@@ -19,5 +20,6 @@
   "programLanguage": "PYTHON",
   "programMain": "run",
   "programVersion": "1.0.0",
-  "runtimeLevel": "Playbook"
+  "runtimeLevel": "Playbook",
+  "sdkVersion": "4.0.0"
 }

@@ -4,13 +4,14 @@ We're developing for 3.6, so missing several features like explicit type aliases
 but we can still define useful types.
 """
 # standard library
-from typing import Any, Callable, Dict, Iterable, List, Optional
+from collections.abc import Callable, Iterable
+from typing import Any
 
 # we mostly just want the application definition.
 __all__ = ['WSGIApplication']
 
 StartResponse = Callable[
-    [str, List[tuple[str, str]], Optional[BaseException]], Callable[[bytes], object]
+    [str, list[tuple[str, str]], BaseException | None], Callable[[bytes], object]
 ]
-WSGIEnvironment = Dict[str, Any]
+WSGIEnvironment = dict[str, Any]
 WSGIApplication = Callable[[WSGIEnvironment, StartResponse], Iterable[bytes]]

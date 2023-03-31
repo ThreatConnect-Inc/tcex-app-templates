@@ -1,7 +1,7 @@
 """App Inputs"""
 # third-party
 from pydantic import BaseModel
-from tcex.input.field_types import Choice, sensitive, string
+from tcex.input.field_type import Choice, sensitive, string
 
 
 class AppBaseModel(BaseModel):

@@ -5,7 +5,7 @@ import os
 import signal
 import traceback
 from datetime import timedelta
-from typing import TYPE_CHECKING, List, Optional
+from typing import TYPE_CHECKING
 
 # third-party
 import arrow
@@ -21,7 +21,7 @@ logger = logging.getLogger('tcex')
 class Tasks:
     """Tasks Container"""
 
-    status_final: Optional[List[str]] = []
+    status_final: list[str] | None = []
 
     def __init__(self):
         """Initialize class properties."""
@@ -38,7 +38,7 @@ class Tasks:
         self._tasks.add(task)
         task.schedule()
 
-    def add_task_path_pipe(self, tasks: List['TaskABC']):
+    def add_task_path_pipe(self, tasks: list['TaskABC']):
         """Add a task to the container."""
         for index, task in enumerate(tasks):  # reverse list
             # set the task index
@@ -77,11 +77,11 @@ class Tasks:
             )
             self.add_task(task)
 
-    def all(self) -> List['TaskABC']:
+    def all(self) -> list['TaskABC']:
         """Return all processes that are alive."""
         return self._tasks
 
-    def alive(self) -> List['TaskABC']:
+    def alive(self) -> list['TaskABC']:
         """Return all processes that are alive."""
         return [t for t in self._tasks if t.process is not None and t.process.is_alive()]
 
@@ -102,7 +102,7 @@ class Tasks:
         for task in self._tasks:
             self.kill(task)
 
-    def watchdog(self) -> List['TaskABC']:
+    def watchdog(self) -> list['TaskABC']:
         """Return all processes that are alive."""
         self.log.debug(f'task-event=run-watchdog, task-count={len(self._tasks)}')
         for task in self.all():

@@ -1,6 +1,4 @@
 """Model Definition"""
-# standard library
-from typing import List, Optional
 
 # third-party
 import arrow
@@ -21,24 +19,24 @@ class JobRequestModel(JobRequestBaseModel):
     count_download_indicator: int = Field(0, description='')
 
     # metrics
-    date_convert_start: Optional[arrow.Arrow] = Field(None, description='')
-    date_convert_complete: Optional[arrow.Arrow] = Field(None, description='')
-    date_download_start: Optional[arrow.Arrow] = Field(None, description='')
-    date_download_complete: Optional[arrow.Arrow] = Field(None, description='')
-    date_upload_start: Optional[arrow.Arrow] = Field(None, description='')
-    date_upload_complete: Optional[arrow.Arrow] = Field(None, description='')
+    date_convert_start: arrow.Arrow | None = Field(None, description='')
+    date_convert_complete: arrow.Arrow | None = Field(None, description='')
+    date_download_start: arrow.Arrow | None = Field(None, description='')
+    date_download_complete: arrow.Arrow | None = Field(None, description='')
+    date_upload_start: arrow.Arrow | None = Field(None, description='')
+    date_upload_complete: arrow.Arrow | None = Field(None, description='')
 
     # task settings
-    last_modified_filter_start: Optional[arrow.Arrow] = Field(None, description='')
-    last_modified_filter_end: Optional[arrow.Arrow] = Field(None, description='')
-    group_types: List[str] = Field([], description='')
-    indicator_types: List[str] = Field([], description='')
+    last_modified_filter_start: arrow.Arrow | None = Field(None, description='')
+    last_modified_filter_end: arrow.Arrow | None = Field(None, description='')
+    group_types: list[str] = Field([], description='')
+    indicator_types: list[str] = Field([], description='')
 
     # hybrid properties
-    convert_runtime: Optional[str] = Field(None, description='')
-    download_runtime: Optional[str] = Field(None, description='')
-    upload_runtime: Optional[str] = Field(None, description='')
-    total_runtime: Optional[str] = Field(None, description='')
+    convert_runtime: str | None = Field(None, description='')
+    download_runtime: str | None = Field(None, description='')
+    upload_runtime: str | None = Field(None, description='')
+    total_runtime: str | None = Field(None, description='')
 
     @validator('convert_runtime', 'download_runtime', 'upload_runtime', 'total_runtime', pre=True)
     def _convert_timedelta(cls, v):

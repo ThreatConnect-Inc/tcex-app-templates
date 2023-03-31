@@ -1,20 +1,13 @@
 """External App Template"""
-# standard library
-from typing import TYPE_CHECKING
 
 # third-party
 from pydantic import ValidationError
+from tcex import TcEx
+from tcex.input.input import Input
+from tcex.logger.trace_logger import TraceLogger
 
 # first-party
 from app_inputs import AppInputs
-
-if TYPE_CHECKING:
-    # standard library
-
-    # third-party
-    from tcex import TcEx
-    from tcex.input.input import Input
-    from tcex.logger.trace_logger import TraceLogger
 
 
 class ExternalApp:

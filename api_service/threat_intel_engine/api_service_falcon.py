@@ -14,7 +14,7 @@ import falcon
 from api import custom_error_handler
 from api.middleware import DbMiddleware, ErrorMiddleware, TcExMiddleware, ValidationMiddleware
 from tcex import TraceLogger
-from tcex.backports import cached_property
+from tcex.pleb import cached_property
 
 # first-party
 from api_service_app import ApiServiceApp

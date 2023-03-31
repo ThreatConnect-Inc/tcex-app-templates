@@ -1,7 +1,7 @@
 """ThreatConnect Exchange Playbook App"""
 
 # first-party
-from playbook_app import PlaybookApp  # Import default Playbook App Class (Required)
+from playbook_app import PlaybookApp
 
 
 class App(PlaybookApp):

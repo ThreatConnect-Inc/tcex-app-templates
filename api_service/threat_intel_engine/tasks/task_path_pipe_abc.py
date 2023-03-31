@@ -8,7 +8,7 @@ import threading
 import time
 from abc import ABC, abstractmethod
 from functools import partial
-from typing import TYPE_CHECKING, List, Optional
+from typing import TYPE_CHECKING
 
 # third-party
 import arrow
@@ -139,7 +139,7 @@ class TaskPathPipeABC(TaskABC, ABC):
         directory.mkdir(parents=True, exist_ok=True)
 
     @property
-    def _task_date_fields_complete(self) -> List[str]:
+    def _task_date_fields_complete(self) -> list[str]:
         """Return list of DB date fields to update when task completes."""
         date_fields = [self.task_settings.date_field_complete]
         if self.task_settings.pipe_task_complete is True:
@@ -147,7 +147,7 @@ class TaskPathPipeABC(TaskABC, ABC):
         return date_fields
 
     @property
-    def _task_date_fields_start(self) -> List[str]:
+    def _task_date_fields_start(self) -> list[str]:
         """Return list of DB date fields to update when task starts."""
         date_fields = [self.task_settings.date_field_start]
         if self.task_settings.pipe_task_start is True:
@@ -158,7 +158,7 @@ class TaskPathPipeABC(TaskABC, ABC):
         self,
         request_id: str,
         status: str,
-        date_fields: List[str],
+        date_fields: list[str],
     ):
         """Update status."""
         now = arrow.utcnow()  # set once for consistency
@@ -258,7 +258,7 @@ class TaskPathPipeABC(TaskABC, ABC):
         """Write request id to file."""
         (fqfn / self.request_id_file).open('w').write(request_id)
 
-    def _write_results(self, data: List[dict], output_dir: 'Path', type_: str):
+    def _write_results(self, data: list[dict], output_dir: 'Path', type_: str):
         """Write results to a compressed file."""
         # update the task heartbeat
         self.update_heartbeat()
@@ -280,7 +280,7 @@ class TaskPathPipeABC(TaskABC, ABC):
         return f'{name}{self.settings.extension_json}{self.settings.extension_gzip}'
 
     # pylint: disable=arguments-differ
-    def launch(self, request_id: str, request_dir: Optional['Path'] = None, **kwargs):
+    def launch(self, request_id: str, request_dir: Path | None = None, **kwargs):
         """Launch the task."""
         # https://docs.sqlalchemy.org/en/14/core/
         # pooling.html#using-connection-pools-with-multiprocessing-or-os-fork

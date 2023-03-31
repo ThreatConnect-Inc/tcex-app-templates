@@ -6,7 +6,7 @@ import threading
 from abc import ABC
 from functools import partial
 from multiprocessing import Manager
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING
 
 # third-party
 import arrow
@@ -64,7 +64,7 @@ class TaskABC(ABC):
         self.db = DbUtil()
         self.job = None
         self.log: TraceLogger = tcex.log
-        self.process: Optional[ProcessMetadata] = None
+        self.process: ProcessMetadata | None = None
         self.session: 'Session' = session
         self.ns = Manager().Namespace()
         self.tcex: 'TcEx' = tcex
@@ -84,7 +84,7 @@ class TaskABC(ABC):
                 self.task_settings.paused_file_global = True
 
     def _db_get_request_by_id(
-        self, request_id: str, method: Optional[str] = 'one_or_none'
+        self, request_id: str, method: str | None = 'one_or_none'
     ) -> JobRequestSchema:
         """Return job request for the provided request id.."""
         query = self.session.query(JobRequestSchema).filter_by(request_id=request_id)
@@ -176,11 +176,11 @@ class TaskABC(ABC):
         class _Data(BaseModel):
             """Data model for process."""
 
-            name: Optional[str] = self.task_settings.name
-            max_execution_minutes: Optional[int] = self.task_settings.max_execution_minutes
-            process: Optional[Metadata]
-            schedule_period: Optional[int] = self.task_settings.schedule_period
-            schedule_unit: Optional[str] = self.task_settings.schedule_unit
+            name: str | None = self.task_settings.name
+            max_execution_minutes: int | None = self.task_settings.max_execution_minutes
+            process: Metadata | None
+            schedule_period: int | None = self.task_settings.schedule_period
+            schedule_unit: str | None = self.task_settings.schedule_unit
 
         return _Data(process=process)
 

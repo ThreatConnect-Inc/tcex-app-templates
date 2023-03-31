@@ -27,8 +27,8 @@ from tasks import (
     Tasks,
     UploadPathPipe,
 )
-from tcex.backports import cached_property
 from tcex.exit import ExitCode
+from tcex.pleb import cached_property
 from tcex.sessions.auth.hmac_auth import HmacAuth
 from tcex.sessions.tc_session import TcSession
 
@@ -36,7 +36,7 @@ if TYPE_CHECKING:
     # standard library
 
     # third-party
-    from tcex.input.field_types import Sensitive
+    from tcex.input.field_type import Sensitive
 
     # first-party
     from app_inputs import AppBaseModel

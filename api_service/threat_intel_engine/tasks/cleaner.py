@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING
 # third-party
 from schema import JobRequestSchema
 from tasks.model import TaskSettingModel
-from tcex.backports import cached_property
+from tcex.pleb import cached_property
 
 from .task_abc import TaskABC
 

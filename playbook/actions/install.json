@@ -1,21 +1,20 @@
 {
   "allowOnDemand": true,
-  "apiUserTokenParam": true,
   "appId": "1eb3f8a9-08ae-5c50-994a-72ff44f0046e",
+  "category": "Utility",
   "displayName": "String Operation",
   "features": [
     "aotExecutionEnabled",
     "appBuilderCompliant",
-    "secureParams",
     "layoutEnabledApp"
   ],
-  "labels": [],
-  "languageVersion": "3.6",
+  "languageVersion": "3.11.0",
   "listDelimiter": "|",
-  "note": "Takes a String or StringArrays and perform operations to each value returning the update value. All operations are performed on the individual strings and not the array.",
+  "minServerVersion": "6.2.0",
+  "note": "Takes a String or StringArrays and perform operations to each value returning the update value. All operations are performed on the individual strings and not the array.\n",
   "params": [
     {
-      "label": "Strings",
+      "label": "Input Strings",
       "name": "input_strings",
       "note": "The input String or StringArray.",
       "playbookDataType": [
@@ -111,10 +110,6 @@
         "type": "String"
       },
       {
-        "name": "string.outputs.0",
-        "type": "String"
-      },
-      {
         "name": "string.outputs.count",
         "type": "String"
       },
@@ -128,5 +123,6 @@
   "programLanguage": "PYTHON",
   "programMain": "run",
   "programVersion": "1.0.0",
-  "runtimeLevel": "Playbook"
+  "runtimeLevel": "Playbook",
+  "sdkVersion": "4.0.0"
 }

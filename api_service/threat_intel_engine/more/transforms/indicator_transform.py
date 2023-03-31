@@ -3,7 +3,7 @@
 from typing import TYPE_CHECKING
 
 # third-party
-from tcex.backports import cached_property
+from tcex.pleb import cached_property
 
 from .transform_abc import TransformABC
 

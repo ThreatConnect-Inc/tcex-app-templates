@@ -8,7 +8,7 @@
     "fileParams"
   ],
   "labels": [],
-  "languageVersion": "3.9",
+  "languageVersion": "3.11",
   "listDelimiter": "|",
   "note": "A template of a working ingress Organization App.",
   "params": [
@@ -25,7 +25,7 @@
     }
   ],
   "programLanguage": "PYTHON",
-  "programMain": "run",
+  "programMain": "run.py",
   "programVersion": "1.0.0",
   "runtimeLevel": "Organization"
 }

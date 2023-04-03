@@ -54,7 +54,7 @@
     "type": "Service Trigger"
   },
   "programLanguage": "PYTHON",
-  "programMain": "run",
+  "programMain": "run.py",
   "programVersion": "1.0.0",
   "runtimeLevel": "TriggerService"
 }

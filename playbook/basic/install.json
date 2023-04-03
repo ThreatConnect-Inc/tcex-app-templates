@@ -18,7 +18,7 @@
     "type": "Utility"
   },
   "programLanguage": "PYTHON",
-  "programMain": "run",
+  "programMain": "run.py",
   "programVersion": "1.0.0",
   "runtimeLevel": "Playbook",
   "sdkVersion": "4.0.0"

@@ -1,4 +1,7 @@
 # Custom Dictionary Words
 coveragerc
 datamodel
+TCVA
+TCVC
+TCVW
 wsgi

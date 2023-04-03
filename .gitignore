@@ -28,7 +28,7 @@ __pycache__
 # Module Specific Exclusions
 #-------------------------------------------------
 *.history
-app.yaml
+app_spec.yaml
 local-*
 
 #-------------------------------------------------

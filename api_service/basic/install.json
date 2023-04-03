@@ -12,7 +12,7 @@
   "note": "",
   "params": [],
   "programLanguage": "PYTHON",
-  "programMain": "run",
+  "programMain": "run.py",
   "programVersion": "1.0.0",
   "runtimeLevel": "ApiService"
 }

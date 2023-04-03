@@ -8,7 +8,7 @@
     "appBuilderCompliant",
     "layoutEnabledApp"
   ],
-  "languageVersion": "3.11.0",
+  "languageVersion": "3.11",
   "listDelimiter": "|",
   "minServerVersion": "6.2.0",
   "note": "Takes a String or StringArrays and perform operations to each value returning the update value. All operations are performed on the individual strings and not the array.\n",

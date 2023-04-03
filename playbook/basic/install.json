@@ -9,7 +9,7 @@
     "fileParams"
   ],
   "labels": [],
-  "languageVersion": "3.11.0",
+  "languageVersion": "3.11",
   "listDelimiter": "|",
   "note": "A template that provides the structure for a Playbook App without any App logic.",
   "params": [],

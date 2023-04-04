@@ -10,6 +10,5 @@ template_files:
   - .coveragerc
   - .pre-commit-config.yaml
   - pyproject.toml
-  - setup.cfg
 # The current version number of this template.
 version: 1.0.0

@@ -23,6 +23,7 @@ class SyncTemplate:
         self.playbook_basic_dst_path = Path('playbook/basic/')
         self.playbook_utility_dst_path = Path('playbook/utility/')
         self.api_service_basic_dst_path = Path('api_service/basic/')
+        self.tigger_service_basic_dst_path = Path('trigger_service/basic/')
 
     def _copy_file(self, src_file, dst_file):
         """."""
@@ -129,7 +130,7 @@ class SyncTemplate:
                 elif filename in self.app_common_template_files:
                     self._copy_file(file, self.app_common_dst_path / filename)
 
-    def sync_apiservice_basic(self):
+    def sync_api_service_basic(self):
         """."""
         src_path = self.base_path / 'tcva-tcex-4-basic-template/'
         dst_path = self.api_service_basic_dst_path
@@ -155,6 +156,43 @@ class SyncTemplate:
                     'app_inputs.json',
                     'app_inputs.py',
                     'api_service_app.py',
+                    'app.py',
+                    'install.json',
+                    'README.md',
+                    'requirements.txt',
+                    'run.py',
+                ]:
+                    self._copy_file(file, dst_path / filename)
+                # send to parent location
+                elif file.name in self.app_common_template_files:
+                    self._copy_file(file, self.app_common_dst_path / filename)
+
+    def sync_trigger_service_basic(self):
+        """."""
+        src_path = self.base_path / 'tcvc-tcex-4-basic-trigger-template/'
+        dst_path = self.tigger_service_basic_dst_path
+        for file in src_path.rglob('*'):
+            # only process items at the top level
+            if file.parent != src_path:
+                continue
+
+            if file.is_dir():
+                if file.name.startswith('.'):
+                    continue
+
+                if file.name in ['app_notebook', 'tests']:
+                    shutil.rmtree(dst_path / file.name)
+                    shutil.copytree(file, dst_path / file.name)
+            elif file.is_file():
+                filename = file.name
+                if file.name == '.gitignore':
+                    filename = 'gitignore'
+
+                # send to most specific location first
+                if file.name in [
+                    'app_inputs.json',
+                    'app_inputs.py',
+                    'service_app.py',
                     'app.py',
                     'install.json',
                     'README.md',
@@ -225,11 +263,16 @@ def sync(
     ),
 ):
     """Sync template files"""
+    match (template_type, template_name):
+        case ('trigger_service', 'basic'):
+            sync_template.sync_trigger_service_basic()
+            return
+
     match template_type:
         case 'api_service':
             match template_name:
                 case 'basic':
-                    sync_template.sync_apiservice_basic()
+                    sync_template.sync_api_service_basic()
         case 'playbook':
             match template_name:
                 case 'actions':

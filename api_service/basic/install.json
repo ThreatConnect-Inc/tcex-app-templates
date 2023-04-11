@@ -1,18 +1,20 @@
 {
-  "allowOnDemand": true,
-  "displayName": "ApiService",
-  "displayPath": "my_api",
-  "features": [
-    "appBuilderCompliant",
-    "fileParams"
-  ],
-  "labels": [],
-  "languageVersion": "3.11",
-  "listDelimiter": "|",
-  "note": "",
-  "params": [],
-  "programLanguage": "PYTHON",
-  "programMain": "run.py",
-  "programVersion": "1.0.0",
-  "runtimeLevel": "ApiService"
+    "allowOnDemand": true,
+    "displayName": "ApiService",
+    "displayPath": "my_api",
+    "features": [
+        "appBuilderCompliant",
+        "fileParams",
+        "linkApiPath"
+    ],
+    "labels": [],
+    "languageVersion": "3.11",
+    "listDelimiter": "|",
+    "note": "",
+    "params": [],
+    "programLanguage": "PYTHON",
+    "programMain": "run",
+    "programVersion": "1.0.0",
+    "runtimeLevel": "ApiService",
+    "sdkVersion": "4.0.0"
 }

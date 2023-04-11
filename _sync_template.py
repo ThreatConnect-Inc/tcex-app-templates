@@ -263,16 +263,13 @@ def sync(
     ),
 ):
     """Sync template files"""
-    match (template_type, template_name):
-        case ('trigger_service', 'basic'):
-            sync_template.sync_trigger_service_basic()
-            return
-
     match template_type:
         case 'api_service':
             match template_name:
                 case 'basic':
                     sync_template.sync_api_service_basic()
+                case _:
+                    typer.secho(f'Invalid template name: {template_name}')
         case 'playbook':
             match template_name:
                 case 'actions':
@@ -284,6 +281,12 @@ def sync(
                 case 'utility':
                     sync_template.sync_playbook_utility()
 
+                case _:
+                    typer.secho(f'Invalid template name: {template_name}')
+        case 'trigger_service':
+            match template_name:
+                case 'basic':
+                    sync_template.sync_trigger_service_basic()
                 case _:
                     typer.secho(f'Invalid template name: {template_name}')
 

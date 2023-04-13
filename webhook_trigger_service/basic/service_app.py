@@ -1,34 +1,28 @@
 """Service App module for TcEx App."""
-# standard library
-from typing import TYPE_CHECKING
-
 # third-party
 from pydantic import ValidationError
+from tcex import TcEx
+from tcex.input.input import Input
+from tcex.logger.trace_logger import TraceLogger
 
 # first-party
 from app_inputs import AppInputs
-
-if TYPE_CHECKING:
-    # third-party
-    from tcex import TcEx
-    from tcex.input.input import Input
-    from tcex.logger.trace_logger import TraceLogger
 
 
 class ServiceApp:
     """Service App Class"""
 
-    def __init__(self, _tcex: 'TcEx'):
+    def __init__(self, _tcex: TcEx):
         """Initialize class properties."""
-        self.tcex: 'TcEx' = _tcex
+        self.tcex: TcEx = _tcex
 
         # properties
         self.exit_message = 'Success'
-        self.inputs: 'Input' = self.tcex.inputs
-        self.log: 'TraceLogger' = self.tcex.log
+        self.inputs: Input = self.tcex.inputs
+        self.log: TraceLogger = self.tcex.log
 
         # automatically parse args on init
-        self._update_inputs()
+        # self._update_inputs()
 
     def _update_inputs(self) -> None:
         """Add an custom App models and run validation."""
@@ -38,7 +32,7 @@ class ServiceApp:
             self.tcex.exit.exit(code=1, msg=self.inputs.validation_exit_message(ex))
 
     # pylint: disable=unused-argument
-    def create_config_callback(self, trigger_id: str, config: dict, **kwargs) -> dict:
+    def create_config_callback(self, config: dict, **kwargs) -> dict:
         """Handle create config messages.
 
         Args:

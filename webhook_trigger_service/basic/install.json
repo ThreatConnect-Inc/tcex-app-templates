@@ -16,7 +16,8 @@
     "type": ""
   },
   "programLanguage": "PYTHON",
-  "programMain": "run.py",
+  "programMain": "run",
   "programVersion": "1.0.0",
-  "runtimeLevel": "WebhookTriggerService"
+  "runtimeLevel": "WebhookTriggerService",
+  "sdkVersion": "4.0.0"
 }

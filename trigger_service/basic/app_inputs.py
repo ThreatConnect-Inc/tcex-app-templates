@@ -1,5 +1,4 @@
 """App Inputs"""
-
 # third-party
 from pydantic import BaseModel
 from tcex.input.field_type import String

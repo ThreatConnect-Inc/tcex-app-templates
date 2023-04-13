@@ -208,7 +208,7 @@ class SyncTemplate:
     def sync_webhook_trigger_service_basic(self):
         """."""
         src_path = self.base_path / 'tcvc-tcex-4-basic-webhook-template/'
-        dst_path = self.tigger_service_basic_dst_path
+        dst_path = self.webhook_tigger_service_basic_dst_path
         for file in src_path.rglob('*'):
             # only process items at the top level
             if file.parent != src_path:

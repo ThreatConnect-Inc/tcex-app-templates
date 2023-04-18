@@ -1,11 +1,10 @@
 """ThreatConnect API Service App"""
-
-# third-party
-from flask_app import create_app
-from wsgi_types import WSGIApplication
+# standard library
+from wsgiref.types import WSGIApplication
 
 # first-party
 from api_service_app import ApiServiceApp
+from flask_app import create_app
 
 
 class App(ApiServiceApp):

@@ -1,7 +1,6 @@
 """App Module"""
 # standard library
 from abc import abstractmethod
-from typing import TYPE_CHECKING
 from urllib.parse import urlparse
 from wsgiref.types import WSGIApplication
 

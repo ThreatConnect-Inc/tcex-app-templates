@@ -1,9 +1,9 @@
 """App Inputs"""
-
 # third-party
 from pydantic import BaseModel, validator
 from pydantic.class_validators import root_validator
 from tcex.input.field_type import Choice, DateTime, always_array, integer, string
+from tcex.input.input import Input
 
 
 def validate_tql(cls, values: dict):  # pylint: disable=unused-argument
@@ -42,7 +42,7 @@ def validate_tql(cls, values: dict):  # pylint: disable=unused-argument
                 'TQL is not allowed when other filters are selected except for owners.'
             )
 
-        if values.get('owner', None) and 'ownerName' in values.get('tql'):
+        if values.get('owners', None) and 'ownerName' in values.get('tql', ''):
             # They have selected an owner, check if the TQL contains ownerName
             raise ValueError(
                 'There is an owner selected, but the TQL contains ownerName. This is not allowed.'
@@ -54,13 +54,13 @@ class TCFiltersModel(BaseModel):
     """Standard inputs to filter indicators pulled from ThreatConnect."""
 
     tql: string(allow_empty=False) | None
-    indicator_types: list[Choice]
+    indicator_types: list[Choice] | None
     owners: list[Choice] | None
     max_false_positives: integer(gt=0) | None
     minimum_confidence: integer(ge=0, le=100) | None
     minimum_rating: integer(ge=1, le=5) | None
     minimum_threatassess_score: integer(gt=0, le=1_000) | None
-    last_modified: DateTime
+    last_modified: DateTime | None
 
     # validates what we get from core and then turns to array
     tags: string(allow_empty=False) | None
@@ -82,9 +82,9 @@ class AppBaseModel(TCFiltersModel):
 
 
 class AppInputs:
-    """App Inputs"""
+    """App Inputs."""
 
-    def __init__(self, inputs: BaseModel) -> None:
+    def __init__(self, inputs: Input) -> None:
         """Initialize class properties."""
         self.inputs = inputs
 

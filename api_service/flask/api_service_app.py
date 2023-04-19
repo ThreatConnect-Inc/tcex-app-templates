@@ -1,35 +1,35 @@
 """App Module"""
 # standard library
-from abc import ABC, abstractmethod
+from abc import abstractmethod
 from urllib.parse import urlparse
+from wsgiref.types import WSGIApplication
 
 # third-party
 from pydantic import ValidationError
 from tcex import TcEx
 from tcex.input.input import Input
 from tcex.logger.trace_logger import TraceLogger
-from wsgi_types import WSGIApplication
 
 # first-party
 from app_inputs import AppInputs
 
 
-class ApiServiceApp(ABC):
+class ApiServiceApp:
     """Service App Class"""
 
-    def __init__(self, _tcex: 'TcEx'):
+    def __init__(self, _tcex: TcEx):
         """Initialize class properties."""
         self.tcex: 'TcEx' = _tcex
 
         # properties
         self.exit_message = 'Success'
-        self.inputs: 'Input' = self.tcex.inputs
-        self.log: 'TraceLogger' = self.tcex.log
+        self.inputs: Input = self.tcex.inputs
+        self.log: TraceLogger = self.tcex.log
 
         # automatically parse args on init
         self._update_inputs()
 
-        self.app = None
+        self.wsgi_app: WSGIApplication | None = None
 
     def _update_inputs(self) -> None:
         """Add an custom App models and run validation."""
@@ -70,14 +70,14 @@ class ApiServiceApp(ABC):
         if base_path.endswith('/'):
             base_path = base_path[:-1]
 
-        if self.app is None:
-            self.app = self.get_wsgi_app(base_path)
+        if self.wsgi_app is None:
+            self.wsgi_app = self.get_wsgi_app(base_path)
 
         # we need path_info to be the full path from the url, not just the part for our app.
         environ['PATH_INFO'] = request_url
 
-        return self.app(environ, response_handler)
+        return self.wsgi_app(environ, response_handler)
 
     @abstractmethod
-    def get_wsgi_app(self, url_prefix: str) -> 'WSGIApplication':
+    def get_wsgi_app(self, url_prefix: str) -> WSGIApplication:
         """Create and return a WSGI application to handle requests."""

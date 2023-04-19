@@ -23,7 +23,7 @@ class Run:
         # to the method is tried first, followed by a normalization of the tc_action
         # value, and finally an attempt is made to find the reserved "tc_action_map"
         # property to map value to method.
-        tc_action: str = self.app.model.tc_action  # type: ignore
+        tc_action: str = self.app.inputs.model.tc_action  # type: ignore
         tc_action_formatted = tc_action.lower().replace(' ', '_')
         tc_action_map = 'tc_action_map'  # reserved property name for action to method map
 

@@ -1,7 +1,4 @@
 """App Template."""
-# standard library
-from typing import TYPE_CHECKING
-
 # third-party
 from pydantic import ValidationError
 from tcex import TcEx

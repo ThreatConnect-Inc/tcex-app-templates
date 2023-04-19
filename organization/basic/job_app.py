@@ -4,30 +4,25 @@ from typing import TYPE_CHECKING
 
 # third-party
 from pydantic import ValidationError
+from tcex import TcEx
+from tcex.input.input import Input
+from tcex.logger.trace_logger import TraceLogger
 
 # first-party
 from app_inputs import AppInputs
-
-if TYPE_CHECKING:
-    # standard library
-
-    # third-party
-    from tcex import TcEx
-    from tcex.input.input import Input
-    from tcex.logger.trace_logger import TraceLogger
 
 
 class JobApp:
     """Job App Class"""
 
-    def __init__(self, _tcex: 'TcEx') -> None:
+    def __init__(self, _tcex: TcEx) -> None:
         """Initialize class properties."""
-        self.tcex: 'TcEx' = _tcex
+        self.tcex: TcEx = _tcex
 
         # properties
         self.exit_message = 'Success'
-        self.inputs: 'Input' = self.tcex.inputs
-        self.log: 'TraceLogger' = self.tcex.log
+        self.inputs: Input = self.tcex.inputs
+        self.log: TraceLogger = self.tcex.log
 
         # automatically parse args on init
         self._update_inputs()
@@ -37,7 +32,7 @@ class JobApp:
         try:
             AppInputs(inputs=self.tcex.inputs).update_inputs()
         except ValidationError as ex:
-            self.tcex.exit(code=1, msg=self.inputs.validation_exit_message(ex))
+            self.tcex.exit.exit(code=1, msg=self.inputs.validation_exit_message(ex))
 
     def run(self) -> None:
         """Run the App main logic."""

@@ -1,33 +1,33 @@
 {
-  "allowOnDemand": true,
-  "appId": "6e26ba55-0300-5462-aca7-ea049494c8a5",
-  "displayName": "Example Basic Organization App",
-  "features": [
-    "aotExecutionEnabled",
-    "appBuilderCompliant",
-    "fileParams"
-  ],
-  "labels": [],
-  "languageVersion": "3.11",
-  "listDelimiter": "|",
-  "note": "A template that provides the structure for a Job App without any App logic.",
-  "params": [
-    {
-      "default": "warning",
-      "label": "Logging Level",
-      "name": "tc_log_level",
-      "sequence": 99,
-      "type": "Choice",
-      "validValues": [
-        "debug",
-        "info",
-        "warning",
-        "error"
-      ]
-    }
-  ],
-  "programLanguage": "PYTHON",
-  "programMain": "run.py",
-  "programVersion": "1.0.0",
-  "runtimeLevel": "Organization"
+    "allowOnDemand": true,
+    "displayName": "Example Basic Organization App",
+    "features": [
+        "aotExecutionEnabled",
+        "appBuilderCompliant",
+        "fileParams"
+    ],
+    "labels": [],
+    "languageVersion": "3.11",
+    "listDelimiter": "|",
+    "note": "A template that provides the structure for a Job App without any App logic.",
+    "params": [
+        {
+            "default": "warning",
+            "label": "Logging Level",
+            "name": "tc_log_level",
+            "sequence": 99,
+            "type": "Choice",
+            "validValues": [
+                "debug",
+                "info",
+                "warning",
+                "error"
+            ]
+        }
+    ],
+    "programLanguage": "PYTHON",
+    "programMain": "run.py",
+    "programVersion": "1.0.0",
+    "runtimeLevel": "Organization",
+    "sdkVersion": "4.0.0"
 }

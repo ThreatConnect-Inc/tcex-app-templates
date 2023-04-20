@@ -22,6 +22,7 @@ class SyncTemplate:
         self.app_common_dst_path = Path('_app_common/')
         self.organization_basic_dst_path = Path('organization/basic/')
         self.organization_egress_dst_path = Path('organization/egress/')
+        self.organization_ingress_dst_path = Path('organization/ingress/')
         self.playbook_action_dst_path = Path('playbook/actions/')
         self.playbook_basic_dst_path = Path('playbook/basic/')
         self.playbook_utility_dst_path = Path('playbook/utility/')
@@ -135,12 +136,11 @@ class SyncTemplate:
                 elif filename in self.app_common_template_files:
                     self._copy_file(file, self.app_common_dst_path / filename)
 
-    def sync_organization_egress(self):
+    def sync_organization_egress(self, input_dir, output_dir):
         """."""
-        src_path = self.base_path / 'tc-tcex-4-egress-template/'
-        for file in src_path.rglob('*'):
+        for file in input_dir.rglob('*'):
             # only process items at the top level
-            if file.parent != src_path:
+            if file.parent != input_dir:
                 continue
 
             if file.is_file():
@@ -157,7 +157,7 @@ class SyncTemplate:
                     'run_local.py',
                     'tcex.json',
                 ]:
-                    self._copy_file(file, self.organization_egress_dst_path / filename)
+                    self._copy_file(file, output_dir / filename)
 
     def sync_playbook_basic(self):
         """."""
@@ -408,7 +408,15 @@ def sync(
                 case 'basic':
                     sync_template.sync_organization_basic()
                 case 'egress':
-                    sync_template.sync_organization_egress()
+                    sync_template.sync_organization_egress(
+                        input_dir=sync_template.base_path / 'tc-tcex-4-egress-template/',
+                        output_dir=sync_template.organization_egress_dst_path,
+                    )
+                case 'ingress':
+                    sync_template.sync_organization_egress(
+                        input_dir=sync_template.base_path / 'tc-tcex-4-ingress-template/',
+                        output_dir=sync_template.organization_ingress_dst_path,
+                    )
         case 'playbook':
             match template_name:
                 case 'actions':

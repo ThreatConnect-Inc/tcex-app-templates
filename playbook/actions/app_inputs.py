@@ -1,4 +1,6 @@
 """App Inputs"""
+# pyright: reportGeneralTypeIssues=false
+
 # standard library
 from typing import Annotated
 
@@ -23,33 +25,33 @@ class AppBaseModel(AppPlaybookModel):
     )
 
 
-class Append(AppBaseModel):
+class AppendModel(AppBaseModel):
     """Action Model"""
 
     # playbookDataType = String
     append_chars: Annotated[str, string(min_length=1)]
 
 
-class Capitalize(AppBaseModel):
+class CapitalizeModel(AppBaseModel):
     """Action Model"""
 
 
-class LowerCase(AppBaseModel):
+class LowerCaseModel(AppBaseModel):
     """Action Model"""
 
 
-class Prepend(AppBaseModel):
+class PrependModel(AppBaseModel):
     """Action Model"""
 
     # playbookDataType = String
     prepend_chars: Annotated[str, string(min_length=1)]
 
 
-class Reverse(AppBaseModel):
+class ReverseModel(AppBaseModel):
     """Action Model"""
 
 
-class StartsWith(AppBaseModel):
+class StartsWithModel(AppBaseModel):
     """Action Model"""
 
     # playbookDataType = String
@@ -70,12 +72,12 @@ class AppInputs:
     def action_model_map(self, tc_action: str) -> type[BaseModel]:
         """Return action model map."""
         _action_model_map = {
-            'Append': Append,
-            'capitalize': Capitalize,
-            'lowercase': LowerCase,
-            'prepend': Prepend,
-            'reverse': Reverse,
-            'starts_with': StartsWith,
+            'Append': AppendModel,
+            'capitalize': CapitalizeModel,
+            'lowercase': LowerCaseModel,
+            'prepend': PrependModel,
+            'reverse': ReverseModel,
+            'starts_with': StartsWithModel,
         }
         tc_action_key = tc_action.lower().replace(' ', '_')
         return _action_model_map.get(tc_action_key)

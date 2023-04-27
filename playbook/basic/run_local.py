@@ -123,17 +123,26 @@ class RunLocal(Run):
 
     def print_output_data(self):
         """Log the playbook output data."""
-
-        output_data = self.client.get_all(self.app_inputs.get('tc_playbook_kvstore_context'))
+        output_data = self.client.get_all(self.app_inputs['tc_playbook_kvstore_context'])
         if output_data:
             output_data = json.dumps(
-                {k.decode(): json.loads(v.decode()) for k, v in output_data.items()},
+                {k: json.loads(v) for k, v in self.process_output_data(output_data).items()},
                 indent=4,
                 sort_keys=True,
             )
             msg = f'\nPlaybook Output Data:\n' f'{output_data}'
             print(msg)
             self.tcex.log.info(msg)
+
+    @staticmethod
+    def process_output_data(output_data: dict):
+        """Process the output data."""
+        output_data_: dict[str, str] = {}
+        for k, v in output_data.items():
+            if isinstance(v, bytes):
+                v = v.decode('utf-8')
+            output_data_[k] = v
+        return output_data_
 
     @cached_property
     def tcex(self) -> TcEx:

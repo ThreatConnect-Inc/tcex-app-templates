@@ -60,7 +60,6 @@ class SyncTemplate:
             'gitignore',
             'pyproject.toml',
             'requirements.txt',
-            'setup.cfg',
         ]
 
     @cached_property

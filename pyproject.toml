@@ -2,6 +2,9 @@
 line-length = 100
 skip-string-normalization = true
 
+[tool.isort]
+skip_glob = ["*"]
+
 [tool.pydocstyle]
 ignore = [
   "D202", # no blank lines allowed after function docstring

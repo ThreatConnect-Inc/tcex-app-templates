@@ -26,9 +26,10 @@ import_heading_thirdparty = "third-party"
 include_trailing_comma = true
 known_first_party = ""
 known_local_folder = "."
-known_third_party = ""
+known_third_party = "tcex"
 line_length = 100
 profile = "black"
+skip = ["run_local.py"]
 
 [tool.pylint.master]
 init-hook = "import sys;sys.path.insert(0, 'deps')"

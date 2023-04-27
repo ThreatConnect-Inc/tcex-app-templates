@@ -1,4 +1,5 @@
 """Run App Local"""
+# pylint: disable=wrong-import-position
 # standard library
 import json
 import os
@@ -8,12 +9,15 @@ from pathlib import Path
 from typing import cast
 from uuid import uuid4
 
+# first-party
+from run import Run
+
+# configure the "deps" directory before loading any third-party modules
+Run.setup()
+
 # third-party
 from dotenv import load_dotenv
 from pydantic import BaseSettings, Extra
-
-# first-party
-from run import Run
 from tcex import TcEx
 from tcex.app.config.install_json import InstallJson
 from tcex.app.key_value_store.key_value_redis import KeyValueRedis
@@ -74,7 +78,7 @@ class AppInputModel(BaseSettings):
 class RunLocal(Run):
     """Run the App locally."""
 
-    _app_inputs: dict
+    _app_inputs: dict = {}
 
     @cached_property
     def client(self) -> KeyValueRedis:

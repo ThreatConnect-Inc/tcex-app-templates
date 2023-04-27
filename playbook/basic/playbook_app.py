@@ -3,12 +3,12 @@
 # standard library
 from typing import cast
 
-# first-party
-from app_inputs import AppBaseModel, AppInputs
-
 # third-party
 from pydantic import ValidationError
 from tcex import TcEx
+
+# first-party
+from app_inputs import AppBaseModel, AppInputs
 
 
 class PlaybookApp:

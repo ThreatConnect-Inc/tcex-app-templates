@@ -1,6 +1,6 @@
 {
   "allowOnDemand": true,
-  "displayName": "",
+  "displayName": "Basic Service Trigger",
   "features": [
     "appBuilderCompliant",
     "fileParams",
@@ -56,5 +56,6 @@
   "programLanguage": "PYTHON",
   "programMain": "run.py",
   "programVersion": "1.0.0",
-  "runtimeLevel": "TriggerService"
+  "runtimeLevel": "TriggerService",
+  "sdkVersion": "4.0.0"
 }

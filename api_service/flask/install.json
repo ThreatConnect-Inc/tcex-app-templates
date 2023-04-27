@@ -15,5 +15,6 @@
   "programLanguage": "PYTHON",
   "programMain": "run.py",
   "programVersion": "1.0.0",
-  "runtimeLevel": "ApiService"
+  "runtimeLevel": "ApiService",
+  "sdkVersion": "4.0.0"
 }

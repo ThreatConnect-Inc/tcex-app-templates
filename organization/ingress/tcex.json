@@ -1,6 +1,6 @@
 {
   "package": {
-    "app_name": "TC_-_",
+    "app_name": "TC_-_Tcex_4_Ingress_Template",
     "excludes": [
       ".gitignore",
       ".pre-commit-config.yaml",
@@ -11,6 +11,6 @@
     "output_dir": "target"
   },
   "template_name": "ingress",
-  "template_repo_hash": null,
+  "template_repo_hash": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
   "template_type": "organization"
 }

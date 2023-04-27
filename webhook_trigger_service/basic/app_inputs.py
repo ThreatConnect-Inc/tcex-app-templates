@@ -1,8 +1,6 @@
 """App Inputs"""
-
 # third-party
 from pydantic import BaseModel
-from tcex.input.field_type import String
 from tcex.input.input import Input
 from tcex.input.model.create_config_model import CreateConfigModel
 
@@ -17,8 +15,6 @@ class ServiceConfigModel(BaseModel):
     configuration in the Platform.
     """
 
-    service_input: list[String] | String
-
 
 class TriggerConfigModel(CreateConfigModel):
     """Base model for Trigger (playbook) config.
@@ -28,8 +24,6 @@ class TriggerConfigModel(CreateConfigModel):
     This is the configuration input that gets sent to the service
     when a Playbook is enabled (createConfig).
     """
-
-    playbook_input: String
 
 
 class AppInputs:

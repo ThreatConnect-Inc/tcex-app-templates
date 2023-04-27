@@ -1,5 +1,4 @@
 """ThreatConnect Playbook App"""
-
 # first-party
 from service_app import ServiceApp
 
@@ -37,13 +36,13 @@ class App(ServiceApp):
                 the method should provide different response.
         """
         response = None
-        if self.tcex.app.ij.has_feature('WebhookResponseMarshall'):
+        if self.tcex.app.install_json.has_feature('WebhookResponseMarshall'):
             # * Callable - Playbook will be launched and if marshall
             #              callback will be set to response.
             # * True - Playbook will be launched.
             # * Else - Playbook will NOT be launched.
             response = True
-        elif self.tcex.app.ij.has_feature('WebhookServiceEndpoint'):
+        elif self.tcex.app.install_json.has_feature('WebhookServiceEndpoint'):
             # * Dict - Playbook will be launched and provided data
             #          will be used in the response to the client.
             # * Else - Response will be set to default of statusCode=200, body=None, and headers=[].

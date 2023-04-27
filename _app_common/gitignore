@@ -28,6 +28,7 @@ sample-*.json
 #-------------------------------------------------
 build
 deps
+deps_tests
 lib_*
 permutations.json
 target

@@ -11,12 +11,12 @@ from uuid import uuid4
 # third-party
 from dotenv import load_dotenv
 from pydantic import BaseSettings, Extra
-from tcex import TcEx
-from tcex.app.config.install_json import InstallJson
-from tcex.app.key_value_store.key_value_redis import KeyValueRedis
 
 # first-party
 from run import Run
+from tcex import TcEx
+from tcex.app.config.install_json import InstallJson
+from tcex.app.key_value_store.key_value_redis import KeyValueRedis
 
 # load the local .env file
 if Path('.env').is_file():
@@ -74,7 +74,7 @@ class AppInputModel(BaseSettings):
 class RunLocal(Run):
     """Run the App locally."""
 
-    _app_inputs: dict = None
+    _app_inputs: dict
 
     @cached_property
     def client(self) -> KeyValueRedis:
@@ -86,7 +86,7 @@ class RunLocal(Run):
     @property
     def app_inputs(self) -> dict:
         """Return app configuration data."""
-        if self._app_inputs is None:
+        if not self._app_inputs:
             app_inputs = {}
             app_inputs_json = Path('app_inputs.json')
             if app_inputs_json.is_file():
@@ -101,7 +101,7 @@ class RunLocal(Run):
         return self._app_inputs
 
     @app_inputs.setter
-    def app_inputs(self, config: dict) -> dict:
+    def app_inputs(self, config: dict):
         """Set the App Config."""
         self._app_inputs = config
 

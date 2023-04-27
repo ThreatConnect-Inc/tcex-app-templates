@@ -1,6 +1,5 @@
 {
   "allowOnDemand": true,
-  "appId": "50e2a95a-ab43-5c77-9123-d05d4aad7ae5",
   "displayName": "Batch Template",
   "features": [
     "aotExecutionEnabled",
@@ -22,10 +21,24 @@
       "validValues": [
         "${OWNERS}"
       ]
+    },
+    {
+      "default": "warning",
+      "label": "Logging Level",
+      "name": "tc_log_level",
+      "sequence": 99,
+      "type": "Choice",
+      "validValues": [
+        "debug",
+        "info",
+        "warning",
+        "error"
+      ]
     }
   ],
   "programLanguage": "PYTHON",
   "programMain": "run.py",
   "programVersion": "1.0.0",
-  "runtimeLevel": "Organization"
+  "runtimeLevel": "Organization",
+  "sdkVersion": "4.0.0"
 }

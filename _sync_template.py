@@ -1,3 +1,4 @@
+#!python3
 """sync report from testing Apps"""
 # standard library
 import os
@@ -19,6 +20,9 @@ class SyncTemplate:
         # properties
 
         self.app_common_dst_path = Path('_app_common/')
+        self.organization_basic_dst_path = Path('organization/basic/')
+        self.organization_egress_dst_path = Path('organization/egress/')
+        self.organization_ingress_dst_path = Path('organization/ingress/')
         self.playbook_action_dst_path = Path('playbook/actions/')
         self.playbook_basic_dst_path = Path('playbook/basic/')
         self.playbook_utility_dst_path = Path('playbook/utility/')
@@ -103,6 +107,57 @@ class SyncTemplate:
                 # send to parent location
                 elif file.name in self.app_common_template_files:
                     self._copy_file(file, self.app_common_dst_path / filename)
+
+    def sync_organization_basic(self):
+        """."""
+        src_path = self.base_path / 'tc-tcex-4-basic-template/'
+        for file in src_path.rglob('*'):
+            # only process items at the top level
+            if file.parent != src_path:
+                continue
+
+            if file.is_file():
+                filename = file.name
+                if file.name == '.gitignore':
+                    filename = 'gitignore'
+
+                # send to most specific location first
+                if filename in [
+                    'app_inputs.py',
+                    'app.py',
+                    'install.json',
+                    'job_app.py',
+                    'README.md',
+                    'run_local.py',
+                    'run.py',
+                ]:
+                    self._copy_file(file, self.organization_basic_dst_path / filename)
+                # send to parent location
+                elif filename in self.app_common_template_files:
+                    self._copy_file(file, self.app_common_dst_path / filename)
+
+    def sync_organization_egress(self, input_dir, output_dir):
+        """."""
+        for file in input_dir.rglob('*'):
+            # only process items at the top level
+            if file.parent != input_dir:
+                continue
+
+            if file.is_file():
+                filename = file.name
+                if file.name == '.gitignore':
+                    filename = 'gitignore'
+
+                # send to most specific location first
+                if filename in [
+                    'app_inputs.py',
+                    'app.py',
+                    'install.json',
+                    'README.md',
+                    'run_local.py',
+                    'tcex.json',
+                ]:
+                    self._copy_file(file, output_dir / filename)
 
     def sync_playbook_basic(self):
         """."""
@@ -348,6 +403,20 @@ def sync(
                     sync_template.sync_api_service_flask()
                 case _:
                     typer.secho(f'Invalid template name: {template_name}')
+        case 'organization':
+            match template_name:
+                case 'basic':
+                    sync_template.sync_organization_basic()
+                case 'egress':
+                    sync_template.sync_organization_egress(
+                        input_dir=sync_template.base_path / 'tc-tcex-4-egress-template/',
+                        output_dir=sync_template.organization_egress_dst_path,
+                    )
+                case 'ingress':
+                    sync_template.sync_organization_egress(
+                        input_dir=sync_template.base_path / 'tc-tcex-4-ingress-template/',
+                        output_dir=sync_template.organization_ingress_dst_path,
+                    )
         case 'playbook':
             match template_name:
                 case 'actions':

@@ -1,12 +1,13 @@
 """Service App module for TcEx App."""
+# standard library
+from typing import cast
+
 # third-party
 from pydantic import ValidationError
 from tcex import TcEx
-from tcex.input.input import Input
-from tcex.logger.trace_logger import TraceLogger
 
 # first-party
-from app_inputs import AppInputs
+from app_inputs import AppInputs, ServiceConfigModel, TriggerConfigModel
 
 
 class ServiceApp:
@@ -16,23 +17,26 @@ class ServiceApp:
         """Initialize class properties."""
         self.tcex: TcEx = _tcex
 
+        # automatically parse args on init
+        self._update_inputs()
+
         # properties
         self.exit_message = 'Success'
-        self.inputs: Input = self.tcex.inputs
-        self.log: TraceLogger = self.tcex.log
-
-        # automatically parse args on init
-        # self._update_inputs()
+        self.in_ = cast(ServiceConfigModel, self.tcex.inputs.model)
+        self.in_unresolved = cast(ServiceConfigModel, self.tcex.inputs.model_unresolved)
+        self.log = self.tcex.log
+        self.playbook = self.tcex.app.playbook
+        self.out = self.tcex.app.playbook.create
 
     def _update_inputs(self) -> None:
         """Add an custom App models and run validation."""
         try:
             AppInputs(inputs=self.tcex.inputs).update_inputs()
         except ValidationError as ex:
-            self.tcex.exit.exit(code=1, msg=self.inputs.validation_exit_message(ex))
+            self.tcex.exit.exit(code=1, msg=self.tcex.inputs.validation_exit_message(ex))
 
     # pylint: disable=unused-argument
-    def create_config_callback(self, config: dict, **kwargs) -> dict:
+    def create_config_callback(self, config: TriggerConfigModel, **kwargs) -> dict:
         """Handle create config messages.
 
         Args:

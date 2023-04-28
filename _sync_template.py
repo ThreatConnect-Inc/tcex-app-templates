@@ -28,8 +28,8 @@ class SyncTemplate:
         self.playbook_utility_dst_path = Path('playbook/utility/')
         self.api_service_basic_dst_path = Path('api_service/basic/')
         self.api_service_flask_dst_path = Path('api_service/flask/')
-        self.tigger_service_basic_dst_path = Path('trigger_service/basic/')
-        self.webhook_tigger_service_basic_dst_path = Path('webhook_trigger_service/basic/')
+        self.trigger_service_basic_dst_path = Path('trigger_service/basic/')
+        self.webhook_trigger_service_basic_dst_path = Path('webhook_trigger_service/basic/')
 
     def _copy_file(self, src_file, dst_file):
         """."""
@@ -263,7 +263,7 @@ class SyncTemplate:
     def sync_trigger_service_basic(self):
         """."""
         src_path = self.base_path / 'tcvc-tcex-4-basic-template/'
-        dst_path = self.tigger_service_basic_dst_path
+        dst_path = self.trigger_service_basic_dst_path
         for file in src_path.rglob('*'):
             # only process items at the top level
             if file.parent != src_path:
@@ -299,8 +299,8 @@ class SyncTemplate:
 
     def sync_webhook_trigger_service_basic(self):
         """."""
-        src_path = self.base_path / 'tcvc-tcex-4-basic-webhook-template/'
-        dst_path = self.webhook_tigger_service_basic_dst_path
+        src_path = self.base_path / 'tcvw-tcex-4-basic-template/'
+        dst_path = self.webhook_trigger_service_basic_dst_path
         for file in src_path.rglob('*'):
             # only process items at the top level
             if file.parent != src_path:

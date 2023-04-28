@@ -1,12 +1,9 @@
 """App Inputs"""
 # pyright: reportGeneralTypeIssues=false
 
-# standard library
-from typing import Annotated
-
 # third-party
 from pydantic import BaseModel, validator
-from tcex.input.field_type import Choice, always_array, integer, string
+from tcex.input.field_type import Choice, always_array, string
 from tcex.input.input import Input
 from tcex.input.model.app_playbook_model import AppPlaybookModel
 
@@ -25,13 +22,6 @@ class AppBaseModel(AppPlaybookModel):
     )
 
 
-class AppendModel(AppBaseModel):
-    """Action Model"""
-
-    # playbookDataType = String
-    append_chars: Annotated[str, string(min_length=1)]
-
-
 class CapitalizeModel(AppBaseModel):
     """Action Model"""
 
@@ -40,26 +30,8 @@ class LowerCaseModel(AppBaseModel):
     """Action Model"""
 
 
-class PrependModel(AppBaseModel):
-    """Action Model"""
-
-    # playbookDataType = String
-    prepend_chars: Annotated[str, string(min_length=1)]
-
-
 class ReverseModel(AppBaseModel):
     """Action Model"""
-
-
-class StartsWithModel(AppBaseModel):
-    """Action Model"""
-
-    # playbookDataType = String
-    starts_with_chars: Annotated[str, string(min_length=1)]
-    # playbookDataType = String
-    starts_with_start: Annotated[int, integer(gt=-1)]
-    # playbookDataType = String
-    starts_with_stop: Annotated[int, integer(gt=0)] | None
 
 
 class AppInputs:
@@ -72,12 +44,9 @@ class AppInputs:
     def action_model_map(self, tc_action: str) -> type[BaseModel]:
         """Return action model map."""
         _action_model_map = {
-            'Append': AppendModel,
             'capitalize': CapitalizeModel,
             'lowercase': LowerCaseModel,
-            'prepend': PrependModel,
             'reverse': ReverseModel,
-            'starts_with': StartsWithModel,
         }
         tc_action_key = tc_action.lower().replace(' ', '_')
         return _action_model_map.get(tc_action_key)

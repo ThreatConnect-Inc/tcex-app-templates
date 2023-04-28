@@ -4,17 +4,10 @@ from typing import cast
 
 # third-party
 from tcex import TcEx
-from tcex.app.decorator import FailOnOutput, OnException, OnSuccess, Output
+from tcex.app.decorator import OnException, OnSuccess, Output
 
 # first-party
-from app_inputs import (
-    AppendModel,
-    CapitalizeModel,
-    LowerCaseModel,
-    PrependModel,
-    ReverseModel,
-    StartsWithModel,
-)
+from app_inputs import CapitalizeModel, LowerCaseModel, ReverseModel
 from playbook_app import PlaybookApp
 
 
@@ -25,15 +18,6 @@ class App(PlaybookApp):
         """Initialize class properties."""
         super().__init__(_tcex)
         self.output_strings = []
-
-    @OnException(exit_msg='Failed to run "append" operation.')
-    @OnSuccess(exit_msg='Successfully ran "append" operation.')
-    @Output(attribute='output_strings')
-    def append(self):
-        """Return string with appended character(s)."""
-        self.in_ = cast(AppendModel, self.in_)
-        for input_string in self.in_.input_strings:
-            return f'{input_string}{self.in_.append_chars}'
 
     @OnException(exit_msg='Failed to run capitalize action.')
     @OnSuccess(exit_msg='Successfully ran capitalize action.')
@@ -53,15 +37,6 @@ class App(PlaybookApp):
         for input_string in self.in_.input_strings:
             return input_string.lower()
 
-    @OnException(exit_msg='Failed to run "prepend" operation.')
-    @OnSuccess(exit_msg='Successfully ran "prepend" operation.')
-    @Output(attribute='output_strings')
-    def prepend(self):
-        """Return string with prepended character(s)."""
-        self.in_ = cast(PrependModel, self.in_)
-        for input_string in self.in_.input_strings:
-            return f'{self.in_.prepend_chars}{input_string}'
-
     @OnException(exit_msg='Failed to run reverse action.')
     @OnSuccess(exit_msg='Successfully ran reverse action.')
     @Output(attribute='output_strings')
@@ -70,26 +45,6 @@ class App(PlaybookApp):
         self.in_ = cast(ReverseModel, self.in_)
         for input_string in self.in_.input_strings:
             return input_string[::-1]
-
-    @OnException(exit_msg='Failed to run "starts with" operation.')
-    @FailOnOutput(
-        fail_enabled='fail_on_false',
-        fail_on=['false'],
-        fail_msg='Operation "starts with" returned "false".',
-    )
-    @OnSuccess(exit_msg='Successfully ran "starts with" operation.')
-    @Output(attribute='output_strings')
-    def starts_with(self):
-        """Return true if string starts with provided characters."""
-        self.in_ = cast(StartsWithModel, self.in_)
-        for input_string in self.in_.input_strings:
-            return str(
-                input_string.startswith(
-                    self.in_.starts_with_chars,
-                    self.in_.starts_with_start,
-                    self.in_.starts_with_stop,
-                )
-            ).lower()
 
     def write_output(self):
         """Write the Playbook output variables."""

@@ -5,15 +5,11 @@ import os
 import sys
 from functools import cached_property
 from pathlib import Path
-from typing import cast
-from uuid import uuid4
 
 # third-party
 from dotenv import load_dotenv
 from pydantic import BaseSettings, Extra
 from tcex import TcEx
-from tcex.app.config.install_json import InstallJson
-from tcex.app.key_value_store.key_value_redis import KeyValueRedis
 
 # first-party
 from run import Run
@@ -47,13 +43,6 @@ class AppInputModel(BaseSettings):
     tc_out_path: str = 'log'
     tc_temp_path: str = 'log'
 
-    # playbook inputs
-    tc_kvstore_host: str = 'localhost'
-    tc_kvstore_port: int = 6379
-    tc_kvstore_type: str = 'Mock'
-    tc_playbook_kvstore_context: str = str(uuid4())
-    tc_playbook_out_variables: list[str] = InstallJson().tc_playbook_out_variables
-
     # proxy inputs
     tc_proxy_host: str | None
     tc_proxy_password: str | None
@@ -74,14 +63,7 @@ class AppInputModel(BaseSettings):
 class RunLocal(Run):
     """Run the App locally."""
 
-    _app_inputs: dict = None
-
-    @cached_property
-    def client(self) -> KeyValueRedis:
-        """Return an instance of KeyValueRedis"""
-        return cast(
-            KeyValueRedis, self.tcex.app.key_value_store.client  # pylint: disable=no-member
-        )
+    _app_inputs: dict = {}
 
     @property
     def app_inputs(self) -> dict:
@@ -101,7 +83,7 @@ class RunLocal(Run):
         return self._app_inputs
 
     @app_inputs.setter
-    def app_inputs(self, config: dict) -> dict:
+    def app_inputs(self, config: dict):
         """Set the App Config."""
         self._app_inputs = config
 
@@ -116,20 +98,6 @@ class RunLocal(Run):
         msg = f'Playbook Input Data:\n' f'{input_data}'
         print(msg)
         self.tcex.log.info(msg)
-
-    def print_output_data(self):
-        """Log the playbook output data."""
-
-        output_data = self.client.get_all(self.app_inputs.get('tc_playbook_kvstore_context'))
-        if output_data:
-            output_data = json.dumps(
-                {k.decode(): json.loads(v.decode()) for k, v in output_data.items()},
-                indent=4,
-                sort_keys=True,
-            )
-            msg = f'\nPlaybook Output Data:\n' f'{output_data}'
-            print(msg)
-            self.tcex.log.info(msg)
 
     @cached_property
     def tcex(self) -> TcEx:
@@ -151,7 +119,6 @@ class RunLocal(Run):
     def teardown(self):
         """Teardown the App."""
         self.print_input_data()
-        self.print_output_data()
 
         # explicitly call the exit method
         self.exit(0, msg=self.app.exit_message)

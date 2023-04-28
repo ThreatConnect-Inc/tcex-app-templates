@@ -17,26 +17,6 @@ if TYPE_CHECKING:
 class Run:
     """Run App"""
 
-    def _run_tc_action_method(self):
-        # if the data model has the reserved arg of "tc_action", this value is
-        # used to trigger a call to the app.<tc_action>() method. an exact match
-        # to the method is tried first, followed by a normalization of the tc_action
-        # value, and finally an attempt is made to find the reserved "tc_action_map"
-        # property to map value to method.
-        tc_action: str = self.app.inputs.model.tc_action  # type: ignore
-        tc_action_formatted = tc_action.lower().replace(' ', '_')
-        tc_action_map = 'tc_action_map'  # reserved property name for action to method map
-
-        # run action method
-        if hasattr(self.app, tc_action):
-            getattr(self.app, tc_action)()
-        elif hasattr(self.app, tc_action_formatted):
-            getattr(self.app, tc_action_formatted)()
-        elif hasattr(self.app, tc_action_map):
-            self.app.tc_action_map.get(tc_action)()  # type: ignore
-        else:
-            self.exit(1, f'Action method ({tc_action}) was not found.')
-
     @cached_property
     def app(self) -> 'App':
         """Return a properly configured App instance."""
@@ -63,6 +43,7 @@ class Run:
             # perform prep/setup operations
             self.app.setup(**{})
 
+            # run the app
             self.app.run(**{})
 
             # perform cleanup/teardown operations

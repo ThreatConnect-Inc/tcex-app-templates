@@ -12,4 +12,4 @@ class App(JobApp):
 
         This method should contain the core logic of the App.
         """
-        self.log.info(f'Sample Input is: {self.inputs.model.dict()}')
+        self.log.info(f'Sample Input is: {self.in_.dict()}')

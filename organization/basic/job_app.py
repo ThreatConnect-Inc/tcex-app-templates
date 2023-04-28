@@ -1,12 +1,13 @@
 """App Template."""
+# standard library
+from typing import cast
+
 # third-party
 from pydantic import ValidationError
 from tcex import TcEx
-from tcex.input.input import Input
-from tcex.logger.trace_logger import TraceLogger
 
 # first-party
-from app_inputs import AppInputs
+from app_inputs import AppBaseModel, AppInputs
 
 
 class JobApp:
@@ -16,20 +17,21 @@ class JobApp:
         """Initialize class properties."""
         self.tcex: TcEx = _tcex
 
+        # automatically process inputs on init
+        self._update_inputs()
+
         # properties
         self.exit_message = 'Success'
-        self.inputs: Input = self.tcex.inputs
-        self.log: TraceLogger = self.tcex.log
-
-        # automatically parse args on init
-        self._update_inputs()
+        self.in_ = cast(AppBaseModel, self.tcex.inputs.model)
+        self.in_unresolved = cast(AppBaseModel, self.tcex.inputs.model_unresolved)
+        self.log = self.tcex.log
 
     def _update_inputs(self) -> None:
         """Add an custom App models and run validation."""
         try:
             AppInputs(inputs=self.tcex.inputs).update_inputs()
         except ValidationError as ex:
-            self.tcex.exit.exit(code=1, msg=self.inputs.validation_exit_message(ex))
+            self.tcex.exit.exit(code=1, msg=self.tcex.inputs.validation_exit_message(ex))
 
     def run(self) -> None:
         """Run the App main logic."""

@@ -262,7 +262,7 @@ class SyncTemplate:
 
     def sync_trigger_service_basic(self):
         """."""
-        src_path = self.base_path / 'tcvc-tcex-4-basic-trigger-template/'
+        src_path = self.base_path / 'tcvc-tcex-4-basic-template/'
         dst_path = self.tigger_service_basic_dst_path
         for file in src_path.rglob('*'):
             # only process items at the top level

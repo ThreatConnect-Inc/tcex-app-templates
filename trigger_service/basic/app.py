@@ -20,7 +20,7 @@ class App(ServiceApp):
 
         while service.loop_forever(sleep=30):
             # startup inputs, access via self.inputs.model.service_input
-            self.log.debug(f'Server configuration service_input {self.inputs.model.dict()}')
+            self.log.debug(f'Server configuration service_input {self.tcex.inputs.model.dict()}')
 
             # any "extra" args passed to fire_event will be
             # available in kwargs in the callback method
@@ -51,8 +51,6 @@ class App(ServiceApp):
         self.log.debug(f'''Playbook configuration playbook_input {config.playbook_input}''')
 
         # write output variable
-        playbook.create.variable(
-            'example.service_input', self.inputs.model.service_input  # typing: ignore
-        )
+        playbook.create.variable('example.service_input', self.in_.service_input)
         playbook.create.variable('example.playbook_input', config.playbook_input)
         return True

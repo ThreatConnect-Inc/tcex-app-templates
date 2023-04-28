@@ -1,12 +1,12 @@
 """App Inputs"""
 # third-party
-from pydantic import BaseModel
 from tcex.input.field_type import String
 from tcex.input.input import Input
+from tcex.input.model.app_trigger_service_model import AppTriggerServiceModel
 from tcex.input.model.create_config_model import CreateConfigModel
 
 
-class ServiceConfigModel(BaseModel):
+class ServiceConfigModel(AppTriggerServiceModel):
     """Base model for the App containing any common inputs.
 
     Trigger Service App inputs do not take playbookDataType.

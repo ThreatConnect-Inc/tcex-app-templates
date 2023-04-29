@@ -1,6 +1,6 @@
 {
   "package": {
-    "app_name": "TC_-_Egress_Template",
+    "app_name": "TC_-_Organization_Egress",
     "excludes": [
       ".gitignore",
       ".pre-commit-config.yaml",

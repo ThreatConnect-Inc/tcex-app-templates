@@ -1,6 +1,6 @@
 {
   "package": {
-    "app_name": "TC_-_",
+    "app_name": "TC_-_Organization_Basic",
     "excludes": [
       ".gitignore",
       ".pre-commit-config.yaml",

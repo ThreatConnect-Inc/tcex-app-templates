@@ -1,6 +1,6 @@
 {
   "package": {
-    "app_name": "TC_-_Ingress_Template",
+    "app_name": "TC_-_Organization_Ingress",
     "excludes": [
       ".gitignore",
       ".pre-commit-config.yaml",

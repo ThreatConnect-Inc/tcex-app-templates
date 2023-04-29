@@ -52,7 +52,7 @@ class SyncTemplate:
         return tc_template_dir
 
     @cached_property
-    def app_common_template_files(self):
+    def app_common_template_files(self) -> list[str]:
         """."""
         return [
             '.coveragerc',
@@ -63,7 +63,7 @@ class SyncTemplate:
         ]
 
     @cached_property
-    def playbook_action_template_files(self):
+    def playbook_action_template_files(self) -> list[str]:
         """."""
 
     def sync_playbook_actions(self):
@@ -149,14 +149,21 @@ class SyncTemplate:
 
                 # send to most specific location first
                 if filename in [
+                    'app_inputs.json',
                     'app_inputs.py',
                     'app.py',
                     'install.json',
                     'README.md',
-                    'run_local.py',
                     'tcex.json',
                 ]:
                     self._copy_file(file, output_dir / filename)
+                # send to parent location
+                elif file.name in [
+                    'job_app.py',
+                    'run.py',
+                    'run_local.py',
+                ]:
+                    self._copy_file(file, self.organization_basic_dst_path / filename)
 
     def sync_playbook_basic(self):
         """."""

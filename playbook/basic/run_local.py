@@ -1,5 +1,6 @@
 """Run App Local"""
 # pylint: disable=wrong-import-position
+
 # standard library
 import json
 import os

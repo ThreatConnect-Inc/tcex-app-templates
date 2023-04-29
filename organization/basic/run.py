@@ -54,7 +54,8 @@ class Run:
             self.tcex.log.error(traceback.format_exc())
             self.exit(1, main_err)
 
-    def setup(self):
+    @staticmethod
+    def setup():
         """Handle the deps directory."""
         # configure the deps directory before importing any third-party packages
         # for TcEx 4 and above, all additional packages are in the "deps" directory

@@ -1,9 +1,12 @@
 """App Inputs"""
+# pyright: reportGeneralTypeIssues=false
+
 # third-party
-from pydantic import BaseModel, validator
+from pydantic import validator
 from pydantic.class_validators import root_validator
 from tcex.input.field_type import Choice, DateTime, always_array, integer, string
 from tcex.input.input import Input
+from tcex.input.model.app_organization_model import AppOrganizationModel
 
 
 def validate_tql(cls, values: dict):  # pylint: disable=unused-argument
@@ -50,7 +53,7 @@ def validate_tql(cls, values: dict):  # pylint: disable=unused-argument
     return values
 
 
-class TCFiltersModel(BaseModel):
+class TCFiltersModel(AppOrganizationModel):
     """Standard inputs to filter indicators pulled from ThreatConnect."""
 
     tql: string(allow_empty=False) | None

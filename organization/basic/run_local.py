@@ -1,4 +1,6 @@
 """Run App Local"""
+# pylint: disable=wrong-import-position
+
 # standard library
 import json
 import os
@@ -6,13 +8,16 @@ import sys
 from functools import cached_property
 from pathlib import Path
 
+# first-party
+from run import Run
+
+# configure the "deps" directory before loading any third-party modules
+Run.setup()
+
 # third-party
 from dotenv import load_dotenv
 from pydantic import BaseSettings, Extra
 from tcex import TcEx
-
-# first-party
-from run import Run
 
 # load the local .env file
 if Path('.env').is_file():
@@ -68,7 +73,7 @@ class RunLocal(Run):
     @property
     def app_inputs(self) -> dict:
         """Return app configuration data."""
-        if self._app_inputs is None:
+        if not self._app_inputs:
             app_inputs = {}
             app_inputs_json = Path('app_inputs.json')
             if app_inputs_json.is_file():
@@ -78,7 +83,6 @@ class RunLocal(Run):
                     except ValueError as ex:
                         print(f'Error loading app_inputs.json: {ex}')
                         sys.exit(1)
-
             self._app_inputs = AppInputModel(**app_inputs).dict()
         return self._app_inputs
 
@@ -128,5 +132,8 @@ if __name__ == '__main__':
     # Launch the App
     run = RunLocal()
     run.setup()
-    run.launch()
+    try:
+        run.launch()
+    except SystemExit:
+        print('Ignoring SystemExit')
     run.teardown()

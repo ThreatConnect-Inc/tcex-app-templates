@@ -28,7 +28,7 @@ class ServiceApp:
         self.playbook = self.tcex.app.playbook
         self.out = self.tcex.app.playbook.create
 
-    def _update_inputs(self) -> None:
+    def _update_inputs(self):
         """Add an custom App models and run validation."""
         try:
             AppInputs(inputs=self.tcex.inputs).update_inputs()
@@ -52,7 +52,7 @@ class ServiceApp:
         return {'msg': 'Success', 'status': True}
 
     # pylint: disable=unused-argument
-    def delete_config_callback(self, trigger_id: int) -> None:
+    def delete_config_callback(self, trigger_id: int):
         """Handle delete config messages.
 
         Args:
@@ -60,18 +60,18 @@ class ServiceApp:
         """
         self.log.trace('delete config callback')
 
-    def run(self) -> None:
+    def run(self):
         """Run the App main logic."""
         self.log.trace('run')
 
-    def setup(self) -> None:
+    def setup(self):
         """Perform setup actions."""
         self.log.trace('feature=app, event=setup')
 
-    def shutdown_callback(self) -> None:
+    def shutdown_callback(self):
         """Handle shutdown message."""
         self.log.trace('shutdown callback')
 
-    def teardown(self) -> None:
+    def teardown(self):
         """Perform teardown actions."""
         self.log.trace('feature=app, event=teardown')

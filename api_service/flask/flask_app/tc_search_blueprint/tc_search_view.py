@@ -18,7 +18,7 @@ class TCSearchView(View):
 
     page_size = 10
 
-    def __init__(self, tcex: 'TcEx') -> None:
+    def __init__(self, tcex: 'TcEx'):
         """."""
         super().__init__()
         self.tcex = tcex

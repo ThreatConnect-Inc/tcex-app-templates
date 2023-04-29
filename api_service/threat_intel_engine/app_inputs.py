@@ -18,11 +18,11 @@ class AppBaseModel(BaseModel):
 class AppInputs:
     """App Inputs"""
 
-    def __init__(self, inputs: 'BaseModel') -> None:
+    def __init__(self, inputs: 'BaseModel'):
         """Initialize class properties."""
         self.inputs = inputs
 
-    def update_inputs(self) -> None:
+    def update_inputs(self):
         """Add custom App models to inputs.
 
         Input will be validated when the model is added an any exceptions will

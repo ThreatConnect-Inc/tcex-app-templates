@@ -13,7 +13,7 @@ from app_inputs import AppBaseModel, AppInputs
 class JobApp:
     """Job App Class"""
 
-    def __init__(self, _tcex: TcEx) -> None:
+    def __init__(self, _tcex: TcEx):
         """Initialize class properties."""
         self.tcex: TcEx = _tcex
 
@@ -26,21 +26,21 @@ class JobApp:
         self.in_unresolved = cast(AppBaseModel, self.tcex.inputs.model_unresolved)
         self.log = self.tcex.log
 
-    def _update_inputs(self) -> None:
+    def _update_inputs(self):
         """Add an custom App models and run validation."""
         try:
             AppInputs(inputs=self.tcex.inputs).update_inputs()
         except ValidationError as ex:
             self.tcex.exit.exit(code=1, msg=self.tcex.inputs.validation_exit_message(ex))
 
-    def run(self) -> None:
+    def run(self):
         """Run the App main logic."""
         self.log.info('No run logic provided.')
 
-    def setup(self) -> None:
+    def setup(self):
         """Perform setup actions."""
         self.log.trace('feature=app, event=setup')
 
-    def teardown(self) -> None:
+    def teardown(self):
         """Perform teardown actions."""
         self.log.trace('feature=app, event=teardown')

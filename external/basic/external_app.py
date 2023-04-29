@@ -22,21 +22,21 @@ class ExternalApp:
         self.inputs: 'Input' = self.tcex.inputs
         self.log: 'TraceLogger' = self.tcex.log
 
-    def _update_inputs(self) -> None:
+    def _update_inputs(self):
         """Add an custom App models and run validation."""
         try:
             AppInputs(inputs=self.tcex.inputs).update_inputs()
         except ValidationError as ex:
             self.tcex.exit(code=1, msg=self.inputs.validation_exit_message(ex))
 
-    def run(self) -> None:
+    def run(self):
         """Perform run actions."""
         self.log.info('No run logic provided.')
 
-    def setup(self) -> None:
+    def setup(self):
         """Perform setup actions."""
         self.log.trace('feature=app, event=setup')
 
-    def teardown(self) -> None:
+    def teardown(self):
         """Perform teardown actions."""
         self.log.trace('feature=app, event=teardown')

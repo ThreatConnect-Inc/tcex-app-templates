@@ -17,7 +17,7 @@ class App(ExternalApp):
         self.batch = None
         self.url = 'https://feodotracker.abuse.ch/downloads/malware_hashes.csv'
 
-    def run(self) -> None:
+    def run(self):
         """Run main App logic."""
         self.batch: object = self.tcex.batch(self.inputs.model.tc_owner)
 

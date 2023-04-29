@@ -7,7 +7,7 @@ import traceback
 from app_lib import AppLib
 
 
-def run() -> None:
+def run():
     """Update path and run the App."""
 
     # update the path to ensure the App has access to required modules

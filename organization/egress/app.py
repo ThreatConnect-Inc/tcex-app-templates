@@ -19,14 +19,14 @@ from job_app import JobApp
 class App(JobApp):
     """Job App"""
 
-    def __init__(self, _tcex: TcEx) -> None:
+    def __init__(self, _tcex: TcEx):
         """Initialize class properties."""
         super().__init__(_tcex)
 
         # properties
         self.session: ExternalSession
 
-    def setup(self) -> None:
+    def setup(self):
         """Perform prep/setup logic."""
         # using tcex session_external to get built-in features (e.g., proxy, logging, retries).
         self.session = ExternalSession()
@@ -35,7 +35,7 @@ class App(JobApp):
         # to be made by only providing the API endpoint/path.
         self.session.base_url = 'https://httpbin.org'
 
-    def run(self) -> None:
+    def run(self):
         """Run main App logic."""
         success, error = (0, 0)
         # httbin used for demonstration only, we don't want to bombard it with traffic, so

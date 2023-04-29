@@ -6,7 +6,7 @@ from external_app import ExternalApp  # Import default External App Class (Requi
 class App(ExternalApp):
     """External App"""
 
-    def run(self) -> None:
+    def run(self):
         """Run the App main logic.
 
         This method should contain the core logic of the App.

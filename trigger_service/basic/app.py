@@ -14,7 +14,7 @@ from service_app import ServiceApp  # Import default Service App Class (Required
 class App(ServiceApp):
     """Service App Template."""
 
-    def run(self) -> None:
+    def run(self):
         """Run the trigger logic."""
         service: CommonServiceTrigger = cast(CommonServiceTrigger, self.tcex.app.service)
 

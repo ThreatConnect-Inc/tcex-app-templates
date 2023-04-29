@@ -37,7 +37,7 @@ class ReverseModel(AppBaseModel):
 class AppInputs:
     """App Inputs"""
 
-    def __init__(self, inputs: Input) -> None:
+    def __init__(self, inputs: Input):
         """Initialize class properties."""
         self.inputs = inputs
 
@@ -67,7 +67,7 @@ class AppInputs:
 
         return action_model
 
-    def update_inputs(self) -> None:
+    def update_inputs(self):
         """Add custom App models to inputs.
 
         Input will be validate when the model is added an any exceptions will

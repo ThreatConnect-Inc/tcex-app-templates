@@ -62,10 +62,6 @@ class SyncTemplate:
             'requirements.txt',
         ]
 
-    @cached_property
-    def playbook_action_template_files(self) -> list[str]:
-        """."""
-
     def sync_playbook_actions(self):
         """."""
         src_path = self.base_path / 'tcpb-tcex-4-actions-template/'
@@ -78,7 +74,7 @@ class SyncTemplate:
                 if file.name.startswith('.'):
                     continue
 
-                if file.name in ['app_notebook', 'tests']:
+                if file.name in ['tests']:
                     shutil.rmtree(self.playbook_action_dst_path / file.name)
                     shutil.copytree(file, self.playbook_action_dst_path / file.name)
             elif file.is_file():
@@ -206,7 +202,7 @@ class SyncTemplate:
                 if file.name.startswith('.'):
                     continue
 
-                if file.name in ['app_notebook', 'tests']:
+                if file.name in ['tests']:
                     shutil.rmtree(dst_path / file.name)
                     shutil.copytree(file, dst_path / file.name)
             elif file.is_file():
@@ -243,7 +239,7 @@ class SyncTemplate:
                 if file.name.startswith('.'):
                     continue
 
-                if file.name in ['app_notebook', 'tests']:
+                if file.name in ['tests']:
                     shutil.rmtree(dst_path / file.name)
                     shutil.copytree(file, dst_path / file.name)
             elif file.is_file():
@@ -280,7 +276,7 @@ class SyncTemplate:
                 if file.name.startswith('.'):
                     continue
 
-                if file.name in ['app_notebook', 'tests']:
+                if file.name in ['tests']:
                     shutil.rmtree(dst_path / file.name)
                     shutil.copytree(file, dst_path / file.name)
             elif file.is_file():
@@ -317,7 +313,7 @@ class SyncTemplate:
                 if file.name.startswith('.'):
                     continue
 
-                if file.name in ['app_notebook', 'tests']:
+                if file.name in ['tests']:
                     shutil.rmtree(dst_path / file.name)
                     shutil.copytree(file, dst_path / file.name)
             elif file.is_file():
@@ -353,7 +349,7 @@ class SyncTemplate:
                 if file.name.startswith('.'):
                     continue
 
-                if file.name in ['app_notebook', 'tests']:
+                if file.name in ['tests']:
                     shutil.rmtree(self.playbook_utility_dst_path / file.name)
                     shutil.copytree(file, self.playbook_utility_dst_path / file.name)
             elif file.is_file():

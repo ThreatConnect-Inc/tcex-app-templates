@@ -1,16 +1,17 @@
 """App Inputs"""
 # third-party
-from pydantic import BaseModel
+from tcex.input.input import Input
+from tcex.input.model.app_external_model import AppExternalModel
 
 
-class AppBaseModel(BaseModel):
+class AppBaseModel(AppExternalModel):
     """Base model for the App containing any common inputs."""
 
 
 class AppInputs:
     """App Inputs"""
 
-    def __init__(self, inputs: 'BaseModel'):
+    def __init__(self, inputs: Input):
         """Initialize class properties."""
         self.inputs = inputs
 

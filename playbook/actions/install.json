@@ -10,9 +10,22 @@
   ],
   "languageVersion": "3.11",
   "listDelimiter": "|",
-  "minServerVersion": "6.2.0",
-  "note": "Takes a String or StringArrays and perform operations to each value returning the update value. All operations are performed on the individual strings and not the array.\n",
+  "minServerVersion": "7.2.0",
+  "note": "Takes a String or StringArrays and perform operations to each value returning the update value. All operations are performed on the individual strings and not the array.\n\n\nThe following actions are included:\n\n-   **Capitalize** - Capitalize the first character in the string.\n\n-   **Lowercase** - Lowercase all characters in the string. using the Get Search Job Results API.\n\n-   **Reverse** - Reverse the order of the characters in the string.\n",
   "params": [
+    {
+      "label": "Action",
+      "name": "tc_action",
+      "note": "The action to perform on the String or StringArray. The Strip action will strip only whitespace from the string.",
+      "required": true,
+      "sequence": 1,
+      "type": "Choice",
+      "validValues": [
+        "Capitalize",
+        "Lowercase",
+        "Reverse"
+      ]
+    },
     {
       "label": "Input Strings",
       "name": "input_strings",
@@ -22,81 +35,7 @@
         "StringArray"
       ],
       "required": true,
-      "sequence": 1,
-      "type": "String",
-      "validValues": [
-        "${TEXT}"
-      ]
-    },
-    {
-      "label": "Action",
-      "name": "tc_action",
-      "note": "The action to perform on the String or StringArray. The Strip action will strip only whitespace from the string.",
-      "required": true,
       "sequence": 2,
-      "type": "Choice",
-      "validValues": [
-        "Capitalize",
-        "Lowercase",
-        "Prepend",
-        "Reverse",
-        "Starts With",
-        "Strip",
-        "Swap Case",
-        "Title Case",
-        "Uppercase"
-      ]
-    },
-    {
-      "label": "Prepend Character(s)",
-      "name": "prepend_chars",
-      "note": "The character(s) to get prepended to the provided string(s) (e.g., **pre-**). ",
-      "playbookDataType": [
-        "String"
-      ],
-      "required": true,
-      "sequence": 3,
-      "type": "String",
-      "validValues": [
-        "${TEXT}"
-      ]
-    },
-    {
-      "label": "Starts With Character(s)",
-      "name": "starts_with_chars",
-      "note": "The character(s) to check for in the provided string(s) (e.g., **https**). ",
-      "playbookDataType": [
-        "String"
-      ],
-      "required": true,
-      "sequence": 4,
-      "type": "String",
-      "validValues": [
-        "${TEXT}"
-      ]
-    },
-    {
-      "default": "0",
-      "label": "Starts With Start",
-      "name": "starts_with_start",
-      "note": "The 0-based index position at which to start the **Starts With** search. The start position can be used to skip the first *n* characters before starting the search.",
-      "playbookDataType": [
-        "String"
-      ],
-      "sequence": 5,
-      "type": "String",
-      "validValues": [
-        "${TEXT}"
-      ]
-    },
-    {
-      "label": "Starts With Stop",
-      "name": "starts_with_stop",
-      "note": "The 0-based index position at which to stop the **Starts With** search. The stop position can be used to stop the search after *n* characters.",
-      "playbookDataType": [
-        "String"
-      ],
-      "sequence": 6,
       "type": "String",
       "validValues": [
         "${TEXT}"
@@ -124,5 +63,5 @@
   "programMain": "run.py",
   "programVersion": "1.0.0",
   "runtimeLevel": "Playbook",
-  "sdkVersion": "4.0.0"
+  "sdkVersion": "4.0.0+dev1"
 }

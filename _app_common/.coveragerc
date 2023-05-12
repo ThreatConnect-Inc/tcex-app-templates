@@ -1,9 +1,11 @@
 [run]
 omit =
-    deps
+    api_service_app.py
+    deps/*
     job_app.py
+    local-*
     playbook_app.py
     run.py
     run_local.py
     service_app.py
-    tests*
+    tests/*

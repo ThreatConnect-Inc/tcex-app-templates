@@ -4,34 +4,29 @@ import itertools
 import threading
 from collections.abc import Iterable
 from functools import cached_property
-from typing import TYPE_CHECKING
+from typing import Any
 from wsgiref.types import StartResponse, WSGIEnvironment
 
 # third-party
 import falcon
+from tcex import TcEx
 
 # first-party
 from api_service_app import ApiServiceApp
-
-if TYPE_CHECKING:
-    # third-party
-    from tcex import TcEx
-    from tcex.input.input import Input
 
 
 class TcExMiddleware:
     """TcEx middleware module"""
 
-    def __init__(self, inputs: 'Input', tcex: 'TcEx'):
+    def __init__(self, tcex: TcEx):
         """Initialize class properties"""
-        self.inputs = inputs
         self.tcex = tcex
 
     def process_resource(  # pylint: disable=unused-argument
-        self, req: 'falcon.Request', resp: 'falcon.Response', resource: object, params: dict
+        self, req: falcon.Request, resp: falcon.Response, resource: Any, params: dict
     ):
         """Process resource method."""
-        resource.inputs = self.inputs
+        resource.inputs = self.tcex.inputs
         resource.log = self.tcex.log
         resource.tcex = self.tcex
 
@@ -71,14 +66,13 @@ class App(ApiServiceApp):
         """Initialize class properties."""
         super().__init__(_tcex)
 
-        self.tcex.log.trace(f'inputs: {self.inputs.model.dict()}')
+        self.tcex.log.trace(f'inputs: {self.in_.dict()}')
 
     def build_falcon_app(self):
         """Build falcon app."""
 
         # create Falcon API with tcex middleware
-        # pylint: disable=not-callable
-        api = falcon.App(middleware=[TcExMiddleware(inputs=self.inputs, tcex=self.tcex)])
+        api = falcon.App(middleware=[TcExMiddleware(tcex=self.tcex)])
 
         # Add routes
         api.add_route('/one', OneResource())

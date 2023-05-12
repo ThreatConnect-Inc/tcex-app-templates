@@ -31,22 +31,22 @@ class ApiServiceApp:
 
         self.wsgi_app: WSGIApplication | None = None
 
-    def _update_inputs(self) -> None:
+    def _update_inputs(self):
         """Add an custom App models and run validation."""
         try:
             AppInputs(inputs=self.tcex.inputs)
         except ValidationError as ex:
             self.tcex.exit(code=1, msg=ex)
 
-    def setup(self) -> None:
+    def setup(self):
         """Perform setup actions."""
         self.log.trace('feature=app, event=setup')
 
-    def shutdown_callback(self) -> None:
+    def shutdown_callback(self):
         """Handle the shutdown message."""
         self.log.trace('feature=app, event=shutdown-callback')
 
-    def teardown(self) -> None:
+    def teardown(self):
         """Perform teardown actions."""
         self.log.trace('feature=app, event=teardown')
 

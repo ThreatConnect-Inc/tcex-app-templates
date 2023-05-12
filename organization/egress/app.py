@@ -1,8 +1,8 @@
 """ThreatConnect Job App"""
 # standard library
 import itertools
-from datetime import datetime
 from collections.abc import Iterable
+from datetime import datetime
 
 # third-party
 from tcex import TcEx
@@ -13,34 +13,34 @@ from tcex.requests_external import ExternalSession
 
 # first-party
 from app_inputs import TCFiltersModel
-from job_app import JobApp  # Import default Job App Class (Required)
+from job_app import JobApp
 
 
 class App(JobApp):
     """Job App"""
 
-    def __init__(self, _tcex: TcEx) -> None:
+    def __init__(self, _tcex: TcEx):
         """Initialize class properties."""
         super().__init__(_tcex)
 
         # properties
-        self.session = None
+        self.session: ExternalSession
 
-    def setup(self) -> None:
+    def setup(self):
         """Perform prep/setup logic."""
-        # using tcex session_external to get built-in features (e.g., proxy, logging, retries)
-        self.session: ExternalSession = ExternalSession()
+        # using tcex session_external to get built-in features (e.g., proxy, logging, retries).
+        self.session = ExternalSession()
 
-        # setting the base url allow for subsequent API calls to be made by only
-        # providing the API endpoint/path.
+        # setting the base url allow for subsequent API calls
+        # to be made by only providing the API endpoint/path.
         self.session.base_url = 'https://httpbin.org'
 
-    def run(self) -> None:
+    def run(self):
         """Run main App logic."""
         success, error = (0, 0)
         # httbin used for demonstration only, we don't want to bombard it with traffic, so
-        # send AT MOST 10 requests per run. Replace this code with your target service ASAP
-        for indicator in self.get_indicators(self.inputs.model, 10):
+        # send AT MOST 10 requests per run. Replace this code with your target service ASAP.
+        for indicator in self.get_indicators(self.in_, 10):
             resp = self.session.post('/post', data=indicator.model.json())
             if resp.ok:
                 success += 1
@@ -53,7 +53,7 @@ class App(JobApp):
         else:
             exit_msg += 'to external service.'
 
-        if not self.inputs.model.tql:
+        if not self.in_.tql:
             self.tcex.app.results_tc('last_modified', datetime.utcnow().isoformat())
 
         self.tcex.exit.exit(ExitCode.SUCCESS, exit_msg)
@@ -85,7 +85,7 @@ class App(JobApp):
             if model.owners:
                 tql += (
                     ' and ownerName IN ('
-                    + ', '.join(f'"{item}"' for item in self.inputs.model.owners)
+                    + ', '.join(f'"{item}"' for item in self.in_.owners or [])
                     + ')'
                 )
 

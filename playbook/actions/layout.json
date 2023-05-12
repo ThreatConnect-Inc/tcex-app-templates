@@ -7,22 +7,6 @@
         },
         {
           "name": "tc_action"
-        },
-        {
-          "display": "tc_action in ('Prepend')",
-          "name": "prepend_chars"
-        },
-        {
-          "display": "tc_action in ('Starts With')",
-          "name": "starts_with_chars"
-        },
-        {
-          "display": "tc_action in ('Starts With')",
-          "name": "starts_with_start"
-        },
-        {
-          "display": "tc_action in ('Starts With')",
-          "name": "starts_with_stop"
         }
       ],
       "sequence": 1,
@@ -33,10 +17,6 @@
     {
       "display": "1",
       "name": "string.action"
-    },
-    {
-      "display": "1",
-      "name": "string.outputs.0"
     },
     {
       "display": "1",

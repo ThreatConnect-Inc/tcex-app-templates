@@ -1,14 +1,12 @@
 {
   "package": {
-    "app_name": "TC_-_Tc_Tcex_4_Egress_Template_1",
+    "app_name": "TC_-_Organization_Egress",
     "excludes": [
       ".gitignore",
       ".pre-commit-config.yaml",
-      "app.yaml",
+      "app_spec.yaml",
       "local-*",
-      "pyproject.toml",
-      "setup.cfg",
-      "tcex.json"
+      "pyproject.toml"
     ]
   },
   "template_name": "egress",

@@ -1,13 +1,8 @@
-# Release Notes
+# pytest cache directory #
 
-## 1.0.0 (2022-12-13)
-* Initial Release
+This directory contains data from the pytest's cache plugin,
+which provides the `--lf` and `--ff` options, as well as the `cache` fixture.
 
-# Description
-App template for a flask-based API service.
+**Do not** commit this to version control.
 
-First steps:
-- Define parameters in install.json
-- Update inputs model in app_inputs.py
-- Implement flask app in flask_app module.  A small example flask app is included.
-- Implement get_wsgi_app() in app.py
+See [the docs](https://docs.pytest.org/en/stable/how-to/cache.html) for more information.

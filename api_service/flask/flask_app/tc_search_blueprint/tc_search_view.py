@@ -1,14 +1,15 @@
-"""View for ThreatConnect Search Results.
-
-isort:skip_file
-"""
+"""View for ThreatConnect Search Results."""
 # standard library
 from itertools import islice
+from typing import TYPE_CHECKING
 
 # third-party
 from flask import render_template, request
 from flask.views import View
-from tcex import TcEx
+
+if TYPE_CHECKING:
+    # third-party
+    from tcex import TcEx
 
 
 class TCSearchView(View):
@@ -18,7 +19,7 @@ class TCSearchView(View):
 
     page_size = 10
 
-    def __init__(self, tcex: 'TcEx'):
+    def __init__(self, tcex: 'TcEx') -> None:
         """."""
         super().__init__()
         self.tcex = tcex

@@ -96,7 +96,6 @@ class SyncTemplate:
                 elif file.name in [
                     'playbook_app.py',
                     'run.py',
-                    'run_local.py',
                 ]:
                     self._copy_file(file, self.playbook_basic_dst_path / filename)
                 # send to parent location
@@ -123,7 +122,6 @@ class SyncTemplate:
                     'install.json',
                     'job_app.py',
                     'README.md',
-                    'run_local.py',
                     'run.py',
                 ]:
                     self._copy_file(file, self.organization_basic_dst_path / filename)
@@ -157,7 +155,6 @@ class SyncTemplate:
                 elif file.name in [
                     'job_app.py',
                     'run.py',
-                    'run_local.py',
                 ]:
                     self._copy_file(file, self.organization_basic_dst_path / filename)
 
@@ -181,7 +178,6 @@ class SyncTemplate:
                     'install.json',
                     'playbook_app.py',
                     'README.md',
-                    'run_local.py',
                     'run.py',
                 ]:
                     self._copy_file(file, self.playbook_basic_dst_path / filename)
@@ -370,7 +366,6 @@ class SyncTemplate:
                 elif file.name in [
                     'playbook_app.py',
                     'run.py',
-                    'run_local.py',
                 ]:
                     self._copy_file(file, self.playbook_basic_dst_path / filename)
                 # send to parent location

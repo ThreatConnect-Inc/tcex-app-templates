@@ -12,8 +12,21 @@
   "note": "",
   "params": [],
   "playbook": {
-    "outputVariables": [],
-    "type": ""
+    "outputVariables": [
+      {
+        "name": "headers",
+        "type": "String"
+      },
+      {
+        "name": "method",
+        "type": "String"
+      },
+      {
+        "name": "params",
+        "type": "String"
+      }
+    ],
+    "type": "Utility"
   },
   "programLanguage": "PYTHON",
   "programMain": "run.py",

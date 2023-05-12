@@ -1,4 +1,10 @@
 """ThreatConnect Playbook App"""
+# standard library
+import json
+
+# third-party
+from tcex.app.playbook import Playbook
+
 # first-party
 from service_app import ServiceApp
 
@@ -13,6 +19,7 @@ class App(ServiceApp):
         headers: list[dict[str, str]],
         method: str,
         params: list[dict[str, str]],
+        playbook: Playbook,
         **kwargs,
     ):
         """Run the trigger logic.
@@ -54,6 +61,15 @@ class App(ServiceApp):
             # * Else - Playbook will NOT be launched.
             response = True
 
+            # format headers and params for output variables
+            headers = json.dumps([f'''{header['name']}={header['value']}''' for header in headers])
+            params = json.dumps([f'''{param['name']}={param['value']}''' for param in params])
+
+            # write output variables
+            playbook.create.variable('headers', headers, 'String')
+            playbook.create.variable('method', method, 'String')
+            playbook.create.variable('params', params, 'String')
+
         return response
 
     # pylint: disable=unused-argument
@@ -85,8 +101,7 @@ class App(ServiceApp):
         Args:
             body: The response body.
             headers: The response headers (multiple values will be returned in an array).
-            request_key: [WebhookResponseMarshall] The unique request
-                key for the current event.
+            request_key: [WebhookResponseMarshall] The unique request key for the current event.
             status_code: The response status code.
             trigger_id: Optional trigger_id value used in testing framework.
 

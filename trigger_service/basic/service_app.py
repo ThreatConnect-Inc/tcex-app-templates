@@ -25,8 +25,6 @@ class ServiceApp:
         self.in_ = cast(ServiceConfigModel, self.tcex.inputs.model)
         self.in_unresolved = cast(ServiceConfigModel, self.tcex.inputs.model_unresolved)
         self.log = self.tcex.log
-        self.playbook = self.tcex.app.playbook
-        self.out = self.tcex.app.playbook.create
 
     def _update_inputs(self):
         """Add an custom App models and run validation."""

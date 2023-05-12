@@ -1,0 +1,23 @@
+{
+  "service_input": "Service Input",
+  "trigger_input": [
+    {
+      "trigger_input": "Trigger Input 1"
+    },
+    {
+      "trigger_input": "Trigger Input 2"
+    },
+    {
+      "trigger_input": "Trigger Input 3"
+    },
+    {
+      "trigger_input": "Trigger Input 4"
+    },
+    {
+      "trigger_input": "Trigger Input 5"
+    },
+    {
+      "trigger_input": "Trigger Input 6"
+    }
+  ]
+}

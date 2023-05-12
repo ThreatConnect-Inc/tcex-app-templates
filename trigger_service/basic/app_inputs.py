@@ -28,7 +28,7 @@ class TriggerConfigModel(CreateConfigModel):
     when a Playbook is enabled (createConfig).
     """
 
-    playbook_input: String
+    trigger_input: String
 
 
 class AppInputs:

@@ -81,7 +81,7 @@ class App(JobApp):
                     # optionally save object to disk to save on memory usage
                     self.batch.save(address)
             else:
-                self.tcex.exit.exit(ExitCode.SUCCESS, 'Failed to download CSV data.')
+                self.tcex.exit.exit(ExitCode.SUCCESS, 'Failed to download data.')
 
         # submit batch job
         batch_status = self.batch.submit_all()

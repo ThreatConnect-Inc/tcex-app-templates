@@ -26,7 +26,7 @@
     },
     {
       "label": "Example Playbook Input",
-      "name": "playbook_input",
+      "name": "trigger_input",
       "note": "An example input to the Trigger at the playbook level.",
       "playbookDataType": [
         "String"
@@ -43,11 +43,15 @@
   "playbook": {
     "outputVariables": [
       {
+        "name": "example.date_time",
+        "type": "String"
+      },
+      {
         "name": "example.service_input",
         "type": "String"
       },
       {
-        "name": "example.playbook_input",
+        "name": "example.trigger_input",
         "type": "String"
       }
     ],

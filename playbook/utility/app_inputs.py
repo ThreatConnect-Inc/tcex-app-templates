@@ -1,12 +1,12 @@
 """App Inputs"""
 
 # third-party
-from pydantic import BaseModel
 from tcex.input.field_type import KeyValue, TCEntity
 from tcex.input.input import Input
+from tcex.input.model.app_playbook_model import AppPlaybookModel
 
 
-class AppBaseModel(BaseModel):
+class AppBaseModel(AppPlaybookModel):
     """Base model for the App containing any common inputs."""
 
     indent: int = 4
@@ -24,10 +24,10 @@ class AppBaseModel(BaseModel):
 class AppInputs:
     """App Inputs"""
 
-    def __init__(self, inputs: Input) -> None:
+    def __init__(self, inputs: Input):
         """Initialize class properties."""
         self.inputs = inputs
 
-    def update_inputs(self) -> None:
+    def update_inputs(self):
         """Add custom App models to inputs. Validation will run at the same time."""
         self.inputs.add_model(AppBaseModel)

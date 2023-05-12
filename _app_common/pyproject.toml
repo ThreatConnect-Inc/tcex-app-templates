@@ -26,9 +26,10 @@ import_heading_thirdparty = "third-party"
 include_trailing_comma = true
 known_first_party = ""
 known_local_folder = "."
-known_third_party = ""
+known_third_party = "tcex"
 line_length = 100
 profile = "black"
+skip = ["run_local.py"]
 
 [tool.pylint.master]
 init-hook = "import sys;sys.path.insert(0, 'deps')"
@@ -56,8 +57,41 @@ disable = [
 ]
 extension-pkg-whitelist = "pydantic"
 
+[tool.pyright]
+# https://github.com/microsoft/pyright/blob/main/docs/configuration.md#sample-pyprojecttoml-file
+exclude = [
+  "**/.history",
+  "**/__pycache__",
+  "**/deps",
+  "**/deps_tests",
+  "**/local-*",
+  "**/tests",
+]
+pythonPlatform = "Linux"
+pythonVersion = "3.11"
+reportPrivateImportUsage = false
+
 [tool.pytest.ini_options]
-addopts = "--tb=short --show-capture=no"
+# standard
+addopts = [
+  "--tb=short", # Traceback print mode (auto/long/short/line/native/no)
+  "--show-capture=no", # no,stdout,stderr,log,all
+]
+
+# with xdist
+# addopts = [
+#   "-n=auto", # pytest-xdist
+#   "--tb=short", # Traceback print mode (auto/long/short/line/native/no)
+#   "--show-capture=no", # no,stdout,stderr,log,all
+# ]
+
+# with coverage
+# addopts = [
+#   "--tb=short", # Traceback print mode (auto/long/short/line/native/no)
+#   "--show-capture=no", # no,stdout,stderr,log,all
+#   "--cov=.", # pytest-cov
+#   "--cov-report=term-missing", # pytest-cov
+# ]
 junit_family = "xunit2"
 testpaths = [
   "tests",

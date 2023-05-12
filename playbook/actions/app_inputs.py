@@ -1,10 +1,9 @@
 """App Inputs"""
-# standard library
-from typing import Annotated
+# pyright: reportGeneralTypeIssues=false
 
 # third-party
 from pydantic import BaseModel, validator
-from tcex.input.field_type import Choice, always_array, integer, string
+from tcex.input.field_type import Choice, always_array, string
 from tcex.input.input import Input
 from tcex.input.model.app_playbook_model import AppPlaybookModel
 
@@ -23,59 +22,31 @@ class AppBaseModel(AppPlaybookModel):
     )
 
 
-class Append(AppBaseModel):
-    """Action Model"""
-
-    # playbookDataType = String
-    append_chars: Annotated[str, string(min_length=1)]
-
-
-class Capitalize(AppBaseModel):
+class CapitalizeModel(AppBaseModel):
     """Action Model"""
 
 
-class LowerCase(AppBaseModel):
+class LowerCaseModel(AppBaseModel):
     """Action Model"""
 
 
-class Prepend(AppBaseModel):
+class ReverseModel(AppBaseModel):
     """Action Model"""
-
-    # playbookDataType = String
-    prepend_chars: Annotated[str, string(min_length=1)]
-
-
-class Reverse(AppBaseModel):
-    """Action Model"""
-
-
-class StartsWith(AppBaseModel):
-    """Action Model"""
-
-    # playbookDataType = String
-    starts_with_chars: Annotated[str, string(min_length=1)]
-    # playbookDataType = String
-    starts_with_start: Annotated[int, integer(gt=-1)]
-    # playbookDataType = String
-    starts_with_stop: Annotated[int, integer(gt=0)] | None
 
 
 class AppInputs:
     """App Inputs"""
 
-    def __init__(self, inputs: Input) -> None:
+    def __init__(self, inputs: Input):
         """Initialize class properties."""
         self.inputs = inputs
 
     def action_model_map(self, tc_action: str) -> type[BaseModel]:
         """Return action model map."""
         _action_model_map = {
-            'Append': Append,
-            'capitalize': Capitalize,
-            'lowercase': LowerCase,
-            'prepend': Prepend,
-            'reverse': Reverse,
-            'starts_with': StartsWith,
+            'capitalize': CapitalizeModel,
+            'lowercase': LowerCaseModel,
+            'reverse': ReverseModel,
         }
         tc_action_key = tc_action.lower().replace(' ', '_')
         return _action_model_map.get(tc_action_key)
@@ -96,7 +67,7 @@ class AppInputs:
 
         return action_model
 
-    def update_inputs(self) -> None:
+    def update_inputs(self):
         """Add custom App models to inputs.
 
         Input will be validate when the model is added an any exceptions will

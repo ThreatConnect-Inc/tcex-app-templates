@@ -1,5 +1,6 @@
 """ThreatConnect Trigger Service App"""
 # standard library
+import datetime
 from typing import cast
 
 # third-party
@@ -14,13 +15,13 @@ from service_app import ServiceApp  # Import default Service App Class (Required
 class App(ServiceApp):
     """Service App Template."""
 
-    def run(self) -> None:
+    def run(self):
         """Run the trigger logic."""
         service: CommonServiceTrigger = cast(CommonServiceTrigger, self.tcex.app.service)
 
-        while service.loop_forever(sleep=30):
+        while service.loop_forever(sleep=15):
             # startup inputs, access via self.inputs.model.service_input
-            self.log.debug(f'Server configuration service_input {self.inputs.model.dict()}')
+            self.log.debug(f'Server configuration service_input {self.tcex.inputs.model.dict()}')
 
             # any "extra" args passed to fire_event will be
             # available in kwargs in the callback method
@@ -48,11 +49,10 @@ class App(ServiceApp):
         self.log.debug(f'my_data: {my_data}')
 
         # args defined in install.json with serviceConfig set to False are available in config
-        self.log.debug(f'''Playbook configuration playbook_input {config.playbook_input}''')
+        self.log.debug(f'''Trigger configuration trigger_input {config.trigger_input}''')
 
         # write output variable
-        playbook.create.variable(
-            'example.service_input', self.inputs.model.service_input  # typing: ignore
-        )
-        playbook.create.variable('example.playbook_input', config.playbook_input)
+        playbook.create.variable('example.date_time', datetime.datetime.now().isoformat())
+        playbook.create.variable('example.service_input', self.in_.service_input)
+        playbook.create.variable('example.trigger_input', config.trigger_input)
         return True

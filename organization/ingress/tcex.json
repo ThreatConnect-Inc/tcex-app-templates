@@ -1,17 +1,14 @@
 {
   "package": {
-    "app_name": "TC_-_Tcex_4_Ingress_Template",
+    "app_name": "TC_-_Organization_Ingress",
     "excludes": [
       ".gitignore",
       ".pre-commit-config.yaml",
-      "app.yaml",
+      "app_spec.yaml",
       "local-*",
-      "pyproject.toml",
-      "setup.cfg",
-      "tcex.json"
+      "pyproject.toml"
     ]
   },
   "template_name": "ingress",
-  "template_repo_hash": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
   "template_type": "organization"
 }

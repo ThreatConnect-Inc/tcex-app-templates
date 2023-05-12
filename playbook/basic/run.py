@@ -23,7 +23,7 @@ class Run:
         # to the method is tried first, followed by a normalization of the tc_action
         # value, and finally an attempt is made to find the reserved "tc_action_map"
         # property to map value to method.
-        tc_action: str = self.app.model.tc_action  # type: ignore
+        tc_action: str = self.app.in_.tc_action  # type: ignore
         tc_action_formatted = tc_action.lower().replace(' ', '_')
         tc_action_map = 'tc_action_map'  # reserved property name for action to method map
 
@@ -65,8 +65,8 @@ class Run:
 
             # run the App logic
             if (
-                hasattr(self.app.inputs.model, 'tc_action')
-                and self.app.model.tc_action is not None  # type: ignore
+                hasattr(self.app.in_, 'tc_action')
+                and self.app.in_.tc_action is not None  # type: ignore
             ):
                 self._run_tc_action_method()
             else:
@@ -84,7 +84,8 @@ class Run:
             self.tcex.log.error(traceback.format_exc())
             self.exit(1, main_err)
 
-    def setup(self):
+    @staticmethod
+    def setup():
         """Handle the deps directory."""
         # configure the deps directory before importing any third-party packages
         # for TcEx 4 and above, all additional packages are in the "deps" directory

@@ -7,6 +7,8 @@ from typing import TYPE_CHECKING
 
 # third-party
 from flask import Blueprint, render_template
+
+# first-party
 from flask_app.tc_search_blueprint.tc_search_view import TCSearchView
 
 if TYPE_CHECKING:
@@ -31,7 +33,9 @@ def create_blueprint(tcex: 'TcEx'):
         template_folder='templates',
     )
 
-    bp.add_url_rule('/search', view_func=TCSearchView.as_view('search', tcex=tcex))
+    bp.add_url_rule(
+        '/search', view_func=TCSearchView.as_view('search', tcex=tcex), strict_slashes=False
+    )
 
     @bp.route('/')
     def tc_search_form():

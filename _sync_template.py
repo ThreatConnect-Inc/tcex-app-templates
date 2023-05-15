@@ -199,7 +199,10 @@ class SyncTemplate:
                     continue
 
                 if file.name in ['tests']:
-                    shutil.rmtree(dst_path / file.name)
+                    shutil.rmtree(dst_path / file.name, ignore_errors=True)
+                    shutil.copytree(file, dst_path / file.name)
+                elif file.name in ['flask_app']:
+                    shutil.rmtree(dst_path / file.name, ignore_errors=True)
                     shutil.copytree(file, dst_path / file.name)
             elif file.is_file():
                 filename = file.name

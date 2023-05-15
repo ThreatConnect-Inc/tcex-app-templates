@@ -10,6 +10,6 @@ from flask_app import create_app
 class App(ApiServiceApp):
     """API Service App"""
 
-    def get_wsgi_app(self, url_prefix: str) -> WSGIApplication:
+    def get_wsgi_app(self) -> WSGIApplication:
         """Create and return Flask app."""
-        return create_app(url_prefix, self.tcex, self.inputs)
+        return create_app(self.tcex)

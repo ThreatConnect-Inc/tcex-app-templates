@@ -17,7 +17,7 @@ class AppInputs:
     def update_inputs(self) -> None:
         """Add custom App models to inputs.
 
-        Input will be validate when the model is added an any exceptions will
+        Input will be validated when the model is added and any exceptions will
         cause the App to exit with a status code of 1.
         """
         self.inputs.add_model(AppBaseModel)

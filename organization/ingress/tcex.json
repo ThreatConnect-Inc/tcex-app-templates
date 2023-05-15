@@ -1,17 +1,14 @@
 {
   "package": {
-    "app_name": "TC_-_",
+    "app_name": "TC_-_Organization_Ingress",
     "excludes": [
       ".gitignore",
       ".pre-commit-config.yaml",
-      "app.yaml",
+      "app_spec.yaml",
       "local-*",
-      "pyproject.toml",
-      "setup.cfg"
-    ],
-    "output_dir": "target"
+      "pyproject.toml"
+    ]
   },
   "template_name": "ingress",
-  "template_repo_hash": null,
   "template_type": "organization"
 }

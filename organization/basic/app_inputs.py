@@ -1,6 +1,7 @@
 """App Inputs"""
 # third-party
 from pydantic import BaseModel
+from tcex.input.input import Input
 
 
 class AppBaseModel(BaseModel):
@@ -10,11 +11,11 @@ class AppBaseModel(BaseModel):
 class AppInputs:
     """App Inputs"""
 
-    def __init__(self, inputs: 'BaseModel') -> None:
+    def __init__(self, inputs: Input):
         """Initialize class properties."""
         self.inputs = inputs
 
-    def update_inputs(self) -> None:
+    def update_inputs(self):
         """Add custom App models to inputs.
 
         Input will be validate when the model is added an any exceptions will

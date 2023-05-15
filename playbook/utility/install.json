@@ -8,7 +8,7 @@
     "fileParams"
   ],
   "labels": [],
-  "languageVersion": "3.6",
+  "languageVersion": "3.11",
   "listDelimiter": "|",
   "note": "Take raw JSON string and output \"pretty\" version with provide indent level. Optionally sort the keys.",
   "params": [
@@ -64,7 +64,8 @@
     "type": "Utility"
   },
   "programLanguage": "PYTHON",
-  "programMain": "run",
+  "programMain": "run.py",
   "programVersion": "1.0.0",
-  "runtimeLevel": "Playbook"
+  "runtimeLevel": "Playbook",
+  "sdkVersion": "4.0.0"
 }

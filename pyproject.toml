@@ -2,27 +2,36 @@
 line-length = 100
 skip-string-normalization = true
 
+[tool.isort]
+skip_glob = ["*"]
+
+[tool.pydocstyle]
+ignore = [
+  "D202", # no blank lines allowed after function docstring
+  "D203", # 1 blank line required before class docstring (found 0)
+  "D213", # Multi-line docstring summary should start at the second line
+  "D400", # First line should end with a period ...
+  "D406", # Section name should end with a newline ...
+  "D407", # Missing dashed underline after section ...
+  "D413", # Missing blank line after last section ...
+  "D415", # First line should end with a period, question mark, or exclamation point ...
+]
+
 [tool.pylint.messages_control]
-# C0103 - invalid-name
-# C0302 - too-many-lines
-# C0401 - wrong-spelling
-# R0205 - useless-object-inheritance
-# R0801 - duplicate-code
-# R0902 - too-many-instance-attributes
-# R0903 - too-few-public-methods
-# R0904 - too-many-public-methods
-# R0912 - too-many-branches
-# R0913 - too-many-arguments
-# R0914 - too-many-locals
-# R0915 - too-many-statements
-# R1702 - too-many-nested-blocks
-# W0212 - protected-access
-# W0511 - fixme
-# W0703 - broad-except
-# W0707 - raise-missing-from
-# W1203 - logging-fstring-interpolation
-# W1514 - Using open without explicitly specifying an encoding (unspecified-encoding)
-disable = "C0103,C0302,C0415,E0401,R0205,R0801,R0902,R0903,R0904,R0912,R0913,R0914,R0915,R1702,W0212,W0511,W0703,W0707,W1203,W1514"
-extension-pkg-allow-list = "falcon"
+disable = [
+  "broad-exception-caught",
+  "duplicate-code",
+  "fixme",
+  "inconsistent-return-statements", # pylint doesn't properly handle "NoReturn" in all cases
+  "invalid-name",
+  "logging-fstring-interpolation",
+  "relative-beyond-top-level", # disable relative rule due to this project being a submodule
+  "too-few-public-methods",
+  "too-many-arguments",
+  "too-many-branches",
+  "too-many-instance-attributes",
+  "too-many-locals",
+  "too-many-public-methods",
+  "too-many-return-statements",
+]
 extension-pkg-whitelist = "pydantic"
-ignored-classes = "scoped_session"

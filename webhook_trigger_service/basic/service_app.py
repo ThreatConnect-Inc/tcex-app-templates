@@ -1,44 +1,40 @@
 """Service App module for TcEx App."""
 # standard library
-from typing import TYPE_CHECKING
+from typing import cast
 
 # third-party
 from pydantic import ValidationError
+from tcex import TcEx
 
 # first-party
-from app_inputs import AppInputs
-
-if TYPE_CHECKING:
-    # third-party
-    from tcex import TcEx
-    from tcex.input.input import Input
-    from tcex.logger.trace_logger import TraceLogger
+from app_inputs import AppInputs, ServiceConfigModel, TriggerConfigModel
 
 
 class ServiceApp:
     """Service App Class"""
 
-    def __init__(self, _tcex: 'TcEx'):
+    def __init__(self, _tcex: TcEx):
         """Initialize class properties."""
-        self.tcex: 'TcEx' = _tcex
-
-        # properties
-        self.exit_message = 'Success'
-        self.inputs: 'Input' = self.tcex.inputs
-        self.log: 'TraceLogger' = self.tcex.log
+        self.tcex: TcEx = _tcex
 
         # automatically parse args on init
         self._update_inputs()
 
-    def _update_inputs(self) -> None:
+        # properties
+        self.exit_message = 'Success'
+        self.in_ = cast(ServiceConfigModel, self.tcex.inputs.model)
+        self.in_unresolved = cast(ServiceConfigModel, self.tcex.inputs.model_unresolved)
+        self.log = self.tcex.log
+
+    def _update_inputs(self):
         """Add an custom App models and run validation."""
         try:
             AppInputs(inputs=self.tcex.inputs).update_inputs()
         except ValidationError as ex:
-            self.tcex.exit(code=1, msg=self.inputs.validation_exit_message(ex))
+            self.tcex.exit.exit(code=1, msg=self.tcex.inputs.validation_exit_message(ex))
 
     # pylint: disable=unused-argument
-    def create_config_callback(self, trigger_id: str, config: dict, **kwargs) -> dict:
+    def create_config_callback(self, config: TriggerConfigModel, **kwargs) -> dict:
         """Handle create config messages.
 
         Args:
@@ -54,7 +50,7 @@ class ServiceApp:
         return {'msg': 'Success', 'status': True}
 
     # pylint: disable=unused-argument
-    def delete_config_callback(self, trigger_id: int) -> None:
+    def delete_config_callback(self, trigger_id: int):
         """Handle delete config messages.
 
         Args:
@@ -62,18 +58,18 @@ class ServiceApp:
         """
         self.log.trace('delete config callback')
 
-    def run(self) -> None:
+    def run(self):
         """Run the App main logic."""
         self.log.trace('run')
 
-    def setup(self) -> None:
+    def setup(self):
         """Perform setup actions."""
         self.log.trace('feature=app, event=setup')
 
-    def shutdown_callback(self) -> None:
+    def shutdown_callback(self):
         """Handle shutdown messages."""
         self.log.trace('shutdown callback')
 
-    def teardown(self) -> None:
+    def teardown(self):
         """Perform teardown actions."""
         self.log.trace('feature=app, event=teardown')

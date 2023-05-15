@@ -1,14 +1,11 @@
 """App Inputs"""
-# standard library
-from typing import List, Union
-
 # third-party
-from pydantic import BaseModel
-from tcex.input.field_types import String
-from tcex.input.models import CreateConfigModel
+from tcex.input.input import Input
+from tcex.input.model.app_webhook_trigger_service_model import AppWebhookTriggerServiceModel
+from tcex.input.model.create_config_model import CreateConfigModel
 
 
-class ServiceConfigModel(BaseModel):
+class ServiceConfigModel(AppWebhookTriggerServiceModel):
     """Base model for the App containing any common inputs.
 
     Trigger Service App inputs do not take playbookDataType.
@@ -17,8 +14,6 @@ class ServiceConfigModel(BaseModel):
     on startup. The inputs that are configured in the Service
     configuration in the Platform.
     """
-
-    service_input: Union[List[String], String]
 
 
 class TriggerConfigModel(CreateConfigModel):
@@ -30,19 +25,14 @@ class TriggerConfigModel(CreateConfigModel):
     when a Playbook is enabled (createConfig).
     """
 
-    playbook_input: String
-
 
 class AppInputs:
     """App Inputs"""
 
-    def __init__(self, inputs: 'BaseModel') -> None:
+    def __init__(self, inputs: Input):
         """Initialize class properties."""
         self.inputs = inputs
 
-        # update with custom models and run validation
-        self.update_inputs()
-
-    def update_inputs(self) -> None:
+    def update_inputs(self):
         """Add custom App models to inputs. Validation will run at the same time."""
         self.inputs.add_model(ServiceConfigModel)

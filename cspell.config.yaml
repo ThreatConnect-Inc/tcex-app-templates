@@ -6,3 +6,4 @@ words:
   - appbuilderconfig
 ignoreWords: []
 import: []
+language: en-US,en

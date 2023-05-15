@@ -1,13 +1,13 @@
 {
   "allowOnDemand": true,
-  "displayName": "",
+  "displayName": "Basic Service Trigger",
   "features": [
     "appBuilderCompliant",
     "fileParams",
     "secureParams"
   ],
   "labels": [],
-  "languageVersion": "3.6",
+  "languageVersion": "3.11",
   "listDelimiter": "|",
   "minServerVersion": "6.0.7",
   "note": "",
@@ -26,7 +26,7 @@
     },
     {
       "label": "Example Playbook Input",
-      "name": "playbook_input",
+      "name": "trigger_input",
       "note": "An example input to the Trigger at the playbook level.",
       "playbookDataType": [
         "String"
@@ -43,18 +43,23 @@
   "playbook": {
     "outputVariables": [
       {
+        "name": "example.date_time",
+        "type": "String"
+      },
+      {
         "name": "example.service_input",
         "type": "String"
       },
       {
-        "name": "example.playbook_input",
+        "name": "example.trigger_input",
         "type": "String"
       }
     ],
     "type": "Service Trigger"
   },
   "programLanguage": "PYTHON",
-  "programMain": "run",
+  "programMain": "run.py",
   "programVersion": "1.0.0",
-  "runtimeLevel": "TriggerService"
+  "runtimeLevel": "TriggerService",
+  "sdkVersion": "4.0.0"
 }

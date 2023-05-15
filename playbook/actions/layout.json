@@ -7,43 +7,23 @@
         },
         {
           "name": "tc_action"
-        },
-        {
-          "display": "tc_action in ('Prepend')",
-          "name": "prepend_chars"
-        },
-        {
-          "display": "tc_action in ('Starts With')",
-          "name": "starts_with_chars"
-        },
-        {
-          "display": "tc_action in ('Starts With')",
-          "name": "starts_with_start"
-        },
-        {
-          "display": "tc_action in ('Starts With')",
-          "name": "starts_with_stop"
         }
       ],
-      "sequence": 2,
+      "sequence": 1,
       "title": "Configure"
     }
   ],
   "outputs": [
     {
-      "display": "tc_action not in ('')",
+      "display": "1",
       "name": "string.action"
     },
     {
-      "display": "tc_action not in ('')",
-      "name": "string.outputs.0"
-    },
-    {
-      "display": "tc_action not in ('')",
+      "display": "1",
       "name": "string.outputs.count"
     },
     {
-      "display": "tc_action not in ('')",
+      "display": "1",
       "name": "string.outputs"
     }
   ]

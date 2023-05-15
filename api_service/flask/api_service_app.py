@@ -1,46 +1,41 @@
 """App Module"""
 # standard library
-from abc import ABC, abstractmethod
-from typing import TYPE_CHECKING
-from urllib.parse import urlparse
+from abc import abstractmethod
+from typing import cast
+from wsgiref.types import WSGIApplication
 
 # third-party
 from pydantic import ValidationError
+from tcex import TcEx
 
 # first-party
-from app_inputs import AppInputs
-
-if TYPE_CHECKING:
-    # third-party
-    from tcex import TcEx
-    from tcex.input.input import Input
-    from tcex.logger.trace_logger import TraceLogger
-    from wsgi_types import WSGIApplication
+from app_inputs import AppBaseModel, AppInputs
 
 
-class ApiServiceApp(ABC):
+class ApiServiceApp:
     """Service App Class"""
 
-    def __init__(self, _tcex: 'TcEx'):
+    def __init__(self, _tcex: TcEx):
         """Initialize class properties."""
-        self.tcex: 'TcEx' = _tcex
+        self.tcex = _tcex
+
+        # automatically process inputs on init
+        self._update_inputs()
 
         # properties
         self.exit_message = 'Success'
-        self.inputs: 'Input' = self.tcex.inputs
-        self.log: 'TraceLogger' = self.tcex.log
+        self.in_ = cast(AppBaseModel, self.tcex.inputs.model)
+        self.in_unresolved = cast(AppBaseModel, self.tcex.inputs.model_unresolved)
+        self.log = self.tcex.log
 
-        # automatically parse args on init
-        self._update_inputs()
+        self.wsgi_app: WSGIApplication | None = None
 
-        self.app = None
-
-    def _update_inputs(self) -> None:
+    def _update_inputs(self):
         """Add an custom App models and run validation."""
         try:
-            AppInputs(inputs=self.tcex.inputs)
+            AppInputs(inputs=self.tcex.inputs).update_inputs()
         except ValidationError as ex:
-            self.tcex.exit(code=1, msg=ex)
+            self.tcex.exit.exit(code=1, msg=self.tcex.inputs.validation_exit_message(ex))
 
     def setup(self) -> None:
         """Perform setup actions."""
@@ -60,28 +55,11 @@ class ApiServiceApp(ABC):
         The first time this function is called, it will call get_wsgi_app() to create the wsgi app,
         passing the url_prefix for this app.
         """
+        if self.wsgi_app is None:
+            self.wsgi_app = self.get_wsgi_app()
 
-        request_url = environ.get('request_url')
-        path_info = environ.get('PATH_INFO')
-
-        request_url = urlparse(request_url).path
-
-        if path_info:
-            base_path = request_url[: -len(path_info)]
-        else:
-            base_path = request_url
-
-        if base_path.endswith('/'):
-            base_path = base_path[:-1]
-
-        if self.app is None:
-            self.app = self.get_wsgi_app(base_path)
-
-        # we need path_info to be the full path from the url, not just the part for our app.
-        environ['PATH_INFO'] = request_url
-
-        return self.app(environ, response_handler)
+        return self.wsgi_app(environ, response_handler)
 
     @abstractmethod
-    def get_wsgi_app(self, url_prefix: str) -> 'WSGIApplication':
+    def get_wsgi_app(self) -> WSGIApplication:
         """Create and return a WSGI application to handle requests."""

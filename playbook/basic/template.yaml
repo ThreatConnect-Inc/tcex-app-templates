@@ -7,13 +7,13 @@ summary: A template that provides the structure for a Playbook App without any A
 # These are files that the App developer "should" not be
 # editing and will be overwritten without prompt during updating.
 template_files:
-  - __main__.py
   - playbook_app.py
   - run.py
+  - run_local.py
 # One or more parent templates for the current template. The parent
 # template files will be pulled in the order that they are defined with
 # the later templates having precedent over the prior templates.
 template_parents:
   - _app_common
 # The current version number of this template.
-version: 1.0.1
+version: 1.0.0

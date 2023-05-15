@@ -1,52 +1,46 @@
 """ThreatConnect Job App"""
 # standard library
 import itertools
-from typing import TYPE_CHECKING
+from collections.abc import Iterable
+from datetime import datetime
 
 # third-party
+from tcex import TcEx
+from tcex.api.tc.v3.indicators.indicator import Indicator
 from tcex.api.tc.v3.tql.tql_operator import TqlOperator
 from tcex.exit import ExitCode
+from tcex.requests_external import ExternalSession
 
 # first-party
-from job_app import JobApp  # Import default Job App Class (Required)
-
-if TYPE_CHECKING:
-    # standard library
-    from typing import Iterable
-
-    # third-party
-    from tcex import TcEx
-    from tcex.api.tc.v3.indicators.indicator import Indicator
-    from tcex.sessions.external_session import ExternalSession
-
-    from .app_inputs import TCFiltersModel
+from app_inputs import TCFiltersModel
+from job_app import JobApp
 
 
 class App(JobApp):
     """Job App"""
 
-    def __init__(self, _tcex: 'TcEx') -> None:
+    def __init__(self, _tcex: TcEx):
         """Initialize class properties."""
         super().__init__(_tcex)
 
         # properties
-        self.session = None
+        self.session: ExternalSession
 
-    def setup(self) -> None:
+    def setup(self):
         """Perform prep/setup logic."""
-        # using tcex session_external to get built-in features (e.g., proxy, logging, retries)
-        self.session: 'ExternalSession' = self.tcex.session_external
+        # using tcex session_external to get built-in features (e.g., proxy, logging, retries).
+        self.session = ExternalSession()
 
-        # setting the base url allow for subsequent API calls to be made by only
-        # providing the API endpoint/path.
+        # setting the base url allow for subsequent API calls
+        # to be made by only providing the API endpoint/path.
         self.session.base_url = 'https://httpbin.org'
 
-    def run(self) -> None:
+    def run(self):
         """Run main App logic."""
         success, error = (0, 0)
         # httbin used for demonstration only, we don't want to bombard it with traffic, so
-        # send AT MOST 10 requests per run. Replace this code with your target service ASAP
-        for indicator in self.get_indicators(self.inputs.model, 10):
+        # send AT MOST 10 requests per run. Replace this code with your target service ASAP.
+        for indicator in self.get_indicators(self.in_, 10):
             resp = self.session.post('/post', data=indicator.model.json())
             if resp.ok:
                 success += 1
@@ -59,19 +53,13 @@ class App(JobApp):
         else:
             exit_msg += 'to external service.'
 
-        self.tcex.exit(ExitCode.SUCCESS, exit_msg)
+        if not self.in_.tql:
+            self.tcex.app.results_tc('last_modified', datetime.utcnow().isoformat())
 
-    def get_indicators(self, model: 'TCFiltersModel', max_results=None) -> 'Iterable[Indicator]':
-        """Retrieve indicators from ThreatConnect based on filter params.
+        self.tcex.exit.exit(ExitCode.SUCCESS, exit_msg)
 
-        Args:
-            model - filters for indicator retrieval
-            max_results - the max number of indicators to return.
-
-        Returns:
-            A generator of v3 indicator objects.
-        """
-
+    def get_indicators(self, model: TCFiltersModel, max_results=None) -> Iterable[Indicator]:
+        """Retrieve indicators from ThreatConnect based on filter params."""
         # Retrieve all fields associated with IOCs. Can customize when needed.
         additional_fields = {
             'fields': [
@@ -84,9 +72,9 @@ class App(JobApp):
                 'securityLabels',
             ]
         }
-        indicators = self.tcex.v3.indicators(params=additional_fields)
+        indicators = self.tcex.api.tc.v3.ti.indicators(params=additional_fields)
         if model.tql:
-            indicators = self.tcex.v3.indicators(params=additional_fields)
+            indicators = self.tcex.api.tc.v3.ti.indicators(params=additional_fields)
 
             # Check to see if user picked one or more owners as we
             # will add those into the TQL. The owner is not already in
@@ -94,10 +82,10 @@ class App(JobApp):
             # for adding in owner here as that only supports 1 owner and
             # we might have multiple to add.
             tql = model.tql
-            if model.owner:
+            if model.owners:
                 tql += (
                     ' and ownerName IN ('
-                    + ', '.join(f'"{item}"' for item in self.inputs.model.owners)
+                    + ', '.join(f'"{item}"' for item in self.in_.owners or [])
                     + ')'
                 )
 

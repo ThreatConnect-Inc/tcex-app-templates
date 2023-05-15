@@ -1,6 +1,5 @@
 {
   "allowOnDemand": true,
-  "appId": "50e2a95a-ab43-5c77-9123-d05d4aad7ae5",
   "displayName": "Egress Template",
   "features": [
     "aotExecutionEnabled",
@@ -8,18 +7,18 @@
     "fileParams"
   ],
   "labels": [],
-  "languageVersion": "3.9",
+  "languageVersion": "3.11",
   "listDelimiter": "|",
   "note": "A template of a working ingress Organization App.",
   "params": [
     {
-      "label": "TQL",
-      "name": "tql",
-      "note": "A custom TQL query. When using TQL, other filter fields will be ignored. For details on writing TQL see <a href=\"https://training.threatconnect.com/learn/article/using-threatconnect-query-language-tql-kb-article\" target=\"_blank\" class=\"fa fa-external-link\">https://training.threatconnect.com/learn/article/using-threatconnect-query-language-tql-kb-article</a>.",
-      "sequence": 1,
-      "type": "String",
+      "allowMultiple": true,
+      "label": "ThreatConnect Owners",
+      "name": "owners",
+      "note": "The ThreatConnect Owner(s) on which to filter.",
+      "type": "MultiChoice",
       "validValues": [
-        "${TEXT}"
+        "${OWNERS}"
       ]
     },
     {
@@ -27,58 +26,35 @@
       "label": "Indicator Types",
       "name": "indicator_types",
       "note": "The ThreatConnect Indicator types on which to filter.",
-      "sequence": 2,
       "type": "MultiChoice",
       "validValues": [
         "${INDICATOR_TYPES}"
       ]
     },
     {
-      "allowMultiple": true,
-      "label": "ThreatConnect Owners",
-      "name": "owners",
-      "note": "The ThreatConnect Owner(s) on which to filter.",
-      "sequence": 3,
-      "type": "MultiChoice",
+      "default": "30 days ago",
+      "label": "Last Run",
+      "name": "last_modified",
+      "note": "Data modified since this date will be included on first run. Thereafter, the date will be automatically updated each time the job successfully completes.",
+      "type": "String",
       "validValues": [
-        "${OWNERS}"
+        "${TEXT}"
       ]
     },
     {
-      "label": "Include Tags",
+      "label": "TQL",
+      "name": "tql",
+      "note": "A custom TQL query. When using TQL, other filter fields will be ignored. For details on writing TQL see <a href=\"https://training.threatconnect.com/learn/article/using-threatconnect-query-language-tql-kb-article\" target=\"_blank\" class=\"fa fa-external-link\">https://training.threatconnect.com/learn/article/using-threatconnect-query-language-tql-kb-article</a>.",
+      "type": "String",
+      "validValues": [
+        "${TEXT}"
+      ]
+    },
+    {
+      "label": "Tag Filter",
       "name": "tags",
       "note": "Indicators must have at least one of these Tags to be exported. Query logic is \"OR\".",
       "sequence": 4,
-      "type": "String",
-      "validValues": [
-        "${TEXT}"
-      ]
-    },
-    {
-      "label": "Maximum False Positive Count",
-      "name": "max_false_positives",
-      "note": "Indicators must have fewer than this number of False Positives to be exported.",
-      "sequence": 5,
-      "type": "String",
-      "validValues": [
-        "${TEXT}"
-      ]
-    },
-    {
-      "label": "Minimum Confidence Rating",
-      "name": "minimum_confidence",
-      "note": "Indicators must have at least this Confidence Rating to be exported. Enter 0-100 or leave blank for Any.",
-      "sequence": 6,
-      "type": "String",
-      "validValues": [
-        "${TEXT}"
-      ]
-    },
-    {
-      "label": "Minimum Threat Rating",
-      "name": "minimum_rating",
-      "note": "Indicators must have at least this Threat Rating to be exported. Enter 1-5 or leave blank for Any.",
-      "sequence": 7,
       "type": "String",
       "validValues": [
         "${TEXT}"
@@ -95,12 +71,30 @@
       ]
     },
     {
-      "default": "30 days ago",
-      "label": "Last Modified",
-      "name": "last_modified",
-      "note": "Data modified since this date will be included on first run. Thereafter, the date will be automatically updated each time the job successfully completes.",
-      "required": true,
-      "sequence": 9,
+      "label": "Minimum Threat Rating",
+      "name": "minimum_rating",
+      "note": "Indicators must have at least this Threat Rating to be exported. Enter 1-5 or leave blank for Any.",
+      "sequence": 7,
+      "type": "String",
+      "validValues": [
+        "${TEXT}"
+      ]
+    },
+    {
+      "label": "Minimum Confidence Rating",
+      "name": "minimum_confidence",
+      "note": "Indicators must have at least this Confidence Rating to be exported. Enter 0-100 or leave blank for Any.",
+      "sequence": 6,
+      "type": "String",
+      "validValues": [
+        "${TEXT}"
+      ]
+    },
+    {
+      "label": "Maximum False Positive Count",
+      "name": "max_false_positives",
+      "note": "Indicators must have fewer than this number of False Positives to be exported.",
+      "sequence": 5,
       "type": "String",
       "validValues": [
         "${TEXT}"
@@ -121,7 +115,8 @@
     }
   ],
   "programLanguage": "PYTHON",
-  "programMain": "run",
+  "programMain": "run.py",
   "programVersion": "1.0.0",
-  "runtimeLevel": "Organization"
+  "runtimeLevel": "Organization",
+  "sdkVersion": "4.0.0"
 }

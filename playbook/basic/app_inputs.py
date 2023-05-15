@@ -1,20 +1,21 @@
 """App Inputs"""
 # third-party
-from pydantic import BaseModel
+from tcex.input.input import Input
+from tcex.input.model.app_playbook_model import AppPlaybookModel
 
 
-class AppBaseModel(BaseModel):
+class AppBaseModel(AppPlaybookModel):
     """Base model for the App containing any common inputs."""
 
 
 class AppInputs:
     """App Inputs"""
 
-    def __init__(self, inputs: 'BaseModel') -> None:
+    def __init__(self, inputs: Input):
         """Initialize class properties."""
         self.inputs = inputs
 
-    def update_inputs(self) -> None:
+    def update_inputs(self):
         """Add custom App models to inputs.
 
         Input will be validate when the model is added an any exceptions will

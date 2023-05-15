@@ -23,61 +23,26 @@ repos:
       - id: requirements-txt-fixer
       - id: trailing-whitespace
   - repo: https://github.com/pycqa/bandit
-    rev: 1.7.4
+    rev: 1.7.5
     hooks:
       - id: bandit
         exclude: |
           (?x)(
-              ^app_init/|
-              ^docs/|
-              ^tcex/testing/|
-              ^tests/
+              tests/
           )
   - repo: https://github.com/psf/black
-    rev: 22.10.0
+    rev: 23.3.0
     hooks:
       - id: black
-  - repo: https://github.com/PyCQA/flake8
-    rev: 6.0.0
-    hooks:
-      - id: flake8
-  - repo: https://github.com/pre-commit/mirrors-isort
-    rev: v5.10.1
-    hooks:
-      - id: isort
-        exclude: |
-          (?x)(
-              ^app_init/
-          )
   - repo: https://github.com/pycqa/pydocstyle
-    rev: 6.1.1
+    rev: 6.3.0
     hooks:
       - id: pydocstyle
         args:
           - --ignore=D104,D202,D203,D213,D300,D301,D400,D402,D406,D407,D413,D415
-        exclude: |
-          (?x)(
-              ^docs/|
-              ^tcex/threat_intelligence/|
-              ^tests/
-          )
   - repo: https://github.com/asottile/pyupgrade
-    rev: v3.2.3
+    rev: v3.3.1
     hooks:
       - id: pyupgrade
         args:
-          - --py3-plus
-          - --py36-plus
-  - repo: https://github.com/yunojuno/pre-commit-xenon
-    rev: v0.1
-    hooks:
-      - id: xenon
-        args: ['--max-average=B', '-e=tests*']
-  - repo: local
-    hooks:
-      - id: pylint
-        entry: pylint
-        language: system
-        name: pylint
-        types: [python]
-        args: ['--jobs=3']
+          - --py311-plus

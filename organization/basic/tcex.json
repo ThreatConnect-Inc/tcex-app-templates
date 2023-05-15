@@ -1,13 +1,12 @@
 {
   "package": {
-    "app_name": "TC_-_",
+    "app_name": "TC_-_Organization_Basic",
     "excludes": [
       ".gitignore",
       ".pre-commit-config.yaml",
-      "app.yaml",
+      "app_spec.yaml",
       "local-*",
-      "pyproject.toml",
-      "setup.cfg"
+      "pyproject.toml"
     ],
     "outdir": "target"
   },

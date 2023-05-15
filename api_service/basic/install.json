@@ -4,15 +4,17 @@
   "displayPath": "my_api",
   "features": [
     "appBuilderCompliant",
-    "fileParams"
+    "fileParams",
+    "linkApiPath"
   ],
   "labels": [],
-  "languageVersion": "3.6",
+  "languageVersion": "3.11",
   "listDelimiter": "|",
   "note": "",
   "params": [],
   "programLanguage": "PYTHON",
-  "programMain": "run",
+  "programMain": "run.py",
   "programVersion": "1.0.0",
-  "runtimeLevel": "ApiService"
+  "runtimeLevel": "ApiService",
+  "sdkVersion": "4.0.0"
 }

@@ -1,13 +1,12 @@
 {
   "package": {
-    "app_name": "TCVA_-_",
+    "app_name": "TCVA_-_Api_Service_Basic",
     "excludes": [
       ".gitignore",
       ".pre-commit-config.yaml",
-      "app.yaml",
+      "app_spec.yaml",
       "local-*",
-      "pyproject.toml",
-      "setup.cfg"
+      "pyproject.toml"
     ]
   },
   "template_name": "basic",

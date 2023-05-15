@@ -9,8 +9,6 @@ summary: The App Common template.
 template_files:
   - .coveragerc
   - .pre-commit-config.yaml
-  - app_lib.py
   - pyproject.toml
-  - setup.cfg
 # The current version number of this template.
 version: 1.0.0

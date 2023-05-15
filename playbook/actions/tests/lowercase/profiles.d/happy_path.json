@@ -1,0 +1,46 @@
+{
+  "_comments_": [],
+  "environments": [
+    "build"
+  ],
+  "exit_codes": [
+    0
+  ],
+  "exit_message": {
+    "expected_output": "Successfully ran lowercase action.\n",
+    "op": "eq"
+  },
+  "initialized": true,
+  "inputs": {
+    "defaults": {},
+    "optional": {},
+    "required": {
+      "input_strings": "#App:1234:input_strings!String",
+      "tc_action": "Lowercase"
+    }
+  },
+  "outputs": {
+    "#App:9876:string.action!String": {
+      "expected_output": "Lowercase",
+      "op": "eq"
+    },
+    "#App:9876:string.outputs!StringArray": {
+      "exclude_paths": [],
+      "expected_output": [
+        "lowercase me"
+      ],
+      "ignore_order": false,
+      "op": "dd"
+    },
+    "#App:9876:string.outputs.count!String": {
+      "expected_output": "1",
+      "op": "is_number"
+    }
+  },
+  "schema_version": "1.0.0",
+  "stage": {
+    "kvstore": {
+      "#App:1234:input_strings!String": "Lowercase me"
+    }
+  }
+}

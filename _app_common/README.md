@@ -1,6 +1,6 @@
 # Release Notes
 
-## 1.0.0 (2021-05-31)
+## 1.0.0 (2023-03-10)
 * Initial Release
 
 # Description
@@ -9,7 +9,6 @@ The files in this parent template are common for all App types and is intended t
 
 ## Template files
 ├── .pre-commit-config.yaml.py
-├── app_lib.py
 ├── coveragerc
 ├── gitignore
 ├── pyproject.toml
@@ -18,9 +17,6 @@ The files in this parent template are common for all App types and is intended t
 
 ### .pre-commit-config.yaml.py (Optional)
 This template file contains a default configuration for the
-
-### app_lib.py (Required)
-This template file allows for support of multiple versions of Python in one App.
 
 ### coveragerc (Optional)
 his template file has a basic configuration for pytest coverage reporting.

@@ -1,6 +1,5 @@
 {
   "allowOnDemand": true,
-  "appId": "6e26ba55-0300-5462-aca7-ea049494c8a5",
   "displayName": "Example Basic Organization App",
   "features": [
     "aotExecutionEnabled",
@@ -8,7 +7,7 @@
     "fileParams"
   ],
   "labels": [],
-  "languageVersion": "3.9",
+  "languageVersion": "3.11",
   "listDelimiter": "|",
   "note": "A template that provides the structure for a Job App without any App logic.",
   "params": [
@@ -27,7 +26,8 @@
     }
   ],
   "programLanguage": "PYTHON",
-  "programMain": "run",
+  "programMain": "run.py",
   "programVersion": "1.0.0",
-  "runtimeLevel": "Organization"
+  "runtimeLevel": "Organization",
+  "sdkVersion": "4.0.0"
 }

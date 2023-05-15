@@ -7,16 +7,30 @@
     "secureParams"
   ],
   "labels": [],
-  "languageVersion": "3.6",
+  "languageVersion": "3.11",
   "listDelimiter": "|",
   "note": "",
   "params": [],
   "playbook": {
-    "outputVariables": [],
-    "type": ""
+    "outputVariables": [
+      {
+        "name": "headers",
+        "type": "String"
+      },
+      {
+        "name": "method",
+        "type": "String"
+      },
+      {
+        "name": "params",
+        "type": "String"
+      }
+    ],
+    "type": "Utility"
   },
   "programLanguage": "PYTHON",
-  "programMain": "run",
+  "programMain": "run.py",
   "programVersion": "1.0.0",
-  "runtimeLevel": "WebhookTriggerService"
+  "runtimeLevel": "WebhookTriggerService",
+  "sdkVersion": "4.0.0"
 }

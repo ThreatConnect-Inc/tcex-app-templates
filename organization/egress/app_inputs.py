@@ -1,11 +1,12 @@
 """App Inputs"""
-# standard library
-from typing import List, Optional
+# pyright: reportGeneralTypeIssues=false
 
 # third-party
-from pydantic import BaseModel, validator
+from pydantic import validator
 from pydantic.class_validators import root_validator
-from tcex.input.field_types import Choice, DateTime, always_array, integer, string
+from tcex.input.field_type import Choice, DateTime, always_array, integer, string
+from tcex.input.input import Input
+from tcex.input.model.app_organization_model import AppOrganizationModel
 
 
 def validate_tql(cls, values: dict):  # pylint: disable=unused-argument
@@ -44,7 +45,7 @@ def validate_tql(cls, values: dict):  # pylint: disable=unused-argument
                 'TQL is not allowed when other filters are selected except for owners.'
             )
 
-        if values.get('owner', None) and 'ownerName' in values.get('tql'):
+        if values.get('owners', None) and 'ownerName' in values.get('tql', ''):
             # They have selected an owner, check if the TQL contains ownerName
             raise ValueError(
                 'There is an owner selected, but the TQL contains ownerName. This is not allowed.'
@@ -52,20 +53,20 @@ def validate_tql(cls, values: dict):  # pylint: disable=unused-argument
     return values
 
 
-class TCFiltersModel(BaseModel):
+class TCFiltersModel(AppOrganizationModel):
     """Standard inputs to filter indicators pulled from ThreatConnect."""
 
-    tql: Optional[string(allow_empty=False)]
-    indicator_types: List[Choice]
-    owners: Optional[List[Choice]]
-    max_false_positives: Optional[integer(gt=0)]
-    minimum_confidence: Optional[integer(ge=0, le=100)]
-    minimum_rating: Optional[integer(ge=1, le=5)]
-    minimum_threatassess_score: Optional[integer(gt=0, le=1_000)]
-    last_modified: DateTime
+    tql: string(allow_empty=False) | None
+    indicator_types: list[Choice] | None
+    owners: list[Choice] | None
+    max_false_positives: integer(gt=0) | None
+    minimum_confidence: integer(ge=0, le=100) | None
+    minimum_rating: integer(ge=1, le=5) | None
+    minimum_threatassess_score: integer(gt=0, le=1_000) | None
+    last_modified: DateTime | None
 
     # validates what we get from core and then turns to array
-    tags: Optional[string(allow_empty=False)]
+    tags: string(allow_empty=False) | None
     _always_array = validator('tags', allow_reuse=True)(always_array(split_csv=True))
 
     # validate that if tql is empty, then
@@ -84,12 +85,12 @@ class AppBaseModel(TCFiltersModel):
 
 
 class AppInputs:
-    """App Inputs"""
+    """App Inputs."""
 
-    def __init__(self, inputs: BaseModel) -> None:
+    def __init__(self, inputs: Input):
         """Initialize class properties."""
         self.inputs = inputs
 
-    def update_inputs(self) -> None:
+    def update_inputs(self):
         """Add custom App models to inputs. Validation will run at the same time."""
         self.inputs.add_model(AppBaseModel)

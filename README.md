@@ -1,5 +1,6 @@
 # tcex-app-templates
-App Templates for the TcEx framework.
+
+App Templates for the TcEx 4 framework.
 
 ## Directory Tree
 
@@ -15,11 +16,13 @@ App Templates for the TcEx framework.
 ```
 
 ## App type to prefix map
-* api_service             - tcva
-* organization            - tc
-* playbook                - tcpb
-* trigger_service         - tcvc
-* web_api_service         - tcvp
-* webhook_trigger_service - tcvw
+
+-   api_service - tcva
+    -   feed_api_service - tcvf
+-   organization - tc
+-   playbook - tcpb
+-   trigger_service - tcvc
+-   web_api_service - tcvp
+-   webhook_trigger_service - tcvw
 
 ## Template Guidelines

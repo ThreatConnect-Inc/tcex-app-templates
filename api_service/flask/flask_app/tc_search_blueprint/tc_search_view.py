@@ -1,7 +1,4 @@
-"""View for ThreatConnect Search Results.
-
-isort:skip_file
-"""
+"""View for ThreatConnect Search Results."""
 # standard library
 from itertools import islice
 
@@ -18,7 +15,7 @@ class TCSearchView(View):
 
     page_size = 10
 
-    def __init__(self, tcex: 'TcEx'):
+    def __init__(self, tcex: TcEx) -> None:
         """."""
         super().__init__()
         self.tcex = tcex
@@ -51,7 +48,8 @@ class TCSearchView(View):
             }
         )
 
-        indicators.filter.tql = tql_query
+        if tql_query:
+            indicators.filter.tql = tql_query
 
         # use islice here to stop auto-pagination.
         results = [i.model for i in islice(indicators, result_limit)]

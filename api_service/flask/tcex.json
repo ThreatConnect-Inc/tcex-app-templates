@@ -1,6 +1,6 @@
 {
   "package": {
-    "app_name": "TCVA_-_API_Service_Flask",
+    "app_name": "TCVA_-_Flask_Template",
     "excludes": [
       ".gitignore",
       ".pre-commit-config.yaml",

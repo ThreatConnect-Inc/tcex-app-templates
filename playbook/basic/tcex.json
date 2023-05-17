@@ -1,6 +1,6 @@
 {
   "package": {
-    "app_name": "TCPB_-_",
+    "app_name": "TCPB_-_Basic_Template",
     "excludes": [
       ".gitignore",
       ".pre-commit-config.yaml",

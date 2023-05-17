@@ -1,6 +1,6 @@
 {
   "package": {
-    "app_name": "TCVW_-_Webhook_Trigger_Service_Basic",
+    "app_name": "TCVW_-_Basic_Template",
     "excludes": [
       ".gitignore",
       ".pre-commit-config.yaml",

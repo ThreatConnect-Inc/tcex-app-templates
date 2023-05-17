@@ -1,6 +1,6 @@
 {
   "package": {
-    "app_name": "TCVC_-_Trigger_Service_Basic",
+    "app_name": "TCVC_-_Basic_Template",
     "excludes": [
       ".gitignore",
       ".pre-commit-config.yaml",

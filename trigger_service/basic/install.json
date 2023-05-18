@@ -25,7 +25,7 @@
       ]
     },
     {
-      "label": "Example Playbook Input",
+      "label": "Example Trigger Input",
       "name": "trigger_input",
       "note": "An example input to the Trigger at the playbook level.",
       "playbookDataType": [

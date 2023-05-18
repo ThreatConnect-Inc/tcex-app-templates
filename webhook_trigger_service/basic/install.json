@@ -10,7 +10,35 @@
   "languageVersion": "3.11",
   "listDelimiter": "|",
   "note": "",
-  "params": [],
+  "params": [
+    {
+      "label": "Example Service Input",
+      "name": "service_input",
+      "note": "An example input to the Trigger at the service level.",
+      "required": true,
+      "sequence": 1,
+      "serviceConfig": true,
+      "type": "String",
+      "validValues": [
+        "${TEXT}"
+      ]
+    },
+    {
+      "label": "Example Trigger Input",
+      "name": "trigger_input",
+      "note": "An example input to the Trigger at the playbook level.",
+      "playbookDataType": [
+        "String"
+      ],
+      "required": true,
+      "sequence": 2,
+      "serviceConfig": false,
+      "type": "String",
+      "validValues": [
+        "${TEXT}"
+      ]
+    }
+  ],
   "playbook": {
     "outputVariables": [
       {

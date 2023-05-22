@@ -3,9 +3,6 @@
 import os
 import traceback
 
-# third-party
-from tcex.app_config.install_json import InstallJson
-
 # first-party
 from app_lib import AppLib
 
@@ -21,6 +18,7 @@ def run() -> None:
     # import modules after path has been updated
 
     # third-party
+    from tcex.app_config.install_json import InstallJson  # pylint: disable=import-outside-toplevel
     from tcex import TcEx  # pylint: disable=import-outside-toplevel
 
     # first-party

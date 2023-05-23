@@ -43,10 +43,7 @@ class Run:
             # perform prep/setup operations
             self.app.setup(**{})
 
-            # configure custom trigger message handler
-            # standard library
-
-            # standard library
+            # configure the event callback
             self.tcex.app.service.api_event_callback = self.app.api_event_callback  # type: ignore
 
             # listen on channel/topic

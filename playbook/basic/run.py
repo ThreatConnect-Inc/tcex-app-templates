@@ -3,9 +3,6 @@
 import os
 import traceback
 
-# third-party
-from tcex.app_config.install_json import InstallJson
-
 # first-party
 from app_lib import AppLib
 
@@ -22,6 +19,7 @@ def run() -> None:
 
     # third-party
     from tcex import TcEx  # pylint: disable=import-outside-toplevel
+    from tcex.app_config.install_json import InstallJson  # pylint: disable=import-outside-toplevel
 
     # first-party
     from app import App  # pylint: disable=import-outside-toplevel

@@ -18,8 +18,8 @@ def run() -> None:
     # import modules after path has been updated
 
     # third-party
-    from tcex.app_config.install_json import InstallJson  # pylint: disable=import-outside-toplevel
     from tcex import TcEx  # pylint: disable=import-outside-toplevel
+    from tcex.app_config.install_json import InstallJson  # pylint: disable=import-outside-toplevel
 
     # first-party
     from app import App  # pylint: disable=import-outside-toplevel

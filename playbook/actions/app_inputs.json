@@ -1,4 +1,15 @@
 {
-  "input_strings": "capitalize me",
-  "tc_action": "Capitalize"
+    "stage": {
+        "kvstore": {
+            "#App:1022:names!StringArray": [
+                "one",
+                "two",
+                "three"
+            ]
+        }
+    },
+    "inputs": {
+        "input_strings": "#App:1022:names!StringArray",
+        "tc_action": "Capitalize"
+    }
 }

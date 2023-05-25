@@ -22,6 +22,7 @@ app_inputs.json
 local-*
 log
 sample-*.json
+testing
 
 #-------------------------------------------------
 # Build Exclusions

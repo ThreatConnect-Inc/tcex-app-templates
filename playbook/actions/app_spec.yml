@@ -1,0 +1,64 @@
+displayName: String Operation
+packageName: TCPB_-_Actions_Template
+appId: 1eb3f8a9-08ae-5c50-994a-72ff44f0046e
+category: Utility
+programVersion: 1.0.0
+releaseNotes:
+- notes:
+  - Initial Release
+  version: 1.0.0
+deprecatesApps: []
+features:
+- aotExecutionEnabled
+- appBuilderCompliant
+- layoutEnabledApp
+labels: []
+minServerVersion: 7.2.0
+note: 'Takes a String or StringArrays and perform operations to each value returning
+  the update value. All operations are performed on the individual strings and not
+  the array.
+
+  '
+notePerAction:
+- action: Capitalize
+  note: Capitalize the first character in the string.
+- action: Lowercase
+  note: Lowercase all characters in the string. using the Get Search Job Results API.
+- action: Reverse
+  note: Reverse the order of the characters in the string.
+runtimeLevel: Playbook
+sections:
+- params:
+  - label: Action
+    name: tc_action
+    note: The action to perform on the String or StringArray. The Strip action will
+      strip only whitespace from the string.
+    required: true
+    type: Choice
+    validValues:
+    - Capitalize
+    - Lowercase
+    - Reverse
+  - label: Input Strings
+    name: input_strings
+    note: The input String or StringArray.
+    playbookDataType:
+    - String
+    - StringArray
+    required: true
+    validValues:
+    - ${TEXT}
+  sectionName: Configure
+outputData:
+- display: '1'
+  outputVariables:
+  - name: string.action
+  - name: string.outputs.count
+  - name: string.outputs
+    type: StringArray
+allowOnDemand: true
+programLanguage: PYTHON
+languageVersion: 3.11.0
+programMain: run.py
+listDelimiter: '|'
+schemaVersion: 1.1.0

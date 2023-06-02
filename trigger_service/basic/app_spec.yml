@@ -1,0 +1,48 @@
+allowOnDemand: true
+appId: d6e66fcc-8b15-5d91-baaf-1f2d753c6662
+category: Service Trigger
+displayName: Basic Service Trigger
+features:
+- appBuilderCompliant
+- fileParams
+- secureParams
+languageVersion: 3.11.0
+listDelimiter: '|'
+minServerVersion: 6.0.7
+note: ''
+programLanguage: PYTHON
+programMain: run.py
+programVersion: 1.0.0
+runtimeLevel: TriggerService
+sdkVersion: 4.0.0
+outputData:
+- display: '1'
+  outputVariables:
+  - name: example.date_time
+  - name: example.service_input
+  - name: example.trigger_input
+packageName: TCVC_-_Basic_Template
+playbook: {}
+releaseNotes:
+- notes:
+  - Initial Release
+  version: 1.0.0
+sections:
+- sectionName: Inputs
+  params:
+  - label: Example Service Input
+    name: service_input
+    note: An example input to the Trigger at the service level.
+    required: true
+    serviceConfig: true
+    validValues:
+    - ${TEXT}
+  - label: Example Trigger Input
+    name: trigger_input
+    note: An example input to the Trigger at the playbook level.
+    playbookDataType:
+    - String
+    required: true
+    validValues:
+    - ${TEXT}
+

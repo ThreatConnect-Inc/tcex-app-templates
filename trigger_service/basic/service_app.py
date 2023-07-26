@@ -27,7 +27,6 @@ class ServiceApp:
         # properties
         self.exit_message = 'Success'
         self.in_ = cast(ServiceConfigModel, self.tcex.inputs.model)
-        self.in_unresolved = cast(ServiceConfigModel, self.tcex.inputs.model_unresolved)
         self.log = self.tcex.log
 
     def _update_inputs(self):

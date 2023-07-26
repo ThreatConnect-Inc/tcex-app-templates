@@ -1,0 +1,58 @@
+allowOnDemand: true
+appId: 230b94ee-2144-588c-94b7-711724ab1d75
+category: Utility
+displayName: JSON Pretty
+features:
+- aotExecutionEnabled
+- appBuilderCompliant
+- fileParams
+languageVersion: 3.11.0
+listDelimiter: '|'
+minServerVersion: 7.2.0
+note: Take raw JSON string and output "pretty" version with provide indent level.
+  Optionally sort the keys.
+programLanguage: PYTHON
+programMain: run.py
+programVersion: 1.0.0
+runtimeLevel: Playbook
+sdkVersion: 4.0.0
+outputData:
+- display: '1'
+  outputVariables:
+  - name: json.pretty
+packageName: TCPB_-_Utility_Template
+playbook: {}
+releaseNotes:
+- notes:
+  - Initial Release
+  version: 1.0.0
+sections:
+- sectionName: Inputs
+  params:
+  - label: JSON Data
+    name: json_data
+    note: The JSON data to be formatted.
+    playbookDataType:
+    - KeyValue
+    - KeyValueArray
+    - String
+    - StringArray
+    - TCEntity
+    - TCEntityArray
+    required: true
+    validValues:
+    - ${TEXT}
+  - default: '4'
+    label: Indent
+    name: indent
+    note: 'The number of spaces to use for indention (default: 4).'
+    playbookDataType:
+    - String
+    validValues:
+    - ${TEXT}
+  - default: false
+    label: Sort Keys
+    name: sort_keys
+    note: Indicates whether keys should be sorted.
+    type: Boolean
+

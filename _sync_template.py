@@ -86,6 +86,7 @@ class SyncTemplate:
                 if file.name in [
                     'app_inputs.json',
                     'app_inputs.py',
+                    'app_spec.yml',
                     'app.py',
                     'install.json',
                     'layout.json',
@@ -173,7 +174,9 @@ class SyncTemplate:
 
                 # send to most specific location first
                 if filename in [
+                    'app_inputs.json',
                     'app_inputs.py',
+                    'app_spec.yml',
                     'app.py',
                     'install.json',
                     'playbook_app.py',
@@ -287,6 +290,7 @@ class SyncTemplate:
                 if file.name in [
                     'app_inputs.json',
                     'app_inputs.py',
+                    'app_spec.yml',
                     'service_app.py',
                     'app.py',
                     'install.json',
@@ -360,6 +364,7 @@ class SyncTemplate:
                 if file.name in [
                     'app_inputs.json',
                     'app_inputs.py',
+                    'app_spec.yml',
                     'app.py',
                     'install.json',
                     'README.md',

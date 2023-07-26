@@ -1,0 +1,27 @@
+allowOnDemand: true
+appId: 6e26ba55-0300-5462-aca7-ea049494c8a5
+category: Utility
+displayName: Example Basic Playbook App
+features:
+- aotExecutionEnabled
+- appBuilderCompliant
+- fileParams
+languageVersion: 3.11.0
+listDelimiter: '|'
+minServerVersion: 7.2.0
+note: A template that provides the structure for a Playbook App without any App logic.
+programLanguage: PYTHON
+programMain: run.py
+programVersion: 1.0.0
+runtimeLevel: Playbook
+sdkVersion: 4.0.0
+outputData: []
+packageName: TCPB_-_Basic_Template
+playbook: {}
+releaseNotes:
+- notes:
+  - Initial Release
+  version: 1.0.0
+sections:
+- sectionName: Inputs
+  params: []

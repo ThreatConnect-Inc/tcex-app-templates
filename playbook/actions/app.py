@@ -25,8 +25,7 @@ class App(PlaybookApp):
     def capitalize(self):
         """Return capitalized string."""
         self.in_ = cast(CapitalizeModel, self.in_)
-        for input_string in self.in_.input_strings:
-            return input_string.capitalize()
+        return [input_string.capitalize() for input_string in self.in_.input_strings]
 
     @OnException(exit_msg='Failed to run lowercase action.')
     @OnSuccess(exit_msg='Successfully ran lowercase action.')
@@ -34,8 +33,7 @@ class App(PlaybookApp):
     def lowercase(self):
         """Return string in lowercase."""
         self.in_ = cast(LowerCaseModel, self.in_)
-        for input_string in self.in_.input_strings:
-            return input_string.lower()
+        return [input_string.lower() for input_string in self.in_.input_strings]
 
     @OnException(exit_msg='Failed to run reverse action.')
     @OnSuccess(exit_msg='Successfully ran reverse action.')
@@ -43,8 +41,7 @@ class App(PlaybookApp):
     def reverse(self):
         """Return string reversed."""
         self.in_ = cast(ReverseModel, self.in_)
-        for input_string in self.in_.input_strings:
-            return input_string[::-1]
+        return [input_string[::-1] for input_string in self.in_.input_strings]
 
     def write_output(self):
         """Write the Playbook output variables."""

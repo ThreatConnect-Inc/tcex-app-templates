@@ -17,13 +17,16 @@ class JobApp:
         """Initialize class properties."""
         self.tcex: TcEx = _tcex
 
+        # unresolved model must be processed before app_input.py calls add_model(),
+        # else validation errors will occur due to the data type not being resolved
+        self.in_unresolved = self.tcex.inputs.model_unresolved
+
         # automatically process inputs on init
         self._update_inputs()
 
         # properties
         self.exit_message = 'Success'
         self.in_ = cast(AppBaseModel, self.tcex.inputs.model)
-        self.in_unresolved = cast(AppBaseModel, self.tcex.inputs.model_unresolved)
         self.log = self.tcex.log
 
     def _update_inputs(self):

@@ -17,6 +17,10 @@ class ServiceApp:
         """Initialize class properties."""
         self.tcex: TcEx = _tcex
 
+        # unresolved model must be processed before app_input.py calls add_model(),
+        # else validation errors will occur due to the data type not being resolved
+        self.in_unresolved = self.tcex.inputs.model_unresolved
+
         # automatically parse args on init
         self._update_inputs()
 

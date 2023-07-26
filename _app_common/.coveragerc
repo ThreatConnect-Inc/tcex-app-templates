@@ -2,6 +2,7 @@
 omit =
     api_service_app.py
     deps/*
+    deps_tests/*
     job_app.py
     local-*
     playbook_app.py

@@ -41,7 +41,10 @@ class SyncTemplate:
         """."""
         tc_template_dir = os.getenv('TC_TEMPLATE_DIR')
         if tc_template_dir is None:
-            print('TC_TEMPLATE_DIR is not set.')
+            print(
+                'TC_TEMPLATE_DIR is not set. Set this to '
+                'the parent directory containing the templates.'
+            )
             sys.exit(1)
 
         tc_template_dir = Path(os.path.expanduser(tc_template_dir))
@@ -49,6 +52,7 @@ class SyncTemplate:
             print(f'TC_TEMPLATE_DIR is not a directory: {tc_template_dir}')
             sys.exit(1)
 
+        print('Using Base Dir: ', tc_template_dir)
         return tc_template_dir
 
     @cached_property

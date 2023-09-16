@@ -6,6 +6,7 @@
   "features": [
     "aotExecutionEnabled",
     "appBuilderCompliant",
+    "fileParams",
     "layoutEnabledApp"
   ],
   "languageVersion": "3.11",

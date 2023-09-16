@@ -7,7 +7,7 @@ from tcex import TcEx
 from tcex.app.decorator import OnException, OnSuccess, Output
 
 # first-party
-from app_inputs import CapitalizeModel, LowerCaseModel, ReverseModel
+from app_inputs import CapitalizeModel, LowercaseModel, ReverseModel
 from playbook_app import PlaybookApp
 
 
@@ -32,7 +32,7 @@ class App(PlaybookApp):
     @Output(attribute='output_strings')
     def lowercase(self):
         """Return string in lowercase."""
-        self.in_ = cast(LowerCaseModel, self.in_)
+        self.in_ = cast(LowercaseModel, self.in_)
         return [input_string.lower() for input_string in self.in_.input_strings]
 
     @OnException(exit_msg='Failed to run reverse action.')
@@ -47,6 +47,6 @@ class App(PlaybookApp):
         """Write the Playbook output variables."""
         self.log.debug(f'output_strings: {self.output_strings}')
 
-        self.playbook.create.variable('string.action', self.in_unresolved.tc_action)
+        self.playbook.create.variable('string.action', self.in_.tc_action)
         self.playbook.create.variable('string.outputs', self.output_strings)
         self.playbook.create.variable('string.outputs.count', len(self.output_strings))

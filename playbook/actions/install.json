@@ -7,7 +7,9 @@
     "aotExecutionEnabled",
     "appBuilderCompliant",
     "fileParams",
-    "layoutEnabledApp"
+    "layoutEnabledApp",
+    "redisPasswordSupport",
+    "runtimeVariables"
   ],
   "languageVersion": "3.11",
   "listDelimiter": "|",
@@ -64,5 +66,5 @@
   "programMain": "run.py",
   "programVersion": "1.0.0",
   "runtimeLevel": "Playbook",
-  "sdkVersion": "4.0.0"
+  "sdkVersion": "4.0.1"
 }

@@ -7,6 +7,8 @@ features:
 - appBuilderCompliant
 - fileParams
 - layoutEnabledApp
+- redisPasswordSupport
+- runtimeVariables
 languageVersion: '3.11'
 listDelimiter: '|'
 minServerVersion: 7.2.0
@@ -39,7 +41,7 @@ releaseNotes:
   version: 1.0.0
 runtimeLevel: Playbook
 schemaVersion: 1.1.0
-sdkVersion: 4.0.0
+sdkVersion: 4.0.1
 sections:
 - params:
   - label: Action

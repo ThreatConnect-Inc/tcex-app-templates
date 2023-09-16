@@ -1,16 +1,19 @@
 {
   "allowOnDemand": true,
   "appId": "230b94ee-2144-588c-94b7-711724ab1d75",
+  "category": "Utility",
   "displayName": "JSON Pretty",
   "features": [
     "aotExecutionEnabled",
     "appBuilderCompliant",
-    "fileParams"
+    "fileParams",
+    "redisPasswordSupport",
+    "runtimeVariables"
   ],
-  "labels": [],
   "languageVersion": "3.11",
   "listDelimiter": "|",
-  "note": "Take raw JSON string and output \"pretty\" version with provide indent level. Optionally sort the keys.",
+  "minServerVersion": "7.2.0",
+  "note": "Take raw JSON string and output \"pretty\" version with provide indent level. Optionally sort the keys.\n",
   "params": [
     {
       "label": "JSON Data",

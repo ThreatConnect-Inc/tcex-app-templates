@@ -1,12 +1,12 @@
 {
-  "stage": {
-    "kvstore": {
-      "#App:1022:json!String": "{\"name\": \"John\", \"age\": 30}"
-    }
-  },
   "inputs": {
     "indent": "4",
     "json_data": "#App:1022:json!String",
     "sort_keys": "true"
+  },
+  "stage": {
+    "kvstore": {
+      "#App:1022:json!String": "{\"name\": \"John\", \"age\": 30}"
+    }
   }
 }

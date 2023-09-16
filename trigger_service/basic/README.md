@@ -1,9 +1,29 @@
-# Release Notes
+# Basic Service Trigger
 
-## 1.0.0 (YYY-MM-DD)
+## Release Notes
 
-* Initial Release
+### 1.0.0
 
-# Description
+-   Initial Release
 
-A simple Trigger Service app that will trigger connected playbooks every thirty seconds.
+# Category
+
+-   Service Trigger
+
+# Service Configuration
+
+**Example Service Input** *(TypeEnum.String)*
+
+An example input to the Trigger at the service level.
+
+# Inputs
+
+**Example Trigger Input** *(TypeEnum.String)*
+
+An example input to the Trigger at the playbook level.
+
+# Outputs
+
+-   example.date_time *(String)*
+-   example.service_input *(String)*
+-   example.trigger_input *(String)*

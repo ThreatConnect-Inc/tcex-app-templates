@@ -6,22 +6,25 @@ features:
 - aotExecutionEnabled
 - appBuilderCompliant
 - fileParams
-languageVersion: 3.11.0
+- redisPasswordSupport
+- runtimeVariables
+languageVersion: '3.11'
 listDelimiter: '|'
 minServerVersion: 7.2.0
 note: A template that provides the structure for a Playbook App without any App logic.
-programLanguage: PYTHON
-programMain: run.py
-programVersion: 1.0.0
-runtimeLevel: Playbook
-sdkVersion: 4.0.0
 outputData: []
 packageName: TCPB_-_Basic_Template
 playbook: {}
+programLanguage: PYTHON
+programMain: run.py
+programVersion: 1.0.0
 releaseNotes:
 - notes:
   - Initial Release
   version: 1.0.0
+runtimeLevel: Playbook
+schemaVersion: 1.1.0
+sdkVersion: 4.0.1
 sections:
-- sectionName: Inputs
-  params: []
+- params: []
+  sectionName: Inputs

@@ -1,20 +1,21 @@
 {
   "allowOnDemand": true,
+  "appId": "42dd4864-efa2-51cb-a970-9d6261c7d040",
   "displayName": "ApiService",
-  "displayPath": "my_api",
+  "displayPath": "apiservice",
   "features": [
-    "appBuilderCompliant",
     "fileParams",
-    "linkApiPath"
+    "linkApiPath",
+    "redisPasswordSupport",
+    "runtimeVariables"
   ],
-  "labels": [],
   "languageVersion": "3.11",
   "listDelimiter": "|",
-  "note": "",
-  "params": [],
+  "minServerVersion": "7.2.0",
+  "note": "A simple API Service App that exposes two api endpoints.\n",
   "programLanguage": "PYTHON",
   "programMain": "run.py",
   "programVersion": "1.0.0",
   "runtimeLevel": "ApiService",
-  "sdkVersion": "4.0.0"
+  "sdkVersion": "4.0.1"
 }

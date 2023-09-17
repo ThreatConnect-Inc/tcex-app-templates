@@ -1,8 +1,8 @@
 {
-  "stage": {},
   "inputs": {
     "service_input": "Service Input"
   },
+  "stage": {},
   "trigger_inputs": [
     {
       "trigger_input": "Trigger Input 1"

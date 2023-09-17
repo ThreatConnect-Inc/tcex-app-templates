@@ -26,7 +26,9 @@ class App(PlaybookApp):
 
         This method should contain the core logic of the App.
         """
-        json_data = cast(str, self.in_unresolved.json_data)
+        # use the unresolved version of the input variable
+        # so that tcex does not convert the JSON to a dict.
+        json_data = cast(str, self.in_unresolved.json_data)  # type: ignore
 
         # get the playbook variable type
         json_data_type = self.playbook.get_variable_type(json_data)

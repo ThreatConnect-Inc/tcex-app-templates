@@ -1,6 +1,9 @@
 """App Inputs"""
 # pyright: reportGeneralTypeIssues=false
 
+# standard library
+from typing import Annotated
+
 # third-party
 from pydantic import BaseModel, validator
 from tcex.input.field_type import Choice, always_array, string
@@ -11,14 +14,14 @@ from tcex.input.model.app_playbook_model import AppPlaybookModel
 class AppBaseModel(AppPlaybookModel):
     """Base model for the App containing any common inputs."""
 
-    # playbookDataType = String, StringArray
-    input_strings: list[string(min_length=1)]
-    tc_action: Choice
+    # pbd: String|StringArray, vv: ${TEXT}
+    input_strings: Annotated[list[str], list[string(min_length=1)]]
+    # vv: Capitalize|Lowercase|Reverse
+    tc_action: Annotated[str, Choice]
 
-    # the App takes both String and StringArray as input, ensure that the input
-    # is always an array. splitting the value on a comma is also supported.
+    # ensure inputs that take single and array types always return an array
     _always_array = validator('input_strings', allow_reuse=True, pre=True)(
-        always_array(allow_empty=False, split_csv=True)
+        always_array(allow_empty=True, include_empty=False, include_null=False, split_csv=True)
     )
 
 
@@ -26,7 +29,7 @@ class CapitalizeModel(AppBaseModel):
     """Action Model"""
 
 
-class LowerCaseModel(AppBaseModel):
+class LowercaseModel(AppBaseModel):
     """Action Model"""
 
 
@@ -38,14 +41,14 @@ class AppInputs:
     """App Inputs"""
 
     def __init__(self, inputs: Input):
-        """Initialize class properties."""
+        """Initialize instance properties."""
         self.inputs = inputs
 
     def action_model_map(self, tc_action: str) -> type[BaseModel]:
         """Return action model map."""
         _action_model_map = {
             'capitalize': CapitalizeModel,
-            'lowercase': LowerCaseModel,
+            'lowercase': LowercaseModel,
             'reverse': ReverseModel,
         }
         tc_action_key = tc_action.lower().replace(' ', '_')
@@ -68,7 +71,7 @@ class AppInputs:
         return action_model
 
     def update_inputs(self):
-        """Add custom App models to inputs.
+        """Add custom App model to inputs.
 
         Input will be validate when the model is added an any exceptions will
         cause the App to exit with a status code of 1.

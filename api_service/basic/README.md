@@ -1,9 +1,11 @@
-# Release Notes
+# ApiService
 
-## 1.0.0 (YYYY-MM-DD)
+## Release Notes
 
-* Initial Release
+### 1.0.0
+
+-   Initial Release
 
 # Description
 
-A simple API Service app that exposes two api endpoints.
+A simple API Service App that exposes two api endpoints.

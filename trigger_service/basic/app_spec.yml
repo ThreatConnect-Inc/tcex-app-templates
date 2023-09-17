@@ -5,16 +5,13 @@ displayName: Basic Service Trigger
 features:
 - appBuilderCompliant
 - fileParams
+- redisPasswordSupport
+- runtimeVariables
 - secureParams
-languageVersion: 3.11.0
+languageVersion: '3.11'
 listDelimiter: '|'
-minServerVersion: 6.0.7
+minServerVersion: 7.2.0
 note: ''
-programLanguage: PYTHON
-programMain: run.py
-programVersion: 1.0.0
-runtimeLevel: TriggerService
-sdkVersion: 4.0.0
 outputData:
 - display: '1'
   outputVariables:
@@ -23,13 +20,18 @@ outputData:
   - name: example.trigger_input
 packageName: TCVC_-_Basic_Template
 playbook: {}
+programLanguage: PYTHON
+programMain: run.py
+programVersion: 1.0.0
 releaseNotes:
 - notes:
   - Initial Release
   version: 1.0.0
+runtimeLevel: TriggerService
+schemaVersion: 1.1.0
+sdkVersion: 4.0.1
 sections:
-- sectionName: Inputs
-  params:
+- params:
   - label: Example Service Input
     name: service_input
     note: An example input to the Trigger at the service level.
@@ -45,4 +47,4 @@ sections:
     required: true
     validValues:
     - ${TEXT}
-
+  sectionName: Inputs

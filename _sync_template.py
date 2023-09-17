@@ -41,7 +41,10 @@ class SyncTemplate:
         """."""
         tc_template_dir = os.getenv('TC_TEMPLATE_DIR')
         if tc_template_dir is None:
-            print('TC_TEMPLATE_DIR is not set.')
+            print(
+                'TC_TEMPLATE_DIR is not set. Set this to '
+                'the parent directory containing the templates.'
+            )
             sys.exit(1)
 
         tc_template_dir = Path(os.path.expanduser(tc_template_dir))
@@ -49,6 +52,7 @@ class SyncTemplate:
             print(f'TC_TEMPLATE_DIR is not a directory: {tc_template_dir}')
             sys.exit(1)
 
+        print('Using Base Dir: ', tc_template_dir)
         return tc_template_dir
 
     @cached_property
@@ -74,9 +78,9 @@ class SyncTemplate:
                 if file.name.startswith('.'):
                     continue
 
-                if file.name in ['tests']:
-                    shutil.rmtree(self.playbook_action_dst_path / file.name)
-                    shutil.copytree(file, self.playbook_action_dst_path / file.name)
+                # if file.name in ['tests']:
+                #     shutil.rmtree(self.playbook_action_dst_path / file.name)
+                #     shutil.copytree(file, self.playbook_action_dst_path / file.name)
             elif file.is_file():
                 filename = file.name
                 if file.name == '.gitignore':
@@ -201,10 +205,10 @@ class SyncTemplate:
                 if file.name.startswith('.'):
                     continue
 
-                if file.name in ['tests']:
-                    shutil.rmtree(dst_path / file.name, ignore_errors=True)
-                    shutil.copytree(file, dst_path / file.name)
-                elif file.name in ['flask_app']:
+                # if file.name in ['tests']:
+                #     shutil.rmtree(dst_path / file.name, ignore_errors=True)
+                #     shutil.copytree(file, dst_path / file.name)
+                if file.name in ['flask_app']:
                     shutil.rmtree(dst_path / file.name, ignore_errors=True)
                     shutil.copytree(file, dst_path / file.name)
             elif file.is_file():
@@ -241,9 +245,9 @@ class SyncTemplate:
                 if file.name.startswith('.'):
                     continue
 
-                if file.name in ['tests']:
-                    shutil.rmtree(dst_path / file.name)
-                    shutil.copytree(file, dst_path / file.name)
+                # if file.name in ['tests']:
+                #     shutil.rmtree(dst_path / file.name)
+                #     shutil.copytree(file, dst_path / file.name)
             elif file.is_file():
                 filename = file.name
                 if file.name == '.gitignore':
@@ -278,9 +282,9 @@ class SyncTemplate:
                 if file.name.startswith('.'):
                     continue
 
-                if file.name in ['tests']:
-                    shutil.rmtree(dst_path / file.name)
-                    shutil.copytree(file, dst_path / file.name)
+                # if file.name in ['tests']:
+                #     shutil.rmtree(dst_path / file.name)
+                #     shutil.copytree(file, dst_path / file.name)
             elif file.is_file():
                 filename = file.name
                 if file.name == '.gitignore':
@@ -316,9 +320,9 @@ class SyncTemplate:
                 if file.name.startswith('.'):
                     continue
 
-                if file.name in ['tests']:
-                    shutil.rmtree(dst_path / file.name)
-                    shutil.copytree(file, dst_path / file.name)
+                # if file.name in ['tests']:
+                #     shutil.rmtree(dst_path / file.name)
+                #     shutil.copytree(file, dst_path / file.name)
             elif file.is_file():
                 filename = file.name
                 if file.name == '.gitignore':
@@ -352,9 +356,9 @@ class SyncTemplate:
                 if file.name.startswith('.'):
                     continue
 
-                if file.name in ['tests']:
-                    shutil.rmtree(self.playbook_utility_dst_path / file.name)
-                    shutil.copytree(file, self.playbook_utility_dst_path / file.name)
+                # if file.name in ['tests']:
+                #     shutil.rmtree(self.playbook_utility_dst_path / file.name)
+                #     shutil.copytree(file, self.playbook_utility_dst_path / file.name)
             elif file.is_file():
                 filename = file.name
                 if file.name == '.gitignore':

@@ -61,14 +61,14 @@ class App(ServiceApp):
             # * Else - Playbook will NOT be launched.
             response = True
 
-            # format headers and params for output variables
-            headers = json.dumps([f'''{header['name']}={header['value']}''' for header in headers])
-            params = json.dumps([f'''{param['name']}={param['value']}''' for param in params])
+            # format headers and params for output variables (does not handle duplicate keys)
+            headers_ = json.dumps([f'''{header['name']}={header['value']}''' for header in headers])
+            params_ = json.dumps([f'''{param['name']}={param['value']}''' for param in params])
 
             # write output variables
-            playbook.create.variable('headers', headers, 'String')
+            playbook.create.variable('headers', headers_, 'String')
             playbook.create.variable('method', method, 'String')
-            playbook.create.variable('params', params, 'String')
+            playbook.create.variable('params', params_, 'String')
 
         return response
 

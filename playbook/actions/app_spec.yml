@@ -1,18 +1,16 @@
-displayName: String Operation
-packageName: TCPB_-_Actions_Template
+allowOnDemand: true
 appId: 1eb3f8a9-08ae-5c50-994a-72ff44f0046e
 category: Utility
-programVersion: 1.0.0
-releaseNotes:
-- notes:
-  - Initial Release
-  version: 1.0.0
-deprecatesApps: []
+displayName: String Operation
 features:
 - aotExecutionEnabled
 - appBuilderCompliant
+- fileParams
 - layoutEnabledApp
-labels: []
+- redisPasswordSupport
+- runtimeVariables
+languageVersion: '3.11'
+listDelimiter: '|'
 minServerVersion: 7.2.0
 note: 'Takes a String or StringArrays and perform operations to each value returning
   the update value. All operations are performed on the individual strings and not
@@ -26,7 +24,24 @@ notePerAction:
   note: Lowercase all characters in the string. using the Get Search Job Results API.
 - action: Reverse
   note: Reverse the order of the characters in the string.
+outputData:
+- display: '1'
+  outputVariables:
+  - name: string.action
+  - name: string.outputs.count
+  - name: string.outputs
+    type: StringArray
+packageName: TCPB_-_Actions_Template
+programLanguage: PYTHON
+programMain: run.py
+programVersion: 1.0.0
+releaseNotes:
+- notes:
+  - Initial Release
+  version: 1.0.0
 runtimeLevel: Playbook
+schemaVersion: 1.1.0
+sdkVersion: 4.0.1
 sections:
 - params:
   - label: Action
@@ -49,16 +64,3 @@ sections:
     validValues:
     - ${TEXT}
   sectionName: Configure
-outputData:
-- display: '1'
-  outputVariables:
-  - name: string.action
-  - name: string.outputs.count
-  - name: string.outputs
-    type: StringArray
-allowOnDemand: true
-programLanguage: PYTHON
-languageVersion: 3.11.0
-programMain: run.py
-listDelimiter: '|'
-schemaVersion: 1.1.0

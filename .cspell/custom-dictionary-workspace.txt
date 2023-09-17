@@ -1,6 +1,7 @@
 # Custom Dictionary Words
 coveragerc
 datamodel
+secho
 TCVA
 TCVC
 TCVW

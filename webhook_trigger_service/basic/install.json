@@ -1,15 +1,19 @@
 {
   "allowOnDemand": true,
+  "appId": "100b447d-ac67-588f-8114-5d54faae7228",
+  "category": "Utility",
   "displayName": "Webhook",
   "features": [
     "appBuilderCompliant",
     "fileParams",
+    "redisPasswordSupport",
+    "runtimeVariables",
     "secureParams"
   ],
-  "labels": [],
   "languageVersion": "3.11",
   "listDelimiter": "|",
-  "note": "",
+  "minServerVersion": "7.2.0",
+  "note": "The files in this parent template are common for all App types and is intended to be used as the base parent for most other templates.\n",
   "params": [
     {
       "label": "Example Service Input",
@@ -32,7 +36,6 @@
       ],
       "required": true,
       "sequence": 2,
-      "serviceConfig": false,
       "type": "String",
       "validValues": [
         "${TEXT}"
@@ -60,5 +63,5 @@
   "programMain": "run.py",
   "programVersion": "1.0.0",
   "runtimeLevel": "WebhookTriggerService",
-  "sdkVersion": "4.0.0"
+  "sdkVersion": "4.0.1"
 }

@@ -38,7 +38,7 @@ class AdHocRequestResource(EndpointBaseABC):
         """Return the dao."""
         return JobRequestDAO(self.db, self.settings)
 
-    def post(
+    def on_post(
         self,
         _req: FalconRequest,
         _: FalconResponse,

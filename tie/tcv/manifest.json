@@ -40,8 +40,8 @@
         "template_path": "basic/api/endpoint/__init__.py"
     },
     "api/endpoint/adhoc_job_request_resource.py": {
-        "md5": "d66e83f71fe5960da14e8d991a151b10",
-        "last_commit": "c0f6383aa318e158532c229a19a5f6e988e68166",
+        "md5": "caf3eea6c419576def34c8fcdfeb16c6",
+        "last_commit": "867797dd0c7678726ecbe46d8f8cfd9b6b800a43",
         "template_path": "basic/api/endpoint/adhoc_job_request_resource.py"
     },
     "api/endpoint/download_ti_resource.py": {
@@ -1670,8 +1670,8 @@
         "template_path": "tcv/install.json"
     },
     "manifest.json": {
-        "md5": "2be33ede1af978306c94d116ee839f03",
-        "last_commit": "a46393603dc8cc8e35ae0945eb3dff71cf747d87",
+        "md5": "5af1508e3e1855acda5a93de6e1f456b",
+        "last_commit": "0faa3b2c05cbe53da83011222eb556e853b22270",
         "template_path": "tcv/manifest.json"
     },
     "tcex.json": {

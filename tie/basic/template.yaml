@@ -16,6 +16,7 @@ template_files:
   - sdk
   - task
   - api
+  - tests
   - mapping
   - __init__.py
   - .coveragerc

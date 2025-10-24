@@ -82,6 +82,8 @@ repos:
         pass_filenames: false
         always_run: true
         stages: [post-commit]
+        additional_dependencies:
+          - pyyaml>=6.0
       - id: pylint
         entry: pylint
         language: system

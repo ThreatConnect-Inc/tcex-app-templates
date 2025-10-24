@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
+from __future__ import annotations
+
 import os
 import subprocess
 import sys
-import time
 from pathlib import Path
 
 TEMPLATE_DIR = "tie"
@@ -11,15 +12,15 @@ SKIP_TAG = "[skip-manifest]"
 BUILDER_TIMEOUT = 120
 
 
-def run(cmd, cwd=None, timeout=None, env=None, check=True, capture_output=False):
+def run(cmd, *, cwd=None, timeout=None, check=True, capture_output=False, env=None):
     return subprocess.run(
         cmd,
         cwd=cwd,
         timeout=timeout,
-        env=env,
         check=check,
-        capture_output=capture_output,
         text=True,
+        capture_output=capture_output,
+        env=env,
     )
 
 
@@ -35,14 +36,14 @@ BUILD_ARGS = [sys.executable, "-u", str(SCRIPT), "tcv"]
 
 
 def last_commit_message() -> str:
-    return run(["git", "log", "-1", "--pretty=%B"], cwd=REPO_ROOT, capture_output=True).stdout
+    return run(["git", "log", "-1", "--pretty=%B"], capture_output=True, cwd=REPO_ROOT).stdout
 
 
 def last_commit_touched_template() -> bool:
     out = run(
         ["git", "diff-tree", "--no-commit-id", "--name-only", "-r", "HEAD"],
-        cwd=REPO_ROOT,
         capture_output=True,
+        cwd=REPO_ROOT,
     ).stdout
     prefix = f"{TEMPLATE_DIR.rstrip('/')}/"
     return any(p.strip().startswith(prefix) for p in out.splitlines())
@@ -67,7 +68,7 @@ def main():
         return 0
 
     print("[manifest] template changes detected; rebuilding…")
-    run(BUILD_ARGS, cwd=BUILD_CWD, timeout=BUILDER_TIMEOUT, env=os.environ.copy())
+    run(BUILD_ARGS, cwd=BUILD_CWD, timeout=BUILDER_TIMEOUT)
 
     run(["git", "add", "--", MANIFEST_PATH], cwd=REPO_ROOT)
 
@@ -75,18 +76,19 @@ def main():
         print("[manifest] no changes to manifest; nothing to commit")
         return 0
 
-    # Make a single commit that bypasses all hooks
+    # ✅ Commit once, skipping all hooks
     run(
         [
             "git",
             "-c",
-            "core.hooksPath=/dev/null",
+            "core.hooksPath=/dev/null",  # disables *all* hooks
             "commit",
             "-m",
             f"chore: update manifest {SKIP_TAG}",
         ],
         cwd=REPO_ROOT,
     )
+
     print("[manifest] manifest updated and committed")
     return 0
 

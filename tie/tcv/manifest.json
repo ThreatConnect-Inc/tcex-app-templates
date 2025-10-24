@@ -930,8 +930,8 @@
         "template_path": "basic/more/transform/sample_transform.py"
     },
     "pyproject.toml": {
-        "md5": "ab99609495f02e5713d329e01433055a",
-        "last_commit": "c0f6383aa318e158532c229a19a5f6e988e68166",
+        "md5": "4872cd2034ac2569c9c06c5670a20042",
+        "last_commit": "02e31e2851c37828d5c259bd543d23b089682e9d",
         "template_path": "basic/pyproject.toml"
     },
     "requirements.txt": {
@@ -1670,8 +1670,8 @@
         "template_path": "tcv/install.json"
     },
     "manifest.json": {
-        "md5": "5af1508e3e1855acda5a93de6e1f456b",
-        "last_commit": "0faa3b2c05cbe53da83011222eb556e853b22270",
+        "md5": "14191903486379e4610c7cd6dd42db9e",
+        "last_commit": "9b65c3e98ee69cc58f650aea28a7fa8f9c65b7b1",
         "template_path": "tcv/manifest.json"
     },
     "tcex.json": {

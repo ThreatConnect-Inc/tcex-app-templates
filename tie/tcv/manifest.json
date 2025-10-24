@@ -1034,6 +1034,31 @@
         "last_commit": "4e3c70125b384362193e6e4d820a0aad4fe0298c",
         "template_path": "basic/task/ingest/upload.py"
     },
+    "tests/__init__.py": {
+        "md5": "b61b2461719d4623dbdb22b0e962ed75",
+        "last_commit": "f41fe35e0ce1e00d339ba613fb564fb40c4bea40",
+        "template_path": "basic/tests/__init__.py"
+    },
+    "tests/readme.md": {
+        "md5": "82cea09cba065371ae82abd8715047d3",
+        "last_commit": "f41fe35e0ce1e00d339ba613fb564fb40c4bea40",
+        "template_path": "basic/tests/readme.md"
+    },
+    "tests/requirements.lock": {
+        "md5": "e82fc1c0a86f03d785a2d3368afc91de",
+        "last_commit": "f41fe35e0ce1e00d339ba613fb564fb40c4bea40",
+        "template_path": "basic/tests/requirements.lock"
+    },
+    "tests/requirements.txt": {
+        "md5": "75630c2473f36812b3d47dc7d3f1e012",
+        "last_commit": "f41fe35e0ce1e00d339ba613fb564fb40c4bea40",
+        "template_path": "basic/tests/requirements.txt"
+    },
+    "tests/test_run_local.py": {
+        "md5": "92a3795fc95a831dec8470df60b8534c",
+        "last_commit": "f41fe35e0ce1e00d339ba613fb564fb40c4bea40",
+        "template_path": "basic/tests/test_run_local.py"
+    },
     "ui/.eslintrc.json": {
         "md5": "d5c04ca1a6cd8f9fe2758fa540f3b7ed",
         "last_commit": "4e3c70125b384362193e6e4d820a0aad4fe0298c",
@@ -1670,8 +1695,8 @@
         "template_path": "tcv/install.json"
     },
     "manifest.json": {
-        "md5": "14191903486379e4610c7cd6dd42db9e",
-        "last_commit": "9b65c3e98ee69cc58f650aea28a7fa8f9c65b7b1",
+        "md5": "d4891cd73c6b3895b62701001be9b421",
+        "last_commit": "f41fe35e0ce1e00d339ba613fb564fb40c4bea40",
         "template_path": "tcv/manifest.json"
     },
     "tcex.json": {

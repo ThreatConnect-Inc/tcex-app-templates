@@ -173,7 +173,7 @@ class App(ApiServiceFalconABC):
 
     @property
     def message_broker_settings(self) -> MessageBrokerSettings:
-        """Return the message broker settings."""
+        """Returns the message broker settings."""
         return MessageBrokerSettings(
             schema_version='1.0.0',
             # TODO: Revisit this

@@ -75,12 +75,12 @@ repos:
         args: ['--max-average=B', '-e=tests*']
   - repo: local
     hooks:
-      - id: build-manifest-and-stage
-        name: Build and stage manifest.json before commit
-        entry: scripts/build_and_stage_manifest.sh
-        language: script
-        types: [python]
-        files: ^tie/tcv/
+      - id: update-manifest-after-template-change
+        name: Update manifest after template change
+        language: python
+        entry: python scripts/update_manifest_post_commit.py
+        pass_filenames: false
+        stages: [post-commit]
       - id: pylint
         entry: pylint
         language: system

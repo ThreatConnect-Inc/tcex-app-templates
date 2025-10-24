@@ -57,7 +57,7 @@ def staged_manifest_changed() -> bool:
 
 def main() -> int:
     # print for visibility
-    print(f"[manifest] post-commit hook running…")
+    print("[manifest] post-commit hook running…")
 
     if SKIP_TAG in last_commit_message():
         return 0
@@ -85,15 +85,18 @@ def main() -> int:
         [
             "git",
             "-c",
-            "commit.gpgsign=false",
+            "core.hooksPath=/dev/null",  # <— no hooks for this commit
+            "-c",
+            "commit.gpgsign=false",  # <— avoid GPG prompt
             "commit",
             "-m",
             f"chore: update manifest {SKIP_TAG}",
-            "--no-verify",
             "--quiet",
+            "--no-verify",  # skips pre-commit/commit-msg if hooks were enabled
         ],
         cwd=REPO_ROOT,
-        env=env,
+        env=os.environ.copy(),
+        timeout=60,
     )
     print("[manifest] Manifest updated and committed.")
     return 0

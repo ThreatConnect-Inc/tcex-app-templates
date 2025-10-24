@@ -73,14 +73,15 @@ ignore = [
   "PT006", # Wrong name(s) type in ..., expected ...
   "TC001", # Move application import ... into a type-checking block
   "TC002", # Move third-party import ... into a type-checking block
-  "TC003",
-  "SIM117",
-  "PLW2901",
-  "RET504",
-  "PLR2004",
-  "SIM103",
-  "SIM108",
-  "TRY300"
+  "TC003", # Typing Only Standard Library Import
+  "SIM117", # Multiple With Statements
+  "PLW2901", # Redefined Loop Name
+  "RET504", # Unnecessary Assign
+  "PLR2004", # Magic Value Comparison
+  "SIM103", # Needless Bool
+  "SIM108", # If Else Block Instead Of If Exp
+  "TRY300", # Try Consider Else
+  "N999" # Invalid Module Name
 ]
 
 # control enabled plugins

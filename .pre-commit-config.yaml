@@ -80,6 +80,7 @@ repos:
         language: python
         entry: python scripts/update_manifest_post_commit.py
         pass_filenames: false
+        always_run: true
         stages: [post-commit]
       - id: pylint
         entry: pylint

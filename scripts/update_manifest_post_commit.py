@@ -67,9 +67,9 @@ def main() -> int:
 
     print("[manifest] Template changes detected; rebuilding…")
     # Safety timeout so we never hang forever:
-    run(BUILD_ARGS, cwd=BUILD_CWD, timeout=300)
+    run(BUILD_ARGS, cwd=BUILD_CWD, timeout=60)
 
-    run(["git", "add", "--", MANIFEST_PATH], cwd=REPO_ROOT)
+    run(["git", "add", "--", MANIFEST_PATH], cwd=REPO_ROOT, timeout=10)
 
     if not staged_manifest_changed():
         print("[manifest] No changes to manifest; nothing to commit.")

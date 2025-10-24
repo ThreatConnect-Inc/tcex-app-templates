@@ -63,7 +63,7 @@ class App(ApiServiceFalconABC):
         )
 
     def register_custom_tasks(self):
-        """Register tasks."""
+        """Register taskss."""
         self.register_tasks(
             # pipeline param is optional and useful if there are multiple pipes using the same task
             pipes=[

@@ -1,70 +1,100 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
+import os
 import subprocess
 import sys
 from pathlib import Path
 
-# --- CONFIG (edit these) ---
-TEMPLATE_DIR = 'tie'
-MANIFEST_PATH = "tie/tcv/manifest.json"  # where your manifest is written
-REPO_ROOT = Path(__file__).resolve().parents[1]  # adjust if script lives elsewhere
-SCRIPT = REPO_ROOT / "tie" / "build_manifest.py"
-BUILD_ARGS = [sys.executable, str(SCRIPT), "tcv"]
-SKIP_TAG = "[skip-manifest]"  # prevents infinite loop
+TEMPLATE_DIR = "tie"
+MANIFEST_PATH = "tie/tcv/manifest.json"
+SKIP_TAG = "[skip-manifest]"
 
 
-def run(
-    cmd: list[str], check: bool = True, capture_output: bool = False, cwd: str | None = None
-) -> subprocess.CompletedProcess:
-    return subprocess.run(cmd, check=check, capture_output=capture_output, text=True, cwd=cwd)
+def run(cmd, *, check=True, capture_output=False, cwd=None, env=None, timeout=None):
+    return subprocess.run(
+        cmd,
+        check=check,
+        capture_output=capture_output,
+        text=True,
+        cwd=str(cwd) if cwd else None,
+        env=env,
+        timeout=timeout,
+    )
+
+
+def repo_root() -> Path:
+    out = run(["git", "rev-parse", "--show-toplevel"], capture_output=True).stdout.strip()
+    return Path(out)
+
+
+REPO_ROOT = repo_root()
+BUILD_CWD = REPO_ROOT / "tie"
+SCRIPT = BUILD_CWD / "build_manifest.py"
+BUILD_ARGS = [sys.executable, "-u", str(SCRIPT), "tcv"]
 
 
 def last_commit_message() -> str:
-    cp = run(["git", "log", "-1", "--pretty=%B"], capture_output=True)
-    return cp.stdout or ""
+    return run(["git", "log", "-1", "--pretty=%B"], capture_output=True, cwd=REPO_ROOT).stdout or ""
 
 
 def last_commit_touched_template() -> bool:
-    # Files changed in HEAD (name-only)
-    cp = run(
-        ["git", "diff-tree", "--no-commit-id", "--name-only", "-r", "HEAD"], capture_output=True
-    )
-    changed = [p.strip() for p in cp.stdout.splitlines() if p.strip()]
+    out = run(
+        ["git", "diff-tree", "--no-commit-id", "--name-only", "-r", "HEAD"],
+        capture_output=True,
+        cwd=REPO_ROOT,
+    ).stdout
     prefix = f"{TEMPLATE_DIR.rstrip('/')}/"
-    return any(p.startswith(prefix) for p in changed)
+    return any(p.strip().startswith(prefix) for p in out.splitlines())
 
 
 def staged_manifest_changed() -> bool:
-    # Return True if manifest differs in index (staged) vs HEAD
-    # We rely on exit code: 0 means no diff, 1 means diff.
-    cp = subprocess.run(["git", "diff", "--cached", "--quiet", "--", MANIFEST_PATH])
+    cp = subprocess.run(
+        ["git", "diff", "--cached", "--quiet", "--", MANIFEST_PATH], cwd=str(REPO_ROOT)
+    )
     return cp.returncode == 1
 
 
 def main() -> int:
-    # Avoid looping on the auto-commit we make.
+    # print for visibility
+    print(f"[manifest] post-commit hook running…")
+
     if SKIP_TAG in last_commit_message():
         return 0
-
-    # Only run if last commit touched the template dir.
     if not last_commit_touched_template():
+        print("[manifest] No template changes in last commit; exiting.")
         return 0
 
     print("[manifest] Template changes detected; rebuilding…")
-    # Run the builder with the pre-commit Python (sys.executable)
-    run(BUILD_ARGS)
+    # Safety timeout so we never hang forever:
+    run(BUILD_ARGS, cwd=BUILD_CWD, timeout=300)
 
-    # Stage the manifest
-    run(["git", "add", "--", MANIFEST_PATH])
+    run(["git", "add", "--", MANIFEST_PATH], cwd=REPO_ROOT)
 
-    # Only create a commit if manifest actually changed
     if not staged_manifest_changed():
         print("[manifest] No changes to manifest; nothing to commit.")
         return 0
 
-    # Make a separate commit and prevent re-trigger via SKIP_TAG
-    run(["git", "commit", "-m", f"chore: update manifest {SKIP_TAG}", "--no-verify"])
+    # Skip our own hook on the auto-commit AND disable GPG signing
+    env = os.environ.copy()
+    env["SKIP"] = (
+        "update-manifest-after-template-change"  # <-- your hook id in .pre-commit-config.yaml
+    )
+
+    run(
+        [
+            "git",
+            "-c",
+            "commit.gpgsign=false",
+            "commit",
+            "-m",
+            f"chore: update manifest {SKIP_TAG}",
+            "--no-verify",
+            "--quiet",
+        ],
+        cwd=REPO_ROOT,
+        env=env,
+    )
     print("[manifest] Manifest updated and committed.")
     return 0
 
@@ -72,7 +102,9 @@ def main() -> int:
 if __name__ == "__main__":
     try:
         sys.exit(main())
+    except subprocess.TimeoutExpired:
+        print("[manifest] ERROR: builder timed out.", file=sys.stderr)
+        sys.exit(1)
     except subprocess.CalledProcessError as e:
-        # Print useful stderr for debugging in the hook output
         sys.stderr.write(e.stderr or "")
         sys.exit(e.returncode or 1)

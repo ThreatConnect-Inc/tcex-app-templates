@@ -91,7 +91,7 @@ class App(ApiServiceFalconABC):
         )
 
     def register_custom_middleware(self):
-        """Register middlewares."""
+        """Register middleware."""
         self.register_middleware(
             [
                 InjectableMiddleware(

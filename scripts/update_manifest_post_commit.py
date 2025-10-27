@@ -7,26 +7,23 @@ import sys
 from pathlib import Path
 
 
-def run(cmd, *, cwd=None, timeout=None, check=True, capture_output=False):
+def run(cmd, *, cwd=None, timeout=None, check=True, capture_output=False, env=None):
     return subprocess.run(
         cmd,
-        cwd=str(cwd) if cwd else None,
+        cwd=cwd,
         timeout=timeout,
         check=check,
         text=True,
         capture_output=capture_output,
+        env=env,
     )
 
 
 class ManifestBuilder:
-    MANIFEST_PATH = "tie/tcv/manifest.json"
-    TEMPLATE_PREFIX = "tie/"
-    SKIP_TAG = "[skip-manifest]"
-    BUILDER_TIMEOUT = 120  # seconds
 
     def __init__(self):
-        self._repo_path = self.repo_path  # cache
-        self.log_path = self._repo_path / ".git" / "manifest-hook.log"
+        self.log_path = Path(self.repo_path / '.git' / 'manifest-hook.log')
+        self.skip_message = "[skip-manifest]"
 
     @property
     def repo_path(self) -> Path:
@@ -34,135 +31,76 @@ class ManifestBuilder:
         return Path(out)
 
     def log(self, msg: str) -> None:
+        """Log a message to the hook log file."""
         try:
-            self.log_path.parent.mkdir(parents=True, exist_ok=True)
             with self.log_path.open("a", encoding="utf-8") as fh:
                 fh.write(msg + "\n")
         except Exception:
             pass
-        print(msg, flush=True)
 
-    # ---------- guards ----------
-    def last_commit_message(self) -> str:
+    @property
+    def _last_commit_message(self):
         return run(
-            ["git", "log", "-1", "--pretty=%B"], cwd=self._repo_path, capture_output=True
+            ["git", "log", "-1", "--pretty=%B"], capture_output=True, cwd=self.repo_path
         ).stdout
 
-    def template_files_touched(self) -> bool:
-        self.log("[manifest] checking for template file changes in last commit")
+    @property
+    def _template_files_touched(self) -> bool:
+        self.log('[manifest] checking for template file changes in last commit')
         out = run(
             ["git", "diff-tree", "--no-commit-id", "--name-only", "-r", "HEAD"],
-            cwd=self._repo_path,
             capture_output=True,
+            cwd=self.repo_path,
         ).stdout
-        return any(p.strip().startswith(self.TEMPLATE_PREFIX) for p in out.splitlines())
+        prefix = 'tie/'
+        return any(p.strip().startswith(prefix) for p in out.splitlines())
 
-    def should_process(self) -> bool:
-        if self.SKIP_TAG in self.last_commit_message():
-            self.log("[manifest] skipping due to skip tag in commit message")
+    def should_process(self):
+        if self.skip_message in self._last_commit_message:
+            self.log('[manifest] skipping due to skip tag in commit message')
             return False
-        touched = self.template_files_touched()
-        self.log(f"[manifest] template files touched: {touched}")
-        return touched
+        should_process = self._template_files_touched
+        self.log(f'[manifest] template files touched: {should_process}')
+        return should_process
 
-    # ---------- hooksPath toggle (no env spam) ----------
-    def _get_hooks_path(self) -> str | None:
-        cp = run(
-            ["git", "config", "--local", "--get", "core.hooksPath"],
-            cwd=self._repo_path,
-            capture_output=True,
-            check=False,
-        )
-        val = (cp.stdout or "").strip()
-        return val or None
-
-    def _set_hooks_path(self, value: str) -> None:
-        run(["git", "config", "--local", "core.hooksPath", value], cwd=self._repo_path)
-
-    def _unset_hooks_path(self) -> None:
-        run(
-            ["git", "config", "--local", "--unset", "core.hooksPath"],
-            cwd=self._repo_path,
-            check=False,
-        )
-
-    # ---------- main steps ----------
-    def build(self) -> None:
-        prev_hooks = self._get_hooks_path()
+    def build(self):
+        prev_cwd = os.getcwd()
         try:
-            # Disable ALL hooks inside the builder by setting repo config temporarily
-            self._set_hooks_path("/dev/null")
-
-            # Also set a SINGLE env var so any nested post-commit run exits immediately
-            env = os.environ.copy()
-            env["MANIFEST_HOOK_DISABLED"] = "1"
-
-            self.log(f"[manifest] building updated manifest, cwd={self._repo_path / 'tie'}")
-            run(
-                [sys.executable, "-u", "build_manifest.py", "tcv"],
-                cwd=self._repo_path / "tie",
-                timeout=self.BUILDER_TIMEOUT,
-            )
+            os.chdir(self.repo_path / 'tie')
+            self.log(f'[manifest] building updated manifest, cwd={os.getcwd()}')
+            run([sys.executable, "build_manifest.py", "tcv"], cwd=os.getcwd(), timeout=60)
         finally:
-            # Restore prior hooksPath setting
-            if prev_hooks is None:
-                self._unset_hooks_path()
-            else:
-                self._set_hooks_path(prev_hooks)
+            os.chdir(prev_cwd)
 
-    def add_manifest(self) -> None:
-        self.log("[manifest] staging updated manifest")
-        run(["git", "add", "--", self.MANIFEST_PATH], cwd=self._repo_path)
+    def add_manifest(self):
+        self.log('[manifest] staging updated manifest')
+        run(["git", "add", "--", 'tie/tcv/manifest.json'], cwd=self.repo_path)
 
-    def manifest_changed(self) -> bool:
-        cp = run(
-            ["git", "diff", "--cached", "--quiet", "--", self.MANIFEST_PATH],
-            cwd=self._repo_path,
-            check=False,
-        )
-        return cp.returncode == 1  # 1 = diff exists
-
-    def commit(self) -> None:
-        self.log("[manifest] committing updated manifest (hooks disabled for this commit)")
+    def commit(self):
+        self.log('[manifest] committing updated manifest')
         run(
             [
                 "git",
                 "-c",
-                "core.hooksPath=/dev/null",  # disable hooks for this one commit only
+                "core.hooksPath=/dev/null",
                 "commit",
                 "-m",
-                f"chore: update manifest {self.SKIP_TAG}",
+                f"chore: update manifest {self.skip_message}",
                 "--quiet",
-                "--",
-                self.MANIFEST_PATH,
+                "--",  # end of options, commit only this path
+                'tie/tcv/manifest.json',
             ],
-            cwd=self._repo_path,
+            cwd=self.repo_path,
         )
 
 
 if __name__ == "__main__":
-    # Single re-entrancy env var (your only env use)
-    if os.environ.get("MANIFEST_HOOK_DISABLED") == "1":
-        sys.exit(0)
-
-    mb = ManifestBuilder()
+    manifest_builder = ManifestBuilder()
     try:
-        if not mb.should_process():
+        if manifest_builder.should_process() is False:
             sys.exit(0)
-        mb.build()
-        mb.add_manifest()
-        if not mb.manifest_changed():
-            mb.log("[manifest] no changes to manifest; nothing to commit")
-            sys.exit(0)
-        mb.commit()
-        mb.log("[manifest] done")
-        sys.exit(0)
-    except subprocess.TimeoutExpired:
-        print("[manifest] ERROR: builder timed out", file=sys.stderr)
-        sys.exit(1)
-    except subprocess.CalledProcessError as e:
-        print(f"[manifest] ERROR: {e}", file=sys.stderr)
-        sys.exit(e.returncode or 1)
+        manifest_builder.build()
+        manifest_builder.add_manifest()
+        manifest_builder.commit()
     except Exception as e:
-        print(f"[manifest] ERROR: {e}", file=sys.stderr)
-        sys.exit(1)
+        sys.exit(1, str(e))

@@ -1675,8 +1675,8 @@
         "template_path": "tcv/README.md"
     },
     "app.py": {
-        "md5": "f86a1bcdd4c46283cbe099ad3d930a28",
-        "last_commit": "e76ceda929d1317b8177571b307d4f8586eb1321",
+        "md5": "07d23d26a9919d61f8d1ee3536d72af2",
+        "last_commit": "fe5fd3aa494fd5af80a65405fceb5911e5c60455",
         "template_path": "tcv/app.py"
     },
     "app_inputs.py": {
@@ -1695,8 +1695,8 @@
         "template_path": "tcv/install.json"
     },
     "manifest.json": {
-        "md5": "50c48ff0771c576e51a87413b6abad8f",
-        "last_commit": "3aeace1ca8dbfad17cf82d32ee69fbf03eeb3eeb",
+        "md5": "af500f8be54d54cf3a7d241092eab227",
+        "last_commit": "7982bcf98b0ef071c0c812c68625a155090176b3",
         "template_path": "tcv/manifest.json"
     },
     "tcex.json": {

@@ -26,6 +26,7 @@ class ManifestBuilder:
 
     def __init__(self):
         self.log_path = Path(self.repo_path / '.git' / 'manifest-hook.log')
+        self.log_path.write_text('', encoding='utf-8')
         self.skip_message = "[skip-manifest]"
 
     @property
@@ -77,7 +78,7 @@ class ManifestBuilder:
             run(
                 [sys.executable, "build_manifest.py", "tcv"],
                 cwd=os.getcwd(),
-                timeout=60,
+                timeout=120,
                 env=env,
             )
         finally:

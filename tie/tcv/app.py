@@ -28,7 +28,7 @@ from task.ingest.upload import Upload as IngestUpload
 
 
 class App(ApiServiceFalconABC):
-    """API Service Apps"""
+    """API Service App"""
 
     def __init__(self, _tcex):
         """Initialize class properties."""
@@ -128,7 +128,7 @@ class App(ApiServiceFalconABC):
 
     @cached_property
     def discovery_handler(self):
-        """Returns the discovery handler."""
+        """Return the discovery handler."""
         return DiscoveryHandler(self.message_service, self.settings)
 
     @cached_property

@@ -6,6 +6,9 @@ import subprocess
 import sys
 from pathlib import Path
 
+if os.environ.get("MANIFEST_HOOK_DISABLED") == "1":
+    sys.exit(0)
+
 
 def run(cmd, *, cwd=None, timeout=None, check=True, capture_output=False, env=None):
     return subprocess.run(
@@ -68,7 +71,15 @@ class ManifestBuilder:
         try:
             os.chdir(self.repo_path / 'tie')
             self.log(f'[manifest] building updated manifest, cwd={os.getcwd()}')
-            run([sys.executable, "build_manifest.py", "tcv"], cwd=os.getcwd(), timeout=60)
+
+            env = os.environ.copy()
+            env["MANIFEST_HOOK_DISABLED"] = "1"
+            run(
+                [sys.executable, "build_manifest.py", "tcv"],
+                cwd=os.getcwd(),
+                timeout=60,
+                env=env,
+            )
         finally:
             os.chdir(prev_cwd)
 

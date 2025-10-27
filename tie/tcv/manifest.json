@@ -1030,7 +1030,7 @@
         "template_path": "basic/task/ingest/scheduler.py"
     },
     "task/ingest/upload.py": {
-        "md5": "7a7feb18c8065dae98af51757fa02d0a",
+        "md5": "7a7feb18c8065dae98af51757fa02d0b",
         "last_commit": "4e3c70125b384362193e6e4d820a0aad4fe0298c",
         "template_path": "basic/task/ingest/upload.py"
     },
@@ -1675,8 +1675,8 @@
         "template_path": "tcv/README.md"
     },
     "app.py": {
-        "md5": "ca1f6669a2426b1e874211dffff64e3b",
-        "last_commit": "db5dfd1697e92ead7abdb840f814b4d41e3488c6",
+        "md5": "f86a1bcdd4c46283cbe099ad3d930a28",
+        "last_commit": "e76ceda929d1317b8177571b307d4f8586eb1321",
         "template_path": "tcv/app.py"
     },
     "app_inputs.py": {
@@ -1695,8 +1695,8 @@
         "template_path": "tcv/install.json"
     },
     "manifest.json": {
-        "md5": "d4891cd73c6b3895b62701001be9b421",
-        "last_commit": "f41fe35e0ce1e00d339ba613fb564fb40c4bea40",
+        "md5": "50c48ff0771c576e51a87413b6abad8f",
+        "last_commit": "3aeace1ca8dbfad17cf82d32ee69fbf03eeb3eeb",
         "template_path": "tcv/manifest.json"
     },
     "tcex.json": {

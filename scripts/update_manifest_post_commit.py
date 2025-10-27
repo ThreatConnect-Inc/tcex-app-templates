@@ -41,6 +41,7 @@ class ManifestBuilder:
                 fh.write(msg + "\n")
         except Exception:
             pass
+        print(msg, flush=True)
 
     @property
     def _last_commit_message(self):

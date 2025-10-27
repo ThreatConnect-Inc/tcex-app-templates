@@ -28,7 +28,7 @@ from task.ingest.upload import Upload as IngestUpload
 
 
 class App(ApiServiceFalconABC):
-    """API Service App"""
+    """API Service Apps"""
 
     def __init__(self, _tcex):
         """Initialize class properties."""

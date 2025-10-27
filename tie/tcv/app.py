@@ -128,7 +128,7 @@ class App(ApiServiceFalconABC):
 
     @cached_property
     def discovery_handler(self):
-        """Returns the discovery handler."""
+        """Returnss the discovery handler."""
         return DiscoveryHandler(self.message_service, self.settings)
 
     @cached_property

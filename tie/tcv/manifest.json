@@ -930,7 +930,7 @@
         "template_path": "basic/more/transform/sample_transform.py"
     },
     "pyproject.toml": {
-        "md5": "4872cd2034ac2569c9c06c5670a20042",
+        "sha256": "b366fc041581f2028fedc489a5afa45524786591cd50884024867e58497e582b",
         "last_commit": "02e31e2851c37828d5c259bd543d23b089682e9d",
         "template_path": "basic/pyproject.toml"
     },
@@ -1035,27 +1035,27 @@
         "template_path": "basic/task/ingest/upload.py"
     },
     "tests/__init__.py": {
-        "md5": "b61b2461719d4623dbdb22b0e962ed75",
+        "sha256": "960b1b3dadc4c493a3aef2bc36ee8c81a991cfdfaa457287357da9df18122d98",
         "last_commit": "f41fe35e0ce1e00d339ba613fb564fb40c4bea40",
         "template_path": "basic/tests/__init__.py"
     },
     "tests/readme.md": {
-        "md5": "82cea09cba065371ae82abd8715047d3",
+        "sha256": "bbecac0d6d4017be189fed5231f1f66986977758fdf1dc41f7da29e1f5d6a0dd",
         "last_commit": "f41fe35e0ce1e00d339ba613fb564fb40c4bea40",
         "template_path": "basic/tests/readme.md"
     },
     "tests/requirements.lock": {
-        "md5": "e82fc1c0a86f03d785a2d3368afc91de",
+        "sha256": "da3e1513ef7f60a8bec022f03f4d987bd493e60a6f25a3fb711587115d5b3b5a",
         "last_commit": "f41fe35e0ce1e00d339ba613fb564fb40c4bea40",
         "template_path": "basic/tests/requirements.lock"
     },
     "tests/requirements.txt": {
-        "md5": "75630c2473f36812b3d47dc7d3f1e012",
+        "sha256": "305a7339539f04764f35e85a534066b361bec85b2aace3f5e02263d098679b00",
         "last_commit": "f41fe35e0ce1e00d339ba613fb564fb40c4bea40",
         "template_path": "basic/tests/requirements.txt"
     },
     "tests/test_run_local.py": {
-        "md5": "92a3795fc95a831dec8470df60b8534c",
+        "sha256": "b429e0b5c2b98918cb74772b9a61e36cfaf232426170efdad483998d7aa66193",
         "last_commit": "f41fe35e0ce1e00d339ba613fb564fb40c4bea40",
         "template_path": "basic/tests/test_run_local.py"
     },
@@ -1675,7 +1675,7 @@
         "template_path": "tcv/README.md"
     },
     "app.py": {
-        "md5": "ca1f6669a2426b1e874211dffff64e3b",
+        "sha256": "66c1e44b15308ba782c8bb13f330f00264fa658c4f65fd701a92cb42fbceae2c",
         "last_commit": "09495d68d5c143b786872a2b723b45bd092dcb4d",
         "template_path": "tcv/app.py"
     },
@@ -1695,8 +1695,8 @@
         "template_path": "tcv/install.json"
     },
     "manifest.json": {
-        "md5": "f27eeca6fa1da53b4b3538814b66a325",
-        "last_commit": "ac4ad330436962cf8acaf99c11b275e1d24b5f3f",
+        "sha256": "97eadcbbe3b1c095dce511157f99ece44c4da4d547d6d867f1bcfd107a21507e",
+        "last_commit": "26fa1383234fab1772444265400072800e8c9d1e",
         "template_path": "tcv/manifest.json"
     },
     "tcex.json": {

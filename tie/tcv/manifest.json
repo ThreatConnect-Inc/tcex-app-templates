@@ -1695,8 +1695,8 @@
         "template_path": "tcv/install.json"
     },
     "manifest.json": {
-        "sha256": "4fd86b142f0379de207a443f461f182675239bdea07de736d9a0528a3033110c",
-        "last_commit": "ec168a77713a663c32363940f0f0d3bd65c20a1a",
+        "sha256": "8f84bd551988851e90165a2197723edad53c27a4d61b562482292019537bf87b",
+        "last_commit": "fbb07f2776a5e4e57a27fa688e9805f9443bda10",
         "template_path": "tcv/manifest.json"
     },
     "tcex.json": {

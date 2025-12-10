@@ -1,16 +1,13 @@
 """Run App"""
-# standard library
+
 import sys
-import traceback
 from functools import cached_property
 from pathlib import Path
 from typing import TYPE_CHECKING, NoReturn
 
 if TYPE_CHECKING:
-    # third-party
     from tcex import TcEx  # must be imported later, but also needed typing hints
 
-    # first-party
     from app import App  # must be imported later, but also needed typing hints
 
 
@@ -21,7 +18,7 @@ class Run:
     def app(self) -> 'App':
         """Return a properly configured App instance."""
         # first-party
-        from app import App  # pylint: disable=import-outside-toplevel
+        from app import App  # noqa: PLC0415
 
         return App(self.tcex)
 
@@ -33,7 +30,7 @@ class Run:
     def tcex(self) -> 'TcEx':
         """Return a properly configured TcEx instance."""
         # third-party
-        from tcex import TcEx  # pylint: disable=import-outside-toplevel
+        from tcex import TcEx  # noqa: PLC0415
 
         return TcEx()
 
@@ -41,17 +38,17 @@ class Run:
         """Launch the App"""
         try:
             # perform prep/setup operations
-            self.app.setup(**{})
+            self.app.setup()
 
             # run the app
-            self.app.run(**{})
+            self.app.run()
 
             # perform cleanup/teardown operations
-            self.app.teardown(**{})
+            self.app.teardown()
 
         except Exception as e:
             main_err = f'Generic Error.  See logs for more details ({e}).'
-            self.tcex.log.error(traceback.format_exc())
+            self.tcex.log.exception(main_err)
             self.exit(1, main_err)
 
     @staticmethod

@@ -1,34 +1,172 @@
-[tool.black]
-line-length = 100
-skip-string-normalization = true
-
-[tool.pylint.master]
-init-hook = "import sys;sys.path.insert(0, 'lib_latest')"
-
-[tool.pylint.messages_control]
-# C0103 - invalid-name
-# C0116 - missing-function-docstring
-# C0302 - too-many-lines
-# C0330 - bad-continuation
-# C0401 - wrong-spelling-in-comment
-# C0411 - wrong-import-order
-# E0401 - import-error (checked after tclib)
-# R0801 - duplicate-code
-# R0902 - too-many-instance-attributes
-# R0903 - too-few-public-methods
-# R0904 - too-many-public-methods
-# R0912 - too-many-branches
-# R0913 - too-many-arguments
-# R0914 - too-many-locals
-# R0915 - too-many-statements
-# W0511 - fixme
-# W0703 - broad-except
-# W1203 - logging-fstring-interpolation
-disable = "C0103,C0116,C0302,C0330,C0401,C0411,E0401,R0801,R0902,R0903,R0904,R0912,R0913,R0914,R0915,W0511,W0703,W1203"
-extension-pkg-whitelist = "pydantic"
+[tool.pyright]
+# https://github.com/microsoft/pyright/blob/main/docs/configuration.md#sample-pyprojecttoml-file
+exclude = [
+  "**/.history",
+  "**/__pycache__",
+  "**/local-*",
+]
+pythonPlatform = "Linux"
+pythonVersion = "3.11"
+reportPrivateImportUsage = false
 
 [tool.pytest.ini_options]
+# addopts = "-p no:warnings"
+# addopts = "--tb=short --show-capture=no"
+# addopts = "-n auto"
+filterwarnings = [
+  # "error",
+  # "ignore:.*Unverified HTTPS request is being made to host.*",
+  "ignore:The --rsyncdir command line argument and rsyncdirs config variable are deprecated.:DeprecationWarning",
+]
 junit_family = "xunit2"
 testpaths = [
   "tests",
 ]
+
+# Configuration for ruff linter and formatter
+[tool.ruff]
+# https://docs.astral.sh/ruff/
+# exclude additional directories, outside of .gitignore.
+exclude = [
+  "tests",
+]
+# set line length to match black
+line-length = 100
+# set the python target
+target-version = "py311"
+
+# Configuration for ruff formatter
+[tool.ruff.format]
+# https://docs.astral.sh/ruff/formatter/
+docstring-code-format = true
+docstring-code-line-length = 60
+indent-style = "space"
+line-ending = "auto"
+quote-style = "single"
+skip-magic-trailing-comma = false
+
+# Configuration for ruff linter rules
+[tool.ruff.lint]
+# https://docs.astral.sh/ruff/linter/
+# control "--fix" behavior.
+# fixable = []
+# unfixable = []
+# https://beta.ruff.rs/docs/configuration/#error-suppression
+ignore = [
+  'BLE001', # blind except: except: clause
+  'D400', # First line should end with a period
+  'D401', # First line should be in imperative mood
+  'D415', # First line should end with a period, question mark, or exclamation point
+  'G004', # use % formatting in logging functions
+  'PLR0913', # Too many arguments in function definition  (x > 5)
+]
+# control enabled plugins
+select = [
+  "A", # flake8-builtins
+  "ARG", # flake8-unused-arguments
+  "B", # flake8-bugbear
+  "BLE", # flake8-blind-except
+  "C", # flake8-comprehensions
+  "C4", # flake8-comprehensions
+  "C90", # mccabe
+  "D", # pydocstyle
+  "DJ", # flake8-django
+  "DTZ", # flake8-datetimez
+  "E", # pycodestyle
+  "W", # pycodestyle
+  "E", # pycodestyle
+  "EM", # flake8-errmsg
+  "EXE", # flake8-executable
+  "F", # Pyflakes
+  "FBT", # flake8-boolean-trap
+  "G", # flake8-logging-format
+  "I", # isort
+  "ICN", # flake8-import-conventions
+  "INP", # flake8-no-pep420
+  "ISC", # flake8-implicit-str-concat
+  "N", # pep8-naming
+  "NPY", # NumPy-specific
+  "PD", # pandas-vet
+  "PGH", # pygrep-hooks
+  "PIE", # flake8-pie
+  "PL", # Pylint
+  "PLC", # Convention
+  "PLE", # Error
+  "PLR", # Refactor
+  "PLW", # Warning
+  "PT", # flake8-pytest-style
+  "PTH", # flake8-use-pathlib
+  "PYI", # flake8-pyi
+  "RET", # flake8-return
+  "RSE", # flake8-raise
+  "RUF", # Ruff-specific
+  "SIM", # flake8-simplify
+  "SLF", # flake8-self
+  "T10", # flake8-debugger
+  "T20", # flake8-print
+  "TCH", # flake8-type-checking
+  "TID", # flake8-tidy-imports
+  "TRY", # tryceratops
+  "UP", # pyupgrade
+  "W", # pycodestyle
+  "YTT", # flake8-2020
+]
+# Other Options
+# "ANN", # flake8-annotations
+# "COM", # flake8-commas
+# "ERA", # eradicate
+# "S", # flake8-bandit
+# "Q", # flake8-quotes
+
+# Per-file ignores for ruff linter
+[tool.ruff.lint.extend-per-file-ignores]
+"__init__.py" = ["F401"]
+
+[tool.ruff.lint.isort]
+# Define a default section for any imports that don't fit into the specified section-order.
+default-section = "first-party"
+
+# A list of modules to consider standard-library, in addition to those known to Ruff in advance
+extra-standard-library = []
+
+# Map known_first_party to known-first-party
+known-first-party = []
+
+# Map known_local_folder to known-local-folder
+known-local-folder = ["."]
+
+# Map known_third_party to known-third-party
+known-third-party = [
+  "arrow",
+  "bedrock",
+  "boto3",
+  "botocore",
+  "cryptography",
+  "dotenv",
+  "falcon",
+  "jmespath",
+  "offapi",
+  "openai",
+  "pydantic",
+  "pydantic_core",
+  "pydantic_settings",
+  "pytest",
+  "redis",
+  "requests",
+  "semantic_version",
+  "spectree",
+  "tcex",
+  "uuid6",
+]
+
+# Override in which order the sections should be output. Can be used to move custom sections.
+section-order = ["future", "standard-library", "third-party", "first-party", "local-folder"]
+
+# Equivalent to include_trailing_comma = true
+split-on-trailing-comma = true
+
+# Pydocstyle configuration for ruff linter
+[tool.ruff.lint.pydocstyle]
+# https://docs.astral.sh/ruff/linter/
+
+convention = "google"

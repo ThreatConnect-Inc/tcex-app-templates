@@ -2,7 +2,6 @@
 
 # standard library
 import logging
-from pathlib import Path
 
 # third-party
 from tcex import TcEx
@@ -10,6 +9,7 @@ from tcex.logger.trace_logger import TraceLogger
 
 # first-party
 from core.app.enums import PREFLIGHT_CHECKS
+from core.service.attribute_checker import AttributeChecker
 from core.service.current_running_process import CurrentRunningProcess
 
 logger = logging.getLogger('tcex')
@@ -25,6 +25,7 @@ class PreflightCheckService:
         self.mapping = {
             PREFLIGHT_CHECKS.FILESYSTEM: self._check_filesystem,
             PREFLIGHT_CHECKS.TC_API: self._check_tc_api,
+            PREFLIGHT_CHECKS.ATTRIBUTES: self._check_attributes,
             PREFLIGHT_CHECKS.DUPLICATE_PROCESSES_RUNNING: self._check_duplicate_service,
         }
         self.preflight_checks = set()
@@ -70,18 +71,16 @@ class PreflightCheckService:
 
     def _check_attributes(self):
         """Check the attributes for required conditions."""
-        attributes_path = Path('attributes.json')
-        if not attributes_path.exists():
-            self.log.error(f'attributes.json file not found at {attributes_path}')
-            msg = 'attributes.json file is required for preflight checks.'
-            raise RuntimeError(msg)
-
-        try:
-            list(self.tcex.api.tc.v3.ti.group_attributes())
-        except Exception as ex:
-            self.log.exception('Failed to fetch attributes from ThreatConnect API.')
-            msg = 'Could not fetch attributes from ThreatConnect API.'
-            raise RuntimeError(msg) from ex
+        attribute_checker = AttributeChecker(self.tcex)
+        is_valid = attribute_checker.is_valid()
+        if is_valid:
+            self.log.info('action=check_attributes, message=Preflight check for attributes passed.')
+        else:
+            self.log.error(
+                'action=check_attributes, message=Preflight check for attributes failed.'
+            )
+            ex_msg = 'Preflight check for attributes failed. See logs for details.'
+            raise RuntimeError(ex_msg)
 
     def _check_duplicate_service(self):
         """Check for duplicate services and shutdown all services if found."""

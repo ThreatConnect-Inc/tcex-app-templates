@@ -10,13 +10,12 @@ from typing import cast
 
 # third-party
 import schedule
-
-# first-party
-from app_inputs import AppBaseModel
 from tcex.api.tc.v3.tql.tql_operator import TqlOperator
 from tcex.exit import ExitCode
 from tcex.logger.trace_logger import TraceLogger
 
+# first-party
+from app_inputs import AppBaseModel
 from core.api.falcon_app import FalconApp
 from core.api.spec import spec
 from core.app.api_service_app_abc import ApiServiceAppABC
@@ -27,6 +26,7 @@ from core.message_service.message_service import MessageService
 from core.model.scheduled_action_model import ScheduledActionModel
 from core.model.tie.job_request_base_model import JobRequestBaseModel
 from core.service.preflight_check_service import PreflightCheckService
+from core.supervisor import Supervisor
 from core.task.tasks import Tasks
 from core.util.custom_handler import CustomHandler
 from model.settings_model import SettingModel
@@ -56,13 +56,14 @@ class ApiServiceFalconABC(ApiServiceAppABC, ABC):
         self.model: AppBaseModel = self.inputs.model  # type: ignore
         self.preflight_check_service = PreflightCheckService(self.tcex)
         self.migrations = Migrations(self.tcex, self.db, self.settings) if Migrations else None
-        self.tasks_obj = Tasks(self.tcex)
+        self.tasks_obj = Tasks(self.tcex, db=self.db, settings=self.settings)
 
         # properties
         self.app = FalconApp(sink_before_static_route=True)
 
         # provide dependencies
         provide(self.db)
+        provide(self.tasks_obj.supervisor, type_=Supervisor)
 
         if (
             self.app.ui_files

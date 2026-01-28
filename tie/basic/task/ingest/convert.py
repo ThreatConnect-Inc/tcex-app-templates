@@ -61,6 +61,7 @@ class Convert(TaskPathPipeABC):
         )
         self.tcex.log.info(log_message)
         for file in sorted(input_dir.glob(f'*{prefix}*')) or []:
+            self.update_heartbeat()
             with gzip.open(file, mode='rt', encoding='utf-8') as fh:
                 content = json.load(fh)
 

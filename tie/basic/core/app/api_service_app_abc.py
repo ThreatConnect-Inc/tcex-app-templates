@@ -4,16 +4,16 @@
 # standard library
 from abc import ABC
 
-# first-party
-# TODO: make AppInputs abstract and import here
-from app_inputs import AppInputs
-
 # third-party
 from pydantic import ValidationError
 from tcex import TcEx
 from tcex.exit import ExitCode
 from tcex.input.input import Input
 from tcex.logger.trace_logger import TraceLogger
+
+# first-party
+# TODO: make AppInputs abstract and import here
+from app_inputs import AppInputs
 
 
 class ApiServiceAppABC(ABC):  # noqa: B024

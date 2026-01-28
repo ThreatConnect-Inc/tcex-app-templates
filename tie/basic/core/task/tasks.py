@@ -15,8 +15,14 @@ import schedule
 from tcex import TcEx
 from tcex.exit import ExitCode
 
+# first-party
+from core.beacon import inject
+from core.dao.job_dao import JobRequestDAO
+from core.json_db import JsonDB
+from core.model.settings_model_base import SettingModelBase
+from core.supervisor import Supervisor
+
 if TYPE_CHECKING:
-    # first-part
     # first-party
     from task import TaskABC
 
@@ -28,13 +34,42 @@ class Tasks:
 
     status_final: ClassVar[list[str]] = []
 
-    def __init__(self, tcex: TcEx):
-        """Initialize class properties."""
+    def __init__(
+        self,
+        tcex: TcEx,
+        db: JsonDB = inject(JsonDB),
+        settings: SettingModelBase = inject(SettingModelBase),
+    ):
+        """Initialize class properties.
+
+        Args:
+            tcex: TcEx instance.
+            db: JsonDB instance for persisting Supervisor state.
+            settings: Application settings.
+        """
         # properties
         self._tasks = set()
         self.log = logger
         self.tcex = tcex
         self.exit_service = tcex.exit
+        self.settings = settings
+        self.db = db
+
+        # Create JobRequestDAO for Supervisor
+        self.job_dao = JobRequestDAO(db, settings)
+
+        # Initialize Supervisor with JsonDB, job_dao, settings, and exit service
+        self.supervisor = Supervisor(
+            db=db,
+            job_dao=self.job_dao,
+            settings=settings,
+            exit_service=self.exit_service,
+        )
+
+        # Check for stale pipelines and enter probation mode if needed
+        # Stale pipelines: first job must succeed or app shuts down
+        # Healthy pipelines: baseline is reset normally
+        self.supervisor.check_and_enter_probation()
 
         # schedule watchdog for tasks
         schedule.every(1).minute.do(self.watchdog)
@@ -121,28 +156,38 @@ class Tasks:
         for task in self.all():
             self.kill(task)
 
-    def watchdog(self) -> 'list[TaskABC]':
-        """Return all processes that are alive."""
+    def watchdog(self) -> None:
+        """Monitor tasks and perform health checks.
+
+        Per-job backoff is handled directly on JobRequestModel fields.
+        Pipeline staleness is checked by Supervisor.tick() using job completion times.
+        """
         self.log.debug(f'task-event=run-watchdog, task-count={len(self._tasks)}')
         api_limit: None | dict = None
 
-        for task in self.all():
-            # handle if we had a fatal error
-            self.log.debug(
-                f'task-event=watchdog, unrecoverable failure: {task.ns.unrecoverable_failure}'
+        # Run Supervisor tick for pipeline health monitoring
+        # This checks if any pipeline has no completed jobs for threshold (default 48h)
+        self.supervisor.tick()
+
+        # Check for shutdown request from Supervisor (staleness detected in main process)
+        if self.supervisor.shutdown_requested:
+            self.log.warning(
+                f'task-event=supervisor-shutdown-requested, '
+                f'reason={self.supervisor.shutdown_reason}'
             )
+            self._graceful_shutdown(self.supervisor.shutdown_reason)
+            return
+
+        # Check for unrecoverable failure from forked tasks (cross-process via Redis)
+        for task in self.all():
             if task.ns.unrecoverable_failure is True:
                 self.log.warning(
-                    f'task-event=unrecoverable-failure, task-name={task.task_settings.name}, '
-                    f'process-id={task.process.pid}, metadata={task.process.metadata.dict()}, '
+                    f'task-event=unrecoverable-failure, task-name={task.task_settings.name}'
                 )
-                self.pause_all()
-                self.kill_all()
+                self._graceful_shutdown('Task reported unrecoverable failure')
+                return
 
-                self.exit_service.exit(
-                    ExitCode.FAILURE, 'Shutting down due to unrecoverable failure.'
-                )
-
+        for task in self.all():
             # see if we should kill the task as its over its time limit
             if task.process is not None and task.process.is_alive():
                 # update date expires based on heartbeat
@@ -184,6 +229,18 @@ class Tasks:
         """
         for task in self.all():
             task.task_settings.paused = True
+
+    def _graceful_shutdown(self, reason: str) -> None:
+        """Perform graceful shutdown: pause tasks, kill running, then exit.
+
+        Args:
+            reason: Human-readable reason for shutdown.
+        """
+        self.log.error(f'task-event=graceful-shutdown-initiated, reason={reason}')
+        self.pause_all()
+        self.kill_all()
+        if self.exit_service:
+            self.exit_service.exit(ExitCode.FAILURE, f'Shutting down: {reason}')
 
     def _send_signal_to_task(self, send_signal: signal.Signals, to_task: 'TaskABC'):
         """Send signal to task."""

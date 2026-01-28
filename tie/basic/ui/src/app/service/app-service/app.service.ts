@@ -31,6 +31,9 @@ export interface AppConfig {
   ui: {
     global: {
       sideNav: { label: string; path: string }[];
+      featureFlags?: {
+        enableAddJob?: boolean;
+      };
     };
     adhocRequest: {
       form: Form;

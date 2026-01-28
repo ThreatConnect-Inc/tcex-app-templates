@@ -58,6 +58,7 @@ class AdHocRequestResource(EndpointBaseABC):
             start_time=start_time,
             end_time=end_time,
             sample_types=body.sample_types,
+            pipeline='ingest',
         )
         self.dao.save(job)
 

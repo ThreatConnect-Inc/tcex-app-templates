@@ -25,6 +25,23 @@ class SDK:
         session.base_url = BASE_URL
         return session
 
+    def get(self, endpoint: str, params: dict | None = None):
+        """Make a GET request to the API.
+
+        Args:
+            endpoint: The API endpoint to call.
+            params: Optional query parameters.
+
+        Returns:
+            The response object.
+
+        Raises:
+            requests.HTTPError: If the response status code indicates an error.
+        """
+        response = self.session.get(endpoint, params=params)
+        response.raise_for_status()
+        return response
+
     def events(self, start_time, end_time):  # noqa: ARG002
         """Return the events API."""
         yield from [{'id': 1, 'name': 'Event 1'}, {'id': 2, 'name': 'Event 2'}]

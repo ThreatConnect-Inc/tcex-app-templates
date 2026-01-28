@@ -3,7 +3,9 @@
 # standard library
 import logging
 import re
-from typing import Any, ClassVar
+from typing import Any
+
+from pydantic import Field, validator
 
 # third-party
 from core.api.validation.models.query_param_model import (
@@ -12,7 +14,6 @@ from core.api.validation.models.query_param_model import (
     values_to_snake,
 )
 from core.json_db.where import ToWhere, WhereDict
-from pydantic import Field, validator
 
 # get primary API logger
 logger = logging.getLogger('tcex')

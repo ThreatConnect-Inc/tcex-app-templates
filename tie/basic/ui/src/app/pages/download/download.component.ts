@@ -74,7 +74,6 @@ export class DownloadComponent {
         takeUntilDestroyed(this.destroyRef),
         tap((uiConfig) => {
           this.downloadFormConfig = uiConfig?.ui?.downloadTI?.form;
-          console.log('Download Form Config:', this.downloadFormConfig);
         })
       )
       .subscribe();

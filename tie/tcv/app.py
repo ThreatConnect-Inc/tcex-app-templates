@@ -165,7 +165,7 @@ class App(ApiServiceFalconABC):
         """Perform preflight check."""
         try:
             self.sdk.test_connection(self.settings)
-            self.log.info('Successfully to connect to API')
+            self.log.info('Successfully connected to API')
         except Exception as ex:
             self.log.exception('Failed to connect to API')
             msg = 'Failed to connect to API.'

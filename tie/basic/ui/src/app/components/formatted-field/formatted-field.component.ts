@@ -1,9 +1,10 @@
 import { tap } from 'rxjs';
 
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, Input, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { FieldDisplay } from 'src/app/service/app-service/app.service';
-import { TaskService } from 'src/app/service/tasks-service/taks.service';
+import { TaskService } from 'src/app/service/tasks-service/tasks.service';
 
 @Component({
     selector: 'app-formatted-field',
@@ -14,7 +15,9 @@ export class FormattedFieldComponent implements OnInit {
     @Input() field: FieldDisplay;
     @Input() value: any;
 
-    finalStatuses = null;
+    finalStatuses: string[] | null = null;
+
+    private readonly destroyRef = inject(DestroyRef);
 
     constructor(private taskService: TaskService) {}
 
@@ -22,15 +25,11 @@ export class FormattedFieldComponent implements OnInit {
         this.taskService
             .getCollection()
             .pipe(
+                takeUntilDestroyed(this.destroyRef),
                 tap((res) => {
-                    const finalStatuses = [];
-                    for (const task of res.data) {
-                        if (task.lastTask) {
-                            finalStatuses.push(task.statusComplete.toLocaleLowerCase());
-                        }
-                    }
-
-                    this.finalStatuses = finalStatuses;
+                    this.finalStatuses = res.data
+                        .filter((task) => task.lastTask)
+                        .map((task) => task.statusComplete.toLocaleLowerCase());
                 }),
             )
             .subscribe();

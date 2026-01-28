@@ -6,7 +6,8 @@
             tclPendo
             theme="primary"
             [featureVersion]="featureVersion"
-            (click)="handleAddJobClick()">
+            [disabled]="!enableAddJob"
+            (click)="enableAddJob && handleAddJobClick()">
             Add Job
         </tcl-button>
     </div>

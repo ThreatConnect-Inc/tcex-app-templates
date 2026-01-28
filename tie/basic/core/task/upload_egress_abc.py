@@ -5,9 +5,6 @@ from abc import ABC, abstractmethod
 from pathlib import Path
 from typing import TypeVar
 
-from model import JobRequestModel
-from model.settings_model import SettingModel
-
 # third-party
 from tcex import TcEx
 
@@ -15,6 +12,8 @@ from tcex import TcEx
 from core.json_db import JsonDB
 from core.task.task_path_pipe_abc import UploadError
 from core.task.upload_abc import UploadABC
+from model import JobRequestModel
+from model.settings_model import SettingModel
 
 T = TypeVar('T')
 

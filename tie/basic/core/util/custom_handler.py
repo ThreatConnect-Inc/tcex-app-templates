@@ -2,7 +2,7 @@
 
 # standard library
 import json
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 
 # third-party
 import arrow
@@ -17,6 +17,7 @@ class CustomHandler(json.JSONEncoder):
             arrow.Arrow: lambda x: x.isoformat(),
             date: lambda x: x.isoformat(),
             datetime: lambda x: x.isoformat(),
+            timedelta: lambda x: x.total_seconds(),
             set: lambda x: list(x),  # pylint: disable=unnecessary-lambda
         }
         handler = handlers.get(type(o), super().default)

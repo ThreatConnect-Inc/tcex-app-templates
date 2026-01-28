@@ -7,10 +7,6 @@ from abc import ABC
 from functools import cached_property
 from pathlib import Path
 
-# first-party
-from model import JobRequestModel
-from model.settings_model import SettingModel
-
 # third-party
 from tcex import TcEx
 from tcex.api.tc.ti_transform.model import GroupTransformModel, IndicatorTransformModel
@@ -18,6 +14,10 @@ from tcex.api.tc.ti_transform.ti_predefined_functions import (
     ProcessingFunctions,
     transform_builder_to_model,
 )
+
+# first-party
+from model import JobRequestModel
+from model.settings_model import SettingModel
 
 logger = logging.getLogger('tcex')
 

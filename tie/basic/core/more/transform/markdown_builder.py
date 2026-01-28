@@ -1,6 +1,8 @@
 """Markdown formatting utilities."""
 
 # standard library
+import html
+import mimetypes
 from abc import ABC, abstractmethod
 
 
@@ -33,15 +35,24 @@ class ContentABC(ABC):
 class Header(ContentABC):
     """Represents a markdown header."""
 
-    def __init__(self, text: str, *, level: int = 3, spacing: int = 2):
-        """Initialize class properties."""
+    def __init__(self, text: str, *, level: int = 3, spacing: int = 2, ai_indicator: bool = False):
+        """Initialize class properties.
+
+        Args:
+            text: Header text
+            level: Header level (1-6)
+            spacing: Number of newlines after header
+            ai_indicator: If True, prepends sparkle emoji to indicate AI-generated content
+        """
         self.text = text
         self.level = level
         self.spacing = '\n' * spacing
+        self.ai_indicator = ai_indicator
 
     def to_markdown(self) -> str:
         """Convert to markdown format."""
-        return f'{"#" * self.level} {self.text}{self.spacing}'
+        prefix = '✨ ' if self.ai_indicator else ''
+        return f'{"#" * self.level} {prefix}{self.text}{self.spacing}'
 
 
 class TextList(ContentABC):
@@ -57,8 +68,20 @@ class TextList(ContentABC):
         max_item_length=500,
         append='',
         prepend='',
+        ai_indicator=False,
     ):
-        """Initialize class properties."""
+        """Initialize class properties.
+
+        Args:
+            title: Section title
+            sub_title: Label used per item
+            spacing: Number of newlines after section
+            max_items: Max items to render
+            max_item_length: Per-item truncation length
+            append: Suffix for each item
+            prepend: Prefix for each item
+            ai_indicator: If True, prepends ✨ emoji to title for AI content
+        """
         for name, value in [
             ('spacing', spacing),
             ('max_item_length', max_item_length),
@@ -76,6 +99,7 @@ class TextList(ContentABC):
         self.prepend = prepend
         self.append = append
         self.max_item_length = max_item_length
+        self.ai_indicator = ai_indicator
 
     def add_item(self, *item: str):
         """Add an item to the list."""
@@ -83,7 +107,7 @@ class TextList(ContentABC):
 
     def to_markdown(self) -> str:
         """Convert to markdown format."""
-        title_block = Header(self.title, level=3).to_markdown()
+        title_block = Header(self.title, level=3, ai_indicator=self.ai_indicator).to_markdown()
 
         if not self.items:
             return f'{title_block}No Data Provided.{self.spacing}'
@@ -147,11 +171,140 @@ class Text(ContentABC):
         return f'{content}{self.spacing}'
 
 
+class Image(ContentABC):
+    """Represents a markdown image with optional fixed size."""
+
+    def __init__(
+        self,
+        text: str,
+        *,
+        width: int | None = 500,
+        height: int | None = None,
+        spacing: int = 2,
+    ):
+        """Initialize class properties."""
+        self.text = text
+        self.width = width
+        self.height = height
+        self.spacing = '\n' * spacing
+
+    def to_markdown(self) -> str:
+        """Render as a markdown image."""
+        attrs = []
+        if self.width is not None:
+            attrs.append(f'width="{self.width}"')
+        if self.height is not None:
+            attrs.append(f'height="{self.height}"')
+        attr_str = ' '.join(attrs)
+        # Escape URL to prevent XSS
+        safe_url = html.escape(self.text, quote=True)
+        return f'<img src="{safe_url}" alt="Image" {attr_str} />{self.spacing}'
+
+
+class Audio(ContentABC):
+    """Represents an embedded audio player."""
+
+    def __init__(
+        self,
+        text: str,
+        *,
+        width: int | None = 500,
+        height: int | None = 50,
+        spacing: int = 2,
+    ):
+        """Initialize class properties."""
+        self.text = text
+        self.width = width
+        self.height = height
+        self.spacing = '\n' * spacing
+
+    @staticmethod
+    def _guess_type(url: str) -> str | None:
+        mime, _ = mimetypes.guess_type(url)
+        return mime
+
+    def to_markdown(self) -> str:
+        """Render as an embedded audio player."""
+        mime = self._guess_type(self.text)
+        type_attr = f' type="{mime}"' if mime else ''
+
+        size_attrs = []
+        if self.width is not None:
+            size_attrs.append(f'width="{self.width}"')
+        if self.height is not None:
+            size_attrs.append(f'height="{self.height}"')
+        size_str = ' '.join(size_attrs)
+
+        # Escape URL to prevent XSS
+        safe_url = html.escape(self.text, quote=True)
+        return (
+            f'<audio controls {size_str}>\n'
+            f'  <source src="{safe_url}"{type_attr}>\n'
+            f'  Your browser does not support the audio element.\n'
+            f'</audio>{self.spacing}'
+        )
+
+
+class Video(ContentABC):
+    """Represents an embedded video player with fixed size support."""
+
+    def __init__(
+        self,
+        text: str,
+        *,
+        width: int | None = 500,
+        height: int | None = 300,
+        spacing: int = 2,
+    ):
+        """Initialize class properties."""
+        self.text = text
+        self.width = width
+        self.height = height
+        self.spacing = '\n' * spacing
+
+    @staticmethod
+    def _guess_type(url: str) -> str | None:
+        mime, _ = mimetypes.guess_type(url)
+        return mime
+
+    def to_markdown(self) -> str:
+        """Render as an embedded video player."""
+        mime = self._guess_type(self.text)
+        type_attr = f' type="{mime}"' if mime else ''
+
+        size_attrs = []
+        if self.width is not None:
+            size_attrs.append(f'width="{self.width}"')
+        if self.height is not None:
+            size_attrs.append(f'height="{self.height}"')
+        size_str = ' '.join(size_attrs)
+
+        # Escape URL to prevent XSS
+        safe_url = html.escape(self.text, quote=True)
+        return (
+            f'<video controls {size_str}>\n'
+            f'  <source src="{safe_url}"{type_attr}>\n'
+            f'  Your browser does not support the video tag.\n'
+            f'</video>{self.spacing}'
+        )
+
+
 class Table(ContentABC):
     """Represents a markdown table."""
 
-    def __init__(self, title, *, spacing=2, max_row_length=50, level=3, max_rows=100):
-        """Initialize class properties."""
+    def __init__(
+        self, title, *, spacing=2, max_row_length=50, level=3, max_rows=100, ai_indicator=False
+    ):
+        """Initialize class properties.
+
+        Args:
+            title: Table title
+            spacing: Newlines after table
+            max_row_length: Per-cell truncation length
+            level: Header level for title
+            max_rows: Max rows to render
+            ai_indicator: If True, prepends ✨ emoji to title for AI content
+        """
         for name, value in [
             ('spacing', spacing),
             ('max_row_length', max_row_length),
@@ -168,6 +321,7 @@ class Table(ContentABC):
         self.level = level
         self.max_row_length = max_row_length
         self.max_rows = max_rows
+        self.ai_indicator = ai_indicator
 
     def set_headers(self, headers):
         """Set the table headers."""
@@ -182,7 +336,9 @@ class Table(ContentABC):
 
     def to_markdown(self) -> str:
         """Convert the table to a markdown formatted string (with title)."""
-        title_block = Header(self.title, level=self.level).to_markdown()
+        title_block = Header(
+            self.title, level=self.level, ai_indicator=self.ai_indicator
+        ).to_markdown()
 
         # No data → show message instead of an empty table
         if not self.rows:
@@ -203,6 +359,68 @@ class Table(ContentABC):
 
         table = '\n'.join(parts)
         return f'{title_block}{table}{self.spacing}'
+
+
+class MediaList(ContentABC):
+    """Represents a list of media items (images, videos, audio) with overflow handling."""
+
+    def __init__(
+        self,
+        title: str,
+        media_type: type[ContentABC],
+        *,
+        max_items: int = 3,
+        overflow_message: str = '{count} more item(s) not shown.',
+        level: int = 3,
+        spacing: int = 2,
+    ):
+        """Initialize class properties.
+
+        Args:
+            title: Section title (e.g., "Images", "Videos")
+            media_type: ContentABC subclass to use (Image, Video, Audio)
+            max_items: Maximum number of items to display (default: 3)
+            overflow_message: Message template for additional items.
+                Use {count} placeholder for remaining count.
+            level: Header level for the title (default: 3)
+            spacing: Number of newlines after the section (default: 2)
+        """
+        self.title = title
+        self.media_type = media_type
+        self.max_items = max_items
+        self.overflow_message = overflow_message
+        self.level = level
+        self.spacing = '\n' * spacing
+        self.items = []
+
+    def add_item(self, *urls: str):
+        """Add media item URLs to the list.
+
+        Args:
+            *urls: One or more media URLs to add
+        """
+        self.items.extend(urls)
+
+    def to_markdown(self) -> str:
+        """Convert to markdown format."""
+        if not self.items:
+            return ''
+
+        title_block = Header(self.title, level=self.level).to_markdown()
+        markdown_parts = [title_block]
+
+        # Add up to max_items
+        for item_url in self.items[: self.max_items]:
+            media_component = self.media_type(item_url)
+            markdown_parts.append(media_component.to_markdown())
+
+        # Add overflow message if there are more items
+        if len(self.items) > self.max_items:
+            remaining = len(self.items) - self.max_items
+            overflow_text = self.overflow_message.format(count=remaining)
+            markdown_parts.append(f'_{overflow_text}_\n\n')
+
+        return ''.join(markdown_parts) + self.spacing
 
 
 class MarkdownBuilder:
@@ -237,6 +455,8 @@ class MarkdownBuilder:
                     text (str): Header text. (required)
                     level (int): Header level (1-6). Defaults to 3.
                     spacing (int): Newlines after the header. Defaults to 2.
+                    ai_indicator (bool): If True, prepends ✨ emoji for AI content.
+                        Defaults to False.
 
         Returns:
             Header: The created header component.
@@ -274,9 +494,12 @@ class MarkdownBuilder:
                     sub_title (str): Label used per item (e.g., "Note"). (required)
                     spacing (int, optional): Newlines after the section. Defaults to 2.
                     max_items (int, optional): Max items to render. Defaults to 3.
-                    max_item_length (int, optional): Per-item truncation length. Defaults to 500.
+                    max_item_length (int, optional): Per-item truncation length.
+                        Defaults to 500.
                     prepend (str, optional): Prefix for each item. Defaults to ''.
                     append (str, optional): Suffix for each item. Defaults to ''.
+                    ai_indicator (bool, optional): If True, prepends ✨ emoji to title.
+                        Defaults to False.
 
         Returns:
             TextList: The created list component.
@@ -296,10 +519,33 @@ class MarkdownBuilder:
                     max_row_length (int, optional): Per-cell truncation length. Defaults to 50.
                     level (int, optional): Header level for the title. Defaults to 3.
                     max_rows (int, optional): Max rows to render. Defaults to 100.
+                    ai_indicator (bool, optional): If True, prepends ✨ emoji to title.
+                        Defaults to False.
 
         Returns:
             Table: The created table component.
         """
         obj = Table(**kwargs)
+        self.add_content(obj)
+        return obj
+
+    def media_list(self, **kwargs) -> MediaList:
+        """Add a MediaList to the content list.
+
+        Args:
+            **kwargs: Keyword-only arguments forwarded to ``MediaList(...)``.
+                Supported keys:
+                    title (str): Section title (e.g., "Images"). (required)
+                    media_type (type[ContentABC]): Media class (Image, Video, Audio). (required)
+                    max_items (int, optional): Max items to display. Defaults to 3.
+                    overflow_message (str, optional): Template for overflow message.
+                        Defaults to '{count} more item(s) not shown.'.
+                    level (int, optional): Header level for title. Defaults to 3.
+                    spacing (int, optional): Newlines after section. Defaults to 2.
+
+        Returns:
+            MediaList: The created media list component.
+        """
+        obj = MediaList(**kwargs)
         self.add_content(obj)
         return obj

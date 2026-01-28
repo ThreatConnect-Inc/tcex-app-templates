@@ -1,7 +1,10 @@
-"""App Module"""
+"""App Module
 
-# third-party
-# third-party
+NOTE: This class appears to be unused. The main App class in app.py inherits from
+ApiServiceFalconABC -> ApiServiceAppABC, not from this class. Consider removing
+this file if it's not needed.
+"""
+
 # third-party
 from pydantic import ValidationError
 from tcex import TcEx

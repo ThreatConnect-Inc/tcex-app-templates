@@ -1,13 +1,16 @@
 """Settings Module"""
 
 # standard library
-from datetime import UTC, datetime
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from typing import ClassVar
 
 # third-party
 from arrow import arrow
 from pydantic import BaseModel, Extra
+
+# Default failure threshold for jobs and pipeline staleness
+DEFAULT_FAILURE_THRESHOLD = timedelta(hours=48)
 
 
 class MessageBrokerSettings(BaseModel):

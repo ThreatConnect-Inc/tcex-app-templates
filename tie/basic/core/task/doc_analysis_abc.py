@@ -9,7 +9,6 @@ from itertools import zip_longest
 # third-party
 import requests
 from data_model.doc_analysis import DocAnalysisData
-from model import SettingModel
 from tcex import TcEx
 from tcex.api.tc.v3.groups.group import Group, Groups
 from tcex.api.tc.v3.tql.tql_operator import TqlOperator
@@ -25,6 +24,7 @@ from core.model.tie.doc_analysis_processed_items_model import DocAnalysisProcess
 from core.model.tie.doc_analysis_tracker_model import DocAnalysisTrackerModel
 from core.model.tie.task_setting_model import TaskSettingModel
 from core.task.task_abc import TaskABC
+from model import SettingModel
 
 
 class CALAuth(requests.auth.AuthBase):  # pylint: disable=too-few-public-methods

@@ -39,7 +39,7 @@ def build_log_traceback(tb: traceback) -> list:
     for frame in frames:
         class_ = frame.get('class')
         fqfn = frame.get('fqfn')
-        filename = Path.name(frame.get('fqfn'))
+        filename = Path(frame.get('fqfn')).name
         function = frame.get('function')
         lineno = frame.get('lineno')
 

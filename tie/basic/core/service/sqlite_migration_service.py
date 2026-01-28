@@ -9,13 +9,13 @@ from typing import Any
 
 # third-party
 import uuid6
-from model.job_request_model import JobRequestModel
-from model.settings_model import SettingModel
 from pydantic import BaseModel, root_validator
 
 # first-party
 from core.json_db import JsonDB
 from core.model.tie import BatchErrorModel, ReportPdfTrackerModel, TiProcessingMetricModel
+from model.job_request_model import JobRequestModel
+from model.settings_model import SettingModel
 
 
 class SQLiteMigrationModel(BaseModel):

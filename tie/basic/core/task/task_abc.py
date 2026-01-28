@@ -14,7 +14,6 @@ from typing import Generic, Protocol, TypeVar
 # third-party
 import arrow
 import schedule
-from model.settings_model import SettingModel
 from pydantic.main import BaseModel
 from tcex import TcEx
 from tcex.logger.rotating_file_handler_custom import (
@@ -29,12 +28,22 @@ from core.json_db import JsonDB
 from core.model.tie.job_request_base_model import JobRequestBaseModel
 from core.model.tie.task_setting_pipe_model import TaskSettingPipeModel
 from core.service.writing_service import WritingService
+from core.supervisor import Supervisor
 from core.task.task_path_pipe_injectables import UpdateHeartbeat
 from core.util.process_metadata import Metadata, ProcessMetadata
+from model.settings_model import SettingModel
 
 T = TypeVar('T', bound=JobRequestBaseModel)
 
 # pylint: disable=no-member
+
+
+class TaskResult(Protocol):
+    """Task Result Protocol - signals success or failure to main process."""
+
+    success: bool
+    error_type: str | None
+    error_message: str | None
 
 
 class TaskNamespace(Protocol):
@@ -43,6 +52,7 @@ class TaskNamespace(Protocol):
     api_limit_details: dict
     heartbeat: arrow.Arrow | None
     last_batch_failure: datetime | None
+    task_result: TaskResult | None  # None=no event, set on success or failure
     unrecoverable_failure: bool
 
 
@@ -89,11 +99,13 @@ class TaskABC(ABC, Generic[T]):
         settings: SettingModel = inject(SettingModel),
         tcex: TcEx = inject(TcEx),
         db: JsonDB = inject(JsonDB),
+        supervisor: Supervisor = inject(Supervisor),
         *,
         request_schema: type[T] = JobRequestBaseModel,
     ):
         """Initialize class properties"""
         self.settings = settings
+        self.supervisor = supervisor
 
         # properties
         self.db = db
@@ -110,6 +122,7 @@ class TaskABC(ABC, Generic[T]):
         # set default heartbeat
         self.ns.heartbeat = None
         self.ns.unrecoverable_failure = False
+        self.ns.task_result = None
         self.ns.last_batch_failure = datetime.now(UTC) - timedelta(days=90)
 
         # set default api limit details
@@ -255,7 +268,7 @@ class TaskABC(ABC, Generic[T]):
     @property
     def pause(self):
         """Return True if paused requested."""
-        self.task_settings.pause = False
+        self.task_settings.paused = False
 
     @property
     def process_metadata(self):
@@ -278,7 +291,7 @@ class TaskABC(ABC, Generic[T]):
     @property
     def resume(self):
         """Return True if paused requested."""
-        self.task_settings.pause = False
+        self.task_settings.paused = False
 
     @abstractmethod
     def run(self):

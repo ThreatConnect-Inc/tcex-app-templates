@@ -109,10 +109,8 @@ class JsonDBDAO(Generic[M]):
         # pylint: disable=isinstance-second-argument-not-valid-type
         if where is None and isinstance(sort_by, SortBy):
             paths = self.db.get_paths(self.model, sort_by=sort_by, sort_order=sort_order)
-            data = [
-                self.db.load_from_path(self.model, path)
-                for path in paths[offset : limit + offset if limit else limit]
-            ]
+            sliced_paths = paths[offset : limit + offset if limit else limit]
+            data = self.db.load_paths(self.model, sliced_paths)
             total_count = len(paths)
 
             return data, total_count
@@ -133,20 +131,16 @@ class JsonDBDAO(Generic[M]):
 
                 # pylint: disable=protected-access
                 paths = [p for p in paths if filter_fn(self.db.get_index_from_path(p))]
-                data = [
-                    self.db.load_from_path(self.model, path)
-                    for path in paths[offset : limit + offset if limit else limit]
-                ]
+                sliced_paths = paths[offset : limit + offset if limit else limit]
+                data = self.db.load_paths(self.model, sliced_paths)
                 total_count = len(paths)
                 return data, total_count
 
             paths = self.db.get_paths(self.model)
             # pylint: disable=protected-access
             paths = [p for p in paths if filter_fn(self.db.get_index_from_path(p))]
-            data = [
-                self.db.load_from_path(self.model, path)
-                for path in paths[offset : limit + offset if limit else limit]
-            ]
+            sliced_paths = paths[offset : limit + offset if limit else limit]
+            data = self.db.load_paths(self.model, sliced_paths)
             data.sort(key=lambda x: getattr(x, sort_by), reverse=sort_order == SortOrder.DESC)
 
             total_count = len(paths)

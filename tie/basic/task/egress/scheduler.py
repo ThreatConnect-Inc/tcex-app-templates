@@ -1,7 +1,6 @@
 """Batch Submit"""
 
 # standard library
-# standard library
 from datetime import UTC, datetime, timedelta
 from functools import cached_property
 
@@ -66,7 +65,7 @@ class Scheduler(TaskABC):
             self._add_backfill_jobs(now)
             return
 
-        # TODO: This is check is not present in the ingest scheduler,
+        # TODO: This check is not present in the ingest scheduler,
         # can we remove it in the egress one?
         if most_recent_job.status not in [self.settings.job.status_failed, 'upload complete']:
             return

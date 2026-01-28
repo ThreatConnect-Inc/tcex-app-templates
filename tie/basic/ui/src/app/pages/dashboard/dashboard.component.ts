@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { BehaviorSubject, map, tap } from 'rxjs';
 import { TIProcessingMetric } from 'src/app/service/metrics-service/metric-interface';
 import { MetricsService } from 'src/app/service/metrics-service/metrics.service';
@@ -9,6 +10,8 @@ import { MetricsService } from 'src/app/service/metrics-service/metrics.service'
     styleUrl: './dashboard.component.scss',
 })
 export class DashboardComponent implements OnInit {
+    private readonly destroyRef = inject(DestroyRef);
+
     metricsSubject = new BehaviorSubject<TIProcessingMetric[]>([]);
     metrics$ = this.metricsSubject.asObservable();
 
@@ -21,6 +24,7 @@ export class DashboardComponent implements OnInit {
         this.metricsService
             .getProcessingCollection({})
             .pipe(
+                takeUntilDestroyed(this.destroyRef),
                 map((data) => {
                     return data.data.map((metric: TIProcessingMetric) => {
                         return {

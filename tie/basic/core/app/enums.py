@@ -5,12 +5,12 @@ import logging
 from enum import Enum
 from typing import Any
 
-# third-party
 from core.api.endpoint.tc_app_config import TcAppConfig
 from core.api.endpoint.tcvf.batch_error_collection import BatchErrorCollection
 from core.api.endpoint.tcvf.batch_error_counts_collection import BatchErrorCountsCollection
 from core.api.endpoint.tcvf.batch_error_export_resource import BatchErrorExportResource
 from core.api.endpoint.tcvf.download_files_resource import DownloadFilesResource
+from core.api.endpoint.tcvf.health_resource import HealthResource
 from core.api.endpoint.tcvf.job_file_download import JobFileDownload
 from core.api.endpoint.tcvf.job_files import JobFiles
 from core.api.endpoint.tcvf.job_retry_resource import JobRetryResource
@@ -18,6 +18,7 @@ from core.api.endpoint.tcvf.metric_processing_collection import MetricProcessing
 from core.api.endpoint.tcvf.metric_task_resource import MetricTaskResource
 from core.api.endpoint.tcvf.report_pdf_tracker_collection import ReportPDFTrackerCollection
 from core.api.endpoint.tcvf.request_collection import RequestCollectionResource
+from core.api.endpoint.tcvf.supervisor_resource import SupervisorResource
 from core.api.endpoint.tcvf.support_log_search_resource import SupportLogSearchResource
 from core.api.endpoint.tcvf.task_collection import TaskCollection
 from core.api.endpoint.tcvf.task_item import TaskItem
@@ -26,16 +27,17 @@ from core.api.error.middleware import ErrorMiddleware
 from core.api.tcex.middleware import TcExMiddleware
 from core.api.validation.middleware import ValidationMiddleware
 from core.task.cleaner import Cleaner
+from core.task.metric_reporter import MetricReporter
 
 try:
-    # third-party
+    # first-party
     from api.endpoint.adhoc_job_request_resource import AdHocRequestResource
 except ImportError:
     AdHocRequestResource = None
     # print('AdHocRequestResource not found')
 
 try:
-    # third-party
+    # first-party
     from api.endpoint.download_ti_resource import DownloadTiResource
 except ImportError:
     DownloadTiResource = None
@@ -76,6 +78,7 @@ class TASKS(Enum):
     """Enum for task types."""
 
     CLEANER = Task(Cleaner, init_args=('settings', 'tcex', 'db', 'tasks_obj'))
+    METRIC_REPORTER = Task(MetricReporter, init_args=('settings', 'tcex', 'db'))
 
 
 class Middleware(BaseResource):
@@ -97,6 +100,7 @@ class PREFLIGHT_CHECKS(Enum):  # noqa: N801
     FILESYSTEM = 'filesystem'
     TC_API = 'tc_api'
     DUPLICATE_PROCESSES_RUNNING = 'duplicate_processes_running'
+    ATTRIBUTES = 'attributes'
 
 
 class MESSAGE_HANDLERS(Enum):  # noqa: N801
@@ -133,6 +137,8 @@ class ROUTES(Enum):
         METRIC_PROCESSING_COLLECTION = Route('/api/metric/processing', MetricProcessingCollection)
         METRIC_TASK_RESOURCE = Route('/api/metric/task', MetricTaskResource)
         SUPPORT_LOG_SEARCH_RESOURCE = Route('/api/support/log-search', SupportLogSearchResource)
+        SUPERVISOR_RESOURCE = Route('/api/support/supervisor', SupervisorResource)
+        HEALTH = Route('/api/health', HealthResource)
         REPORT_PDF_TRACKER_COLLECTION = Route('/api/report/pdf-tracker', ReportPDFTrackerCollection)
 
         # Example: Route that requires additional arguments during initialization

@@ -1,0 +1,15 @@
+{
+    "name": "TCV App Template",
+    "version": "1.0.0",
+    "description": "Base template for ThreatConnect TCV applications",
+    "minimum_python_version": "3.11",
+    "releases": [
+        {
+            "version": "1.0.0",
+            "date": "2026-01-27",
+            "notes": [
+                "Initial template release"
+            ]
+        }
+    ]
+}

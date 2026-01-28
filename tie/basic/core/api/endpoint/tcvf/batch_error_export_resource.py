@@ -1,4 +1,4 @@
-"""Class for /api/report/batch-error endpoint"""
+"""Class for /api/report/batch-error/export endpoint"""
 
 # standard library
 import csv
@@ -25,7 +25,12 @@ from core.util.custom_handler import CustomHandler
 
 
 class GetQueryParamModel(QueryParamFilterModel, where.ToWhere):
-    """Params Model"""
+    """Params Model for batch error export.
+
+    Inherits from QueryParamFilterModel which provides:
+    - alias_generator = value_to_camel (auto camelCase aliases)
+    - allow_population_by_field_name = True (accepts both snake_case and camelCase)
+    """
 
     error_code: str | None = Field(None, description='Filter by error code.')
     request_id: str | None = Field(None, description='Filter by Request ID.')
@@ -42,10 +47,10 @@ class GetQueryParamModel(QueryParamFilterModel, where.ToWhere):
 
     @validator('messages', always=True, pre=True)
     def _messages(cls, v):  # noqa: N805
-        """Validate error_codes value."""
+        """Validate messages value."""
         match v:
             case str():
-                return [v.strip() for f in v.split(',')]
+                return [f.strip() for f in v.split(',')]
             case _:
                 return v
 
@@ -71,7 +76,7 @@ class BatchErrorExportResource(EndpointBase):
         resp: FalconResponse,
         query_params: GetQueryParamModel,
     ):
-        """Return batch errors from job requests."""
+        """Return batch errors from job requests as a gzipped CSV or JSON file."""
         data = self.dao.get_all_for_query_params(
             query_params,
             request_id=query_params.request_id,

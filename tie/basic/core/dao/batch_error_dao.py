@@ -52,7 +52,9 @@ class BatchErrorDAO(JsonDBDAO[BatchErrorModel]):
         batch_errors = []
         for path in self.db.get_paths(JobBatchErrorIndexModel):
             if request_id.casefold() in path.stem.casefold():
-                batch_errors.extend(self.db.load_from_path(JobBatchErrorIndexModel, path).error_ids)
+                entity = self.db.load_from_path(JobBatchErrorIndexModel, path)
+                if entity is not None:
+                    batch_errors.extend(entity.error_ids)
 
         batch_errors.sort()
         return batch_errors
@@ -94,10 +96,10 @@ class BatchErrorDAO(JsonDBDAO[BatchErrorModel]):
             errors = []
             for path in error_paths:
                 error = self.db.load_from_path(model, path)
-                if where(error):
+                if error is not None and where(error):
                     errors.append(error)
         else:
-            errors = [self.db.load_from_path(model, path) for path in error_paths]
+            errors = self.db.load_paths(model, error_paths)
 
         if not isinstance(
             sort_by,
@@ -128,7 +130,6 @@ class BatchErrorDAO(JsonDBDAO[BatchErrorModel]):
         error_code: str | None = None,
     ):
         """Get a page of data for the given filters."""
-
         model = BatchErrorModel
         if error_code:
             model = error_codes_model_map.get(error_code, UnknownBatchErrorModel)
@@ -148,10 +149,10 @@ class BatchErrorDAO(JsonDBDAO[BatchErrorModel]):
             errors = []
             for path in error_paths:
                 error = self.db.load_from_path(model, path)
-                if where(error):
+                if error is not None and where(error):
                     errors.append(error)
         else:
-            errors = [self.db.load_from_path(model, path) for path in error_paths]
+            errors = self.db.load_paths(model, error_paths)
 
         return errors
 

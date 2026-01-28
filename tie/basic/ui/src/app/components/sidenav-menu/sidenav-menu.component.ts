@@ -24,7 +24,12 @@ export class SidenavMenuComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        this.router.events.pipe(tap(() => this.processUrl())).subscribe();
+        this.router.events
+            .pipe(
+                takeUntilDestroyed(this.destroyRef),
+                tap(() => this.processUrl()),
+            )
+            .subscribe();
         this.appService
           .getConfig()
           .pipe(

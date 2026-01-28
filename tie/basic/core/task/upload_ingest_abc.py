@@ -10,7 +10,6 @@ from typing import NamedTuple, TypeVar
 
 # third-party
 import uuid6
-from model import JobRequestModel
 from tcex.api.tc.v2.batch import BatchSubmit
 
 # first-party
@@ -21,6 +20,7 @@ from core.model.tie.batch_error_model import (
     error_codes_name_map,
 )
 from core.task.upload_abc import UploadABC
+from model import JobRequestModel
 
 T = TypeVar('T')
 
@@ -89,6 +89,9 @@ class UploadIngestABC(UploadABC, ABC):
         """Handle batch errors."""
         try:
             batch_errors = self.get_batch_errors(batch_submit, batch_id)
+        except Exception as e:
+            raise BatchError from e
+        try:
             self.report_batch_errors(batch_errors, request)
             self.write_batch_errors(batch_errors, request, output_dir)
         except Exception:

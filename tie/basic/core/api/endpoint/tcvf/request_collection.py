@@ -6,8 +6,6 @@
 import re
 from functools import cached_property
 
-from model.job_request_model import JobRequestPaginatedResponseModel
-
 # third-party
 from pydantic import validator
 from spectree import Response
@@ -22,6 +20,7 @@ from core.api.validation.models.query_param_filter_pagination_model import (
 )
 from core.dao.job_dao import JobRequestDAO
 from core.json_db import SortBy, where
+from model.job_request_model import JobRequestPaginatedResponseModel
 
 
 class GetQueryParamModel(QueryParamFilterPaginationModel):

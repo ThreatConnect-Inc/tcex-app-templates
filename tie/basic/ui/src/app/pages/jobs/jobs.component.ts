@@ -1,4 +1,4 @@
-import { BehaviorSubject, catchError, finalize, interval, map, mergeMap, tap } from 'rxjs';
+import { BehaviorSubject, EMPTY, catchError, finalize, interval, map, mergeMap, tap } from 'rxjs';
 
 import { Component, DestroyRef, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -14,7 +14,7 @@ import { AppService, FieldDisplay, Form } from 'src/app/service/app-service/app.
 import { BaseHttpErrorResponse } from 'src/app/service/base-service/base-http-error-response';
 import { Job } from 'src/app/service/jobs-service/jobs-interface';
 import { JobsService } from 'src/app/service/jobs-service/jobs.service';
-import { TaskService } from 'src/app/service/tasks-service/taks.service';
+import { TaskService } from 'src/app/service/tasks-service/tasks.service';
 
 export enum SideDrawerContent {
     DETAILS,
@@ -42,6 +42,7 @@ export class JobsComponent implements OnDestroy, OnInit {
 
     table: NxTable = null;
     detailsData?: any;
+    enableAddJob: boolean = true; // Default to enabled if not specified in config
 
     multiSelectAdvancedSettings = {
         headerSelectAll: true,
@@ -106,7 +107,7 @@ export class JobsComponent implements OnDestroy, OnInit {
         private alertMessageService: AlertMessageService,
         private jobsService: JobsService,
         private router: Router,
-        private taskServie: TaskService,
+        private taskService: TaskService,
         private appService: AppService,
     ) {}
 
@@ -130,6 +131,8 @@ export class JobsComponent implements OnDestroy, OnInit {
                     this.detailsData = uiConfig?.ui?.jobTable?.details;
                     this.adhocFormConfig = uiConfig?.ui?.adhocRequest?.form;
                     this.filterFormConfig = uiConfig.ui.jobTable.filters;
+                    // Read feature flag, default to true if not specified
+                    this.enableAddJob = uiConfig?.ui?.global?.featureFlags?.enableAddJob ?? true;
                 }),
                 mergeMap(() => this.getJobData$()),
             )
@@ -187,29 +190,11 @@ export class JobsComponent implements OnDestroy, OnInit {
         this.getJobData$()
             .pipe(
                 catchError((error: BaseHttpErrorResponse) => {
-                    return [];
+                    this.table.dataLoaded = true;
+                    return EMPTY;
                 }),
             )
             .subscribe({});
-    }
-
-    getMenuItemsFor(job: Job) {
-        if (
-            job.status === 'Failed' ||
-            (job.status.startsWith('Upload') && job.status.endsWith('Complete'))
-        ) {
-            return;
-        } else {
-            return [
-                { label: 'Details', value: 'details', disabled: false },
-                {
-                    disabled: true,
-                    label: 'Download Files',
-                    value: 'download',
-                    title: 'Only available for finished jobs.',
-                },
-            ];
-        }
     }
 
     handleAddJobClick() {
@@ -259,9 +244,10 @@ export class JobsComponent implements OnDestroy, OnInit {
     }
 
     private getTaskStatuses() {
-        this.taskServie
+        this.taskService
             .getTaskStatuses()
             .pipe(
+                takeUntilDestroyed(this.destroyRef),
                 tap((resp) => {
                     const menuItems = resp.data.map((status) => {
                         return {
@@ -339,6 +325,7 @@ export class JobsComponent implements OnDestroy, OnInit {
         this.jobsService
             .getJobFiles(this.selectedJob.requestId)
             .pipe(
+                takeUntilDestroyed(this.destroyRef),
                 map((files) => {
                     let groupedFiles = files.reduce((acc, file) => {
                         let group = file.split('/')[0];
@@ -375,7 +362,6 @@ export class JobsComponent implements OnDestroy, OnInit {
                         };
                     });
 
-                    console.log(groupedFiles);
                     return groupedFiles;
                 }),
                 tap((files) => {
@@ -386,10 +372,10 @@ export class JobsComponent implements OnDestroy, OnInit {
     }
 
     addJob() {
-        console.log(this.form.getValues());
         this.jobsService
             .createJob(this.form.getValues())
             .pipe(
+                takeUntilDestroyed(this.destroyRef),
                 tap(() => {
                     this.alertMessageService.add({
                         summary: 'Created Ad-Hoc Job',

@@ -1,9 +1,10 @@
 """Query Param Filter Pagination Model."""
 
 # third-party
+from pydantic import Field, validator
+
 from core.api.validation.models.query_param_filter_model import QueryParamFilterModel
 from core.json_db import SortBy, SortOrder
-from pydantic import Field, validator
 
 
 # pylint: disable=no-self-argument

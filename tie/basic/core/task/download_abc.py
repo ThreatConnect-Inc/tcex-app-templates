@@ -1,14 +1,13 @@
 """Task Module"""
 
 # standard library
+import contextlib
+import shutil
 from abc import abstractmethod
 from collections.abc import Callable
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import TypeVar
-
-from model import AdHocJobRequestModel
-from model.settings_model import SettingModel
-from sdk.sdk import SDK
 
 # third-party
 from tcex import TcEx
@@ -20,8 +19,11 @@ from core.json_db import JsonDB
 from core.model.tie.job_request_base_model import JobRequestBaseModel
 from core.service.metrics import Metrics
 from core.service.writing_service import WritingModel, WritingService
-from core.task.task_path_pipe_abc import TaskPathPipeABC
+from core.task.task_path_pipe_abc import TaskPathPipeABC, UnrecoverableError
 from core.task.tasks import Tasks
+from model import AdHocJobRequestModel
+from model.settings_model import SettingModel
+from sdk.sdk import SDK
 
 T = TypeVar('T', bound=JobRequestBaseModel)
 
@@ -99,8 +101,13 @@ class DownloadABC(TaskPathPipeABC):
     def run(self, request_id: str, input_dir: Path, output_dir: Path):  # noqa: ARG002
         """Run the task."""
         self.log.info(f'action="run-task", message="Running the task for request-id={request_id}"')
+
         request = self.job_dao.get(request_id)
         self.writing_service.request = request
+
+        # If pipeline is on probation and awaiting first job, assign this job as probation job
+        if self.pipeline and self.supervisor.is_pipeline_on_probation(self.pipeline):
+            self.supervisor.set_probation_job(self.pipeline, request_id)
 
         # reset the download counts
         request.count_download_group = 0
@@ -136,9 +143,29 @@ class DownloadABC(TaskPathPipeABC):
             return True
         return False
 
-    def handle_run_error(self, request_id: str, request_dir: Path):  # noqa: ARG002
-        """Handle errors during task run."""
+    def handle_run_error(
+        self, request_id: str, request_dir: Path, exception: Exception | None = None
+    ):  # pylint: disable=unused-argument
+        """Handle download errors with per-job backoff.
+
+        UnrecoverableError: Fail immediately and shutdown (config errors, bad credentials)
+        Ad-hoc jobs: Fail immediately (existing behavior)
+        Scheduled jobs: Enter backoff/retry logic with threshold
+        Probation jobs: Trigger immediate shutdown (pipeline was stale on startup)
+        """
         job = self.job_dao.get(request_id)
+
+        # Unrecoverable errors always trigger immediate shutdown
+        if isinstance(exception, UnrecoverableError):
+            self.log.error(f'Unrecoverable error for job {request_id}: {exception}')
+            job.status = self.settings.job.status_failed
+            job.date_failed = datetime.now(UTC)
+            self.job_dao.save(job)
+
+            self.ns.unrecoverable_failure = True
+            return
+
+        # Ad-hoc jobs fail immediately - no backoff/retry (existing behavior)
         if isinstance(job, AdHocJobRequestModel):
             self._task_set_status(
                 request_id,
@@ -146,10 +173,74 @@ class DownloadABC(TaskPathPipeABC):
                 ['date_failed'],
             )
             return
-        # causes the app to fail.
-        self.ns.unrecoverable_failure = True
-        self._task_set_status(
-            request_id,
-            self.settings.job.status_pending,
-            ['date_failed'],
+
+        # Check if this is a probation job - if so, trigger shutdown
+        if self.pipeline and self.supervisor.is_probation_job(self.pipeline, request_id):
+            # Mark job as failed before triggering shutdown
+            job.status = self.settings.job.status_failed
+            job.date_failed = datetime.now(UTC)
+            self.job_dao.save(job)
+
+            self.ns.unrecoverable_failure = True
+            self.supervisor.trigger_probation_failure(self.pipeline, request_id)
+            return
+
+        # Scheduled jobs: apply backoff/retry logic
+        now = datetime.now(UTC)
+        max_retries = self.settings.advanced_settings.max_retries
+
+        # Track failure timestamp for logging/debugging
+        if job.date_failed is None:
+            job.date_failed = now
+
+        job.failure_count += 1
+        job.total_retry_count += 1  # Track total retries (never resets)
+
+        # Check if job has exceeded max retries
+        if job.failure_count >= max_retries:
+            # Mark job as permanently failed
+            self._mark_job_failed(job, request_dir)
+            return
+
+        # Compute backoff and schedule retry
+        backoff = self.supervisor.compute_backoff(job.failure_count)
+        job.retry_after = now + backoff
+
+        # Keep status as pending (not failed) so it can be retried
+        job.status = self.settings.job.status_pending
+        self.job_dao.save(job)
+
+        self.log.warning(
+            f'task-event=download-failure-backoff, '
+            f'request_id={request_id}, '
+            f'failure_count={job.failure_count}, '
+            f'retry_after={job.retry_after}, '
+            f'failing_since={job.date_failed}'
         )
+
+    def _mark_job_failed(self, job, request_dir: Path):
+        """Mark job as permanently failed after threshold exceeded."""
+        job.status = self.settings.job.status_failed
+        # date_failed already set, don't overwrite (preserves original failure time)
+        job.retry_after = None  # No more retries
+        self.job_dao.save(job)
+
+        self.log.error(
+            f'task-event=job-failed-permanently, '
+            f'request_id={job.request_id}, '
+            f'failure_duration={datetime.now(UTC) - job.date_failed}'
+        )
+
+        # Move to failed directory with error handling
+        try:
+            shutil.move(str(request_dir), self.task_settings.failed_working_dir)
+        except OSError:
+            self.log.exception(
+                f'task-event=move-to-failed-dir-error, '
+                f'request_id={job.request_id}, '
+                f'source={request_dir}, '
+                f'destination={self.task_settings.failed_working_dir}'
+            )
+            # Attempt cleanup if move failed - don't leave partial state
+            with contextlib.suppress(Exception):
+                shutil.rmtree(str(request_dir), ignore_errors=True)

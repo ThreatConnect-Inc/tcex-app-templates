@@ -55,6 +55,7 @@ export class GeneratedFormComponent implements OnChanges {
             case 'date':
                 fieldInfo.value = event ? event.getTime() : event;
                 fieldInfo.config.dirty = true;
+                break;
             default:
                 fieldInfo.value = event;
         }
@@ -91,7 +92,7 @@ export class GeneratedFormComponent implements OnChanges {
                 advancedSettings: this.buildAdvancedSettings(field),
                 choices: this.mapChoices(field),
                 dirty: false,
-                minWidth: field.minWidth | 200,
+                minWidth: field.minWidth ?? 200,
             };
         });
 

@@ -7,8 +7,6 @@ import time
 from pathlib import Path
 from typing import Literal
 
-from model.job_request_model import JobRequestModel
-
 # third-party
 from pydantic import BaseModel, root_validator
 
@@ -17,6 +15,7 @@ from core.json_db import JsonDB
 from core.json_db.dao import JsonDBDAO
 from core.model.tie import TiProcessingMetricModel
 from core.util.custom_handler import CustomHandler
+from model.job_request_model import JobRequestModel
 
 
 class WritingModel(BaseModel):
@@ -113,9 +112,10 @@ class WritingService:
                 indicators[:indicator_chunk_size],
                 indicators[indicator_chunk_size:],
             )
+            association_chunk_size = indicator_chunk_size - len(indicators_written_chunk)
             associations_written_chunk, associations = (
-                associations[:indicator_chunk_size],
-                associations[indicator_chunk_size:],
+                associations[:association_chunk_size],
+                associations[association_chunk_size:],
             )
 
             total_data_length = len(groups) + len(indicators) + len(associations)

@@ -41,9 +41,16 @@ class Metadata(BaseModel, arbitrary_types_allowed=True, extra=Extra.allow):
         date_expires: arrow.Arrow = last_heartbeat.shift(
             minutes=values['max_execution_time_minutes']
         )
-        expires_percent = int(
-            ((arrow.now(UTC) - last_heartbeat) / (date_expires - last_heartbeat)) * 100
-        )
+        time_diff = date_expires - last_heartbeat
+        if time_diff.total_seconds() <= 0:
+            # Zero or negative time diff means already expired or invalid config
+            expires_percent = 100
+        else:
+            expires_percent = int(
+                ((arrow.now(UTC) - last_heartbeat) / (date_expires - last_heartbeat)) * 100
+            )
+            # Clamp to 0-100 range (can exceed 100 if past deadline, or be negative with clock skew)
+            expires_percent = max(0, min(100, expires_percent))
 
         values['expires_percent'] = expires_percent
 

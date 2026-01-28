@@ -4,11 +4,12 @@
 from datetime import UTC, datetime
 from typing import ClassVar
 
+from pydantic import Field
+
 # third-party
 from core.json_db import Index
 from core.model.model_base import ModelBase
 from core.model.response.paginated_response import PaginatedResponseModel
-from pydantic import Field
 
 error_codes_name_map = {
     '0x1001': 'General Error',
@@ -52,7 +53,7 @@ class UnknownBatchErrorModel(BatchErrorModel):
     """Model Definition"""
 
 
-class GeneralErorBatchErrorModel(BatchErrorModel):
+class GeneralErrorBatchErrorModel(BatchErrorModel):
     """Model Definition"""
 
 
@@ -109,7 +110,7 @@ class FileHashMergeBatchErrorModel(BatchErrorModel):
 
 
 error_codes_model_map: dict[str, type[BatchErrorModel]] = {
-    '0x1001': GeneralErorBatchErrorModel,
+    '0x1001': GeneralErrorBatchErrorModel,
     '0x1002': PermissionBatchErrorModel,
     '0x1003': JsonSyntaxBatchErrorModel,
     '0x1004': InternalBatchErrorModel,

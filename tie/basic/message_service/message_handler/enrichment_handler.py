@@ -44,10 +44,10 @@ class EnrichmentHandler(MessageHandlerABC):
             schema_version=self.settings.mb.schema_version,
         )
 
-    def on_post(self, message: EnrichmentResponseModel):
+    def on_post(self, message: EnrichmentRequestModel):
         """."""
         return self.enrich(message).dict(exclude_none=True)
 
-    def on_message(self, message: EnrichmentResponseModel):
+    def on_message(self, message: EnrichmentRequestModel):
         """."""
         self.on_message_wrapper(message, self.enrich, ack=True)

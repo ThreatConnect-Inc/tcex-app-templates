@@ -6,15 +6,14 @@ from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from typing import NamedTuple, TypeVar
 
-from model import JobRequestModel
-from model.settings_model import SettingModel
-
 # third-party
 from tcex import TcEx
 
 # first-party
 from core.json_db import JsonDB
 from core.task.task_path_pipe_abc import TaskPathPipeABC, UploadError, UploadRetryError
+from model import JobRequestModel
+from model.settings_model import SettingModel
 
 T = TypeVar('T')
 

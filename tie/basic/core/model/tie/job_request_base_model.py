@@ -1,7 +1,7 @@
 """Model Definition"""
 
 # standard library
-from datetime import datetime
+from datetime import UTC, datetime
 from typing import ClassVar
 
 # third-party
@@ -45,6 +45,27 @@ class JobRequestBaseModel(ModelBase):
     date_upload_start: datetime | None = Field(None, description='')
     date_upload_complete: datetime | None = Field(None, description='')
 
+    # Per-job backoff fields
+    # NOTE: retry_after is pre-computed and stored rather than derived from failure_count.
+    # This means backoff config changes (via API) won't affect already-scheduled retries.
+    # Alternative: compute dynamically from failure_count + date_failed to pick up config
+    # changes immediately. Trade-offs:
+    # - Slightly more computation per job in get_next_for_task()
+    # - Harder to see "when can this job retry?" in DB - would need to manually calculate
+    #   backoff from failure_count using the exponential formula + jitter
+    retry_after: datetime | None = Field(
+        None,
+        description='When this job can be retried (backoff expiry time). None = can run now.',
+    )
+    failure_count: int = Field(
+        0,
+        description='Consecutive failures at current stage (resets on success).',
+    )
+    total_retry_count: int = Field(
+        0,
+        description='Total number of retries across job lifetime (does not reset on success).',
+    )
+
     @property
     def convert_runtime(self):
         """Calculate convert runtime."""
@@ -65,6 +86,19 @@ class JobRequestBaseModel(ModelBase):
         if self.date_upload_start and self.date_upload_complete:
             return self.date_upload_complete - self.date_upload_start
         return None
+
+    def is_in_backoff(self, now: datetime | None = None) -> bool:
+        """Check if job is currently in backoff period.
+
+        Args:
+            now: Optional pre-computed timestamp. If None, uses current time.
+                 Pass this when checking multiple jobs in a loop for efficiency.
+        """
+        if self.retry_after is None:
+            return False
+        if now is None:
+            now = datetime.now(UTC)
+        return now < self.retry_after
 
     @property
     def total_runtime(self):

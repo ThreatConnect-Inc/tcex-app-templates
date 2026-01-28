@@ -159,7 +159,7 @@ A = ParamSpec('A')
 R = TypeVar('R')
 
 
-def enforice_write_policies(fn: Callable[A, R]) -> Callable[A, R]:
+def enforce_write_policies(fn: Callable[A, R]) -> Callable[A, R]:
     """Decorate function to enforce write policies."""
 
     def _decorator(*args: A.args, **kwargs: A.kwargs) -> R:
@@ -215,7 +215,7 @@ class JsonDB:
     def acquire(
         self, cls: type[P], index_value: Any, *, timeout: float = 20
     ) -> Generator[P, None, None]:
-        """Aquire entity of a given class by index value."""
+        """Acquire entity of a given class by index value."""
         lock_file_path = None
         try:
             now = time.time_ns()
@@ -243,7 +243,7 @@ class JsonDB:
             raise RuntimeError(msg) from e
         finally:
             if lock_file_path:
-                lock_file_path.unlink()
+                lock_file_path.unlink(missing_ok=True)
 
     def get_paths(
         self,
@@ -287,10 +287,10 @@ class JsonDB:
         path = next(paths, None)
 
         if path is None:
-            msg = f'Entity does not exist.  Path: {path}'
+            msg = f'Entity of type {cls.__name__} with index {index_value!r} does not exist.'
             raise FileNotFoundError(msg)
 
-        return self.load_from_path(cls, path)  # type: ignore
+        return self.load_from_path(cls, path, raise_on_missing=True)  # type: ignore
 
     def _file_text_preview(
         self, p: Path, head_len: int = 100, tail_len: int = 100
@@ -319,7 +319,6 @@ class JsonDB:
         tail_len: int = 100,
     ) -> None:
         """Log an invalid JSON file with previews and then delete it."""
-
         head, tail = self._file_text_preview(p, head_len=head_len, tail_len=tail_len)
         content = [head, tail]
         content = [c for c in content if c]
@@ -355,25 +354,48 @@ class JsonDB:
             except (json.JSONDecodeError, UnicodeDecodeError) as e:
                 self._handle_invalid_json_file(p, e)  # <- central handler
                 continue
+            if entity is None:
+                # File was deleted between get_paths() and load - skip it
+                continue
             if where is None or where(entity):
                 yield entity
                 yielded += 1
                 if yielded >= target_count:
                     break
 
-    def load_from_path(self, clz: type[P], file_path: Path) -> P:
-        """Load a model from a file path."""
+    def load_from_path(
+        self, clz: type[P], file_path: Path, *, raise_on_missing: bool = False
+    ) -> P | None:
+        """Load a model from a file path.
+
+        Args:
+            clz: The model class to load.
+            file_path: Path to the file.
+            raise_on_missing: If True, raises FileNotFoundError when file doesn't exist.
+                If False (default), returns None and logs a warning. Use False when
+                iterating over paths from get_paths() to handle race conditions where
+                files are deleted between listing and loading.
+
+        Returns:
+            The loaded model, or None if file doesn't exist and raise_on_missing=False.
+        """
         # if this is a subclass, we need to import the correct class to instantiate it.
         if file_path.parent != self._storage_directory(clz):
             module = '.'.join(file_path.parent.name.split('.')[:-1])
             class_name = file_path.parent.name.split('.')[-1]
             clz = getattr(importlib.import_module(module), class_name)
 
-        if file_path.suffix == '.gz':
-            with gz.open(file_path, 'rt', encoding='utf-8') as f:
-                unserialized = json.loads(f.read())
-        else:
-            unserialized = json.loads(file_path.read_text(encoding='utf-8'))
+        try:
+            if file_path.suffix == '.gz':
+                with gz.open(file_path, 'rt', encoding='utf-8') as f:
+                    unserialized = json.loads(f.read())
+            else:
+                unserialized = json.loads(file_path.read_text(encoding='utf-8'))
+        except FileNotFoundError:
+            if raise_on_missing:
+                raise
+            self.log.warning(f'event=stale-path-skipped, file="{file_path}"')
+            return None
 
         for field, model_info in clz.__fields__.items():
             if (
@@ -392,12 +414,25 @@ class JsonDB:
 
         return clz(**unserialized)
 
-    @enforice_write_policies
+    def load_paths(self, clz: type[P], paths: list[Path]) -> list[P]:
+        """Load entities from paths, skipping any that no longer exist.
+
+        Use this when iterating over paths from get_paths() to safely handle
+        race conditions where files are deleted between listing and loading.
+        """
+        results = []
+        for path in paths:
+            entity = self.load_from_path(clz, path)
+            if entity is not None:
+                results.append(entity)
+        return results
+
+    @enforce_write_policies
     def delete(self, entity: BaseModel):
         """Delete entity from disk."""
         self._get_file_path(entity).unlink()
 
-    @enforice_write_policies
+    @enforce_write_policies
     def save(self, entity: BaseModel):
         """Save entity to disk in a safe way."""
         composed_entities = []
@@ -545,6 +580,12 @@ class JsonDB:
             if winner is None or timestamp < winner[0]:  # pylint: disable=unsubscriptable-object
                 winner = (timestamp, lock_file)
 
+        if winner is None:
+            msg = (
+                'No lock files found. This may be a transient race condition '
+                'where lock files were deleted between listing and selection.'
+            )
+            raise RuntimeError(msg)
         return winner[1]  # pylint: disable=unsubscriptable-object
 
     def _migrate_gzip(self):

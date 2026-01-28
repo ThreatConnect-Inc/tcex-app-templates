@@ -1,10 +1,15 @@
 """App Inputs"""
 
-# third-party
+# standard library
+from datetime import timedelta
+from typing import ClassVar
 
 # third-party
 from pydantic import BaseModel, Extra, Field, validator
 from tcex.input.model.app_feed_api_service_model import AppFeedApiServiceModel
+
+# first-party
+from core.model.settings_model_base import DEFAULT_FAILURE_THRESHOLD
 
 # pylint: disable=no-self-argument
 
@@ -18,10 +23,24 @@ class AdvancedSettingsModel(BaseModel):
         """Config for the App."""
 
         extra = Extra.forbid
+        json_encoders: ClassVar[dict] = {timedelta: lambda v: v.total_seconds()}
 
     backfill: int = 8  # How far back to backfill in hours
     backfill_frequency: int = 8  # How often a new backfill job is created in hours
     frequency: int = 1  # How often a new scheduled job is created in hours
+    failure_threshold: timedelta = DEFAULT_FAILURE_THRESHOLD  # Pipeline staleness for app shutdown
+    max_retries: int = 10  # Max retries for individual jobs before permanent failure
+
+    @validator('failure_threshold', pre=True)
+    def parse_failure_threshold(cls, value: str | float | timedelta) -> timedelta:  # noqa: N805
+        """Convert hours (int/string) or seconds (float from JSON) to timedelta."""
+        if isinstance(value, timedelta):
+            return value
+        if isinstance(value, float):
+            # From JSON deserialization (stored as total_seconds)
+            return timedelta(seconds=value)
+        # From user input (hours as int or string)
+        return timedelta(hours=int(value))
 
 
 class AppBaseModel(AppFeedApiServiceModel):

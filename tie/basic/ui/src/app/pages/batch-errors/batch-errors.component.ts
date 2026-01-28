@@ -1,6 +1,7 @@
 import { BehaviorSubject, catchError, map, merge, mergeMap, tap } from 'rxjs';
 
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, ViewChild } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
 
 import { CheckboxState, MenuItemEvent, MenuItemType, Table } from '@tc-eng/component-library';
@@ -17,6 +18,7 @@ import { BatchErrorService } from 'src/app/service/batch-errors-service/batch-er
 })
 export class BatchErrorsComponent implements OnInit {
     protected readonly featureVersion: FeatureVersion = 'new-design';
+    private readonly destroyRef = inject(DestroyRef);
 
     countsSubject = new BehaviorSubject<{ name: string; value: number }[]>([]);
     counts$ = this.countsSubject.asObservable();
@@ -40,6 +42,7 @@ export class BatchErrorsComponent implements OnInit {
     ngOnInit(): void {
         this.activeRoute.queryParams
             .pipe(
+                takeUntilDestroyed(this.destroyRef),
                 tap((params) => {
                     this.jobId = params['jobId'];
                 }),

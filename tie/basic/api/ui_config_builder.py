@@ -88,6 +88,7 @@ class UIConfigBuilder(UIConfigBuilderABC):
             self.generate_field('uploadRuntime', 'Upload Runtime'),
             self.generate_field('dateCompleted', 'Date Completed', 'date'),
             self.generate_field('totalRuntime', 'Total Runtime'),
+            self.generate_field('totalRetryCount', 'Total Retries'),
             self.generate_field('countDownloadGroup', 'Count Downloaded Groups'),
             self.generate_field('countBatchGroupSuccess', 'Count Batch Group Success'),
             self.generate_field('countDownloadIndicator', 'Count Downloaded Indicators'),

@@ -1,8 +1,6 @@
 """Class for /api/tc/app-config endpoint"""
 
 # standard library
-
-# standard library
 from typing import Any
 
 # third-party

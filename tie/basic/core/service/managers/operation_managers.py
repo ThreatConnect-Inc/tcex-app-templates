@@ -16,8 +16,6 @@ from enum import Enum
 from pathlib import Path
 from typing import Self, TypeAlias, TypedDict, TypeVar
 
-from model.job_request_model import JobRequestModel
-
 # first-party
 from core.beacon import inject
 from core.json_db.dao import JsonDBDAO
@@ -26,6 +24,7 @@ from core.service.metrics import Metrics
 from core.task.task_path_pipe_injectables import CurrentJob, TaskOutputDir
 from core.util.custom_handler import CustomHandler
 from core.util.func_utils import combine_context_managers
+from model.job_request_model import JobRequestModel
 
 # Declare generic type.
 A = TypeVar('A')
@@ -116,6 +115,8 @@ def file_writer_manager(
     """Create a manager that will write data to files on disk."""
 
     def write_chunk(chunk: list[dict], data_type: str):
+        if not chunk:
+            return
         file_name_identifiers = [
             file_prefix,
             str(round(time.time() * 10_000_000)),

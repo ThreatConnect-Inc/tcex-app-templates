@@ -84,12 +84,13 @@ export class AppComponent implements OnInit {
             }
         }
 
-        this.router.events.subscribe((event: Event) => {
-            if (event instanceof NavigationEnd && event.url.indexOf('/job-execution') != -1) {
-                this.hideSideNav = true;
-                console.log('hideSideNav', this.hideSideNav);
-            }
-        });
+        this.router.events
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe((event: Event) => {
+                if (event instanceof NavigationEnd && event.url.indexOf('/job-execution') != -1) {
+                    this.hideSideNav = true;
+                }
+            });
 
         this.appConfig$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((config) => {
             document.title = config?.ui?.title;
@@ -97,7 +98,6 @@ export class AppComponent implements OnInit {
     }
 
     showSideNav() {
-        console.log('showSideNav');
         this.viewSideNav = !this.viewSideNav;
         this.showSideNavIcon = this.viewSideNav ? 'chevron-left' : 'chevron-right';
     }

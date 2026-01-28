@@ -1,12 +1,13 @@
 import { BehaviorSubject, interval, map, merge, mergeMap, tap } from 'rxjs';
 
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnDestroy, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { NestedMenuItem } from '@tc-eng/component-library';
 import { FeatureVersion } from '@tc-eng/component-library/utils/featureFlags';
 import { NxTable } from 'src/app/modules/nx-utils/nx-table';
 import { MetricsService } from 'src/app/service/metrics-service/metrics.service';
-import { TaskService } from 'src/app/service/tasks-service/taks.service';
+import { TaskService } from 'src/app/service/tasks-service/tasks.service';
 import { Task } from 'src/app/service/tasks-service/task-interface';
 
 export enum SideDrawerContent {
@@ -24,6 +25,7 @@ export enum SideDrawerContent {
 export class TasksComponent implements OnDestroy, OnInit {
     // tcl ui framework settings
     protected readonly featureVersion: FeatureVersion = 'new-design';
+    private readonly destroyRef = inject(DestroyRef);
 
     // charts data
     metricsSubject = new BehaviorSubject([]);
@@ -63,11 +65,12 @@ export class TasksComponent implements OnDestroy, OnInit {
     }
 
     ngOnInit(): void {
-        this.loadTasks$().subscribe();
+        this.loadTasks$().pipe(takeUntilDestroyed(this.destroyRef)).subscribe();
 
         this.metricsService
             .getTasksCollection()
             .pipe(
+                takeUntilDestroyed(this.destroyRef),
                 map((data) => {
                     let metrics = [];
 
@@ -174,6 +177,7 @@ export class TasksComponent implements OnDestroy, OnInit {
         this.taskService
             .killTask(task)
             .pipe(
+                takeUntilDestroyed(this.destroyRef),
                 mergeMap(() => this.loadTasks$()),
                 tap(() => {
                     this.showSideDrawer = false;
@@ -186,6 +190,7 @@ export class TasksComponent implements OnDestroy, OnInit {
         this.taskService
             .pauseTask(task)
             .pipe(
+                takeUntilDestroyed(this.destroyRef),
                 mergeMap(() => this.loadTasks$()),
                 tap(() => {
                     this.showSideDrawer = false;
@@ -198,6 +203,7 @@ export class TasksComponent implements OnDestroy, OnInit {
         this.taskService
             .resumeTask(task)
             .pipe(
+                takeUntilDestroyed(this.destroyRef),
                 mergeMap(() => this.loadTasks$()),
                 tap(() => {
                     this.showSideDrawer = false;
@@ -210,12 +216,12 @@ export class TasksComponent implements OnDestroy, OnInit {
         this.taskService
             .runTask(task)
             .pipe(
+                takeUntilDestroyed(this.destroyRef),
                 mergeMap(() => this.loadTasks$()),
                 tap(() => {
                     this.showSideDrawer = false;
                 }),
             )
-
             .subscribe();
     }
 

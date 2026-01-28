@@ -22,7 +22,7 @@ class JobRequestModel(JobRequestBaseModel):
 
     # Custom properties
     start_time: datetime = Field(..., description='The start time for the job.')
-    end_time: datetime = Field(..., description='The start time for the job.')
+    end_time: datetime = Field(..., description='The end time for the job.')
     sample_types: list[str] = Field([], description='')
 
 

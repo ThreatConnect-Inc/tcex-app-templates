@@ -24,13 +24,6 @@ export interface BatchErrorExportParams extends ApiStandardParams {
     format: 'csv' | 'json';
 }
 
-export interface BatchErrorCollectionPaginationParams extends ApiPaginationParams {
-    errorCode?: string;
-    messages?: string[];
-    reason?: string;
-    request_id?: string;
-}
-
 export interface BatchErrorCountsParams extends ApiStandardParams {
     request_id?: string;
 }

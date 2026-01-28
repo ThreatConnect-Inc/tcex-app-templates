@@ -8,6 +8,7 @@ from abc import ABC, abstractmethod
 from datetime import UTC, datetime
 from functools import partial
 from pathlib import Path
+from uuid import UUID
 
 # third-party
 from pydantic import BaseModel
@@ -22,6 +23,7 @@ from core.task.task_path_pipe_injectables import (
     UpdateHeartbeat,
 )
 from core.util.process_metadata import Metadata, ProcessMetadata
+from model import AdHocJobRequestModel
 
 
 class UploadError(Exception):
@@ -30,6 +32,18 @@ class UploadError(Exception):
 
 class UploadRetryError(Exception):
     """Exception raised for errors while polling a batch job."""
+
+
+class UnrecoverableError(Exception):
+    """Exception raised for errors that cannot be recovered from.
+
+    When this exception is raised, the app will:
+    1. Mark the job as Failed
+    2. Trigger graceful shutdown (pause all tasks, kill running, exit)
+
+    Use this for configuration errors, invalid credentials, or other
+    situations where retrying would never succeed.
+    """
 
 
 # pylint: disable=no-member
@@ -119,8 +133,32 @@ class TaskPathPipeABC(TaskABC, ABC):
         return priority_values.get(priority, '0')  # default to high
 
     def _get_request_id(self, fqfn: 'Path') -> str:
-        """Return the request id for the current task."""
-        return (fqfn / self.request_id_file).open('r').read()
+        """Return the request id for the current task.
+
+        Falls back to parsing from directory name if request_id.txt doesn't exist.
+        Directory name follows format: priority#timestamp#request_id
+        (e.g., 0#17660791302458418#05bedb15-7760-4b7a-b1cd-3b917977160b)
+        """
+        request_id_path = fqfn / self.request_id_file
+        if request_id_path.exists():
+            with request_id_path.open('r') as f:
+                return f.read()
+
+        # fallback to parsing from directory name (last segment is request_id)
+        parts = fqfn.name.split(self.settings.file.separator)
+        if parts:
+            candidate = parts[-1]
+            try:
+                UUID(candidate)
+                return candidate
+            except ValueError:
+                pass
+
+        msg = (
+            f'Could not determine request_id: {self.request_id_file} not found '
+            f'and directory name {fqfn.name} does not contain a valid UUID'
+        )
+        raise FileNotFoundError(msg)
 
     def _get_request_dir(self, request_id) -> 'Path':
         """Return the newly formatted filename."""
@@ -231,13 +269,26 @@ class TaskPathPipeABC(TaskABC, ABC):
         )
 
     def _task_complete(self, request_id: str, request_dir: 'Path'):
-        """Run tasks startup logic."""
+        """Run tasks completion logic."""
         # set db date fields to be updated
         self._task_set_status(
             request_id,
             self.task_settings.status_complete,
             self._task_date_fields_complete,
         )
+
+        # Clear any backoff/failure state on success
+        # This ensures future failures start fresh with correct 48h threshold
+        self._clear_failure_state_on_success(request_id)
+
+        # Signal success to Supervisor (via namespace for cross-process communication)
+        self.ns.task_result = {'success': True}
+
+        # If this is the last task in the pipeline and job was on probation, clear it
+        if self.task_settings.pipe_task_complete is True:
+            pipeline = getattr(self, 'pipeline', None)
+            if pipeline and self.supervisor.is_probation_job(pipeline, request_id):
+                self.supervisor.clear_probation(pipeline)
 
         # move to next task
         self.log.info(
@@ -265,17 +316,128 @@ class TaskPathPipeABC(TaskABC, ABC):
         )
         shutil.move(str(request_dir), self.task_settings.failed_working_dir)
 
+    def _clear_failure_state_on_success(self, request_id: str) -> None:
+        """Clear failure tracking state on successful task completion.
+
+        This ensures that if a job previously failed and entered backoff,
+        the failure state is reset when it eventually succeeds. This is
+        important because:
+        - date_failed should reflect the START of a failure streak, not old failures
+        - failure_count should reset so future backoff starts at base duration
+        - retry_after should be cleared since the job succeeded
+
+        Only updates if any failure state is set (avoids unnecessary DB writes).
+        """
+        job = self.job_dao.get(request_id)
+        if job.date_failed is not None or job.failure_count > 0 or job.retry_after is not None:
+            job.date_failed = None
+            job.failure_count = 0
+            job.retry_after = None
+            self.job_dao.save(job)
+            self.log.debug(
+                f'task-event=cleared-failure-state, '
+                f'request_id={request_id}, '
+                f'task={self.task_settings.name}'
+            )
+
     def _write_request_id_file(self, request_id: str, fqfn: 'Path'):
         """Write request id to file."""
-        (fqfn / self.request_id_file).open('w').write(request_id)
+        with (fqfn / self.request_id_file).open('w') as f:
+            f.write(request_id)
 
     @staticmethod
     def _has_ti_data(data):
         return data.get('group') or data.get('indicator')
 
-    def handle_run_error(self, request_id: str, request_dir: Path):
-        """Handle errors during task run."""
-        self._task_complete_failed(request_id, request_dir)
+    def handle_run_error(  # pylint: disable=unused-argument
+        self, request_id: str, request_dir: Path, exception: Exception | None = None
+    ):
+        """Handle task errors - reset to Pending to restart entire pipeline.
+
+        This is the default behavior for non-download tasks (e.g., Convert).
+        Download and Upload tasks override this with their own error handling.
+
+        UnrecoverableError: Fail immediately and shutdown (config errors, bad credentials)
+        Ad-hoc jobs: Fail immediately (existing behavior)
+        Scheduled jobs: Reset to Pending and restart from Download with backoff
+        Probation jobs: Trigger immediate shutdown (pipeline was stale on startup)
+        """
+        job = self.job_dao.get(request_id)
+
+        # Unrecoverable errors always trigger immediate shutdown
+        if isinstance(exception, UnrecoverableError):
+            self.log.error(f'Unrecoverable error for job {request_id}: {exception}')
+            job.status = self.settings.job.status_failed
+            job.date_failed = datetime.now(UTC)
+            self.job_dao.save(job)
+
+            self.ns.unrecoverable_failure = True
+            return
+
+        # Ad-hoc jobs fail immediately - no backoff/retry (existing behavior)
+        if isinstance(job, AdHocJobRequestModel):
+            self._task_complete_failed(request_id, request_dir)
+            return
+
+        # Check if this is a probation job - if so, trigger shutdown
+        # Note: pipeline attribute is set in DownloadABC and UploadABC but may not exist here
+        pipeline = getattr(self, 'pipeline', None)
+        if pipeline and self.supervisor.is_probation_job(pipeline, request_id):
+            # Mark job as failed before triggering shutdown
+            job.status = self.settings.job.status_failed
+            job.date_failed = datetime.now(UTC)
+            self.job_dao.save(job)
+
+            self.ns.unrecoverable_failure = True
+            self.supervisor.trigger_probation_failure(pipeline, request_id)
+            return
+
+        # Scheduled jobs: apply backoff/retry logic with reset to Pending
+        now = datetime.now(UTC)
+        max_retries = self.settings.advanced_settings.max_retries
+
+        # Track failure timestamp for logging/debugging
+        if job.date_failed is None:
+            job.date_failed = now
+
+        job.failure_count += 1
+        job.total_retry_count += 1  # Track total retries (never resets)
+
+        # Check if job has exceeded max retries
+        if job.failure_count >= max_retries:
+            self._task_complete_failed(request_id, request_dir)
+            return
+
+        # Compute backoff
+        backoff = self.supervisor.compute_backoff(job.failure_count)
+        job.retry_after = now + backoff
+
+        # Reset to Pending to restart from Download (clear all stage progress)
+        job.status = self.settings.job.status_pending
+        job.date_download_start = None
+        job.date_download_complete = None
+        job.date_convert_start = None
+        job.date_convert_complete = None
+        job.date_upload_start = None
+        job.date_upload_complete = None
+        job.count_download_group = 0
+        job.count_download_indicator = 0
+        # Clear upload-related fields since we're restarting the entire pipeline
+        job.count_upload_retries = 0
+        job.date_upload_failure = None
+        job.upload_failed_files = []
+        self.job_dao.save(job)
+
+        # Delete the request directory (will be recreated by Download)
+        shutil.rmtree(str(request_dir), ignore_errors=True)
+
+        self.log.warning(
+            f'task-event=convert-failure-reset-to-pending, '
+            f'request_id={request_id}, '
+            f'failure_count={job.failure_count}, '
+            f'retry_after={job.retry_after}, '
+            f'action=restart-from-download'
+        )
 
     # pylint: disable=arguments-differ
     def launch(self, request_id: str, request_dir: Path | None = None, **kwargs):
@@ -339,13 +501,13 @@ class TaskPathPipeABC(TaskABC, ABC):
         # run startup logic (rename thread, log action, update status in db)
         try:
             self._task_start(request_id)
-        except Exception:
+        except Exception as ex:
             self.log.exception(
                 f'task-event-path-pipe=task-failed, task-name={self.task_settings.name}'
             )
 
             # run complete failed logic (update status in db, move to next task)
-            self.handle_run_error(request_id, request_dir)
+            self.handle_run_error(request_id, request_dir, exception=ex)
 
             return
 
@@ -369,14 +531,14 @@ class TaskPathPipeABC(TaskABC, ABC):
             # run complete logic (update status in db, move to next task)
             self._task_complete(request_id, request_dir)
         except UploadRetryError:
-            self.log.exception('Could not upload batch job, retrying...')
-        except Exception:
+            self.log.exception('task-event=upload-retry-error')
+        except Exception as ex:
             self.log.exception(
                 f'task-event-path-pipe=task-failed, task-name={self.task_settings.name}'
             )
 
             # run complete failed logic (update status in db, move to next task)
-            self.handle_run_error(request_id, request_dir)
+            self.handle_run_error(request_id, request_dir, exception=ex)
 
         return
 

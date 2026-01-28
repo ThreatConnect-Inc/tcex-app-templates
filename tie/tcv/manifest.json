@@ -885,8 +885,8 @@
         "template_path": "basic/core/task/tasks.py"
     },
     "core/task/upload_abc.py": {
-        "sha256": "632718ade1fa228e15912a9232d56168763212a1fddcea85a28f80c0eea7e684",
-        "last_commit": "63f2fa4ebe147f3cb268c188f52c79e5da751a24",
+        "sha256": "b1a62130228c9079c77086282016fbb26feff8e1247cc78218382cf75cfe6d2c",
+        "last_commit": "22270bc7c6afecaebc9b41a449479c8eb96a35c9",
         "template_path": "basic/core/task/upload_abc.py"
     },
     "core/task/upload_egress_abc.py": {
@@ -895,8 +895,8 @@
         "template_path": "basic/core/task/upload_egress_abc.py"
     },
     "core/task/upload_ingest_abc.py": {
-        "sha256": "dcae559a2979405550b29012a5c72af55c4f96dddbddc54bf6e9802990b6bb1c",
-        "last_commit": "63f2fa4ebe147f3cb268c188f52c79e5da751a24",
+        "sha256": "7b39f64dd5a34e04b7b239e1309902c67c2664862beae804fb850b71024fd64b",
+        "last_commit": "22270bc7c6afecaebc9b41a449479c8eb96a35c9",
         "template_path": "basic/core/task/upload_ingest_abc.py"
     },
     "core/util/__init__.py": {
@@ -1735,8 +1735,8 @@
         "template_path": "tcv/install.json"
     },
     "manifest.json": {
-        "sha256": "3584b1333debbc253b2e6481f7398df1bb7b1fa5f595f4db98d80f0560088145",
-        "last_commit": "33e1c2721c90e749d7ab623da38c0c3bf51ceb65",
+        "sha256": "b2329c2970ff4cfaa94d556d6b143f20564fa77d0d90b36a846409194754b009",
+        "last_commit": "ad51239f3ef714c2727d5f172627499c2bf011ad",
         "template_path": "tcv/manifest.json"
     },
     "tcex.json": {

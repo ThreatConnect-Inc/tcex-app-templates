@@ -2,6 +2,7 @@
 
 # standard library
 import gzip
+import inspect
 import json
 import re
 from abc import ABC, abstractmethod
@@ -184,7 +185,13 @@ class UploadIngestABC(UploadABC, ABC):
                 content = json.load(file)
 
             if content:
-                batch_response = batch_submit.submit_data(batch_id=batch_id, content=content)
+                kwargs = {'batch_id': batch_id, 'content': content}
+                # clean_content is only supported in newer versions of tcex,
+                # check the signature to avoid breaking older installations
+                sig = inspect.signature(batch_submit.submit_data)
+                if 'clean_content' in sig.parameters:
+                    kwargs['clean_content'] = self.clean_content
+                batch_response = batch_submit.submit_data(**kwargs)
                 self.log.trace(
                     f'action="submit-batch", status="job-submit", response="{batch_response}"'
                 )

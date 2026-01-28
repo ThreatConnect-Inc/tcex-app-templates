@@ -139,6 +139,11 @@ class UploadABC(TaskPathPipeABC, ABC):
         raise UploadRetryError(msg)
 
     @property
+    def clean_content(self) -> bool:
+        """Return whether to clean content during batch submit."""
+        return False
+
+    @property
     def fields_to_reset(self) -> list[str]:
         """Fields to reset."""
         return []

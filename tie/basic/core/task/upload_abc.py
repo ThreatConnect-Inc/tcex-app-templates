@@ -61,6 +61,12 @@ class UploadABC(TaskPathPipeABC, ABC):
             },
         )
 
+    def handle_run_error(
+        self, request_id: str, request_dir: Path, exception: Exception | None = None
+    ):
+        """Handle upload errors - mark as failed (no retry from Download)."""
+        self._task_complete_failed(request_id, request_dir)
+
     def launch_preflight_checks(self):
         """Launch preflight checks."""
         if self.ns.unrecoverable_failure is True:
@@ -89,8 +95,20 @@ class UploadABC(TaskPathPipeABC, ABC):
         self.launch(request_id, request_dir)
 
     @abstractmethod
-    def process_file_wrapper(self, file: Path, request: JobRequestModel, output_dir: Path) -> bool:
-        """Handle file processing."""
+    def process_file_wrapper(
+        self, file: Path, request: JobRequestModel, output_dir: Path, failed_files: list[str]
+    ) -> bool:
+        """Handle file processing.
+
+        Args:
+            file: Path to the file to process
+            request: The job request model
+            output_dir: Output directory for any generated files
+            failed_files: List to append failed filenames to (modified in place)
+
+        Returns:
+            True if successfully processed, False if not
+        """
 
     def run(self, request_id: str, input_dir: Path, output_dir: Path) -> None:
         """Run the task to process all files."""
@@ -105,9 +123,7 @@ class UploadABC(TaskPathPipeABC, ABC):
         for counter, file in enumerate(files, start=1):
             process = f'({counter}/{len(files)})'
             self.log.debug(f'action="processing-file", file="{file.name}", process="{process}"')
-            # print(f'action="processing-file", file="{file.name}", process="{process}"')
-            if self.process_file_wrapper(file, request, output_dir) is False:
-                failed_files.append(file.name)
+            self.process_file_wrapper(file, request, output_dir, failed_files)
 
         self.handle_upload_failure(failed_files, request)
         self.log.info(f'action="run-task", status="complete", request-id="{request_id}"')
@@ -137,11 +153,6 @@ class UploadABC(TaskPathPipeABC, ABC):
             f'date_batch_failure="{request.date_upload_failure}"'
         )
         raise UploadRetryError(msg)
-
-    @property
-    def clean_content(self) -> bool:
-        """Return whether to clean content during batch submit."""
-        return False
 
     @property
     def fields_to_reset(self) -> list[str]:

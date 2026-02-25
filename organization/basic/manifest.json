@@ -1,0 +1,47 @@
+{
+    ".appbuilderconfig": {
+        "sha256": "e3a9ca0016a606524436ab486f0ddce04d252072f0f272fa82d52614f9147ee1",
+        "last_commit": "6457b910aec7710902ae5a50293d08892f76b6db",
+        "template_path": "organization/basic/.appbuilderconfig"
+    },
+    "README.md": {
+        "sha256": "fce55a3cc5ab35fed40143f7eb92dacb918d39549a08f613d425097387077772",
+        "last_commit": "6457b910aec7710902ae5a50293d08892f76b6db",
+        "template_path": "organization/basic/README.md"
+    },
+    "__main__.py": {
+        "sha256": "045c261e42a6b29f5dd52214cf95667bf8a192fcfcc484d382ba2ce39a7b9e9c",
+        "last_commit": "4ce81e707a9c8aaa1b3f02c42274239c2cb65fbc",
+        "template_path": "organization/basic/__main__.py"
+    },
+    "app.py": {
+        "sha256": "cc77daa3fbc8f5c6ebac6c523f37664da55d87df524959887128c59c8b857302",
+        "last_commit": "401768a3e618c069a28faaad9fb259832f6d590a",
+        "template_path": "organization/basic/app.py"
+    },
+    "app_inputs.py": {
+        "sha256": "db8794031feae9008c9a9549829a70112a97427f0247e13360e5953b60ff0fa0",
+        "last_commit": "8807b92a0676f4f2a6e6b586b1cdec85da72177b",
+        "template_path": "organization/basic/app_inputs.py"
+    },
+    "install.json": {
+        "sha256": "b97883012a91bd3022f4b20fe7ea15adda900fa85260b9f00d98ebb516b14e96",
+        "last_commit": "401768a3e618c069a28faaad9fb259832f6d590a",
+        "template_path": "organization/basic/install.json"
+    },
+    "job_app.py": {
+        "sha256": "1bc1a77e76aaa86dd477534f7833d8357f56d26dcadeeebd95f5b243c0b2a4a3",
+        "last_commit": "8807b92a0676f4f2a6e6b586b1cdec85da72177b",
+        "template_path": "organization/basic/job_app.py"
+    },
+    "run.py": {
+        "sha256": "9119d3a362e042ecd2bb438fbddd15b86928a8da3869b2f30e48a32957b3d3ea",
+        "last_commit": "98f120db66882f1b0f9712208bcd0aae29b3158f",
+        "template_path": "organization/basic/run.py"
+    },
+    "tcex.json": {
+        "sha256": "bb42f249256c2d2779f6caa81790b9e112781c352c62786eea1974127a9f44ae",
+        "last_commit": "9ed9ab3156322ab32b6c21b159634950e4998110",
+        "template_path": "organization/basic/tcex.json"
+    }
+}

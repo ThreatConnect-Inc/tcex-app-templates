@@ -1,0 +1,42 @@
+{
+    ".appbuilderconfig": {
+        "sha256": "86d51dbe6864799a6e97e2a0062e472543dd13c8c9657252720123604752a499",
+        "last_commit": "a6df7bfc0dcc208cfe9e9155dfa069862e246b91",
+        "template_path": "api_service/basic/.appbuilderconfig"
+    },
+    "api_service_app.py": {
+        "sha256": "9612fff0fb423053e365c2e6a2d1fb1a72fbdcaf7914e78339c4bf29031183a8",
+        "last_commit": "e32f2c3a4990d3f042521fcb21959e20868c49da",
+        "template_path": "api_service/basic/api_service_app.py"
+    },
+    "app.py": {
+        "sha256": "7dc86e5b1c90687fe0642961dba4bb018da3888e6d6aae09a87ea349776144f3",
+        "last_commit": "a6df7bfc0dcc208cfe9e9155dfa069862e246b91",
+        "template_path": "api_service/basic/app.py"
+    },
+    "app_inputs.py": {
+        "sha256": "2090bfde6a0bcddaab2146975445ec82262101ff97492a520779ec8a11fc485b",
+        "last_commit": "401768a3e618c069a28faaad9fb259832f6d590a",
+        "template_path": "api_service/basic/app_inputs.py"
+    },
+    "install.json": {
+        "sha256": "12ce3c62055dd41a384aa9120a1ddd06a8428fa7ee03da9ed6e342fd50ded618",
+        "last_commit": "a6df7bfc0dcc208cfe9e9155dfa069862e246b91",
+        "template_path": "api_service/basic/install.json"
+    },
+    "requirements.txt": {
+        "sha256": "8b3b1404a7f93cd058505a5748fba6bab3df2db56ce036abe333cf86e30adddd",
+        "last_commit": "6caa4cc33df69acf520fdecf87586f20b3799cdf",
+        "template_path": "api_service/basic/requirements.txt"
+    },
+    "run.py": {
+        "sha256": "aec777f8e021de27b5fbe5734b50943ff685b2def9c2ff26343e30bf951e05b1",
+        "last_commit": "c46550f654a596356609d939cd0023436d4c6465",
+        "template_path": "api_service/basic/run.py"
+    },
+    "tcex.json": {
+        "sha256": "faf254cef85e742bca1d07b5969313b08543bc4f8e7e6550348fe0e2b00cbbe0",
+        "last_commit": "9ed9ab3156322ab32b6c21b159634950e4998110",
+        "template_path": "api_service/basic/tcex.json"
+    }
+}

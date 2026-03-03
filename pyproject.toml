@@ -90,7 +90,7 @@ max-args = 10
 "__init__.py" = ["F401"]
 "scripts/*.py" = ["T201", "EXE001", "D101", "D102", "D103", "D107"]
 "tie/build_manifest.py" = ["T201", "EXE001"]
-"_sync_template.py" = ["T201", "PTH111", "C901", "PLR0912"]
+
 
 [tool.ruff.lint.flake8-type-checking]
 runtime-evaluated-base-classes = ["pydantic.BaseModel", "tcex.logger.trace_logger.TraceLogger"]

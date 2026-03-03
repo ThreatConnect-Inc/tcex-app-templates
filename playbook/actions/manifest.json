@@ -15,8 +15,8 @@
         "template_path": "playbook/actions/app_inputs.json"
     },
     "app_inputs.py": {
-        "sha256": "1129a3422a774f0ebe0e9e70dab543717f2b244e54af3ebd4ffd5c1d95036636",
-        "last_commit": "a4244225ffb6299b0651213027ac673ed86b6782",
+        "sha256": "eb3aa0437f2082b9bdd2101bea27ca742f6ac66df3b30af00b26b91813c5a4e7",
+        "last_commit": "e9aafbb0e535d2de752d1f9902b26392093789bb",
         "template_path": "playbook/actions/app_inputs.py"
     },
     "app_spec.yml": {

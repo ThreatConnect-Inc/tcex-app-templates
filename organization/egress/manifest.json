@@ -1,32 +1,32 @@
 {
-    "README.md": {
-        "sha256": "7e2da99deb53c95be587d17c3f8d5d0534ccf7833d2e5ea642b6a18750d963c7",
-        "last_commit": "6f9a5c36abd180d5d880ad84712ccc6a378fc02d",
-        "template_path": "organization/egress/README.md"
-    },
-    "app.py": {
-        "sha256": "712d8910aa1fa235f8bf46eef4fe158a37fb1b70f20c2e52fb9f3ee914de75bf",
-        "last_commit": "c36d36c5caf00c1150efae6c9d08bb2e7d304f33",
-        "template_path": "organization/egress/app.py"
-    },
-    "app_inputs.json": {
-        "sha256": "99558fd9e78620218da6f81c948e44cdd9d2526875b1218e71ca1d72a637362c",
-        "last_commit": "52d2dc0b0ee9f995899f1effe561a99da5add852",
-        "template_path": "organization/egress/app_inputs.json"
-    },
-    "app_inputs.py": {
-        "sha256": "7c4e3d180bce64a42deaa24169141bd6739758b8b1229e0e997d2a16421e8a9d",
-        "last_commit": "a4244225ffb6299b0651213027ac673ed86b6782",
-        "template_path": "organization/egress/app_inputs.py"
-    },
-    "install.json": {
-        "sha256": "ac731846f1cef484d96962a6c45f8d7def04b9837acb17de29c407c48a5a1450",
-        "last_commit": "80072834613280f1b323333baa81b67b89414110",
-        "template_path": "organization/egress/install.json"
-    },
-    "tcex.json": {
-        "sha256": "047891e0e14688ca9317abaf773193ddf3c4395edbbd93dc46c1232b1d5344f5",
-        "last_commit": "43a236aa2454ffd38c9665fe86feebacb358290f",
-        "template_path": "organization/egress/tcex.json"
-    }
+  "README.md": {
+    "last_commit": "6f9a5c36abd180d5d880ad84712ccc6a378fc02d",
+    "sha256": "7e2da99deb53c95be587d17c3f8d5d0534ccf7833d2e5ea642b6a18750d963c7",
+    "template_path": "organization/egress/README.md"
+  },
+  "app.py": {
+    "last_commit": "c36d36c5caf00c1150efae6c9d08bb2e7d304f33",
+    "sha256": "712d8910aa1fa235f8bf46eef4fe158a37fb1b70f20c2e52fb9f3ee914de75bf",
+    "template_path": "organization/egress/app.py"
+  },
+  "app_inputs.json": {
+    "last_commit": "52d2dc0b0ee9f995899f1effe561a99da5add852",
+    "sha256": "99558fd9e78620218da6f81c948e44cdd9d2526875b1218e71ca1d72a637362c",
+    "template_path": "organization/egress/app_inputs.json"
+  },
+  "app_inputs.py": {
+    "last_commit": "a4244225ffb6299b0651213027ac673ed86b6782",
+    "sha256": "7c4e3d180bce64a42deaa24169141bd6739758b8b1229e0e997d2a16421e8a9d",
+    "template_path": "organization/egress/app_inputs.py"
+  },
+  "install.json": {
+    "last_commit": "80072834613280f1b323333baa81b67b89414110",
+    "sha256": "ac731846f1cef484d96962a6c45f8d7def04b9837acb17de29c407c48a5a1450",
+    "template_path": "organization/egress/install.json"
+  },
+  "tcex.json": {
+    "last_commit": "43a236aa2454ffd38c9665fe86feebacb358290f",
+    "sha256": "047891e0e14688ca9317abaf773193ddf3c4395edbbd93dc46c1232b1d5344f5",
+    "template_path": "organization/egress/tcex.json"
+  }
 }

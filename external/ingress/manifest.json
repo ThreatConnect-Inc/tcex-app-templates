@@ -1,12 +1,12 @@
 {
-    "app.py": {
-        "sha256": "713a6e5cc3a630e05f08371530e290b282bb8c8e9eb337c643bbfc538c0c51d7",
-        "last_commit": "c36d36c5caf00c1150efae6c9d08bb2e7d304f33",
-        "template_path": "external/ingress/app.py"
-    },
-    "app_config.json": {
-        "sha256": "95beaf60da31797389b98486994afea9ad69bdf988aafa04be21b6f152e96bff",
-        "last_commit": "401768a3e618c069a28faaad9fb259832f6d590a",
-        "template_path": "external/ingress/app_config.json"
-    }
+  "app.py": {
+    "last_commit": "c36d36c5caf00c1150efae6c9d08bb2e7d304f33",
+    "sha256": "713a6e5cc3a630e05f08371530e290b282bb8c8e9eb337c643bbfc538c0c51d7",
+    "template_path": "external/ingress/app.py"
+  },
+  "app_config.json": {
+    "last_commit": "401768a3e618c069a28faaad9fb259832f6d590a",
+    "sha256": "95beaf60da31797389b98486994afea9ad69bdf988aafa04be21b6f152e96bff",
+    "template_path": "external/ingress/app_config.json"
+  }
 }

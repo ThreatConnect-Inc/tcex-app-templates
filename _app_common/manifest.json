@@ -1,32 +1,32 @@
 {
-    ".coveragerc": {
-        "sha256": "64e2266b757c27d46b4c2f90c9edaae6d8b04fa9615c3b46411f664c0fe65e8f",
-        "last_commit": "4da5f7ba2afca3dd2995cebe1836338c657ab13d",
-        "template_path": "_app_common/.coveragerc"
-    },
-    ".gitignore": {
-        "sha256": "87cef9c311474dbc9ed4dda3819e936c27a8e67cc131219dcfad7c750c3fabca",
-        "last_commit": "8d6e5e957c8535b7ce2269f9b4e6dec30f7af5b1",
-        "template_path": "_app_common/.gitignore"
-    },
-    ".pre-commit-config.yaml": {
-        "sha256": "2963d6089f47f61e03ab8b10164031e792574d782265677ef1c62abee4d24283",
-        "last_commit": "c86b63215730a1dde71a8d411c38412680d9e2d6",
-        "template_path": "_app_common/.pre-commit-config.yaml"
-    },
-    "README.md": {
-        "sha256": "8012a5bff94cd829bb51f2ef29905402f0ced54c6d8e40f35249fb3b73a1c98c",
-        "last_commit": "80072834613280f1b323333baa81b67b89414110",
-        "template_path": "_app_common/README.md"
-    },
-    "pyproject.toml": {
-        "sha256": "dd5c247397ea19cbd941fa561f8c50dba5ac3cb6403c45775b2f04428eb6763d",
-        "last_commit": "cdcf0757f9ed38a8e93761fadf501243fdb1a73b",
-        "template_path": "_app_common/pyproject.toml"
-    },
-    "requirements.txt": {
-        "sha256": "e5f740282c3cd925fc778d1506ac6606a42f50f5c08f43285d0bc3196c4ca889",
-        "last_commit": "80072834613280f1b323333baa81b67b89414110",
-        "template_path": "_app_common/requirements.txt"
-    }
+  ".coveragerc": {
+    "last_commit": "4da5f7ba2afca3dd2995cebe1836338c657ab13d",
+    "sha256": "64e2266b757c27d46b4c2f90c9edaae6d8b04fa9615c3b46411f664c0fe65e8f",
+    "template_path": "_app_common/.coveragerc"
+  },
+  ".gitignore": {
+    "last_commit": "8d6e5e957c8535b7ce2269f9b4e6dec30f7af5b1",
+    "sha256": "87cef9c311474dbc9ed4dda3819e936c27a8e67cc131219dcfad7c750c3fabca",
+    "template_path": "_app_common/.gitignore"
+  },
+  ".pre-commit-config.yaml": {
+    "last_commit": "c86b63215730a1dde71a8d411c38412680d9e2d6",
+    "sha256": "2963d6089f47f61e03ab8b10164031e792574d782265677ef1c62abee4d24283",
+    "template_path": "_app_common/.pre-commit-config.yaml"
+  },
+  "README.md": {
+    "last_commit": "80072834613280f1b323333baa81b67b89414110",
+    "sha256": "8012a5bff94cd829bb51f2ef29905402f0ced54c6d8e40f35249fb3b73a1c98c",
+    "template_path": "_app_common/README.md"
+  },
+  "pyproject.toml": {
+    "last_commit": "cdcf0757f9ed38a8e93761fadf501243fdb1a73b",
+    "sha256": "dd5c247397ea19cbd941fa561f8c50dba5ac3cb6403c45775b2f04428eb6763d",
+    "template_path": "_app_common/pyproject.toml"
+  },
+  "requirements.txt": {
+    "last_commit": "80072834613280f1b323333baa81b67b89414110",
+    "sha256": "e5f740282c3cd925fc778d1506ac6606a42f50f5c08f43285d0bc3196c4ca889",
+    "template_path": "_app_common/requirements.txt"
+  }
 }

@@ -38,12 +38,15 @@ class SupervisorConfigModel(BaseModel):
         description='Manual override timestamps set via API POST. Not set on startup.',
     )
 
-    # Per-pipeline probation tracking (pipeline_name -> probation job request_id or None)
-    # None means pipeline is on probation but awaiting first job assignment
+    # Per-pipeline probation tracking (pipeline_name -> probation job request_id or empty string)
+    # Empty string means pipeline is on probation but awaiting first job assignment
     # A request_id means that specific job must complete the full pipeline or app shuts down
-    pipelines_on_probation: dict[str, str | None] = Field(
+    pipelines_on_probation: dict[str, str] = Field(
         default_factory=dict,
-        description='Pipelines on probation after stale restart. Maps to probation job ID or None.',
+        description=(
+            'Pipelines on probation after stale restart.'
+            ' Maps to probation job ID or empty string if awaiting assignment.'
+        ),
     )
 
     @root_validator

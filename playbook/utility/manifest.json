@@ -1,37 +1,37 @@
 {
-    "README.md": {
-        "sha256": "cc2ec97e9895c72a8f3b05a18eaa2db5a4254245593ee3d024da32339b0ab108",
-        "last_commit": "52d2dc0b0ee9f995899f1effe561a99da5add852",
-        "template_path": "playbook/utility/README.md"
-    },
-    "app.py": {
-        "sha256": "83cb6ab2f5db934a60e66da513b1927b0115d409bc65c21f0bf687bb85328957",
-        "last_commit": "c36d36c5caf00c1150efae6c9d08bb2e7d304f33",
-        "template_path": "playbook/utility/app.py"
-    },
-    "app_inputs.json": {
-        "sha256": "710b6615cb4c2d9f6425f8dd204e4950023625ddd5036020fcc9563c1731ee63",
-        "last_commit": "52d2dc0b0ee9f995899f1effe561a99da5add852",
-        "template_path": "playbook/utility/app_inputs.json"
-    },
-    "app_inputs.py": {
-        "sha256": "021c7df4d1e1306eb0cca54007180e94afecfe217eb4bc635cbf637a231e5cbf",
-        "last_commit": "a4244225ffb6299b0651213027ac673ed86b6782",
-        "template_path": "playbook/utility/app_inputs.py"
-    },
-    "app_spec.yml": {
-        "sha256": "d9c98b835ecc96ce50fe4ce23d0c4b71a462ab4a5d008469f9334d151b6d9979",
-        "last_commit": "52d2dc0b0ee9f995899f1effe561a99da5add852",
-        "template_path": "playbook/utility/app_spec.yml"
-    },
-    "install.json": {
-        "sha256": "6a4038b0e70642371ed7ee565f8af34717ed187e49c8e62daf001ee8e3ad48d4",
-        "last_commit": "52d2dc0b0ee9f995899f1effe561a99da5add852",
-        "template_path": "playbook/utility/install.json"
-    },
-    "tcex.json": {
-        "sha256": "9346d158385602342c4aca5bb3233dd37944ae7d0e6c01f3ca4f5f83668de8c5",
-        "last_commit": "80072834613280f1b323333baa81b67b89414110",
-        "template_path": "playbook/utility/tcex.json"
-    }
+  "README.md": {
+    "last_commit": "52d2dc0b0ee9f995899f1effe561a99da5add852",
+    "sha256": "cc2ec97e9895c72a8f3b05a18eaa2db5a4254245593ee3d024da32339b0ab108",
+    "template_path": "playbook/utility/README.md"
+  },
+  "app.py": {
+    "last_commit": "c36d36c5caf00c1150efae6c9d08bb2e7d304f33",
+    "sha256": "83cb6ab2f5db934a60e66da513b1927b0115d409bc65c21f0bf687bb85328957",
+    "template_path": "playbook/utility/app.py"
+  },
+  "app_inputs.json": {
+    "last_commit": "52d2dc0b0ee9f995899f1effe561a99da5add852",
+    "sha256": "710b6615cb4c2d9f6425f8dd204e4950023625ddd5036020fcc9563c1731ee63",
+    "template_path": "playbook/utility/app_inputs.json"
+  },
+  "app_inputs.py": {
+    "last_commit": "a4244225ffb6299b0651213027ac673ed86b6782",
+    "sha256": "021c7df4d1e1306eb0cca54007180e94afecfe217eb4bc635cbf637a231e5cbf",
+    "template_path": "playbook/utility/app_inputs.py"
+  },
+  "app_spec.yml": {
+    "last_commit": "52d2dc0b0ee9f995899f1effe561a99da5add852",
+    "sha256": "d9c98b835ecc96ce50fe4ce23d0c4b71a462ab4a5d008469f9334d151b6d9979",
+    "template_path": "playbook/utility/app_spec.yml"
+  },
+  "install.json": {
+    "last_commit": "52d2dc0b0ee9f995899f1effe561a99da5add852",
+    "sha256": "6a4038b0e70642371ed7ee565f8af34717ed187e49c8e62daf001ee8e3ad48d4",
+    "template_path": "playbook/utility/install.json"
+  },
+  "tcex.json": {
+    "last_commit": "80072834613280f1b323333baa81b67b89414110",
+    "sha256": "9346d158385602342c4aca5bb3233dd37944ae7d0e6c01f3ca4f5f83668de8c5",
+    "template_path": "playbook/utility/tcex.json"
+  }
 }

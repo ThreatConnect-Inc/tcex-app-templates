@@ -91,6 +91,22 @@ class UploadABC(TaskPathPipeABC, ABC):
             if delta < timedelta(minutes=5):
                 self.log.info('action=throttle')
                 return
+        elif request.status.casefold() == self.task_settings.status_active.casefold():
+            self.log.info(
+                f'action="skip-already-in-progress", request-id="{request_id}", '
+                f'status="{request.status}"'
+            )
+            return
+
+        # Update status to "in progress" BEFORE forking to prevent race conditions
+        # where a second process could be launched before the first one updates status
+        request.status = self.task_settings.status_active
+        self.job_dao.save(request)
+        self.log.info(
+            f'action="pre-launch-status-update", request-id="{request_id}", '
+            f'status="{request.status}"'
+        )
+
         self.launch(request_id, request_dir)
 
     @abstractmethod

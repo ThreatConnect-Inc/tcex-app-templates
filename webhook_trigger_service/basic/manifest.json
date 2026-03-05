@@ -1,47 +1,47 @@
 {
-    "README.md": {
-        "sha256": "eb8688fb90a77982524c8f2064782b8209fe76aaac6b9d5efbbf32178abd060a",
-        "last_commit": "52d2dc0b0ee9f995899f1effe561a99da5add852",
-        "template_path": "webhook_trigger_service/basic/README.md"
-    },
-    "app.py": {
-        "sha256": "911a5f365873247fc69b2c57c1d0c1ad41c0430b6309714a7bedd5494e38c91d",
-        "last_commit": "c36d36c5caf00c1150efae6c9d08bb2e7d304f33",
-        "template_path": "webhook_trigger_service/basic/app.py"
-    },
-    "app_inputs.json": {
-        "sha256": "de8b88d7d7382706540adaf260a59ffbce5177735794f81285f3bf4a285ab102",
-        "last_commit": "52d2dc0b0ee9f995899f1effe561a99da5add852",
-        "template_path": "webhook_trigger_service/basic/app_inputs.json"
-    },
-    "app_inputs.py": {
-        "sha256": "33f9af3d1c44adc1989380f2540faa5838629fe4eff4a8ff73500f5c32f5ac72",
-        "last_commit": "a4244225ffb6299b0651213027ac673ed86b6782",
-        "template_path": "webhook_trigger_service/basic/app_inputs.py"
-    },
-    "install.json": {
-        "sha256": "4fbaffb1e338f7d50993b5d238877583210173c9eab185be7bc8b950d7548a8e",
-        "last_commit": "52d2dc0b0ee9f995899f1effe561a99da5add852",
-        "template_path": "webhook_trigger_service/basic/install.json"
-    },
-    "requirements.txt": {
-        "sha256": "e5f740282c3cd925fc778d1506ac6606a42f50f5c08f43285d0bc3196c4ca889",
-        "last_commit": "80072834613280f1b323333baa81b67b89414110",
-        "template_path": "webhook_trigger_service/basic/requirements.txt"
-    },
-    "run.py": {
-        "sha256": "afc378046c9dcc80553e7208cb080b8ba0105dd254d0a555cb7c038383eba642",
-        "last_commit": "c36d36c5caf00c1150efae6c9d08bb2e7d304f33",
-        "template_path": "webhook_trigger_service/basic/run.py"
-    },
-    "service_app.py": {
-        "sha256": "7058e9c527519541798f1834d0fd4b4098487a21ddf58206491c343f25b3a90b",
-        "last_commit": "c36d36c5caf00c1150efae6c9d08bb2e7d304f33",
-        "template_path": "webhook_trigger_service/basic/service_app.py"
-    },
-    "tcex.json": {
-        "sha256": "17d4b341f914a35f5efa9da47c53db6f8a64974962ba372c5d37e30279ce6399",
-        "last_commit": "43a236aa2454ffd38c9665fe86feebacb358290f",
-        "template_path": "webhook_trigger_service/basic/tcex.json"
-    }
+  "README.md": {
+    "last_commit": "52d2dc0b0ee9f995899f1effe561a99da5add852",
+    "sha256": "eb8688fb90a77982524c8f2064782b8209fe76aaac6b9d5efbbf32178abd060a",
+    "template_path": "webhook_trigger_service/basic/README.md"
+  },
+  "app.py": {
+    "last_commit": "c36d36c5caf00c1150efae6c9d08bb2e7d304f33",
+    "sha256": "911a5f365873247fc69b2c57c1d0c1ad41c0430b6309714a7bedd5494e38c91d",
+    "template_path": "webhook_trigger_service/basic/app.py"
+  },
+  "app_inputs.json": {
+    "last_commit": "52d2dc0b0ee9f995899f1effe561a99da5add852",
+    "sha256": "de8b88d7d7382706540adaf260a59ffbce5177735794f81285f3bf4a285ab102",
+    "template_path": "webhook_trigger_service/basic/app_inputs.json"
+  },
+  "app_inputs.py": {
+    "last_commit": "a4244225ffb6299b0651213027ac673ed86b6782",
+    "sha256": "33f9af3d1c44adc1989380f2540faa5838629fe4eff4a8ff73500f5c32f5ac72",
+    "template_path": "webhook_trigger_service/basic/app_inputs.py"
+  },
+  "install.json": {
+    "last_commit": "52d2dc0b0ee9f995899f1effe561a99da5add852",
+    "sha256": "4fbaffb1e338f7d50993b5d238877583210173c9eab185be7bc8b950d7548a8e",
+    "template_path": "webhook_trigger_service/basic/install.json"
+  },
+  "requirements.txt": {
+    "last_commit": "80072834613280f1b323333baa81b67b89414110",
+    "sha256": "e5f740282c3cd925fc778d1506ac6606a42f50f5c08f43285d0bc3196c4ca889",
+    "template_path": "webhook_trigger_service/basic/requirements.txt"
+  },
+  "run.py": {
+    "last_commit": "c36d36c5caf00c1150efae6c9d08bb2e7d304f33",
+    "sha256": "afc378046c9dcc80553e7208cb080b8ba0105dd254d0a555cb7c038383eba642",
+    "template_path": "webhook_trigger_service/basic/run.py"
+  },
+  "service_app.py": {
+    "last_commit": "c36d36c5caf00c1150efae6c9d08bb2e7d304f33",
+    "sha256": "7058e9c527519541798f1834d0fd4b4098487a21ddf58206491c343f25b3a90b",
+    "template_path": "webhook_trigger_service/basic/service_app.py"
+  },
+  "tcex.json": {
+    "last_commit": "43a236aa2454ffd38c9665fe86feebacb358290f",
+    "sha256": "17d4b341f914a35f5efa9da47c53db6f8a64974962ba372c5d37e30279ce6399",
+    "template_path": "webhook_trigger_service/basic/tcex.json"
+  }
 }

@@ -1,37 +1,37 @@
 {
-    "README.md": {
-        "sha256": "a350641158fe7f285e28e33e93a394171dd71f644ee0e3f10f185d17f2cb127b",
-        "last_commit": "52d2dc0b0ee9f995899f1effe561a99da5add852",
-        "template_path": "organization/basic/README.md"
-    },
-    "app.py": {
-        "sha256": "7cd89a628b5ea4db73629861ee2baa92c5fade676f667094681d94bb055234de",
-        "last_commit": "a4244225ffb6299b0651213027ac673ed86b6782",
-        "template_path": "organization/basic/app.py"
-    },
-    "app_inputs.py": {
-        "sha256": "6c8ec262a13fa58bed875bc760ee5598bdf0b8a43ac0d50d50e999dbe06bd02b",
-        "last_commit": "a4244225ffb6299b0651213027ac673ed86b6782",
-        "template_path": "organization/basic/app_inputs.py"
-    },
-    "install.json": {
-        "sha256": "81b266806d8fb7655b0887042a043d7259836b8659ffe433ba7d8baff6254045",
-        "last_commit": "80072834613280f1b323333baa81b67b89414110",
-        "template_path": "organization/basic/install.json"
-    },
-    "job_app.py": {
-        "sha256": "09366aa4a6d4a837ed31cce6f85aad36f1cd75ddcb349ec2ffe23f9c44f1e707",
-        "last_commit": "c36d36c5caf00c1150efae6c9d08bb2e7d304f33",
-        "template_path": "organization/basic/job_app.py"
-    },
-    "run.py": {
-        "sha256": "b2a22c6b82e3c7624abc8b58a5cae7ab10eb41a059f807a1724777a9ceaa00bc",
-        "last_commit": "c36d36c5caf00c1150efae6c9d08bb2e7d304f33",
-        "template_path": "organization/basic/run.py"
-    },
-    "tcex.json": {
-        "sha256": "2a3425cdd83d472f34d5000a1dd309cad279bbf2408dfd64921de39a0a22710d",
-        "last_commit": "43a236aa2454ffd38c9665fe86feebacb358290f",
-        "template_path": "organization/basic/tcex.json"
-    }
+  "README.md": {
+    "last_commit": "52d2dc0b0ee9f995899f1effe561a99da5add852",
+    "sha256": "a350641158fe7f285e28e33e93a394171dd71f644ee0e3f10f185d17f2cb127b",
+    "template_path": "organization/basic/README.md"
+  },
+  "app.py": {
+    "last_commit": "a4244225ffb6299b0651213027ac673ed86b6782",
+    "sha256": "7cd89a628b5ea4db73629861ee2baa92c5fade676f667094681d94bb055234de",
+    "template_path": "organization/basic/app.py"
+  },
+  "app_inputs.py": {
+    "last_commit": "a4244225ffb6299b0651213027ac673ed86b6782",
+    "sha256": "6c8ec262a13fa58bed875bc760ee5598bdf0b8a43ac0d50d50e999dbe06bd02b",
+    "template_path": "organization/basic/app_inputs.py"
+  },
+  "install.json": {
+    "last_commit": "80072834613280f1b323333baa81b67b89414110",
+    "sha256": "81b266806d8fb7655b0887042a043d7259836b8659ffe433ba7d8baff6254045",
+    "template_path": "organization/basic/install.json"
+  },
+  "job_app.py": {
+    "last_commit": "c36d36c5caf00c1150efae6c9d08bb2e7d304f33",
+    "sha256": "09366aa4a6d4a837ed31cce6f85aad36f1cd75ddcb349ec2ffe23f9c44f1e707",
+    "template_path": "organization/basic/job_app.py"
+  },
+  "run.py": {
+    "last_commit": "c36d36c5caf00c1150efae6c9d08bb2e7d304f33",
+    "sha256": "b2a22c6b82e3c7624abc8b58a5cae7ab10eb41a059f807a1724777a9ceaa00bc",
+    "template_path": "organization/basic/run.py"
+  },
+  "tcex.json": {
+    "last_commit": "43a236aa2454ffd38c9665fe86feebacb358290f",
+    "sha256": "2a3425cdd83d472f34d5000a1dd309cad279bbf2408dfd64921de39a0a22710d",
+    "template_path": "organization/basic/tcex.json"
+  }
 }

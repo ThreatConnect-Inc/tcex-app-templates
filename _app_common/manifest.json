@@ -1,0 +1,42 @@
+{
+    ".coveragerc": {
+        "sha256": "a109fb5fc54c12eb9b05837b0082e200072d02ba713a80f7af72ea0bf2b9c575",
+        "last_commit": "401768a3e618c069a28faaad9fb259832f6d590a",
+        "template_path": "_app_common/.coveragerc"
+    },
+    ".gitignore": {
+        "sha256": "7f6fb6faf9370d39d15a1d2f036f771d880e77cd8b6904e352c3a90f2a98d2f1",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "_app_common/.gitignore"
+    },
+    ".pre-commit-config.yaml": {
+        "sha256": "24066d2c41df9deb47127d8819d4ceb8d9657afda6afed2dbca1568bcd4c0335",
+        "last_commit": "227a979c9a8ad509ac2ff277def104c711dcf76f",
+        "template_path": "_app_common/.pre-commit-config.yaml"
+    },
+    "README.md": {
+        "sha256": "8e57391352397d81a94a4cc482bc6f99a6d58d4540b74d8754189740ccab026a",
+        "last_commit": "7a40bf67f2048d22140dfd7f06bfcf08dffcb95e",
+        "template_path": "_app_common/README.md"
+    },
+    "app_lib.py": {
+        "sha256": "e3e59e6ecc08935b64709ed6304d216feac53794feadf8040d10a3187d3e4768",
+        "last_commit": "c46550f654a596356609d939cd0023436d4c6465",
+        "template_path": "_app_common/app_lib.py"
+    },
+    "pyproject.toml": {
+        "sha256": "b40584d9ed2fb9b47fcfb9b0235190ea2356477b9764cb53d3de00e44798fea8",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "_app_common/pyproject.toml"
+    },
+    "requirements.txt": {
+        "sha256": "d1bfdaa4e8e0511288ad168146c7146a0119f1975bc2fa9abb4a31e80860f69c",
+        "last_commit": "6caa4cc33df69acf520fdecf87586f20b3799cdf",
+        "template_path": "_app_common/requirements.txt"
+    },
+    "setup.cfg": {
+        "sha256": "34e4edf84fb12aa54e5ed36010e7abda387820c699ad40073f3ff82c567c2d5e",
+        "last_commit": "66e3a73317459ba3fbdc63d186e9f039029bdd86",
+        "template_path": "_app_common/setup.cfg"
+    }
+}

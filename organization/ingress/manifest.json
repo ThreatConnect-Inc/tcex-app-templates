@@ -1,0 +1,32 @@
+{
+    ".appbuilderconfig": {
+        "sha256": "70fd79bb91553bb2122c4fc504c3c2c484ade5185736da8022ad397a97c3cca8",
+        "last_commit": "6457b910aec7710902ae5a50293d08892f76b6db",
+        "template_path": "organization/ingress/.appbuilderconfig"
+    },
+    "README.md": {
+        "sha256": "adaf8b085c7d29ccacd787f3b038eb3f1d978901ef4e868693df70800c41df4b",
+        "last_commit": "6457b910aec7710902ae5a50293d08892f76b6db",
+        "template_path": "organization/ingress/README.md"
+    },
+    "app.py": {
+        "sha256": "cf205522774c9e486555578634875bf8999d866d8c046bd70baf598511b579d6",
+        "last_commit": "fae927965563f98eed0bd7716afa3bf4d4fda3bf",
+        "template_path": "organization/ingress/app.py"
+    },
+    "app_inputs.py": {
+        "sha256": "462452f5bdd19973eea0df94b1c206ccbe9e0666386ec0acc83e86f4c82fd742",
+        "last_commit": "8807b92a0676f4f2a6e6b586b1cdec85da72177b",
+        "template_path": "organization/ingress/app_inputs.py"
+    },
+    "install.json": {
+        "sha256": "d42876fddcdb53462e5cafca72efbf07473fd0153fc2ab13c5059fdaff58ab0c",
+        "last_commit": "7a40bf67f2048d22140dfd7f06bfcf08dffcb95e",
+        "template_path": "organization/ingress/install.json"
+    },
+    "tcex.json": {
+        "sha256": "d5803e350ec5f0b9483057398ddd341c1db210a17aa68dc876e740d12cecaa56",
+        "last_commit": "9ed9ab3156322ab32b6c21b159634950e4998110",
+        "template_path": "organization/ingress/tcex.json"
+    }
+}

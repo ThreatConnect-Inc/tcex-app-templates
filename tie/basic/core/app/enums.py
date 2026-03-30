@@ -106,7 +106,6 @@ class PREFLIGHT_CHECKS(Enum):  # noqa: N801
 class MESSAGE_HANDLERS(Enum):  # noqa: N801
     """Enum for message handler types."""
 
-
 class Route(BaseResource):
     """Represents an API route with its corresponding resource class and optional init args."""
 

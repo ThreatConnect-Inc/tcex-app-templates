@@ -220,6 +220,7 @@ class JsonDB:
         try:
             now = time.time_ns()
             directory = self._storage_directory(cls)
+            directory.mkdir(parents=True, exist_ok=True)
             lock_file_path = directory / f'{index_value}#{now}.lock'
             lock_file_path.touch()
 
@@ -261,7 +262,10 @@ class JsonDB:
         if isinstance(sort_order, str):
             sort_order = SortOrder[sort_order.upper()]
 
-        paths = list(self._storage_directory(cls).rglob(f'*.{self._get_file_extension}'))
+        storage_dir = self._storage_directory(cls)
+        if not storage_dir.exists():
+            return []
+        paths = list(storage_dir.rglob(f'*.{self._get_file_extension}'))
 
         sort_order = SortOrder[sort_order.upper()] if isinstance(sort_order, str) else sort_order
 
@@ -283,8 +287,12 @@ class JsonDB:
 
     def load(self, cls: type[P], index_value: Any) -> P:
         """Load entity of a given class by index value."""
-        paths = self._storage_directory(cls).rglob(f'{index_value}.jsondb*')
-        path = next(paths, None)
+        storage_dir = self._storage_directory(cls)
+        if not storage_dir.exists():
+            path = None
+        else:
+            paths = storage_dir.rglob(f'{index_value}.jsondb*')
+            path = next(paths, None)
 
         if path is None:
             msg = f'Entity of type {cls.__name__} with index {index_value!r} does not exist.'
@@ -463,6 +471,7 @@ class JsonDB:
 
         swap_file_path = self._get_swp_path(entity)
         file_path = self._get_file_path(entity)
+        swap_file_path.parent.mkdir(parents=True, exist_ok=True)
         if self.gzip:
             with gz.open(swap_file_path, 'wt', encoding='utf-8') as f:
                 f.write(json.dumps(serialized, indent=None, **self.json_args))

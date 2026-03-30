@@ -1,0 +1,37 @@
+{
+    ".appbuilderconfig": {
+        "sha256": "05734dd6370725243f34d0fe52cd06adc7216ae2846fc03115305f2719ca3904",
+        "last_commit": "7a40bf67f2048d22140dfd7f06bfcf08dffcb95e",
+        "template_path": "playbook/actions/.appbuilderconfig"
+    },
+    "README.md": {
+        "sha256": "20ba9129ae676d06000716d9219371fb545764df776f9f0ddcae40e7a4ceed45",
+        "last_commit": "7a40bf67f2048d22140dfd7f06bfcf08dffcb95e",
+        "template_path": "playbook/actions/README.md"
+    },
+    "app.py": {
+        "sha256": "ad94beed3635c69a9651b2664507c46b13b8382241b247939d90279a04058884",
+        "last_commit": "401768a3e618c069a28faaad9fb259832f6d590a",
+        "template_path": "playbook/actions/app.py"
+    },
+    "app_inputs.py": {
+        "sha256": "4d8917cd6218d746c19f266028eaefc8330a28d360dc22d2b6d236c474f3c2e1",
+        "last_commit": "52d344976c157486f3cc5fe6dba14287f01df091",
+        "template_path": "playbook/actions/app_inputs.py"
+    },
+    "install.json": {
+        "sha256": "bc40876ceb74f0089937973b37975a7cc5d76e57ccd2976cbfe1bad7ad8e12ae",
+        "last_commit": "7a40bf67f2048d22140dfd7f06bfcf08dffcb95e",
+        "template_path": "playbook/actions/install.json"
+    },
+    "layout.json": {
+        "sha256": "98ab2b8ef403fe7b67a4ee6a1a744cb8fca4829cd3c3d0805fb8392c0e748981",
+        "last_commit": "7a40bf67f2048d22140dfd7f06bfcf08dffcb95e",
+        "template_path": "playbook/actions/layout.json"
+    },
+    "tcex.json": {
+        "sha256": "7f31d4d7153cc4ce2599db3e931c09d9de311a4964a0c63fb5a81b9a2cd1f240",
+        "last_commit": "9ed9ab3156322ab32b6c21b159634950e4998110",
+        "template_path": "playbook/actions/tcex.json"
+    }
+}

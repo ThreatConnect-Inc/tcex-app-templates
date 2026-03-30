@@ -39,6 +39,29 @@ class Upload(UploadIngestABC):
                 return write_type
         return WriteTypes(attribute='Replace', tag='Replace', security_label='Replace')
 
+    def get_batch_cleaner(self, batch_submit: BatchSubmit):
+        """Return a BatchCleaner for content cleaning during batch submit.
+
+        The BatchCleaner runs cleaning steps on batch content before uploading
+        to ThreatConnect. Configure by passing keyword arguments to
+        batch_submit.cleaner():
+
+            combine_on_filename: Merge File indicators sharing a fileOccurrence fileName.
+            convert_to_mitre_tags: Convert tag names to formatted MITRE ATT&CK tags.
+            convert_to_naics_tags: Convert tag names to formatted NAICS tags.
+            deduplicate_indicators: Merge duplicate indicators (hash-overlap for Files).
+            deduplicate_groups: Merge duplicate groups by xid.
+            deduplicate_attributes: Remove duplicate attributes from indicators/groups.
+            truncate_attributes: Truncate attribute values exceeding their type's maxSize.
+
+        Example:
+            return batch_submit.cleaner(
+                deduplicate_indicators=True,
+                truncate_attributes=True,
+            )
+        """
+        return batch_submit.cleaner()
+
     def process_file(
         self, file: Path, request: JobRequestModel
     ) -> tuple[BatchSubmit, int] | tuple[None, None]:

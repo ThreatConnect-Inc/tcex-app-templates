@@ -1,0 +1,772 @@
+{
+    "api/__init__.py": {
+        "sha256": "f2265c6b82a4e23573692496e8c8dc7518436f5efe0594a55d718eb05a647b15",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/api/__init__.py"
+    },
+    "api/download_external_ti_resource.py": {
+        "sha256": "832f434fc1ab0b4018bcc7b97f14be9b3649477a45add8fe1525f584a40c2644",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/api/download_external_ti_resource.py"
+    },
+    "api/hook/__init__.py": {
+        "sha256": "08beb21c90c8659b75865632da4b9c0936d69499947147677195b74ee231446b",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/api/hook/__init__.py"
+    },
+    "api/job_request_resource.py": {
+        "sha256": "8b74b8b05bcb53eb4211f96e64b167b44b9e0976a13d719e5888494c812e827f",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/api/job_request_resource.py"
+    },
+    "api/job_setting_resource.py": {
+        "sha256": "61960f03c48b16349749836467ff129145eac6441a6c5f1eacb96d77cf5cc77a",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/api/job_setting_resource.py"
+    },
+    "api/metric_processing_resource.py": {
+        "sha256": "4e6899a0af88d8d445f939a5c0483f614e59d3d85f9375847982064891649ddf",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/api/metric_processing_resource.py"
+    },
+    "api/metric_task_resource.py": {
+        "sha256": "259b22f0dd9d3877546bc49eaa22cb1c41bf4154f77f2181b8cf0eec88ee6d6f",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/api/metric_task_resource.py"
+    },
+    "api/middleware/__init__.py": {
+        "sha256": "5a3a60b8263be37f71f9b2e1799579a851313ff26e09ea5002858e6ea117b673",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/api/middleware/__init__.py"
+    },
+    "api/middleware/db_middleware.py": {
+        "sha256": "d6d71e68f5ef7e984dfbb5d490faf665b0867256213c404704b82caf5ff8bc6f",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/api/middleware/db_middleware.py"
+    },
+    "api/middleware/error_middleware.py": {
+        "sha256": "3ba7bc5f8cc7e67a90a49c6916fb50d3005867678118c09a271dc66cd6541aa9",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/api/middleware/error_middleware.py"
+    },
+    "api/middleware/injectables_middleware.py": {
+        "sha256": "eb33919de3265acca85da7ead58cfb3f24b4106de72a96f05c52442651d6b1b8",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/api/middleware/injectables_middleware.py"
+    },
+    "api/middleware/middleware_abc.py": {
+        "sha256": "5ca68b777573f9f32792db03f75baf2239726e5bcce9bd952e7dd5ba70d309cc",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/api/middleware/middleware_abc.py"
+    },
+    "api/middleware/tcex_middleware.py": {
+        "sha256": "40ef6e02050439316eab0d45df58e7ffd2e4f2f2949e18efe527cd53b82f36c9",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/api/middleware/tcex_middleware.py"
+    },
+    "api/middleware/validation_middleware.py": {
+        "sha256": "66a3623239fa009b649f7e8cf5fef9e384236767ec0cc9b6ab94929924df5a4c",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/api/middleware/validation_middleware.py"
+    },
+    "api/report_batch_error_resource.py": {
+        "sha256": "cfad185522743be59d14fdf777d12c93a1b5ab2693a52766743eda2fcdedb4fb",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/api/report_batch_error_resource.py"
+    },
+    "api/resource_abc.py": {
+        "sha256": "f55d109fca56342d8f2568fb1120a959aa3aa7317a272b83b1e31bb7f348797f",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/api/resource_abc.py"
+    },
+    "api/support_log_search_resource.py": {
+        "sha256": "d7c83ee5e49db10aafb5a53f53eea45e46ec0ee2b08080f6eec085e080464cbe",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/api/support_log_search_resource.py"
+    },
+    "api/task_resource.py": {
+        "sha256": "c102b0c914bf3a56e424eaf26ab1abe85be336bd1cb943bd8a570c0d1737fbb2",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/api/task_resource.py"
+    },
+    "api/task_status_resource.py": {
+        "sha256": "df6d6ffb5ea832204c1d2e5ba88d0da2954c2bb7bc7306703e4f724b4a8161e9",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/api/task_status_resource.py"
+    },
+    "api/util/__init__.py": {
+        "sha256": "f398ac4ca23612fee4859156c4062acbf8e772a437c27a7bf85c676331168597",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/api/util/__init__.py"
+    },
+    "api/util/api_error.py": {
+        "sha256": "469fd361f75650147d753d2b5a9a4201ca457cf325798d4e74dbed2f869e3742",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/api/util/api_error.py"
+    },
+    "api/util/custom_error_handler.py": {
+        "sha256": "6509d176325351734c1d3b6d8e7aa7660bc82f370e6c07f5a5b0995e114c462e",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/api/util/custom_error_handler.py"
+    },
+    "api/util/redirect_resource.py": {
+        "sha256": "ccd5dc4b3a59a6a73c6e1765b9aff53e73a787b058c697404850b99eef9be748",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/api/util/redirect_resource.py"
+    },
+    "api_service_app.py": {
+        "sha256": "13be8bfc77b74aeaa3d92e4432c5889922274e57b206c8a78f6e0d92beb0d48b",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/api_service_app.py"
+    },
+    "api_service_falcon.py": {
+        "sha256": "c56343075c45bc008c57635b46187a9bdfa9d70139fc6a1abaf88320931dda8a",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/api_service_falcon.py"
+    },
+    "app.py": {
+        "sha256": "3cd4b762fe9164a43eeacc87b5e5c3ee00474ba13cc0f00c53770af9a6316e05",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/app.py"
+    },
+    "app_inputs.py": {
+        "sha256": "d7ed17230649ec92064c36850f5d695759b4163aa07b44334dd0c0e8172a8b30",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/app_inputs.py"
+    },
+    "attributes.json": {
+        "sha256": "24a2a85033303b5aeeb6b74d7815203fed0580af4dd5d01b5d1d5a821a7097db",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/attributes.json"
+    },
+    "feed.job.json": {
+        "sha256": "f73e3f9516a59183127ac8a3c7598e7260578bd6169712c8bc32437727a9c091",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/feed.job.json"
+    },
+    "install.json": {
+        "sha256": "17c744abb577712b8f85f68c57c770ebae4826291df5050e46f30d7251fc1d5b",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/install.json"
+    },
+    "model/__init__.py": {
+        "sha256": "7bfea16ee9a90c75ece3ce043e3d57fd6be99047819c11aed620e31911861982",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/model/__init__.py"
+    },
+    "model/batch_error_model.py": {
+        "sha256": "c0e99fe86d74d7ca27305dd5b6eb6caaba9b80bd07c96b812d019b6a95c945ed",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/model/batch_error_model.py"
+    },
+    "model/filter_param_model.py": {
+        "sha256": "60f2d877bf5a9df7c6a6133250748424273f2160882643044c53157ec29cb563",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/model/filter_param_model.py"
+    },
+    "model/job_request_base_model.py": {
+        "sha256": "6107eb4fe2da697b6e9ea550efeb0e4c6b7263ea3a1adacd45b6aeb7f3c329e0",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/model/job_request_base_model.py"
+    },
+    "model/job_request_model.py": {
+        "sha256": "3e2eb7ed9cab0ea34a82cb18842fd999d014cd8ccb99dbaf6108eeb354b9a604",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/model/job_request_model.py"
+    },
+    "model/multipart_form_data_model.py": {
+        "sha256": "5f9203fcae43940536a41667e8ee5610ad076d434aa821ab7f9ea92db2b77fda",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/model/multipart_form_data_model.py"
+    },
+    "model/paginator_response_model.py": {
+        "sha256": "5af70bfecbd355cfa25502aef8cd30a73663f1cae64ef3846c72a9a9425d155e",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/model/paginator_response_model.py"
+    },
+    "model/setting_model.py": {
+        "sha256": "d4c45fadfb37802f2a44b789df42312e0edb1f1dd5add1436d5590952455cf68",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/model/setting_model.py"
+    },
+    "model/ti_processing_metric_model.py": {
+        "sha256": "3267e1f3b1028c82bcb8ea28d839fbf6faf0923c07b7884ddaaa7b0f37fcde36",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/model/ti_processing_metric_model.py"
+    },
+    "more/__init__.py": {
+        "sha256": "7ba4a0f9c2453b6c87e6e4a319a0244926e82b43ad4ffa05d73bfce7bdacc0fc",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/more/__init__.py"
+    },
+    "more/app_exception.py": {
+        "sha256": "a88882586e890e6b02b5ea429c40d5bc13d4dcdb21365f60fb5528b7bf4d6b77",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/more/app_exception.py"
+    },
+    "more/database.py": {
+        "sha256": "0ef1084faea7c9a9671cd021778b6daa30a2651013c2a7e1fe0e977ab64c7457",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/more/database.py"
+    },
+    "more/db_util.py": {
+        "sha256": "f743456a3eb527c829bb739dd8eac1dc0628a0a46caca0bfb2c06449614152a8",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/more/db_util.py"
+    },
+    "more/error.py": {
+        "sha256": "7a33eeb64987fa0ba77952b94753327289c760ea1116c9b68f9287864c346ec8",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/more/error.py"
+    },
+    "more/metrics.py": {
+        "sha256": "ad1b4ad6a02a29f99a4e061676a13ef27b9487bd1c6a05f713da3ffecf379d2d",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/more/metrics.py"
+    },
+    "more/paginator.py": {
+        "sha256": "6e09c815cd2ad428debaf90be0b84ff94561a5c44c16cd50743e392df24a4d8b",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/more/paginator.py"
+    },
+    "more/transforms/__init__.py": {
+        "sha256": "f70a942244415ee7cf692885c2bc34daeeca812bc0c9095f8e7468e86b48978b",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/more/transforms/__init__.py"
+    },
+    "more/transforms/indicator_transform.py": {
+        "sha256": "15ac5ce8c2028bddb869cd60804c10933e400186bb9caff169647984604610e1",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/more/transforms/indicator_transform.py"
+    },
+    "more/transforms/transform_abc.py": {
+        "sha256": "219db72bd3841725de629fb974a5d85af06093f6a4cb8592b48fbc4d068f6d4c",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/more/transforms/transform_abc.py"
+    },
+    "more/validation.py": {
+        "sha256": "99998917bb2dcaf44f2675ed5f50f37afc7faa4c2c9dd039b346d7535bd8b12c",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/more/validation.py"
+    },
+    "requirements.txt": {
+        "sha256": "a9193bd345a3eff5ca6be078e17f36c8a462c215ba9ed9fbc2b44e19453c7b66",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/requirements.txt"
+    },
+    "run.py": {
+        "sha256": "be1b6eb6a7af1bed65df35d2a46c8480a629248b9ed2be23833c82d36e77aed3",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/run.py"
+    },
+    "schema/__init__.py": {
+        "sha256": "ef0fe7e2740154c135c236513a6b360a4554a6b915bde8c7ae2178c2ad2c5964",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/schema/__init__.py"
+    },
+    "schema/arrow_date_time.py": {
+        "sha256": "8217538700c9af6560848f7988eafe0a144e20ded95fda9e9cbe90fb41e62cdd",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/schema/arrow_date_time.py"
+    },
+    "schema/batch_error_schema.py": {
+        "sha256": "66370083b249e5cffbd92fe412e7de82817cd24133622c60695cd9ec3ea4a27c",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/schema/batch_error_schema.py"
+    },
+    "schema/job_request_base_schema.py": {
+        "sha256": "21fe4e5b60ee70308a07fc0cf71ccc76f0b4b66cdc74c1ba5bd9f103443174fa",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/schema/job_request_base_schema.py"
+    },
+    "schema/job_request_schema.py": {
+        "sha256": "c0a897551eac24a265e0e5f30946473821b3ffaf3f0a82b54e48c5f69e1f26af",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/schema/job_request_schema.py"
+    },
+    "schema/report_pdf_tracker_schema.py": {
+        "sha256": "b8c6f12ab86aaf7fef48aa826480be3161fdba9d1b873ff1c0f5159c3dd6c23c",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/schema/report_pdf_tracker_schema.py"
+    },
+    "schema/ti_processing_metric_schema.py": {
+        "sha256": "7850d44860e410bc66de3f4571bde623bfdb14340702839990d6fc519365cb56",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/schema/ti_processing_metric_schema.py"
+    },
+    "tasks/__init__.py": {
+        "sha256": "35257874e2c55370ff2a7baaaf5088c2cae93eb6f7a381435a839ff8da4e13e7",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/tasks/__init__.py"
+    },
+    "tasks/cleaner.py": {
+        "sha256": "345d562386c831adfc2b75efab7d1b14978c3f91500063ee091fd74ffbeb3e42",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/tasks/cleaner.py"
+    },
+    "tasks/convert_path_pipe.py": {
+        "sha256": "d4f0806528dea7b08292d2d97e8f331ffa9a0c814f818be2d11276c2e9d8d25a",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/tasks/convert_path_pipe.py"
+    },
+    "tasks/download_path_pipe.py": {
+        "sha256": "389cb08d0e55bbae1f5895e975899bf22d51f66bd12742688e5da82c82ca650c",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/tasks/download_path_pipe.py"
+    },
+    "tasks/model/__init__.py": {
+        "sha256": "f4abd04b9a3d642bd46cd79a12eaf0757d9bb3007f6075c6bfe886f3da91b83f",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/tasks/model/__init__.py"
+    },
+    "tasks/model/task_setting_model.py": {
+        "sha256": "4e9a8c0b72f53ecbe5ce9d274454a195a439b33bd67965435b08fe526822039c",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/tasks/model/task_setting_model.py"
+    },
+    "tasks/model/task_setting_pipe_model.py": {
+        "sha256": "e9d245d58c448f5541ee6045d43d0eee918b2caef07d64dd24f2677bee652e37",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/tasks/model/task_setting_pipe_model.py"
+    },
+    "tasks/process_metadata.py": {
+        "sha256": "e68f3174e8132252a167e9a757ff3ac608b8786442312c7e32905e8432f090ef",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/tasks/process_metadata.py"
+    },
+    "tasks/schedule_next_download.py": {
+        "sha256": "586e31b200568ea7f17920a5cb63bbabb1dbe0c17fee5e3028ebb714c989295d",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/tasks/schedule_next_download.py"
+    },
+    "tasks/task_abc.py": {
+        "sha256": "dded620264b66c2b3182ca2c7e0a1cf3665e471df26e175d35353b7d9ac72f24",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/tasks/task_abc.py"
+    },
+    "tasks/task_path_pipe_abc.py": {
+        "sha256": "c89518f2572a13dc7fe5a00decc1da07d7636d7da53de8049815552952680e12",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/tasks/task_path_pipe_abc.py"
+    },
+    "tasks/tasks.py": {
+        "sha256": "5630bdaf0d12b7802cd057db0c654d56204d31e7e998f9743e361df0dfbce20c",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/tasks/tasks.py"
+    },
+    "tasks/upload_path_pipe.py": {
+        "sha256": "a9713ca0008fde82fed02d17e3e394841454fc5da66ca8b3886686b534c39086",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/tasks/upload_path_pipe.py"
+    },
+    "tcex.json": {
+        "sha256": "c2a8ee214244cb7b577bc353d8d3f4f76f4dbb1d28194b380bdcbecd05311ada",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/tcex.json"
+    },
+    "ui/angular.json": {
+        "sha256": "6d039e390f495ea5cde922fdb0b76a83afc8c6dab323c2d0d1aa707135199166",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/angular.json"
+    },
+    "ui/package-lock.json": {
+        "sha256": "41835454fa45dee1f9f6af385cf2b115025583abfa20b277021e6cb24ed605e9",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/package-lock.json"
+    },
+    "ui/package.json": {
+        "sha256": "1542d16d1be9752e9ba3640bfc9f00c22288a565bb565a68a7c6103bc2f56e74",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/package.json"
+    },
+    "ui/src/app/app-routing.module.ts": {
+        "sha256": "d652861b83f8224273e8f52eea569179a33e32289abbfb273ee47fe358bdd50c",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/src/app/app-routing.module.ts"
+    },
+    "ui/src/app/app.component.html": {
+        "sha256": "a80b309be86cfa1f0fe0ed6906bfbc351d82abaade2ee93edfbfe920e17fdf55",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/src/app/app.component.html"
+    },
+    "ui/src/app/app.component.less": {
+        "sha256": "ba0a3553fc7f4345df6b5a0709c1436a64ab8d3d388712e90eaa90a3359ade5b",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/src/app/app.component.less"
+    },
+    "ui/src/app/app.component.spec.ts": {
+        "sha256": "d08968c56dc2fcd6a37a2c97f8ab12ca1513f863908a5c098c6413470b34db20",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/src/app/app.component.spec.ts"
+    },
+    "ui/src/app/app.component.ts": {
+        "sha256": "dd1da6428e441894d2104a8f19b8caca386bd4e2d5530c1c5d6ec5f1c12ae217",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/src/app/app.component.ts"
+    },
+    "ui/src/app/app.module.ts": {
+        "sha256": "c930261b1e716ca796c53a09ea8075b64ce65f610319bf0cdab06bf528fc6193",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/src/app/app.module.ts"
+    },
+    "ui/src/app/component/add-request-dialog/add-request-dialog.component.html": {
+        "sha256": "c96555d4d62c556e71ba1d33e4826e98ac43f829ac04193c07e81cadec6f92ee",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/src/app/component/add-request-dialog/add-request-dialog.component.html"
+    },
+    "ui/src/app/component/add-request-dialog/add-request-dialog.component.less": {
+        "sha256": "5ca1a7f4d35428ab11e4028e4b7117292209e44c57ce4f54926f72d7817944e6",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/src/app/component/add-request-dialog/add-request-dialog.component.less"
+    },
+    "ui/src/app/component/add-request-dialog/add-request-dialog.component.ts": {
+        "sha256": "93bb7049b28dd59f5cd1505a2042f839c8902a97959073e8bfdb2397911c6372",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/src/app/component/add-request-dialog/add-request-dialog.component.ts"
+    },
+    "ui/src/app/component/card-single-value/card-single-value.component.html": {
+        "sha256": "292464cb5d3cc87d1349a5eee7d6a2b9893f71941cdca774543ca1654a9f9e3f",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/src/app/component/card-single-value/card-single-value.component.html"
+    },
+    "ui/src/app/component/card-single-value/card-single-value.component.less": {
+        "sha256": "a611fb40ebd1ff10d1badf731d405275818663ae44b51ea96bdd8209bc406077",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/src/app/component/card-single-value/card-single-value.component.less"
+    },
+    "ui/src/app/component/card-single-value/card-single-value.component.ts": {
+        "sha256": "a61085dc8abc7619d0c962e793c1c34a43beb77e2e5221b5663261a467c6632a",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/src/app/component/card-single-value/card-single-value.component.ts"
+    },
+    "ui/src/app/component/confirm-dialog/confirm-dialog.component.html": {
+        "sha256": "c9d09ef3f4d03f5dfdf5dbe7085c22db6ec5c142433c85db02e31a9fba51771f",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/src/app/component/confirm-dialog/confirm-dialog.component.html"
+    },
+    "ui/src/app/component/confirm-dialog/confirm-dialog.component.less": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/src/app/component/confirm-dialog/confirm-dialog.component.less"
+    },
+    "ui/src/app/component/confirm-dialog/confirm-dialog.component.ts": {
+        "sha256": "a2895829ab27d9f9f5271379159c7bafd41e8cdcc63f6a2dca636e78eecd3521",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/src/app/component/confirm-dialog/confirm-dialog.component.ts"
+    },
+    "ui/src/app/component/dashboard/dashboard.component.html": {
+        "sha256": "ca2bc5665edc726725fc3d336f0cb38a6b0e91e6c0fd3f932a5f08170260e0ad",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/src/app/component/dashboard/dashboard.component.html"
+    },
+    "ui/src/app/component/dashboard/dashboard.component.less": {
+        "sha256": "0a9c6a6e138e7fb253fda6fbff03c8d7cc4c5d5e77f7a2478f899f455ba71b9e",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/src/app/component/dashboard/dashboard.component.less"
+    },
+    "ui/src/app/component/dashboard/dashboard.component.ts": {
+        "sha256": "948312b2f084d6bab0eeebdab1ec270c75d6448c1160945507edc758e087cf2a",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/src/app/component/dashboard/dashboard.component.ts"
+    },
+    "ui/src/app/component/download-form/download-form.component.html": {
+        "sha256": "b64453ae452d6e1dc804ef9b752101b39254274c116249eeb7aa66b0810f2f34",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/src/app/component/download-form/download-form.component.html"
+    },
+    "ui/src/app/component/download-form/download-form.component.less": {
+        "sha256": "d29326f574b56c9d4ac47dcde84c25bdd53677dc85e848af9dd22c5ef8cac371",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/src/app/component/download-form/download-form.component.less"
+    },
+    "ui/src/app/component/download-form/download-form.component.ts": {
+        "sha256": "93163ce5052f3113151d1bc4199e353476fe404ab8256ceb8e65ae5610b4ba4f",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/src/app/component/download-form/download-form.component.ts"
+    },
+    "ui/src/app/component/help/help.component.html": {
+        "sha256": "bac4d7350db82f50fd15097225cff84873c89be4c47ee1ac3006d90be54ea0f0",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/src/app/component/help/help.component.html"
+    },
+    "ui/src/app/component/help/help.component.less": {
+        "sha256": "1c9986253fdaa9b0328c98db84fc0dfe5f6726ad164f1cbbb07e080e90fdb84d",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/src/app/component/help/help.component.less"
+    },
+    "ui/src/app/component/help/help.component.ts": {
+        "sha256": "9e06469dfb97f294cf7ba732a7e43f8c804d82a52dbbce6ab0dc3a0f0943fc97",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/src/app/component/help/help.component.ts"
+    },
+    "ui/src/app/component/info-field/info-field.component.html": {
+        "sha256": "442fc6dc26d1f2c493f21842e5a6a5e2c3490a6b491a498745a74f4875b8dacd",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/src/app/component/info-field/info-field.component.html"
+    },
+    "ui/src/app/component/info-field/info-field.component.less": {
+        "sha256": "1aaadfdba5671efe53610d07b6028693c522f063b9313ac7cb958c89d515e75f",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/src/app/component/info-field/info-field.component.less"
+    },
+    "ui/src/app/component/info-field/info-field.component.ts": {
+        "sha256": "746a62a30234eb3783ef85860d0ecf7a42681924407a2899857daebfb7440797",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/src/app/component/info-field/info-field.component.ts"
+    },
+    "ui/src/app/component/job-data-form/job-data-form.component.html": {
+        "sha256": "f50993b80a920fa944eb65c16346343fc838dbaf03563f7fed0db02274e7b668",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/src/app/component/job-data-form/job-data-form.component.html"
+    },
+    "ui/src/app/component/job-data-form/job-data-form.component.less": {
+        "sha256": "ffdce922c9d29d54f9288fed15560880f7f57ce790208bc5fbceabd23c5aca28",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/src/app/component/job-data-form/job-data-form.component.less"
+    },
+    "ui/src/app/component/job-data-form/job-data-form.component.ts": {
+        "sha256": "5642a7ff6ebeb56ac44d41e8803f16e61bd379002415c0f75859d2d206a68415",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/src/app/component/job-data-form/job-data-form.component.ts"
+    },
+    "ui/src/app/component/job-data/job-data.component.html": {
+        "sha256": "91e9c4260cc75deba425291111839337d5e338395d73da537ed10bfb0ff5c56f",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/src/app/component/job-data/job-data.component.html"
+    },
+    "ui/src/app/component/job-data/job-data.component.less": {
+        "sha256": "82446a56762284d4913ee5f04b6147e44a72a7f4a17115d88fb14c278f4ecc1d",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/src/app/component/job-data/job-data.component.less"
+    },
+    "ui/src/app/component/job-data/job-data.component.ts": {
+        "sha256": "e296a6e53b79e2d17cb759bda8f653ca33a44a1c0c311863d955a8ce1891b91b",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/src/app/component/job-data/job-data.component.ts"
+    },
+    "ui/src/app/component/job-process-flow/job-process-flow.component.html": {
+        "sha256": "d606b911b05f311c1776069f346d36bc2c7a4d8f73f9c2e570924f1a2250dcd3",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/src/app/component/job-process-flow/job-process-flow.component.html"
+    },
+    "ui/src/app/component/job-process-flow/job-process-flow.component.less": {
+        "sha256": "40d301e68874f039dd2423569b181c770127ef82d5f8a1afb7a9649d39d64a6b",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/src/app/component/job-process-flow/job-process-flow.component.less"
+    },
+    "ui/src/app/component/job-process-flow/job-process-flow.component.ts": {
+        "sha256": "dd6df70a875b2b0547ec46bf4b3c904263d000b8f9a0a36e701b25df0d0375f2",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/src/app/component/job-process-flow/job-process-flow.component.ts"
+    },
+    "ui/src/app/component/page-title/page-title.component.html": {
+        "sha256": "673710fc9f3d1e412ae9b85385f25f8a613721f1fdb383569fc9adab3eb31a23",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/src/app/component/page-title/page-title.component.html"
+    },
+    "ui/src/app/component/page-title/page-title.component.less": {
+        "sha256": "f2af65af746998a3424b8d043d99b582d78dae1defded731d94547c719a42c8e",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/src/app/component/page-title/page-title.component.less"
+    },
+    "ui/src/app/component/page-title/page-title.component.ts": {
+        "sha256": "fbad0debc2098389e55f6738cfdf664992aadb90db9e3d1c65abcb3be7419f7f",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/src/app/component/page-title/page-title.component.ts"
+    },
+    "ui/src/app/component/report-batch-error/report-batch-error.component.html": {
+        "sha256": "5c4895308aba96b53c591f3fde90970f7880635ae3819ea1bd2e439fee0fce9f",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/src/app/component/report-batch-error/report-batch-error.component.html"
+    },
+    "ui/src/app/component/report-batch-error/report-batch-error.component.less": {
+        "sha256": "68cbf5d3a2ac66f5a0702b72255c53007bd83a89ef29f79dcf7a1c15713d844b",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/src/app/component/report-batch-error/report-batch-error.component.less"
+    },
+    "ui/src/app/component/report-batch-error/report-batch-error.component.ts": {
+        "sha256": "36713241a1fd969af55976b73657225257e92e16e8d2b97e9d8c7423d0f63195",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/src/app/component/report-batch-error/report-batch-error.component.ts"
+    },
+    "ui/src/app/component/task-card/task-card.component.html": {
+        "sha256": "7f1809483ff41e7876b44e12acef76b29f94fab63b7c3ef099d0a54880e6b42f",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/src/app/component/task-card/task-card.component.html"
+    },
+    "ui/src/app/component/task-card/task-card.component.less": {
+        "sha256": "2fabcad7244a8a1ad54bdab07b8085af1054444e3f06b7ac1ea3f0264cea4088",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/src/app/component/task-card/task-card.component.less"
+    },
+    "ui/src/app/component/task-card/task-card.component.ts": {
+        "sha256": "f86846bdc4bd33f2ceb5447769d746dcfa53fa87a895ca6e9aacaa9d8bc275f9",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/src/app/component/task-card/task-card.component.ts"
+    },
+    "ui/src/app/component/task/task.component.html": {
+        "sha256": "ba8c1e024b065a00ca657e618b4a1f84d90db3d6a6807c2511ae0d6c1672e299",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/src/app/component/task/task.component.html"
+    },
+    "ui/src/app/component/task/task.component.less": {
+        "sha256": "15207cb98c16a851232c0f67c95d6c0cea22b9acbeb584ac390e9ef2c972fec0",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/src/app/component/task/task.component.less"
+    },
+    "ui/src/app/component/task/task.component.ts": {
+        "sha256": "40c085e0c977f8beb39ff251344278d2efe77230d596cdc40165eefd5a4a1742",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/src/app/component/task/task.component.ts"
+    },
+    "ui/src/app/pipes/safe-html/safe-html.pipe.ts": {
+        "sha256": "9ddeb1d76989ee0c8aee3aeff0c2038cd08aa57d6331205cb6d06e746129b35f",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/src/app/pipes/safe-html/safe-html.pipe.ts"
+    },
+    "ui/src/app/pipes/string-append/string-append.pipe.ts": {
+        "sha256": "b3876dcaf96f6871c5cd1bf0b236b0c6df60b63be7862abaf4c6c76b16dcdde7",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/src/app/pipes/string-append/string-append.pipe.ts"
+    },
+    "ui/src/app/pipes/string-truncate/string-truncate.pipe.ts": {
+        "sha256": "4641f27767a96099c70e832f3379231ffa69e7613097d6b1e0eb5ffb65354a57",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/src/app/pipes/string-truncate/string-truncate.pipe.ts"
+    },
+    "ui/src/app/service/base-service/base.service.ts": {
+        "sha256": "e659cb21b9d823e602e40dd8c68c5d2b0cea8c5785b6a0c06319ac978568ffa5",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/src/app/service/base-service/base.service.ts"
+    },
+    "ui/src/app/service/base-service/pagination-param-interface.ts": {
+        "sha256": "f4501209f477a4a35d2d4c6dd2315209f6133a48349fdf1fe985b73b8b222405",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/src/app/service/base-service/pagination-param-interface.ts"
+    },
+    "ui/src/app/service/base-service/standard-param-interface.ts": {
+        "sha256": "ae2b9d1e13a1bc9e4d8b290b69e7f0e0577e63b9c1c8dc441591e9b750ee5a8e",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/src/app/service/base-service/standard-param-interface.ts"
+    },
+    "ui/src/app/service/download-service/download.service.ts": {
+        "sha256": "5a382b8f88cb513c0a7b5b14cde10c067fe564e4b2211f709d91200a13aea8ce",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/src/app/service/download-service/download.service.ts"
+    },
+    "ui/src/app/service/http-interceptor-service/http-interceptor.service.ts": {
+        "sha256": "0f9b195fd8449dbddbbea1cd8ba35b07a88e259b4c99a20dd8c9f2c2caeb5b11",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/src/app/service/http-interceptor-service/http-interceptor.service.ts"
+    },
+    "ui/src/app/service/job-service/job.service.ts": {
+        "sha256": "dde47492ade5b68f8c342cf8dbdba6a36f285e80f60bddbbe3595163b6c27db0",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/src/app/service/job-service/job.service.ts"
+    },
+    "ui/src/app/service/job-service/param-interface.ts": {
+        "sha256": "6deb8fcf9da719bf36c767aa749b44cf3ac13101e592ed6560096bf06a63356f",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/src/app/service/job-service/param-interface.ts"
+    },
+    "ui/src/app/service/metric-service/metric.service.ts": {
+        "sha256": "783cc504819df05c67bba1723bcfb5ff935ae419ec5996f7ef5f983c7c6242dd",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/src/app/service/metric-service/metric.service.ts"
+    },
+    "ui/src/app/service/metric-service/param-interface.ts": {
+        "sha256": "5b77db3974db30c1e727241a0035939ed27643e2e575cc71549927e2860d3ddf",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/src/app/service/metric-service/param-interface.ts"
+    },
+    "ui/src/app/service/report-service/param-interface.ts": {
+        "sha256": "24d5a5570fae2412645a9a4e61b6e051815a1e77554a39cdb66ea5061e70f280",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/src/app/service/report-service/param-interface.ts"
+    },
+    "ui/src/app/service/report-service/report.service.ts": {
+        "sha256": "9f880571e092dd91b7f8e747226dea1784aac224011d93c7febfbb10d1ce3bc4",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/src/app/service/report-service/report.service.ts"
+    },
+    "ui/src/app/service/task-service/param-interface.ts": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/src/app/service/task-service/param-interface.ts"
+    },
+    "ui/src/app/service/task-service/task.service.ts": {
+        "sha256": "128487da7048ffffc9b7de0751e34290e8140fc9beb0d7c4a2cd80cde6f9c898",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/src/app/service/task-service/task.service.ts"
+    },
+    "ui/src/assets/.gitkeep": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/src/assets/.gitkeep"
+    },
+    "ui/src/assets/styles/highlight.css": {
+        "sha256": "7907bedd9cead2accac72b67fdfcd80753875d3b4b92982d3e1152ffc18d80d3",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/src/assets/styles/highlight.css"
+    },
+    "ui/src/environments/environment.prod.ts": {
+        "sha256": "365e9914fc285641a8c9152fa331c83164325564451bd2b05c73859ceaf54a3c",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/src/environments/environment.prod.ts"
+    },
+    "ui/src/environments/environment.ts": {
+        "sha256": "3fa01c82af9ac445ad958c564ad026c766798cd3ff43220783c56bcdbb96748f",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/src/environments/environment.ts"
+    },
+    "ui/src/favicon.ico": {
+        "sha256": "ddd4af618f627c0e5738834c3a02d2c4cab00fe88fcd317cf349e29c773f1ed5",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/src/favicon.ico"
+    },
+    "ui/src/index.html": {
+        "sha256": "36c5c62b4cec22271d7ffcc471cd2e2745498407f6eb057755ad9050a4c9b7e6",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/src/index.html"
+    },
+    "ui/src/main.ts": {
+        "sha256": "44bab8ced43078310e1affbf44ca0682f42151082fe1d59a653699697ecabd7d",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/src/main.ts"
+    },
+    "ui/src/material.less": {
+        "sha256": "2607a7e3bc04364b3748d87bd7953157534a88a5c321cac9973233f2e31a9c23",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/src/material.less"
+    },
+    "ui/src/polyfills.ts": {
+        "sha256": "89ffc08dc7116a75e1540fa70018c4be63ac94cda5d76966e441dca3460c87c1",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/src/polyfills.ts"
+    },
+    "ui/src/proxy.conf.json": {
+        "sha256": "03c995b07d753b75b826d897bebb34ca4958c508648b7e8adf37001ce4d585bf",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/src/proxy.conf.json"
+    },
+    "ui/src/styles.less": {
+        "sha256": "d745bae855212b72d558ce9ae651af9eacf3ec5583b1ca2bf7c87f069cd33d8d",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/src/styles.less"
+    },
+    "ui/tsconfig.app.json": {
+        "sha256": "e4dfd95b3bf640e5cc44a4b65a794b67d694ea9c828257fbc8b0eda785e7278f",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/tsconfig.app.json"
+    },
+    "ui/tsconfig.json": {
+        "sha256": "2a43423d04e31ef81b2d6096fb64552eaff58449b350ded8cb2c03813f6dd008",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/tsconfig.json"
+    },
+    "ui/tsconfig.spec.json": {
+        "sha256": "58cf41a67b1abe3a523f1c6dc31c10ced8874155e3c3b26f888e965a486316cc",
+        "last_commit": "69cfb788dc3504ab6b17ceebed1693fccbefa294",
+        "template_path": "api_service/threat_intel_engine/ui/tsconfig.spec.json"
+    }
+}

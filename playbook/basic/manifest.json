@@ -1,0 +1,47 @@
+{
+    ".appbuilderconfig": {
+        "sha256": "e996cae890a4a6c830e300e7b9e57fc99f05e00939833911a726f22c030cee0e",
+        "last_commit": "7a40bf67f2048d22140dfd7f06bfcf08dffcb95e",
+        "template_path": "playbook/basic/.appbuilderconfig"
+    },
+    "README.md": {
+        "sha256": "31402e6ce04a0a3175e006cfba2ef3b458cce3ca158421f998149bea8b3df476",
+        "last_commit": "7a40bf67f2048d22140dfd7f06bfcf08dffcb95e",
+        "template_path": "playbook/basic/README.md"
+    },
+    "__main__.py": {
+        "sha256": "045c261e42a6b29f5dd52214cf95667bf8a192fcfcc484d382ba2ce39a7b9e9c",
+        "last_commit": "4ce81e707a9c8aaa1b3f02c42274239c2cb65fbc",
+        "template_path": "playbook/basic/__main__.py"
+    },
+    "app.py": {
+        "sha256": "ceb1ae56f9a22ad41c52dde85f8f63901c4e5e3e494933fba8e1baab101ca465",
+        "last_commit": "7a40bf67f2048d22140dfd7f06bfcf08dffcb95e",
+        "template_path": "playbook/basic/app.py"
+    },
+    "app_inputs.py": {
+        "sha256": "1ec4aa683fb0d0dd795aadd78d183a0a04bd47e65fc6cf00c69b61c10ccd78b4",
+        "last_commit": "80f6acafab9389e0c2a2cd987c699793b186e5e6",
+        "template_path": "playbook/basic/app_inputs.py"
+    },
+    "install.json": {
+        "sha256": "e6a1fed49d01a032ebd9a4a4a9f77ab6a1755dd935ec4e3a4b1f1013d55d0bb8",
+        "last_commit": "7f2cd82a392da08c1ba52b166de2eb6ca61d69fa",
+        "template_path": "playbook/basic/install.json"
+    },
+    "playbook_app.py": {
+        "sha256": "183e646aac7877521eaf07c9cdcaf0420e60901483d9aa6e3b010b0d3ae2cbf5",
+        "last_commit": "8807b92a0676f4f2a6e6b586b1cdec85da72177b",
+        "template_path": "playbook/basic/playbook_app.py"
+    },
+    "run.py": {
+        "sha256": "c951852441a8e42a8e9ccc2095c935b31707bc706801122e7cba35ed861cec61",
+        "last_commit": "f86b12b909231d5e396e2b38bbeebd09739aadad",
+        "template_path": "playbook/basic/run.py"
+    },
+    "tcex.json": {
+        "sha256": "e80c56e5ddf74373cdfc1d348c00cb09a6636b4973daa13451a1242df0060081",
+        "last_commit": "9ed9ab3156322ab32b6c21b159634950e4998110",
+        "template_path": "playbook/basic/tcex.json"
+    }
+}

@@ -178,6 +178,10 @@ class UploadIngestABC(UploadABC, ABC):
 
         return batch_id
 
+    @abstractmethod
+    def get_batch_cleaner(self, batch_submit: BatchSubmit):
+        """Return a BatchCleaner for content cleaning during batch submit."""
+
     def submit_batch(self, batch_submit: BatchSubmit, batch_id: int, batch_file: Path) -> None:
         """Submit the batch file to the API."""
         try:
@@ -190,11 +194,19 @@ class UploadIngestABC(UploadABC, ABC):
                 # check the signature to avoid breaking older installations
                 sig = inspect.signature(batch_submit.submit_data)
                 if 'clean_content' in sig.parameters:
-                    kwargs['clean_content'] = self.clean_content
+                    kwargs['clean_content'] = self.get_batch_cleaner(batch_submit)
                 batch_response = batch_submit.submit_data(**kwargs)
                 self.log.trace(
                     f'action="submit-batch", status="job-submit", response="{batch_response}"'
                 )
+                # Check for failed submission (tcex returns None on error without raising)
+                if batch_response is None:
+                    raise BatchSubmitError(
+                        f'Batch data submission failed for batch ID {batch_id}. '
+                        'Check logs for error details (likely file size exceeded limits).'
+                    )
+        except BatchSubmitError:
+            raise  # Re-raise BatchSubmitError without wrapping
         except Exception as e:
             self.log.exception(f'action="submit-batch", status="failure", batch-id="{batch_id}"')
             msg = f'Error submitting batch ID {batch_id}'
@@ -232,21 +244,91 @@ class UploadIngestABC(UploadABC, ABC):
             },
         )
 
-    def process_file_wrapper(self, file: Path, request: JobRequestModel, output_dir: Path) -> bool:
+    def process_file_wrapper(
+        self, file: Path, request: JobRequestModel, output_dir: Path, failed_files: list[str]
+    ) -> bool:
         """Handle batch file processing."""
         # Return True if successfully processed, False if not.
         try:
             if request.date_upload_failure and file.name not in request.upload_failed_files:
                 self.log.info(f'action=skip-file, file={file.name}')
                 return True
+            self.update_heartbeat()  # Update the task heartbeat after processing
             batch_submit, batch_id = self.process_file(file, request)
             if batch_submit and batch_id:
                 self.handle_batch_errors(batch_submit, batch_id, request, output_dir)
             self.update_heartbeat()  # Update the task heartbeat after processing
             return True
+        except BatchSubmitError:
+            self.log.exception(f'action="batch-upload-error", file="{file.name}"')
+            # Try to split oversized files
+            split_files = self._try_split_oversized_file(file)
+            if split_files:
+                failed_files.extend(split_files)
+            else:
+                failed_files.append(file.name)
+            return False
         except BatchError:
             self.log.exception(f'action="batch-upload-error", file="{file.name}"')
+            failed_files.append(file.name)
             return False
+
+    def _try_split_oversized_file(self, file: Path) -> list[str] | None:
+        """Split an oversized file into two smaller files.
+
+        Args:
+            file: Path to the oversized .json.gz file
+
+        Returns:
+            List of new filenames if split successful, None otherwise.
+        """
+        try:
+            with gzip.open(file, 'rt') as f:
+                data = json.load(f)
+
+            # Check if there's data to split
+            total_items = sum(len(v) for v in data.values() if isinstance(v, list))
+            if total_items <= 1:
+                self.log.warning(
+                    f'action="skip-split", file="{file.name}", reason="not-enough-items"'
+                )
+                return None
+
+            # Split each list in half
+            half1, half2 = {}, {}
+            for key, items in data.items():
+                if isinstance(items, list):
+                    mid = len(items) // 2
+                    half1[key] = items[:mid]
+                    half2[key] = items[mid:]
+                else:
+                    # Non-list values go to both halves
+                    half1[key] = items
+                    half2[key] = items
+
+            # Generate new filenames
+            base = file.stem.replace('.json', '')
+            file1 = file.parent / f'{base}_split1.json.gz'
+            file2 = file.parent / f'{base}_split2.json.gz'
+
+            # Write split files
+            for path, content in [(file1, half1), (file2, half2)]:
+                with gzip.open(path, 'wt') as f:
+                    json.dump(content, f)
+
+            # Remove original
+            file.unlink()
+
+            self.log.info(
+                f'action="split-oversized-file", original="{file.name}", '
+                f'split_into=["{file1.name}", "{file2.name}"], items={total_items}'
+            )
+
+            return [file1.name, file2.name]
+
+        except Exception:
+            self.log.exception(f'action="split-file-error", file="{file.name}"')
+            return None
 
     @property
     def write_type_mapping(self) -> dict[str, WriteTypes]:

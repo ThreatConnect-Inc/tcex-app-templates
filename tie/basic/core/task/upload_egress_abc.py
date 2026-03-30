@@ -35,6 +35,7 @@ class UploadEgressABC(UploadABC, ABC):
         file: Path,
         request: JobRequestModel,
         output_dir: Path,  # noqa: ARG002
+        failed_files: list[str],
     ) -> bool:
         """Handle batch file processing."""
         # Return True if successfully processed, False if not.
@@ -47,6 +48,7 @@ class UploadEgressABC(UploadABC, ABC):
             return True
         except UploadError:
             self.log.exception(f'action="external-upload-error", file="{file.name}"')
+            failed_files.append(file.name)
             return False
 
     @property

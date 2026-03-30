@@ -1,0 +1,37 @@
+{
+    ".appbuilderconfig": {
+        "sha256": "98763e810b83d549e2cee0e9f7bea5ffa2fb7c66f65008072a8f3d5f246f0d4f",
+        "last_commit": "c46550f654a596356609d939cd0023436d4c6465",
+        "template_path": "trigger_service/basic/.appbuilderconfig"
+    },
+    "app.py": {
+        "sha256": "61793001df86e9ddc13dec1eecbb896c6291ab70207661e8ec1e7ab7a6a583cb",
+        "last_commit": "db5dfd1697e92ead7abdb840f814b4d41e3488c6",
+        "template_path": "trigger_service/basic/app.py"
+    },
+    "app_inputs.py": {
+        "sha256": "5ebd002f6053cda4b7a430cdf05e555a8f9026ce0b62b3f7201b4320a5c5c3b0",
+        "last_commit": "b8ba488b29c9892a984a61420f41da01f67a81c7",
+        "template_path": "trigger_service/basic/app_inputs.py"
+    },
+    "install.json": {
+        "sha256": "2998da32946b79eb5ab8cd1a7f9aa9cfc0ecd301b0760cfc3439f2c8b01b4423",
+        "last_commit": "c46550f654a596356609d939cd0023436d4c6465",
+        "template_path": "trigger_service/basic/install.json"
+    },
+    "run.py": {
+        "sha256": "a8e040ac3eac1946caee58bf1db8064d14e5669c6bea8517a6c5f4ecde905ba8",
+        "last_commit": "fae927965563f98eed0bd7716afa3bf4d4fda3bf",
+        "template_path": "trigger_service/basic/run.py"
+    },
+    "service_app.py": {
+        "sha256": "de3270b65bc9c62704de33f0126f9dd7fa1988d00e3d37830fd690cfed703604",
+        "last_commit": "fae927965563f98eed0bd7716afa3bf4d4fda3bf",
+        "template_path": "trigger_service/basic/service_app.py"
+    },
+    "tcex.json": {
+        "sha256": "9e7dd8a0a4d7b24d572f70371a56483bff92f4078029b628a69ca3ed4610bcd6",
+        "last_commit": "9ed9ab3156322ab32b6c21b159634950e4998110",
+        "template_path": "trigger_service/basic/tcex.json"
+    }
+}

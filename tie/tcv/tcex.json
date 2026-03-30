@@ -18,7 +18,7 @@
       "ui"
     ]
   },
-  "template_name": "basic",
+  "template_name": "tcv",
   "template_repo_hash": null,
-  "template_type": "api_service"
+  "template_type": "tie"
 }

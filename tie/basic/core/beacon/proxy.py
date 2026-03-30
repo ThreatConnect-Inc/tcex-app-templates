@@ -1,194 +1,91 @@
 """A proxy for a type that can be injected at runtime."""
+from collections.abc import Callable
+from typing import Type, TypeVar
+from threading import Lock
 
-# standard library
-from typing import Generic, TypeVar
+class LazyLoadType:
+    def __init__(self):
+        pass
 
-_NotResolved = object()
+    def __getattribute__(self, attr):
+        """Trigger proxy swap and return attribute."""
+        if issubclass(object.__getattribute__(self, '__class__'), LazyLoadType):
+            factory = object.__getattribute__(self, '__factory')
+            resolve_lock= object.__getattribute__(self, '__resolve_lock')
+            with resolve_lock:
+                resolved_value = factory()
+                __class__ = resolved_value.__class__
+                try:
+                    __dict__ = resolved_value.__dict__
+                    object.__setattr__(self, '__dict__', __dict__)
+                except AttributeError:
+                    object.__setattr__(self, '__slots__', resolved_value.__slots__)
+
+                object.__setattr__(self, '__class__', __class__)
+        return getattr(self, attr)
+
+
+
+    def __delattr__(self, attr):
+        """Trigger the load and then perform the deletion."""
+        # To trigger the load and raise an exception if the attribute
+        # doesn't exist.
+        self.__getattribute__(attr)
+        delattr(self, attr)
+
+class LazyLoadProxy:
+    def __init__(self):
+        pass
+
+    def __getattribute__(self, attr):
+        """Trigger proxy swap and return attribute."""
+        factory = object.__getattribute__(self, '__factory')
+        resolved = object.__getattribute__(self, '__resolved')
+        if not resolved:
+            resolve_lock= object.__getattribute__(self, '__resolve_lock')
+            with resolve_lock:
+                resolved_value = factory()
+                __class__ = resolved_value.__class__
+                # object.__setattr__(self, '__class__', __class__)
+                object.__setattr__(self, '__factory', resolved_value)
+                object.__setattr__(self, '__resolved', True)
+                factory = resolved_value
+
+        return getattr(factory, attr)
+
+
+
+    def __delattr__(self, attr):
+        """Trigger the load and then perform the deletion."""
+        # To trigger the load and raise an exception if the attribute
+        # doesn't exist.
+        self.__getattribute__(attr)
+        factory = object.__getattribute__(self, '__factory')
+        delattr(factory, attr)
 
 
 A = TypeVar('A')
+def create_proxy(proxied_type: Type[A], factory: Callable[[], A]) -> A:
+    __dict__ = dict(proxied_type.__dict__.items())
+    if '__slots__' in __dict__:
+        return type(
+            f'Proxy[{proxied_type.__name__}]',
+            (proxied_type, LazyLoadProxy),
+            {
+                '__init__': lambda s:None,
+                '__factory': lambda s: factory(),
+                '__resolve_lock': Lock(),
+                '__resolved': False,
+                '__slots__': (*proxied_type.__slots__, '__factory', '__resolve_lock', '__resolved')
+            })() # type: ignore
 
-
-class InjectionProxy(Generic[A]):
-    """A proxy for a type that can be injected at runtime."""
-
-    __slots__ = ['__factory', '__resolved']
-
-    def __init__(self, _type: type[A], factory):
-        """."""
-        object.__setattr__(self, '__factory', factory)
-        object.__setattr__(self, '__resolved', _NotResolved)
-
-    #
-    # proxying (special cases)
-    #
-    def __getattribute__(self, name):
-        """."""
-        resolved = object.__getattribute__(self, '__resolved')
-        if resolved is _NotResolved:
-            resolved = object.__getattribute__(self, '__factory')()
-            object.__setattr__(self, '__resolved', resolved)
-
-        return getattr(object.__getattribute__(self, '__resolved'), name)
-
-    def __delattr__(self, name):
-        """."""
-        resolved = object.__getattribute__(self, '__resolved')
-        if resolved is _NotResolved:
-            resolved = object.__getattribute__(self, '__factory')()
-            object.__setattr__(self, '__resolved', resolved)
-        delattr(object.__getattribute__(self, '__resolved'), name)
-
-    def __setattr__(self, name, value):
-        """."""
-        resolved = object.__getattribute__(self, '__resolved')
-        if resolved is _NotResolved:
-            resolved = object.__getattribute__(self, '__factory')()
-            object.__setattr__(self, '__resolved', resolved)
-        setattr(object.__getattribute__(self, '__resolved'), name, value)
-
-    def __nonzero__(self):
-        """."""
-        resolved = object.__getattribute__(self, '__resolved')
-        if resolved is _NotResolved:
-            resolved = object.__getattribute__(self, '__factory')()
-            object.__setattr__(self, '__resolved', resolved)
-        return bool(object.__getattribute__(self, '__resolved'))
-
-    def __str__(self):
-        """."""
-        resolved = object.__getattribute__(self, '__resolved')
-        if resolved is _NotResolved:
-            resolved = object.__getattribute__(self, '__factory')()
-            object.__setattr__(self, '__resolved', resolved)
-        return str(object.__getattribute__(self, '__resolved'))
-
-    def __repr__(self):
-        """."""
-        resolved = object.__getattribute__(self, '__resolved')
-        if resolved is _NotResolved:
-            resolved = object.__getattribute__(self, '__factory')()
-            object.__setattr__(self, '__resolved', resolved)
-        return repr(object.__getattribute__(self, '__resolved'))
-
-    #
-    # factories
-    #
-    _special_names = (
-        '__abs__',
-        '__add__',
-        '__and__',
-        '__call__',
-        '__cmp__',
-        '__coerce__',
-        '__contains__',
-        '__delitem__',
-        '__delslice__',
-        '__div__',
-        '__divmod__',
-        '__eq__',
-        '__float__',
-        '__floordiv__',
-        '__ge__',
-        '__getitem__',
-        '__getslice__',
-        '__gt__',
-        '__hash__',
-        '__hex__',
-        '__iadd__',
-        '__iand__',
-        '__idiv__',
-        '__idivmod__',
-        '__ifloordiv__',
-        '__ilshift__',
-        '__imod__',
-        '__imul__',
-        '__int__',
-        '__invert__',
-        '__ior__',
-        '__ipow__',
-        '__irshift__',
-        '__isub__',
-        '__iter__',
-        '__itruediv__',
-        '__ixor__',
-        '__le__',
-        '__len__',
-        '__long__',
-        '__lshift__',
-        '__lt__',
-        '__mod__',
-        '__mul__',
-        '__ne__',
-        '__neg__',
-        '__oct__',
-        '__or__',
-        '__pos__',
-        '__pow__',
-        '__radd__',
-        '__rand__',
-        '__rdiv__',
-        '__rdivmod__',
-        '__reduce__',
-        '__reduce_ex__',
-        '__repr__',
-        '__reversed__',
-        '__rfloorfiv__',
-        '__rlshift__',
-        '__rmod__',
-        '__rmul__',
-        '__ror__',
-        '__rpow__',
-        '__rrshift__',
-        '__rshift__',
-        '__rsub__',
-        '__rtruediv__',
-        '__rxor__',
-        '__setitem__',
-        '__setslice__',
-        '__sub__',
-        '__truediv__',
-        '__xor__',
-        'next',
+    __dict__.pop('__init__', None) # make sure there is a default, no-arg init
+    __dict__.pop('__name__', None) # we'll replace this (with the same thing)
+    __dict__.update(
+        {'__factory': lambda s: factory(), '__resolve_lock': Lock()}
     )
 
-    @classmethod
-    def _create_class_proxy(cls, theclass):
-        """Create a proxy for the given class"""
-
-        def make_method(name):
-            def method(self, *args, **kw):
-                resolved = object.__getattribute__(self, '__resolved')
-                if resolved is _NotResolved:
-                    resolved = object.__getattribute__(self, '__factory')()
-                    object.__setattr__(self, '__resolved', resolved)
-
-                return getattr(object.__getattribute__(self, '__resolved'), name)(*args, **kw)
-
-            return method
-
-        namespace = {}
-        for name in cls._special_names:
-            if hasattr(theclass, name):
-                namespace[name] = make_method(name)
-        return type(f'{cls.__name__}({theclass.__name__})', (cls,), namespace)
-
-    def __new__(
-        cls,
-        type_: A,
-        factory,  # noqa: ARG004
-    ) -> 'type[InjectionProxy[A]]':
-        """Create an proxy instance referencing `obj`."""
-        return object.__new__(cls._create_class_proxy(type_))
-
-
-def reify(obj: A) -> A:
-    """Reify a function or property."""
-    try:
-        real_value = object.__getattribute__(obj, '__resolved')
-        if real_value is _NotResolved:
-            real_value = object.__getattribute__(obj, '__factory')()
-            object.__setattr__(obj, '__resolved', real_value)
-        return real_value
-    except AttributeError:
-        return obj
+    return type(
+        f'{proxied_type.__name__}',
+        (LazyLoadType, proxied_type),
+        __dict__)() # type: ignore

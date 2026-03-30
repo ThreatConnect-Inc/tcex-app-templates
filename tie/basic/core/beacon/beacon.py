@@ -10,7 +10,7 @@ from collections import defaultdict
 from collections.abc import Callable
 from typing import Any, TypeVar
 
-from .proxy import InjectionProxy
+from .proxy import LazyLoadType
 
 B = TypeVar('B')
 

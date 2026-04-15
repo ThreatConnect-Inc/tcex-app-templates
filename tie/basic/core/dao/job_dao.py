@@ -46,7 +46,7 @@ class JobRequestDAO(JsonDBDAO[M], Generic[M]):
     def get_jobs_to_clean(self, max_jobs: int) -> Iterable[M]:
         """Get jobs over the limit."""
         hits = 0
-        first_found = False
+        preserved_pipelines: set[str | None] = set()
         # this iterates over the jobs with the most recent job first
         for job in self.db.load_all(self.model, sort_by='index', sort_order='desc'):
             # if the job is not completed or failed do NOT clean it
@@ -55,9 +55,9 @@ class JobRequestDAO(JsonDBDAO[M], Generic[M]):
             # do not clean jobs that are actively retrying
             if job.status.casefold() == self.settings.job.status_retry_pending.casefold():
                 continue
-            # We do not want to clean the most recent scheduled job
-            if job.job_type == 'scheduled' and first_found is False:
-                first_found = True
+            # We do not want to clean the most recent scheduled job per pipeline
+            if job.job_type == 'scheduled' and job.pipeline not in preserved_pipelines:
+                preserved_pipelines.add(job.pipeline)
                 continue
             hits += 1
             # if we have hit the limit, yield the job

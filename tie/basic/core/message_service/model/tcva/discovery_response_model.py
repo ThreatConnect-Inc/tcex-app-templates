@@ -3,8 +3,9 @@
 from typing import Literal
 from uuid import UUID
 
-from core.model.model_base import ModelBase
 from pydantic import Field
+
+from core.model.model_base import ModelBase
 
 
 class DiscoveryResponseModel(ModelBase, extra='allow'):

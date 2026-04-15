@@ -58,7 +58,7 @@ T = TypeVar('T')
 U = TypeVar('U')
 
 
-class Maybe(Generic[T], ABC):
+class Maybe(ABC, Generic[T]):
     """."""
 
     @abstractmethod

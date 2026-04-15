@@ -13,8 +13,9 @@ sys.path.insert(0, str(current_dir))
 from core.app.app_lib import AppLib  # noqa: E402
 
 if TYPE_CHECKING:
-    from app import App  # must be imported later, but also needed typing hints
     from tcex import TcEx  # must be imported later, but also needed typing hints
+
+    from app import App  # must be imported later, but also needed typing hints
 
 
 class Run:

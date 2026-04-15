@@ -3,6 +3,9 @@
 import urllib.parse
 
 import falcon
+from pydantic import Field
+from spectree import Response
+
 from core.api.endpoint.tcvf.endpoint_base import EndpointBase
 from core.api.falcon_request import FalconRequest
 from core.api.falcon_response import FalconResponse
@@ -12,8 +15,6 @@ from core.api.validation.models.query_param_model import QueryParamModel
 from core.model.response.paginated_response import PaginatedResponseModel
 from core.model.response.response_model import ResponseModel
 from core.model.tie.task_setting_model import TaskSettingModel
-from pydantic import Field
-from spectree import Response
 
 
 class PutQueryParamModel(QueryParamModel):

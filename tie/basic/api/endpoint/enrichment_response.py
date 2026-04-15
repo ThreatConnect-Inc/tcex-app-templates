@@ -1,5 +1,7 @@
 """."""
 
+from spectree.response import Response
+
 from core.api.endpoint.endpoint_base_abc import EndpointBaseABC
 from core.api.falcon_request import FalconRequest
 from core.api.falcon_response import FalconResponse
@@ -11,7 +13,6 @@ from core.message_service.model.tcva.enrichment_request_model import (
 from core.message_service.model.tcva.enrichment_response_model import (
     EnrichmentResponseModel,
 )
-from spectree.response import Response
 
 
 class GetQueryParamModel(QueryParamFilterModel):

@@ -1,8 +1,9 @@
 """Model Definition"""
 
+from pydantic import Field
+
 from core.json_db import Index
 from core.model.model_base import ModelBase
-from pydantic import Field
 
 
 class DocAnalysisProcessedItemsModel(ModelBase):

@@ -1,6 +1,7 @@
 """UIConfigBuilder concrete implementation for building UI configurations."""
 
 from core.api.ui_config_builder_abc import UIConfigBuilderABC
+from core.service.notification_service import NOTIFICATION_TYPES
 
 
 class UIConfigBuilder(UIConfigBuilderABC):
@@ -117,21 +118,86 @@ class UIConfigBuilder(UIConfigBuilderABC):
             ),
         ]
 
-    def side_nav(self):
-        """Generate filters for the Job Table."""
-        # The order of the items in this list determines the order of the side nav.
+    def notification_table_columns(self):
+        """Generate columns for the Notification Table."""
         return [
+            self.generate_field('dateAdded', 'Date', 'date'),
+            self.generate_field('category', 'Category', 'category'),
+            self.generate_field('priority', 'Priority'),
+            self.generate_field('message', 'Message'),
+            self.generate_field('sendStatus', 'Send Status', 'send-status'),
+        ]
+
+    def notification_table_details(self):
+        """Generate details for the Notification Table."""
+        return [
+            self.generate_field('id', 'ID'),
+            self.generate_field('dateAdded', 'Date', 'date'),
+            self.generate_field('category', 'Category', 'category'),
+            self.generate_field('notificationType', 'Notification Type'),
+            self.generate_field('priority', 'Priority'),
+            self.generate_field('message', 'Message'),
+            self.generate_field('jobIds', 'Job IDs', 'array'),
+            self.generate_field('sendStatus', 'Send Status', 'send-status'),
+            self.generate_field('sendStatusCode', 'Status Code'),
+            self.generate_field('sendStatusText', 'Status Text'),
+            self.generate_field('apiRequest', 'API Request', 'json'),
+            self.generate_field('apiResponse', 'API Response', 'json'),
+        ]
+
+    def notification_table_filters(self):
+        """Generate filters for the Notification Table."""
+        return [
+            self.generate_form_field(
+                name='category',
+                label='Category',
+                type_='multi-select',
+                choices=list(NOTIFICATION_TYPES.keys()),
+                default=list(NOTIFICATION_TYPES.keys()),
+            ),
+            self.generate_form_field(
+                name='priority',
+                label='Priority',
+                type_='multi-select',
+                choices=['Low', 'Medium', 'High'],
+                default=['Low', 'Medium', 'High'],
+            ),
+            self.generate_form_field(
+                name='send_status',
+                label='Send Status',
+                type_='multi-select',
+                choices=['Success', 'Failed', 'Not Sent'],
+                default=['Success', 'Failed', 'Not Sent'],
+            ),
+        ]
+
+    @property
+    def notifications_enabled(self) -> bool:
+        """Return True if notifications are configured (digest interval is set)."""
+        return self.settings.notification_digest_interval is not None
+
+    def side_nav(self):
+        """Generate the side navigation items."""
+        # The order of the items in this list determines the order of the side nav.
+        items = [
             self.generate_side_nav_item(label='Dashboard', path='dashboard'),
             self.generate_side_nav_item(label='Jobs', path='jobs'),
             self.generate_side_nav_item(label='Tasks', path='tasks'),
             self.generate_side_nav_item(label='Download', path='download'),
             self.generate_side_nav_item(label='Batch Errors', path='batchErrors'),
-            self.generate_side_nav_item(label='Attachment Status', path='reportPdfTrackers'),
         ]
+
+        if self.notifications_enabled:
+            items.append(self.generate_side_nav_item(label='Notifications', path='notifications'))
+
+        items.append(
+            self.generate_side_nav_item(label='Attachment Status', path='reportPdfTrackers')
+        )
+        return items
 
     def populate(self):
         """Build the complete UI configuration."""
-        return {
+        config = {
             'global': {'sideNav': self.side_nav()},
             'jobTable': {
                 'columns': self.job_table_columns(),
@@ -149,3 +215,12 @@ class UIConfigBuilder(UIConfigBuilderABC):
                 },
             },
         }
+
+        if self.notifications_enabled:
+            config['notifications'] = {
+                'columns': self.notification_table_columns(),
+                'details': self.notification_table_details(),
+                'filters': {'fields': self.notification_table_filters()},
+            }
+
+        return config

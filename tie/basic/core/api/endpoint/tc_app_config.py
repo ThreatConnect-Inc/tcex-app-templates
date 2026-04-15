@@ -2,13 +2,14 @@
 
 from typing import Any
 
+from spectree import Response
+
 from core.api.endpoint.endpoint_base_abc import EndpointBaseABC
 from core.api.falcon_request import FalconRequest
 from core.api.falcon_response import FalconResponse
 from core.api.spec import spec, tag_settings
 from core.api.validation.models.query_param_filter_model import QueryParamFilterModel
 from core.model.tie.item_model import ItemModel
-from spectree import Response
 
 try:
     from api.ui_config_builder import UIConfigBuilder

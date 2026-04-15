@@ -64,6 +64,7 @@ import { BatchErrorsComponent } from './pages/batch-errors/batch-errors.componen
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { DownloadComponent } from './pages/download/download.component';
 import { JobsComponent } from './pages/jobs/jobs.component';
+import { NotificationsComponent } from './pages/notifications/notifications.component';
 import { ReportPdfTrackerComponent } from './pages/report-pdf-tracker/report-pdf-tracker.component';
 import { TasksComponent } from './pages/tasks/tasks.component';
 import { JsonFormatPipe } from './pipes/json-format/json-format.pipe';
@@ -128,6 +129,7 @@ const monacoConfig: NgxMonacoEditorConfig = {
         JobsComponent,
         ErrorMessageComponent,
         JsonFormatPipe,
+        NotificationsComponent,
         ReportPdfTrackerComponent,
         SidenavMenuComponent,
         TasksComponent,

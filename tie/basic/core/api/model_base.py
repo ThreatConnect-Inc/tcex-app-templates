@@ -2,8 +2,9 @@
 
 import logging
 
-from core.api.validation.models.query_param_model import value_to_camel
 from pydantic import BaseModel, ConfigDict
+
+from core.api.validation.models.query_param_model import value_to_camel
 
 # logger
 logger = logging.getLogger('tcex')

@@ -2,6 +2,8 @@
 
 import logging
 
+from tcex.logger.trace_logger import TraceLogger
+
 from core.message_service.message_handler.message_handler_abc import MessageHandlerABC
 from core.message_service.message_service import MessageService
 from core.message_service.model.tcva.enrichment_request_model import (
@@ -10,7 +12,6 @@ from core.message_service.model.tcva.enrichment_request_model import (
 from core.message_service.model.tcva.enrichment_response_model import (
     EnrichmentResponseModel,
 )
-from tcex.logger.trace_logger import TraceLogger
 
 _logger: TraceLogger = logging.getLogger('tcex')  # type: ignore
 

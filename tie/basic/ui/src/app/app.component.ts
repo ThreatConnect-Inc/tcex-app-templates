@@ -61,7 +61,11 @@ export class AppComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.pendoService.initializePendo();
+        try {
+            this.pendoService.initializePendo();
+        } catch (e) {
+            console.warn('Pendo initialization failed:', e);
+        }
 
         setTimeout(() => (this.showContent = true), 100);
 

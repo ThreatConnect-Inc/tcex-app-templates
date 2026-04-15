@@ -4,9 +4,10 @@ from datetime import UTC, datetime
 from typing import Any
 
 import arrow
+from pydantic import ConfigDict, Field, field_serializer, field_validator, model_validator
+
 from core.json_db import Index
 from core.model.model_base import ModelBase
-from pydantic import ConfigDict, Field, field_serializer, field_validator, model_validator
 
 
 class JobRequestBaseModel(ModelBase):
@@ -124,6 +125,7 @@ class JobRequestBaseModel(ModelBase):
             'convert complete': 'change_circle',
             'failed': 'error_outline',
             'pending': 'help_outline',
+            'retry pending': 'replay',
             'upload in progress': 'file_upload',
             'upload complete': 'check',
         }

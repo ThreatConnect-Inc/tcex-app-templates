@@ -2,10 +2,11 @@
 
 from datetime import UTC, datetime
 
+from pydantic import Field, field_serializer
+
 from core.json_db import Index
 from core.model.model_base import ModelBase
 from core.model.response.paginated_response import PaginatedResponseModel
-from pydantic import Field, field_serializer
 
 error_codes_name_map = {
     '0x1001': 'General Error',

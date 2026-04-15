@@ -18,7 +18,15 @@ export class PendoService {
             return;
         }
 
-        const { apiKey, ...pendoConfig } = JSON.parse(pendoConfigStorage);
+        let apiKey: string;
+        let pendoConfig: Record<string, unknown>;
+        try {
+            ({ apiKey, ...pendoConfig } = JSON.parse(pendoConfigStorage));
+        } catch (e) {
+            console.warn('Failed to parse Pendo configuration from localStorage:', e);
+            return;
+        }
+
         window['enablePendo'](apiKey);
 
         window['pendo'].initialize(pendoConfig);

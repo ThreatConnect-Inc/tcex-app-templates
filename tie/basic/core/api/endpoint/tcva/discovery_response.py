@@ -1,5 +1,8 @@
 """."""
 
+from pydantic import field_validator
+from spectree import Response
+
 from core.api.endpoint.endpoint_base_abc import EndpointBaseABC
 from core.api.falcon_request import FalconRequest
 from core.api.falcon_response import FalconResponse
@@ -12,8 +15,6 @@ from core.message_service.model.tcva.discovery_request_model import (
 from core.message_service.model.tcva.discovery_response_model import (
     DiscoveryResponseModel,
 )
-from pydantic import field_validator
-from spectree import Response
 
 
 class GetQueryParamModel(QueryParamFilterModel, DiscoveryRequestModel):  # type: ignore

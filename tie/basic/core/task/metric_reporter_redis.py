@@ -3,16 +3,17 @@
 from datetime import UTC, datetime
 from functools import cached_property
 
-from core.json_db import JsonDB
-from core.model.settings_model_base import SettingModelBase
-from core.model.tie.task_setting_model import TaskSettingModel
-from core.task.cal_auth import CALAuth
-from core.task.task_abc import TaskABC
 from requests import Response
 from tcex import TcEx
 from tcex.input.field_type import Sensitive
 from tcex.requests_external import ExternalSession
 from tcex.requests_external.metrics_recorder_redis import MetricsRecorderRedis
+
+from core.json_db import JsonDB
+from core.model.settings_model_base import SettingModelBase
+from core.model.tie.task_setting_model import TaskSettingModel
+from core.task.cal_auth import CALAuth
+from core.task.task_abc import TaskABC
 
 
 class MetricReporterRedis(TaskABC):

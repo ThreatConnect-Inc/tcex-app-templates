@@ -1,0 +1,7 @@
+.clickable-row {
+    cursor: pointer;
+
+    &:hover {
+        background-color: var(--tcl-color-bg-hover, rgba(0, 0, 0, 0.04));
+    }
+}

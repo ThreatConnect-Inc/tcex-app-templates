@@ -4,9 +4,14 @@
 from typing import Annotated
 
 from pydantic import BaseModel, field_validator
+from tcex.app.config.install_json import InstallJson
 from tcex.input.field_type import Choice, always_array, string
 from tcex.input.input import Input
 from tcex.input.model.app_playbook_model import AppPlaybookModel
+
+DEFAULT_TC_ACTION = None
+if _tc_action := InstallJson().model.params_dict.get('tc_action'):
+    DEFAULT_TC_ACTION = _tc_action.default
 
 
 class AppBaseModel(AppPlaybookModel):
@@ -15,7 +20,7 @@ class AppBaseModel(AppPlaybookModel):
     # pbd: String|StringArray, vv: ${TEXT}
     input_strings: Annotated[list[str], list[string(min_length=1)]]
     # vv: Capitalize|Lowercase|Reverse
-    tc_action: Annotated[str, Choice]
+    tc_action: Annotated[str, Choice] = DEFAULT_TC_ACTION
 
     # ensure inputs that take single and array types always return an array
     _always_array = field_validator('input_strings', mode='before')(
@@ -54,7 +59,9 @@ class AppInputs:
 
     def get_model(self, tc_action: str | None = None) -> type[BaseModel]:
         """Return the model based on the current action."""
-        tc_action = tc_action or self.inputs.model_unresolved.tc_action  # type: ignore
+        tc_action = tc_action or getattr(
+            self.inputs.model_unresolved, 'tc_action', DEFAULT_TC_ACTION
+        )
         if tc_action is None:
             raise RuntimeError('No action (tc_action) found in inputs.')
 

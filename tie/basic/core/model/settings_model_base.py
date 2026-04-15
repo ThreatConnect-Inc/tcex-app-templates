@@ -3,7 +3,8 @@
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
-from pydantic import BaseModel, ConfigDict
+from arrow import arrow
+from pydantic import BaseModel, ConfigDict, Field
 
 # Default failure threshold for jobs and pipeline staleness
 DEFAULT_FAILURE_THRESHOLD = timedelta(hours=48)
@@ -40,6 +41,7 @@ class JobSettings(BaseModel):
     status_cancelled: str = 'cancelled'
     status_failed: str = 'failed'
     status_pending: str = 'pending'
+    status_retry_pending: str = 'retry pending'
     throttle_limit: int = 3
 
 
@@ -50,7 +52,11 @@ class SettingModelBase(BaseModel):
     name: str
     description: str
     tc_owner: str
-    date_started: datetime = datetime.now(UTC)
+    date_started: datetime = Field(default_factory=lambda: datetime.now(UTC))
+
+    notification_digest_interval: timedelta | None = None
+    notification_display_name: str | None = None
+    notification_types: list[str] | None = None
 
     mb: MessageBrokerSettings | None = None
     file: FileSettings = FileSettings()

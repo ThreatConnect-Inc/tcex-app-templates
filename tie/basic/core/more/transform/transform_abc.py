@@ -6,14 +6,15 @@ from abc import ABC
 from functools import cached_property
 from pathlib import Path
 
-from model import JobRequestModel
-from model.settings_model import SettingModel
 from tcex import TcEx
 from tcex.api.tc.ti_transform.model import GroupTransformModel, IndicatorTransformModel
 from tcex.api.tc.ti_transform.ti_predefined_functions import (
     ProcessingFunctions,
     transform_builder_to_model,
 )
+
+from model import JobRequestModel
+from model.settings_model import SettingModel
 
 logger = logging.getLogger('tcex')
 
@@ -34,7 +35,6 @@ class TransformABC(ABC):  # noqa: B024
         self.settings = settings
         self.tcex = tcex
         self.api = tcex.api
-        self.base_path = base_path
         self.base_path = base_path
         self.custom_fns = {}
         self.log = logger

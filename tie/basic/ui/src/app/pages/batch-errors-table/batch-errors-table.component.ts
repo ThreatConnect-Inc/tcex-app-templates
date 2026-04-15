@@ -1,4 +1,4 @@
-import { catchError, mergeMap, tap } from 'rxjs';
+import { catchError, finalize, mergeMap, tap } from 'rxjs';
 
 import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
@@ -106,6 +106,7 @@ export class BatchErrorsTableComponent implements OnChanges, OnInit {
     }
 
     handleExportClick(format: 'csv' | 'json') {
+        this.exportLoading = true;
         this.batchErrorService
             .export({
                 errorCode: this.errorCode !== 'All' ? this.errorCode : undefined,
@@ -115,9 +116,10 @@ export class BatchErrorsTableComponent implements OnChanges, OnInit {
             })
             .pipe(
                 tap((response: HttpResponse<Blob>) => {
-                    this.exportLoading = true;
                     const contentDisposition = response.headers.get('content-disposition');
-
+                    if (!contentDisposition) {
+                        throw new Error('Missing content-disposition header');
+                    }
                     const filename = contentDisposition.split('filename')[1].split('=')[1].trim();
                     const downloadLink = document.createElement('a');
                     downloadLink.href = window.URL.createObjectURL(
@@ -127,6 +129,11 @@ export class BatchErrorsTableComponent implements OnChanges, OnInit {
                     document.body.appendChild(downloadLink);
                     downloadLink.click();
                     document.body.removeChild(downloadLink);
+                }),
+                catchError(() => {
+                    return [];
+                }),
+                finalize(() => {
                     this.exportLoading = false;
                 }),
             )

@@ -30,12 +30,16 @@ class UIConfigBuilderABC:
     def populate(self) -> dict:
         """Abstract method to populate the configuration."""
 
-    def generate_field(self, field: str, label: str, type_: str | None = None):
+    def generate_field(
+        self, field: str, label: str, type_: str | None = None, tooltip: str | None = None
+    ):
         """Generate a field."""
-        field = {'field': field, 'label': label}
+        field_info = {'field': field, 'label': label}
         if type_:
-            field['type'] = type_
-        return field
+            field_info['type'] = type_
+        if tooltip:
+            field_info['tooltip'] = tooltip
+        return field_info
 
     def generate_side_nav_item(self, label: str, path: str):
         """Generate a side nav item."""

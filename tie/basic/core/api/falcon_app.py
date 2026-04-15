@@ -5,11 +5,12 @@ from functools import partial
 from pathlib import Path
 
 import falcon
+from falcon import media
+
 from core.api.error.custom_error_handler import custom_error_handler
 from core.api.falcon_request import FalconRequest
 from core.api.falcon_response import FalconResponse
 from core.util.custom_handler import CustomHandler
-from falcon import media
 
 
 class FalconApp(falcon.App):

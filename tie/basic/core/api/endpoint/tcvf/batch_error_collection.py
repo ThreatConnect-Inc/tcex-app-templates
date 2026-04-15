@@ -2,6 +2,9 @@
 
 from functools import cached_property
 
+from pydantic import Field, field_validator
+from spectree import Response
+
 from core.api.endpoint.tcvf.endpoint_base import EndpointBase
 from core.api.falcon_request import FalconRequest
 from core.api.falcon_response import FalconResponse
@@ -12,8 +15,6 @@ from core.api.validation.models.query_param_filter_pagination_model import (
 from core.dao.batch_error_dao import BatchErrorDAO
 from core.json_db import SortBy, where
 from core.model.tie import BatchErrorPaginatedResponseModel
-from pydantic import Field, field_validator
-from spectree import Response
 
 
 class GetQueryParamModel(QueryParamFilterPaginationModel, where.ToWhere):
@@ -37,7 +38,7 @@ class GetQueryParamModel(QueryParamFilterPaginationModel, where.ToWhere):
         """Validate error_codes value."""
         match v:
             case str():
-                return [v.strip() for f in v.split(',')]
+                return [f.strip() for f in v.split(',')]
             case _:
                 return v
 

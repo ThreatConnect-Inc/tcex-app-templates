@@ -4,16 +4,17 @@ from abc import abstractmethod
 from collections.abc import Callable
 from typing import NamedTuple
 
+from tcex import TcEx
+from tcex.api.tc.v3.groups.group import Group, Groups
+from tcex.api.tc.v3.tql.tql_operator import TqlOperator
+from tcex.pleb.cached_property import cached_property
+
 from core.dao.report_pdf_tracker_dao import ReportPdfTrackerDAO
 from core.json_db import JsonDB
 from core.model.tie.report_pdf_tracker_model import ReportPdfTrackerModel
 from core.model.tie.task_setting_model import TaskSettingModel
 from core.task.task_abc import TaskABC
 from model import SettingModel
-from tcex import TcEx
-from tcex.api.tc.v3.groups.group import Group, Groups
-from tcex.api.tc.v3.tql.tql_operator import TqlOperator
-from tcex.pleb.cached_property import cached_property
 
 
 class DocumentRetrievalError(Exception):

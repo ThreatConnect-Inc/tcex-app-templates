@@ -2,6 +2,9 @@
 
 from functools import cached_property
 
+from pydantic import Field, field_validator
+from spectree import Response
+
 from core.api.endpoint.tcvf.endpoint_base import EndpointBase
 from core.api.falcon_request import FalconRequest
 from core.api.falcon_response import FalconResponse
@@ -12,8 +15,6 @@ from core.api.validation.models.query_param_filter_pagination_model import (
 from core.json_db import SortBy, where
 from core.json_db.dao import JsonDBDAO
 from core.model.tie import ReportPdfTrackerModel, ReportPdfTrackerResponseModel
-from pydantic import Field, field_validator
-from spectree import Response
 
 
 class GetQueryParamModel(QueryParamFilterPaginationModel, where.ToWhere):

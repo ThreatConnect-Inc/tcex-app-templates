@@ -1,5 +1,7 @@
 """Class for /api/task/status endpoint"""
 
+from spectree import Response
+
 from core.api.endpoint.tcvf.endpoint_base import EndpointBase
 from core.api.falcon_request import FalconRequest
 from core.api.falcon_response import FalconResponse
@@ -7,7 +9,6 @@ from core.api.spec import spec, tag_task
 from core.api.validation.models.query_param_filter_model import QueryParamFilterModel
 from core.model.response.response_model import ResponseModel
 from core.task.task_path_pipe_abc import TaskPathPipeABC
-from spectree import Response
 
 # TODO: @cblades - See if this can be removed
 

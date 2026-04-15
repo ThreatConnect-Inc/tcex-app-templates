@@ -5,7 +5,13 @@ from collections.abc import Generator
 from datetime import UTC, datetime, timedelta
 from itertools import zip_longest
 
-import requests
+from data_model.doc_analysis import DocAnalysisData
+from tcex import TcEx
+from tcex.api.tc.v3.groups.group import Group, Groups
+from tcex.api.tc.v3.tql.tql_operator import TqlOperator
+from tcex.input.field_type import Sensitive
+from tcex.pleb.cached_property import cached_property
+
 from core.dao.doc_analysis_processed_items_dao import DocAnalysisProcessedItemsDAO
 from core.dao.doc_analysis_throttled_dao import DocAnalysisThrottledDAO
 from core.dao.doc_analysis_tracker_dao import DocAnalysisTrackerDAO
@@ -15,30 +21,9 @@ from core.model.tie.doc_analysis_processed_items_model import (
 )
 from core.model.tie.doc_analysis_tracker_model import DocAnalysisTrackerModel
 from core.model.tie.task_setting_model import TaskSettingModel
+from core.task.cal_auth import CALAuth
 from core.task.task_abc import TaskABC
-from data_model.doc_analysis import DocAnalysisData
 from model import SettingModel
-from tcex import TcEx
-from tcex.api.tc.v3.groups.group import Group, Groups
-from tcex.api.tc.v3.tql.tql_operator import TqlOperator
-from tcex.input.field_type import Sensitive
-from tcex.pleb.cached_property import cached_property
-
-
-class CALAuth(requests.auth.AuthBase):
-    """Token-based auth for CAL."""
-
-    def __init__(self, token: str, timestamp: int):
-        """Initialize CALAuth."""
-        self.token = token
-        self.timestamp = timestamp
-
-    def __call__(self, r: requests.PreparedRequest):
-        """Add CAL authorization headers."""
-        r.headers['Authorization'] = self.token
-        r.headers['Timestamp'] = str(self.timestamp)
-        return r
-
 
 CustomTag = namedtuple(  # noqa: PYI024
     'CustomTag', ['name', 'processor', 'cleaner'], defaults=[None, None, None]
@@ -133,7 +118,7 @@ class DocAnalysisABC(TaskABC):
 
     def _reset_tracker(self, tracker: DocAnalysisTrackerModel):
         """Reset the tracker attempt count."""
-        tracker.attempt_count += 0
+        tracker.attempt_count = 0
         self.dao.save(tracker)
 
     def launch(self):
@@ -285,12 +270,11 @@ class DocAnalysisABC(TaskABC):
     def handle_failure(self, tracker, message, group, custom_tag):
         """Handle a failure in processing."""
         tracker.attempt_result = message
-        tracker.attempt_count += 1
+        self._update_tracker(tracker)
         if self._max_attempts_reached(group.model.id, tracker) is True:
             self._update_tag(group, custom_tag.name)
             if custom_tag.cleaner:
                 custom_tag.cleaner(group.model.id)
-        self._update_tracker(tracker)
 
     def process_group(self, xid, data, processed_items):
         """Process a single group."""

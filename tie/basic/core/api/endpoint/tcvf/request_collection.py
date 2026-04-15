@@ -3,6 +3,9 @@
 import re
 from functools import cached_property
 
+from pydantic import ConfigDict, field_validator
+from spectree import Response
+
 from core.api.endpoint.tcvf.endpoint_base import EndpointBase
 from core.api.falcon_request import FalconRequest
 from core.api.falcon_response import FalconResponse
@@ -13,8 +16,6 @@ from core.api.validation.models.query_param_filter_pagination_model import (
 from core.dao.job_dao import JobRequestDAO
 from core.json_db import SortBy, where
 from model.job_request_model import JobRequestPaginatedResponseModel
-from pydantic import ConfigDict, field_validator
-from spectree import Response
 
 
 class GetQueryParamModel(QueryParamFilterPaginationModel):
@@ -66,9 +67,9 @@ class GetQueryParamModel(QueryParamFilterPaginationModel):
             if not value:
                 continue
             if isinstance(value, str):
-                where_dict[key] = where.contains(value)
+                where_dict[key] = where.contains(value.strip())
             elif isinstance(value, list):
-                where_dict[key] = where.is_in(value)
+                where_dict[key] = where.is_in([v.strip() for v in value])
             else:
                 pass
                 # print(f'Unknown type for {key}: {value}')

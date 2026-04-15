@@ -1,7 +1,8 @@
 """."""
 
-from core.model.model_base import ModelBase
 from pydantic import Field
+
+from core.model.model_base import ModelBase
 
 
 class EnrichmentTimelineModel(ModelBase):

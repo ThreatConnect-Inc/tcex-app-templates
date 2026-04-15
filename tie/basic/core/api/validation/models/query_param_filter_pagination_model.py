@@ -1,8 +1,9 @@
 """Query Param Filter Pagination Model."""
 
+from pydantic import ConfigDict, Field, field_validator
+
 from core.api.validation.models.query_param_filter_model import QueryParamFilterModel
 from core.json_db import SortBy, SortOrder
-from pydantic import ConfigDict, Field, field_validator
 
 
 class QueryParamFilterPaginationModel(QueryParamFilterModel):

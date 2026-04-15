@@ -54,7 +54,6 @@ class Paginator(Generic[T]):
                 for v in value:
                     v = urllib.parse.quote_plus(v)
                     _query_params.append(f'{name}={v}')
-                    _query_params.append(f'{name}={v}')
             elif isinstance(value, bool):
                 value = str(value).lower()
                 _query_params.append(f'{name}={value}')
@@ -94,8 +93,9 @@ class Paginator(Generic[T]):
     @property
     def next_url(self) -> str | None:
         """Return the next URL for pagination."""
-        offset = self.params.offset + self.params.limit
-        if offset < self.total_count:
+        # If we got a full page, there are likely more results
+        if len(self.page_data) >= self.params.limit:
+            offset = self.params.offset + self.params.limit
             return f'{self.url}?{self.query_params(offset)}'
         return None
 

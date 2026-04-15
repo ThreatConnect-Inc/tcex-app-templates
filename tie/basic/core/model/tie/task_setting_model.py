@@ -1,8 +1,9 @@
 """Model Definition"""
 
+from pydantic import ConfigDict, Field, model_validator
+
 from core.model.response.paginated_response import PaginatedResponseModel
 from core.model.tie.item_model import ItemModel
-from pydantic import ConfigDict, Field, model_validator
 
 
 class TaskSettingModel(ItemModel):

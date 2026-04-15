@@ -8,10 +8,11 @@ from typing import TYPE_CHECKING, Any
 from core.supervisor.config import SupervisorConfigModel
 
 if TYPE_CHECKING:
+    from tcex.exit.exit import Exit
+
     from core.dao.job_dao import JobRequestDAO
     from core.json_db import JsonDB
     from core.model.settings_model_base import SettingModelBase
-    from tcex.exit.exit import Exit
 
 logger = logging.getLogger('tcex')
 
@@ -219,7 +220,7 @@ class Supervisor:
             time_since_baseline = now - effective_baseline
             if time_since_baseline > threshold:
                 # Pipeline is stale - enter probation mode
-                self._config.pipelines_on_probation[pipeline] = None  # Awaiting job assignment
+                self._config.pipelines_on_probation[pipeline] = ''  # Awaiting job assignment
                 results[pipeline] = True
                 self.log.warning(
                     f'supervisor-event=entering-probation, '
@@ -243,7 +244,8 @@ class Supervisor:
 
     def get_probation_job_id(self, pipeline: str) -> str | None:
         """Get the probation job ID for a pipeline, or None if not on probation or awaiting."""
-        return self._config.pipelines_on_probation.get(pipeline)
+        value = self._config.pipelines_on_probation.get(pipeline)
+        return value if value else None
 
     def set_probation_job(self, pipeline: str, request_id: str) -> bool:
         """Assign a job as the probation job for a pipeline.
@@ -260,7 +262,7 @@ class Supervisor:
         if pipeline not in self._config.pipelines_on_probation:
             return False
 
-        if self._config.pipelines_on_probation[pipeline] is not None:
+        if self._config.pipelines_on_probation[pipeline] != '':
             # Already has a probation job assigned
             return False
 

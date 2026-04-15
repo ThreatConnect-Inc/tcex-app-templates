@@ -7,6 +7,9 @@ from functools import cached_property
 from io import BytesIO, StringIO
 from typing import Literal
 
+from pydantic import Field, field_validator
+from spectree import Response
+
 from core.api.endpoint.tcvf.endpoint_base import EndpointBase
 from core.api.falcon_request import FalconRequest
 from core.api.falcon_response import FalconResponse
@@ -16,8 +19,6 @@ from core.dao.batch_error_dao import BatchErrorDAO
 from core.json_db import where
 from core.model.tie import BatchErrorPaginatedResponseModel
 from core.util.custom_handler import CustomHandler
-from pydantic import Field, field_validator
-from spectree import Response
 
 
 class GetQueryParamModel(QueryParamFilterModel, where.ToWhere):

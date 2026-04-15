@@ -6,6 +6,9 @@ import sys
 from pathlib import Path
 from typing import IO
 
+from pydantic import Field
+from spectree import Response
+
 from core.api.endpoint.tcvf.endpoint_base import EndpointBase
 from core.api.falcon_request import FalconRequest
 from core.api.falcon_response import FalconResponse
@@ -14,8 +17,6 @@ from core.api.validation.models.query_param_filter_pagination_model import (
     QueryParamFilterPaginationModel,
 )
 from core.model.log_event_model import LogEventModel, LogEventPaginatedResponseModel
-from pydantic import Field
-from spectree import Response
 
 
 class GetQueryParamModel(QueryParamFilterPaginationModel):
@@ -119,7 +120,7 @@ class SupportLogSearchResource(EndpointBase):
         events = []
         for line in fh.readlines():
             # skip logs from this file
-            if Path.name(__file__) in line:
+            if Path(__file__).name in line:
                 continue
 
             # increment line number

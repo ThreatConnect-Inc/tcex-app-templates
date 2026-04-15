@@ -4,13 +4,14 @@ import json
 from datetime import UTC, datetime, timedelta
 from functools import cached_property, lru_cache
 
+from spectree import Response
+
 from core.api.endpoint.tcvf.endpoint_base import EndpointBase
 from core.api.falcon_request import FalconRequest
 from core.api.falcon_response import FalconResponse
 from core.api.spec import spec, tag_metric
 from core.json_db.dao import JsonDBDAO
 from model import JobRequestModel
-from spectree import Response
 
 
 class MetricTaskResource(EndpointBase):

@@ -8,6 +8,10 @@ from time import sleep, time
 from typing import cast
 
 import schedule
+from tcex.api.tc.v3.tql.tql_operator import TqlOperator
+from tcex.exit import ExitCode
+from tcex.logger.trace_logger import TraceLogger
+
 from app_inputs import AppBaseModel
 from core.api.falcon_app import FalconApp
 from core.api.spec import spec
@@ -23,9 +27,6 @@ from core.supervisor import Supervisor
 from core.task.tasks import Tasks
 from core.util.custom_handler import CustomHandler
 from model.settings_model import SettingModel
-from tcex.api.tc.v3.tql.tql_operator import TqlOperator
-from tcex.exit import ExitCode
-from tcex.logger.trace_logger import TraceLogger
 
 try:
     from migrations import Migrations
@@ -321,9 +322,13 @@ class ApiServiceFalconABC(ApiServiceAppABC, ABC):
 
     def loop_forever(self):
         """Run the app."""
-        self.initialize_app()
-        self.preflight_check_service.perform_checks()
-        # self.tcex.exit.exit(ExitCode.SUCCESS, 'App has been successfully Started')
+        try:
+            self.initialize_app()
+            self.preflight_check_service.perform_checks()
+        except Exception as ex:
+            self.tasks_obj.send_preflight_failure_notification(str(ex)[:80])
+            raise
+        self.tasks_obj.send_startup_notification()
         if self.migrations:
             self.migrations.migration_service.preform_migrations()
 
@@ -336,16 +341,33 @@ class ApiServiceFalconABC(ApiServiceAppABC, ABC):
         deadline = time() + delay_time
 
         self.log.debug(f'action=loop-forever, shutdown=True, max_delay_time={delay_time}')
-        while self.tasks_obj.alive() != 0 and time() < deadline:
+        while self.tasks_obj.alive() and time() < deadline:
             sleep(1)
 
         self.tasks_obj.kill_all()
         self.tcex.exit.exit(ExitCode.SUCCESS, 'App has been successfully Stopped')
 
     def _remove_pending_jobs(self):
-        """Remove pending jobs."""
+        """Remove pending jobs and reset interrupted in-progress jobs.
 
-        # remove any pending jobs
+        For jobs stuck in "X in progress" status (zombie jobs from server crash):
+        - Download tasks: delete the job (no previous state to restore)
+        - Other tasks: reset to previous task's "complete" status so they can be retried
+        """
+        # Build mapping: status_active -> previous task's status_complete
+        # This allows resetting interrupted jobs to the previous pipeline stage
+        # Only pipe tasks (not standalone) have previous_task_name and status_active
+        status_reset_mapping: dict[str, str] = {}
+        for task in self.tasks_obj.all():
+            task_settings = task.task_settings
+            # Standalone tasks don't have previous_task_name; use getattr to safely check
+            previous_task_name = getattr(task_settings, 'previous_task_name', None)
+            if previous_task_name is not None:
+                previous_status_complete = f'{previous_task_name.lower()} complete'
+                status_reset_mapping[task_settings.status_active.casefold()] = (
+                    previous_status_complete
+                )
+
         def _is_pending(job_request):
             return job_request.status.lower() == self.settings.job.status_pending
 
@@ -357,10 +379,23 @@ class ApiServiceFalconABC(ApiServiceAppABC, ABC):
                 return True
             return False
 
-        for request in self.db.load_all(JobRequestBaseModel):
+        def _is_resettable_in_progress(job_request):
+            """Check if job is in progress and can be reset to previous stage."""
+            return job_request.status.casefold() in status_reset_mapping
+
+        jobs = list(self.db.load_all(JobRequestBaseModel))
+        for request in jobs:
             if _is_pending(request) or _is_download_in_progress(request):
                 self.log.info(f'action=remove-pending-jobs, job-request-id={request.request_id}')
                 self.db.delete(request)
+            elif _is_resettable_in_progress(request):
+                previous_status = status_reset_mapping[request.status.casefold()]
+                self.log.info(
+                    f'action=reset-interrupted-job, job-request-id={request.request_id}, '
+                    f'from-status={request.status}, to-status={previous_status}'
+                )
+                request.status = previous_status
+                self.db.save(request)
 
     def owner_id(self, owner_name: str) -> int | None:
         """Return the owner id."""

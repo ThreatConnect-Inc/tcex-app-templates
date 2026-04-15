@@ -2,9 +2,10 @@
 
 from uuid import UUID
 
+from pydantic import Field
+
 from core.message_service.model.tcva.message_types import MessageTypesInvestigate
 from core.model.model_base import ModelBase
-from pydantic import Field
 
 
 class InvestigateRequestModel(ModelBase, extra='allow'):

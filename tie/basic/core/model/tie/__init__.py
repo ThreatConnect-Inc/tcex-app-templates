@@ -5,6 +5,10 @@ be modified.
 """
 
 from .batch_error_model import BatchErrorModel, BatchErrorPaginatedResponseModel
+from .doc_analysis_processed_items_model import DocAnalysisProcessedItemsModel
+from .doc_analysis_throttle_model import DocAnalysisThrottleModel
+from .doc_analysis_tracker_model import DocAnalysisTrackerModel, DocAnalysisTrackerResponseModel
+from .notification_model import NotificationModel, NotificationPaginatedResponseModel
 from .report_pdf_tracker_model import (
     ReportPdfTrackerModel,
     ReportPdfTrackerResponseModel,

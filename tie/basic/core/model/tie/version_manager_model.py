@@ -2,9 +2,10 @@
 
 from datetime import UTC, datetime
 
+from pydantic import Field, field_serializer
+
 from core.json_db import Index
 from core.model.model_base import ModelBase
-from pydantic import Field, field_serializer
 
 
 class VersionManagerModel(ModelBase):

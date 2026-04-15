@@ -4,12 +4,13 @@ from collections.abc import Callable
 from contextlib import suppress
 from typing import Any, Generic, TypeAlias, TypedDict, TypeVar, cast
 
+from pydantic import BaseModel
+
 from core.api.validation.models.query_param_filter_pagination_model import (
     QueryParamFilterPaginationModel,
 )
 from core.json_db import JsonDB, SortBy, SortOrder
 from core.json_db import where as where_m
-from pydantic import BaseModel
 
 M = TypeVar('M', bound=BaseModel)
 
@@ -146,6 +147,8 @@ class JsonDBDAO(Generic[M]):
                 where_val = where
             case None:
                 where_val = None
+            case _:
+                raise ValueError(f'Invalid where value: {where}')
 
         if isinstance(sort_by, SortBy):
             results = list(

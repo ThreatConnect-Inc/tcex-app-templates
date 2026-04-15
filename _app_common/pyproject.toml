@@ -64,6 +64,7 @@ skip-magic-trailing-comma = false
 # https://docs.astral.sh/ruff/linter/
 # Rules to suppress even when their parent group is enabled
 ignore = [
+  'B008', # Do not perform function call in argument defaults (used for DI inject pattern)
   'BLE001', # blind except: except: clause
   'D400', # First line should end with a period
   'D401', # First line should be in imperative mood
@@ -82,6 +83,7 @@ ignore = [
   'SIM102', # Collapsible if statement
   'SIM103', # Return the condition directly
   'SIM108', # Use ternary operator instead of if-else block
+  'SIM114', # Combine if branches using logical or
   'SIM117', # Multiple with statements
   'TC001', # Move application import into a type-checking block
   'TC002', # Move third-party import into a type-checking block
@@ -89,6 +91,8 @@ ignore = [
   'TRY003', # Avoid specifying long messages outside the exception class
   'TRY300', # Consider moving this statement to an else block
   'INP001', # Implicit namespace package
+  'N805', # First argument of a method should be named self (Pydantic v1 validators use cls)
+  'N999', # Invalid module name (project directory has hyphen)
 ]
 # Rule groups to enable (each code prefix enables all rules in that group)
 select = [

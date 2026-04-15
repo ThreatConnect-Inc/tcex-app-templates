@@ -5,12 +5,13 @@ from __future__ import annotations
 from typing import Any
 
 import falcon
+from pydantic import BaseModel, ValidationError
+
 from core.api.validation.models.query_param_filter_model import QueryParamFilterModel
 from core.api.validation.models.query_param_filter_pagination_model import (
     QueryParamFilterPaginationModel,
 )
 from core.api.validation.models.query_param_model import QueryParamModel
-from pydantic import BaseModel, ValidationError
 
 
 class FalconResponse(falcon.Response):

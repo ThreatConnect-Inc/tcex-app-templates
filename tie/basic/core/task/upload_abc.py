@@ -5,11 +5,12 @@ from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from typing import NamedTuple, TypeVar
 
+from tcex import TcEx
+
 from core.json_db import JsonDB
 from core.task.task_path_pipe_abc import TaskPathPipeABC, UploadError, UploadRetryError
 from model import JobRequestModel
 from model.settings_model import SettingModel
-from tcex import TcEx
 
 T = TypeVar('T')
 
@@ -91,6 +92,22 @@ class UploadABC(TaskPathPipeABC, ABC):
             if delta < timedelta(minutes=5):
                 self.log.info('action=throttle')
                 return
+        elif request.status.casefold() == self.task_settings.status_active.casefold():
+            self.log.info(
+                f'action="skip-already-in-progress", request-id="{request_id}", '
+                f'status="{request.status}"'
+            )
+            return
+
+        # Update status to "in progress" BEFORE forking to prevent race conditions
+        # where a second process could be launched before the first one updates status
+        request.status = self.task_settings.status_active
+        self.job_dao.save(request)
+        self.log.info(
+            f'action="pre-launch-status-update", request-id="{request_id}", '
+            f'status="{request.status}"'
+        )
+
         self.launch(request_id, request_dir)
 
     @abstractmethod
@@ -118,7 +135,6 @@ class UploadABC(TaskPathPipeABC, ABC):
         self.log.info(f'action="run-task", status="start", request-id="{request_id}"')
 
         request = self.job_dao.get(request_id)
-        self._reset_counts(request)
 
         files = sorted(input_dir.iterdir())
         failed_files = []

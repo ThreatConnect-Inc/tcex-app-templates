@@ -6,13 +6,14 @@ import traceback
 from typing import TypeVar
 
 import falcon
+from pydantic import BaseModel, TypeAdapter, ValidationError
+
 from core.api.falcon_request import FalconRequest
 from core.api.falcon_response import FalconResponse
 from core.api.validation.models.query_param_filter_model import QueryParamFilterModel
 from core.api.validation.util import PaginatorResponseModel
 from core.more.error import error
 from core.more.paginator import Paginator
-from pydantic import BaseModel, TypeAdapter, ValidationError
 
 # get primary API logger
 logger = logging.getLogger('tcex')

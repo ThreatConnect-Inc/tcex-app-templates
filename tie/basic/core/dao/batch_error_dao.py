@@ -10,7 +10,7 @@ from core.api.validation.models.query_param_filter_pagination_model import (
 from core.json_db import JsonDB
 from core.json_db import where as where_m
 from core.json_db.dao import JsonDBDAO
-from core.json_db.json_db import SortBy
+from core.json_db.json_db import SortBy, SortOrder
 from core.model.tie.batch_error_model import (
     BatchErrorModel,
     JobBatchErrorIndexModel,
@@ -100,7 +100,7 @@ class BatchErrorDAO(JsonDBDAO[BatchErrorModel]):
         ):
             errors.sort(
                 key=lambda x: getattr(x, sort_by),
-                reverse=query_params.sort_order == 'desc',
+                reverse=query_params.sort_order == SortOrder.DESC,
             )
 
         page_data = (

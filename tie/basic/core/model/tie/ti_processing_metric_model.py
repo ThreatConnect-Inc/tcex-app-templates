@@ -2,10 +2,11 @@
 
 from datetime import UTC, datetime
 
+from pydantic import ConfigDict, Field, field_serializer
+
 from core.json_db import Index
 from core.model.response.paginated_response import PaginatedResponseModel
 from core.model.tie.item_model import ItemModel
-from pydantic import ConfigDict, Field, field_serializer
 
 
 class TiProcessingMetricModel(ItemModel):

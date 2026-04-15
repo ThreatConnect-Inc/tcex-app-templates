@@ -3,7 +3,8 @@
 from datetime import UTC, datetime
 from pathlib import Path
 
-from pydantic import BaseModel, ConfigDict
+from arrow import arrow
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class SettingModelBase(BaseModel):
@@ -12,7 +13,7 @@ class SettingModelBase(BaseModel):
     tc_owner: str
     base_path: Path
 
-    date_started: datetime = datetime.now(UTC)
+    date_started: datetime = Field(default_factory=lambda: datetime.now(UTC))
     extension_csv: str = '.csv'
     extension_gzip: str = '.gz'
     extension_bzip: str = '.bz'

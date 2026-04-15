@@ -2,13 +2,14 @@
 
 from abc import ABC
 
-# TODO: make AppInputs abstract and import here
-from app_inputs import AppInputs
 from pydantic import ValidationError
 from tcex import TcEx
 from tcex.exit import ExitCode
 from tcex.input.input import Input
 from tcex.logger.trace_logger import TraceLogger
+
+# TODO: make AppInputs abstract and import here
+from app_inputs import AppInputs
 
 
 class ApiServiceAppABC(ABC):  # noqa: B024

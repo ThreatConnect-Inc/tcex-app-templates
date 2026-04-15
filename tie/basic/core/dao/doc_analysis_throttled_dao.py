@@ -1,6 +1,7 @@
 """DAO for ReportPdfTrackerModel."""
 
 import arrow
+
 from core.json_db import JsonDB, SortBy, SortOrder
 from core.json_db.dao import JsonDBDAO
 from core.model.tie import DocAnalysisThrottleModel
@@ -46,5 +47,5 @@ class DocAnalysisThrottledDAO(JsonDBDAO[DocAnalysisThrottleModel]):
     def throttle(self) -> None:
         """Throttle the group."""
         item = self.instance
-        item.timestamp = int(arrow.now().timestamp())
+        item.timestamp = int(arrow.utcnow().timestamp())
         self.db.save(item)

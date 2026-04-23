@@ -5,7 +5,7 @@
     "template_path": "playbook/actions/README.md"
   },
   "app.py": {
-    "last_commit": "c36d36c5caf00c1150efae6c9d08bb2e7d304f33",
+    "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "sha256": "96e85ccdf0bd7794a092e4aefffeda2eb97f34cea57b7a53020703a1e8afe051",
     "template_path": "playbook/actions/app.py"
   },
@@ -15,7 +15,7 @@
     "template_path": "playbook/actions/app_inputs.json"
   },
   "app_inputs.py": {
-    "last_commit": "e9aafbb0e535d2de752d1f9902b26392093789bb",
+    "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "sha256": "eb3aa0437f2082b9bdd2101bea27ca742f6ac66df3b30af00b26b91813c5a4e7",
     "template_path": "playbook/actions/app_inputs.py"
   },

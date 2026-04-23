@@ -5,7 +5,7 @@
     "template_path": "organization/egress/README.md"
   },
   "app.py": {
-    "last_commit": "c36d36c5caf00c1150efae6c9d08bb2e7d304f33",
+    "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "sha256": "712d8910aa1fa235f8bf46eef4fe158a37fb1b70f20c2e52fb9f3ee914de75bf",
     "template_path": "organization/egress/app.py"
   },
@@ -15,7 +15,7 @@
     "template_path": "organization/egress/app_inputs.json"
   },
   "app_inputs.py": {
-    "last_commit": "a4244225ffb6299b0651213027ac673ed86b6782",
+    "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "sha256": "7c4e3d180bce64a42deaa24169141bd6739758b8b1229e0e997d2a16421e8a9d",
     "template_path": "organization/egress/app_inputs.py"
   },

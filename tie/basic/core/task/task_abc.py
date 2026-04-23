@@ -24,6 +24,7 @@ from core.dao.job_dao import JobRequestDAO
 from core.json_db import JsonDB
 from core.model.tie.job_request_base_model import JobRequestBaseModel
 from core.model.tie.task_setting_pipe_model import TaskSettingPipeModel
+from core.service.notification_helper import NotificationHelper
 from core.service.writing_service import WritingService
 from core.supervisor import Supervisor
 from core.task.task_path_pipe_injectables import UpdateHeartbeat
@@ -127,6 +128,11 @@ class TaskABC(ABC, Generic[T]):
             'reached': 'False',
             'date_set': arrow.Arrow.now(UTC),
         }
+
+    @cached_property
+    def notification_helper(self) -> NotificationHelper:
+        """Notification helper — lazily created for fork safety."""
+        return NotificationHelper(self.settings, self.tcex, self.db)
 
     @cached_property
     def namespace(self) -> TaskNamespace:

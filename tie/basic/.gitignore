@@ -45,6 +45,7 @@ temp
 # IDE Exclusions
 #-------------------------------------------------
 .c9
+.claude
 .history
 .idea
 .project

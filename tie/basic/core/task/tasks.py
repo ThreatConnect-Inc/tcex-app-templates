@@ -17,12 +17,8 @@ from core.beacon import inject
 from core.dao.job_dao import JobRequestDAO
 from core.json_db import JsonDB
 from core.model.settings_model_base import SettingModelBase
-from core.model.tie.notification_model import NotificationModel
-from core.service.notification_service import (
-    NOTIFICATION_BY_CATEGORY,
-    NotificationService,
-    NotificationTypeConfig,
-)
+from core.service.notification_helper import NotificationHelper
+from core.service.notification_service import NOTIFICATION_BY_CATEGORY
 from core.supervisor import Supervisor
 from model.job_request_model import JobRequestModel
 
@@ -71,14 +67,8 @@ class Tasks:
 
         # Notification state tracking (disabled when notification_digest_interval is None)
         self.notifications_enabled = settings.notification_digest_interval is not None
-        self.notification_service = (
-            NotificationService(
-                tcex,
-                owner_name=settings.tc_owner,
-                display_name_override=settings.notification_display_name,
-            )
-            if self.notifications_enabled
-            else None
+        self.notification_helper = (
+            NotificationHelper(settings, tcex, db) if self.notifications_enabled else None
         )
         self.last_digest_time = datetime.now(UTC)
         self.reported_retrying: set[str] = set()  # job IDs already reported as retrying
@@ -89,6 +79,9 @@ class Tasks:
         # Healthy pipelines: baseline is reset normally
         self.supervisor.check_and_enter_probation()
 
+        # Built lazily after tasks are registered via add_task_path_pipe
+        self._status_reset_mapping: dict[str, str] | None = None
+
         # schedule watchdog for tasks
         schedule.every(1).minute.do(self.watchdog)
 
@@ -97,19 +90,19 @@ class Tasks:
         if self.notifications_enabled:
             notification_config = NOTIFICATION_BY_CATEGORY['app_startup']
             notification_types = self.settings.notification_types or []
-            self._store_and_maybe_send(
+            self.notification_helper.notify(
                 notification_config,
-                should_send='app_startup' in notification_types,
+                send_now='app_startup' in notification_types,
             )
 
     def send_preflight_failure_notification(self, reason: str) -> None:
         """Send a notification when preflight checks fail."""
         if self.notifications_enabled:
             notification_config = NOTIFICATION_BY_CATEGORY['app_startup_failed']
-            self._store_and_maybe_send(
+            self.notification_helper.notify(
                 notification_config,
-                should_send=True,
-                format_message={'reason': reason},
+                send_now=True,
+                reason=reason,
             )
 
     def add_task(self, task: 'TaskABC'):
@@ -242,6 +235,7 @@ class Tasks:
                         f'process-id={task.process.pid}, metadata={task.process.metadata.dict()}, '
                     )
                     self.kill(task)
+                    self._cleanup_killed_job(task)
 
                 # Handle setting our api limit hit metric since its forked
                 # We only care about the value for the DownloadPathPipe task
@@ -288,10 +282,10 @@ class Tasks:
         # Send shutdown notification immediately (always sent, not user-configurable)
         if self.notifications_enabled:
             notification_config = NOTIFICATION_BY_CATEGORY['app_shutdown']
-            self._store_and_maybe_send(
+            self.notification_helper.notify(
                 notification_config,
-                should_send=True,
-                format_message={'reason': reason[:80]},
+                send_now=True,
+                reason=reason[:80],
             )
 
         self.pause_all()
@@ -383,61 +377,84 @@ class Tasks:
                 continue
             notification_config = NOTIFICATION_BY_CATEGORY[category]
             ids = [j.request_id for j in jobs]
-            self._store_and_maybe_send(
+            self.notification_helper.notify(
                 notification_config,
-                should_send=category in notification_types,
+                send_now=category in notification_types,
                 job_ids=ids,
-                format_message={'count': len(jobs)},
+                count=len(jobs),
             )
             tracking_set.update(ids)
 
         self.last_digest_time = now
 
-    def _store_and_maybe_send(
-        self,
-        notification_config: NotificationTypeConfig,
-        should_send: bool,
-        job_ids: list[str] | None = None,
-        format_message: dict | None = None,
-    ) -> None:
-        """Store notification in json_db and optionally send via TC Notification API."""
-        message_body = notification_config.message_template.format(**(format_message or {}))
-        message = f'{self.notification_service.msg_prefix}{message_body}'
-        self.log.info(
-            f'task-event=notification-store, category={notification_config.category}, '
-            f'priority={notification_config.priority}, should_send={should_send}'
-        )
-        api_request = None
-        api_response = None
-        send_status = None
-        status_code = None
-        status_text = None
+    @property
+    def status_reset_mapping(self) -> dict[str, str]:
+        """Return mapping of active status -> previous stage's complete status."""
+        if self._status_reset_mapping is None:
+            mapping: dict[str, str] = {}
+            for task in self.all():
+                ts = task.task_settings
+                previous_task_name = getattr(ts, 'previous_task_name', None)
+                if previous_task_name is not None:
+                    previous_status_complete = f'{previous_task_name.lower()} complete'
+                    mapping[ts.status_active.casefold()] = previous_status_complete
+            self._status_reset_mapping = mapping
+        return self._status_reset_mapping
 
-        if should_send:
-            result = self.notification_service.send(message, notification_config.priority)
-            send_status = result['send_status']
-            status_code = result['status_code']
-            status_text = result['status_text']
-            api_request = result['api_request']
-            api_response = result['api_response']
+    def _cleanup_killed_job(self, task: 'TaskABC') -> None:
+        """Reset a zombie job after the watchdog kills its task process.
+
+        Without this, the job stays in "X In Progress" with no date_completed
+        or date_failed, permanently blocking the scheduler.
+        """
+        # Access _metadata dict directly — the .metadata property calls is_alive()
+        # which is unreliable after kill + join.
+        request_id = getattr(task.process, '_metadata', {}).get('request_id')
+        if not request_id:
+            return
+
+        try:
+            job = self.job_dao.get(request_id)
+        except Exception:
+            self.log.warning(f'event=cleanup-killed-job-load-failed, request_id={request_id}')
+            return
+
+        status_lower = job.status.casefold()
+
+        # Already completed or failed — nothing to do (race: task finished before kill)
+        if job.date_completed is not None or job.date_failed is not None:
             self.log.info(
-                f'task-event=notification-sent, category={notification_config.category}, '
-                f'send_status={send_status}, status_code={status_code}'
+                f'event=cleanup-killed-job-skip, request_id={request_id}, '
+                f'status={job.status}, reason=already-terminal'
             )
+            return
 
-        notification = NotificationModel(
-            notification_type=self.notification_service.notification_type,
-            category=notification_config.category,
-            priority=notification_config.priority,
-            message=message,
-            job_ids=job_ids or [],
-            send_status=send_status,
-            send_status_code=status_code,
-            send_status_text=status_text,
-            api_request=api_request,
-            api_response=api_response,
+        # Download in progress — delete the job (no previous state to restore)
+        if 'download' in status_lower and 'in progress' in status_lower:
+            self.log.warning(
+                f'event=cleanup-killed-job-delete, request_id={request_id}, status={job.status}'
+            )
+            self.db.delete(job)
+            return
+
+        # Other in-progress statuses — reset to previous pipeline stage
+        if status_lower in self.status_reset_mapping:
+            previous_status = self.status_reset_mapping[status_lower]
+            self.log.warning(
+                f'event=cleanup-killed-job-reset, request_id={request_id}, '
+                f'from_status={job.status}, to_status={previous_status}'
+            )
+            job.status = previous_status
+            self.job_dao.save(job)
+            return
+
+        # Fallback: mark as failed so the scheduler isn't permanently blocked
+        self.log.warning(
+            f'event=cleanup-killed-job-mark-failed, request_id={request_id}, status={job.status}'
         )
-        self.db.save(notification)
+        job.date_failed = datetime.now(UTC)
+        job.status = self.settings.job.status_failed
+        self.job_dao.save(job)
 
     def _send_signal_to_task(self, send_signal: signal.Signals, to_task: 'TaskABC'):
         """Send signal to task."""

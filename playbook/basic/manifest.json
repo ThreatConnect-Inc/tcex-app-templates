@@ -5,7 +5,7 @@
     "template_path": "playbook/basic/README.md"
   },
   "app.py": {
-    "last_commit": "a4244225ffb6299b0651213027ac673ed86b6782",
+    "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "sha256": "fb5a5ffb0a6b4520922e92ad55d4989cde4a6e683c8df314eeb6aad0820630b6",
     "template_path": "playbook/basic/app.py"
   },
@@ -15,7 +15,7 @@
     "template_path": "playbook/basic/app_inputs.json"
   },
   "app_inputs.py": {
-    "last_commit": "a4244225ffb6299b0651213027ac673ed86b6782",
+    "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "sha256": "df864180ddd0e8ada758b69c98f0fbd489df59a8a64986e25391434f2415b13f",
     "template_path": "playbook/basic/app_inputs.py"
   },
@@ -30,12 +30,12 @@
     "template_path": "playbook/basic/install.json"
   },
   "playbook_app.py": {
-    "last_commit": "c36d36c5caf00c1150efae6c9d08bb2e7d304f33",
+    "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "sha256": "7056a4a0f70c6654e3c17ac91144af1fec89002ba2eed2c97a646bec1c794c35",
     "template_path": "playbook/basic/playbook_app.py"
   },
   "run.py": {
-    "last_commit": "c36d36c5caf00c1150efae6c9d08bb2e7d304f33",
+    "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "sha256": "a653f27252840046ee7fdab1c8356d50d691c5fe5ef213af49ed8a3a658a30a7",
     "template_path": "playbook/basic/run.py"
   },

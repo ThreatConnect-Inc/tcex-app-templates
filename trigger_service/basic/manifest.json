@@ -5,7 +5,7 @@
     "template_path": "trigger_service/basic/README.md"
   },
   "app.py": {
-    "last_commit": "c36d36c5caf00c1150efae6c9d08bb2e7d304f33",
+    "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "sha256": "73344e8fe6e2ba4a7b843638a94e5b23b075a5b6b18f4c250add495f5dd2de77",
     "template_path": "trigger_service/basic/app.py"
   },
@@ -15,7 +15,7 @@
     "template_path": "trigger_service/basic/app_inputs.json"
   },
   "app_inputs.py": {
-    "last_commit": "a4244225ffb6299b0651213027ac673ed86b6782",
+    "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "sha256": "9200b59e75b0060d22ac85d861e849a5ed389cc4f8d7b12487213ccc185e8d02",
     "template_path": "trigger_service/basic/app_inputs.py"
   },
@@ -35,12 +35,12 @@
     "template_path": "trigger_service/basic/requirements.txt"
   },
   "run.py": {
-    "last_commit": "c36d36c5caf00c1150efae6c9d08bb2e7d304f33",
+    "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "sha256": "cbf8725e6eb9f076062c36830f4811b0de631435851ed37cc399281fec2b8e74",
     "template_path": "trigger_service/basic/run.py"
   },
   "service_app.py": {
-    "last_commit": "c36d36c5caf00c1150efae6c9d08bb2e7d304f33",
+    "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "sha256": "d8be7009a651753bc9703098e26895a89cf6d3875cc921ae0b85f964603ab2fa",
     "template_path": "trigger_service/basic/service_app.py"
   },

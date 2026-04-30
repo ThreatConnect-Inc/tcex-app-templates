@@ -5,12 +5,12 @@
     "template_path": "organization/basic/README.md"
   },
   "app.py": {
-    "last_commit": "a4244225ffb6299b0651213027ac673ed86b6782",
+    "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "sha256": "7cd89a628b5ea4db73629861ee2baa92c5fade676f667094681d94bb055234de",
     "template_path": "organization/basic/app.py"
   },
   "app_inputs.py": {
-    "last_commit": "a4244225ffb6299b0651213027ac673ed86b6782",
+    "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "sha256": "6c8ec262a13fa58bed875bc760ee5598bdf0b8a43ac0d50d50e999dbe06bd02b",
     "template_path": "organization/basic/app_inputs.py"
   },
@@ -20,12 +20,12 @@
     "template_path": "organization/basic/install.json"
   },
   "job_app.py": {
-    "last_commit": "c36d36c5caf00c1150efae6c9d08bb2e7d304f33",
+    "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "sha256": "09366aa4a6d4a837ed31cce6f85aad36f1cd75ddcb349ec2ffe23f9c44f1e707",
     "template_path": "organization/basic/job_app.py"
   },
   "run.py": {
-    "last_commit": "c36d36c5caf00c1150efae6c9d08bb2e7d304f33",
+    "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "sha256": "b2a22c6b82e3c7624abc8b58a5cae7ab10eb41a059f807a1724777a9ceaa00bc",
     "template_path": "organization/basic/run.py"
   },

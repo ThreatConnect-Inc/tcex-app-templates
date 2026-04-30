@@ -1,6 +1,6 @@
 {
   "app.py": {
-    "last_commit": "a4244225ffb6299b0651213027ac673ed86b6782",
+    "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "sha256": "d0f64b9c7b3ff9b240804d86fa5f5d7ac48fc9ddeb11d80881a1ed9148e14d06",
     "template_path": "external/basic/app.py"
   },
@@ -10,17 +10,17 @@
     "template_path": "external/basic/app_config.json"
   },
   "app_inputs.py": {
-    "last_commit": "a4244225ffb6299b0651213027ac673ed86b6782",
+    "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "sha256": "06727a53dcb738a2d1edc58a9e8084688a4d2c6c48477fec7ca4944815af8bfe",
     "template_path": "external/basic/app_inputs.py"
   },
   "external_app.py": {
-    "last_commit": "c36d36c5caf00c1150efae6c9d08bb2e7d304f33",
+    "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "sha256": "c3c8f122b1d3482c0d34cf730347566d9bc3c29a7edb702c1c75d3d396c9c99a",
     "template_path": "external/basic/external_app.py"
   },
   "run.py": {
-    "last_commit": "c36d36c5caf00c1150efae6c9d08bb2e7d304f33",
+    "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "sha256": "1b4b2b66f107fbef4e71bbbab4cb82915b775733de91b63e5afab23e28595d66",
     "template_path": "external/basic/run.py"
   }

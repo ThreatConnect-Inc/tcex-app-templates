@@ -5,12 +5,12 @@
     "template_path": "api_service/basic/README.md"
   },
   "api_service_app.py": {
-    "last_commit": "c36d36c5caf00c1150efae6c9d08bb2e7d304f33",
+    "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "sha256": "eec992880b4ae45a54e869f7e4f477da8630d6b0eb77dc0820366bcb362ebc69",
     "template_path": "api_service/basic/api_service_app.py"
   },
   "app.py": {
-    "last_commit": "c36d36c5caf00c1150efae6c9d08bb2e7d304f33",
+    "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "sha256": "b146eebb8097a57500cbb2dbc8459e9b833f19608c773d11cabd945ed92e83aa",
     "template_path": "api_service/basic/app.py"
   },
@@ -20,7 +20,7 @@
     "template_path": "api_service/basic/app_inputs.json"
   },
   "app_inputs.py": {
-    "last_commit": "a4244225ffb6299b0651213027ac673ed86b6782",
+    "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "sha256": "403535b9ad2e7ea6279faf66d98b2efce0ebf26d45b9a4212f8c1ee0b73d5ac1",
     "template_path": "api_service/basic/app_inputs.py"
   },
@@ -35,7 +35,7 @@
     "template_path": "api_service/basic/requirements.txt"
   },
   "run.py": {
-    "last_commit": "c36d36c5caf00c1150efae6c9d08bb2e7d304f33",
+    "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "sha256": "fd2d681d316b3a6f97b2d56c109408b9eca578823f14ed13a12b5e9522d867b6",
     "template_path": "api_service/basic/run.py"
   },

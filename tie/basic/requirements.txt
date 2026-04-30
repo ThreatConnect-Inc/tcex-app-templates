@@ -4,5 +4,5 @@ psutil
 schedule
 setproctitle
 spectree[offline]==1.4.7
-tcex>=5.0.0,<5.1.0
+tcex>=5
 uuid6

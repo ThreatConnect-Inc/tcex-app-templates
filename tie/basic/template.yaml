@@ -9,25 +9,11 @@ summary: A template of a working TIE App.
 template_files:
   - core
   - ui
-  - model
-  - message_service
-  - more
-  - scheduled_action
-  - sdk
-  - task
-  - api
-  - tests
-  - mapping
-  - __init__.py
   - .gitignore
   - .prettierrc.json
   - .gitlab-ci.yml
   - api_service_app.py
-  - attributes.json
-  - migrations.py
-  - requirements.txt
   - run.py
-  - service.job.json
 # One or more parent templates for the current template. The parent
 # template files will be pulled in the order that they are defined with
 # the later templates having precedent over the prior templates.

@@ -122,6 +122,57 @@ def find_template_dirs(root: Path) -> list[Path]:
     return sorted(dirs)
 
 
+def read_template_files(template_dir: Path) -> list[str]:
+    """Return the ``template_files`` list from *template_dir*'s template.yaml.
+
+    These are the files the template "owns" (boilerplate the App developer should
+    not edit). They drive the ``managed`` flag only — never manifest membership.
+
+    A minimal block-list parser is used instead of PyYAML so this builder keeps
+    its zero-third-party-dependency footprint and runs under the repo's bare
+    Python. We read the ``template_files:`` block and collect the immediately
+    following ``- <entry>`` lines, stopping at the next top-level key.
+    """
+    yaml_path = template_dir / 'template.yaml'
+    if not yaml_path.is_file():
+        return []
+
+    entries: list[str] = []
+    in_block = False
+    for raw in yaml_path.read_text(encoding='utf-8').splitlines():
+        stripped = raw.strip()
+        if not in_block:
+            if stripped == 'template_files:':
+                in_block = True
+            continue
+        # A blank line or comment inside the block is skipped.
+        if not stripped or stripped.startswith('#'):
+            continue
+        # List items are indented "  - <entry>"; anything else (a new top-level
+        # key like "template_parents:" / "version:") ends the block.
+        if stripped.startswith('- '):
+            entries.append(stripped[2:].strip())
+        else:
+            break
+    return entries
+
+
+def is_managed_entry(key: str, template_files: list[str]) -> bool:
+    """Return True if manifest *key* is owned by one of *template_files*.
+
+    Match rule: ``key == entry`` (exact file) or ``key.startswith(entry + '/')``
+    (entry is a directory prefix). Each entry is normalized ``gitignore`` ->
+    ``.gitignore`` first, because the manifest key for the delivered ignore file
+    is ``.gitignore`` while ``_app_common``'s template.yaml lists bare
+    ``gitignore``.
+    """
+    for entry in template_files:
+        normalized = '.gitignore' if entry == 'gitignore' else entry
+        if key == normalized or key.startswith(normalized + '/'):
+            return True
+    return False
+
+
 def collect_files(template_dir: Path) -> list[Path]:
     """Return all files in *template_dir* that belong in the manifest.
 
@@ -169,6 +220,15 @@ def build_manifest(
     except ValueError:
         dir_prefix = template_dir.name
 
+    template_files = read_template_files(template_dir)
+
+    # TIE templates enumerate their entire app tree (app logic included) in
+    # template_files, so marking them managed would let `tcex update --managed`
+    # overwrite app code. Phase-1 defers TIE: emit managed:false for all tie/*
+    # entries. (dir_prefix is 'tie' or 'tie/<name>'.)
+    if dir_prefix == 'tie' or dir_prefix.startswith('tie/'):
+        template_files = []
+
     for abs_path in files:
         rel = abs_path.relative_to(template_dir)
 
@@ -197,6 +257,7 @@ def build_manifest(
             'sha256': file_hash,
             'last_commit': last_commit or '',
             'template_path': f'{dir_prefix}/{key}',
+            'managed': is_managed_entry(key, template_files),
         }
 
     # stable key ordering for deterministic output
@@ -245,11 +306,14 @@ def main(argv: Sequence[str] | None = None) -> None:
 
     print(f'Building manifests for {len(template_dirs)} directories\n')
 
-    for tdir in template_dirs:
-        rel = tdir.relative_to(root)
-        manifest = build_manifest(tdir, root, commit_map, repo_root)
-        out_path = tdir / 'manifest.json'
-        out_path.write_text(json.dumps(manifest, indent=4) + '\n', encoding='utf-8')
+    for template_dir in template_dirs:
+        rel = template_dir.relative_to(root)
+        manifest = build_manifest(template_dir, root, commit_map, repo_root)
+        out_path = template_dir / 'manifest.json'
+        # Canonical serialization: 2-space indent + sorted keys. This matches the
+        # historically committed manifest format (and the CLI's merged-manifest
+        # output), so a rebuild diffs cleanly instead of reformatting wholesale.
+        out_path.write_text(json.dumps(manifest, indent=2, sort_keys=True) + '\n', encoding='utf-8')
         print(f'  {rel}/manifest.json  ({len(manifest)} entries)')
 
     print(f'\nDone — wrote {len(template_dirs)} manifests.')

@@ -50,7 +50,7 @@ class SupervisorConfigModel(BaseModel):
     )
 
     @root_validator
-    def _validate_max_greater_than_base(cls, values):  # noqa: N805
+    def _validate_max_greater_than_base(cls, values):
         """Ensure backoff_max_seconds >= backoff_base_seconds."""
         base = values.get('backoff_base_seconds')
         max_val = values.get('backoff_max_seconds')

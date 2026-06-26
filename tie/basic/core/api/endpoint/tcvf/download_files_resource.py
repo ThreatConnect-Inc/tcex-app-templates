@@ -5,13 +5,14 @@ from functools import cached_property
 from io import BytesIO
 from pathlib import Path
 
+from spectree import Response
+
 from core.api.endpoint.tcvf.endpoint_base import EndpointBase
 from core.api.falcon_request import FalconRequest
 from core.api.falcon_response import FalconResponse
 from core.api.spec import spec, tag_util
 from core.api.validation.models.query_param_model import QueryParamModel
 from core.dao.job_dao import JobRequestDAO
-from spectree import Response
 
 
 class DownloadFilesResource(EndpointBase):

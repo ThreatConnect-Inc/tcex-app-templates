@@ -7,6 +7,8 @@ from pathlib import Path
 from typing import Any
 
 import uuid6
+from pydantic import BaseModel, root_validator
+
 from core.json_db import JsonDB
 from core.model.tie import (
     BatchErrorModel,
@@ -15,7 +17,6 @@ from core.model.tie import (
 )
 from model.job_request_model import JobRequestModel
 from model.settings_model import SettingModel
-from pydantic import BaseModel, root_validator
 
 
 class SQLiteMigrationModel(BaseModel):
@@ -28,7 +29,7 @@ class SQLiteMigrationModel(BaseModel):
     post_migration_callback: Callable[[list], list] | None = None
 
     @root_validator
-    def validate_data(cls, values: dict) -> dict:  # noqa: N805
+    def validate_data(cls, values: dict) -> dict:
         """Define the query if not provided."""
         if not values.get('query'):
             values['query'] = f'SELECT * FROM {values["table_name"]}'  # nosec

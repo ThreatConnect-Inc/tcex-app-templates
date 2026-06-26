@@ -2,12 +2,13 @@
 
 from typing import Any
 
+from tcex import TcEx
+
 # TODO: Make AppBaseModel abstract and in core, import from that here.
 from app_inputs import AppBaseModel
 from core.api.falcon_request import FalconRequest
 from core.api.falcon_response import FalconResponse
 from core.api.middleware_abc import MiddlewareABC
-from tcex import TcEx
 
 
 class TcExMiddleware(MiddlewareABC):

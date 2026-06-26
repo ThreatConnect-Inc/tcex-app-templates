@@ -4,6 +4,13 @@
   "name": "TCV App Template",
   "releases": [
     {
+      "date": "2026-03-10",
+      "notes": [
+        "Added notification support to TIE apps (min server version 7.12.2)"
+      ],
+      "version": "1.0.1"
+    },
+    {
       "date": "2026-01-27",
       "notes": [
         "Initial template release"
@@ -11,5 +18,5 @@
       "version": "1.0.0"
     }
   ],
-  "version": "1.0.0"
+  "version": "1.0.1"
 }

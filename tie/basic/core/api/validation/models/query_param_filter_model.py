@@ -4,13 +4,14 @@ import logging
 import re
 from typing import Any
 
+from pydantic import Field, validator
+
 from core.api.validation.models.query_param_model import (
     QueryParamModel,
     param_to_list,
     values_to_snake,
 )
 from core.json_db.where import ToWhere, WhereDict
-from pydantic import Field, validator
 
 # get primary API logger
 logger = logging.getLogger('tcex')
@@ -66,7 +67,7 @@ class ParamModelFilter:
 
     def _is_processed(self, field: str, field_filters: dict[str, Any]) -> bool:
         """Return True if the field has already been processed (included/exclude)."""
-        return hasattr(field_filters, field) and field_filters.get(field) is True
+        return field in field_filters and field_filters.get(field) is True
         # return field_filters.get(field) and field_filters.get(field) is True  # type: ignore
 
     def _nested(self, parts: list[str], field_filters: dict[str, Any]):
@@ -160,11 +161,11 @@ class QueryParamFilterModel(QueryParamModel, ToWhere):
     # convert params with multiple value (e.g., ?id=1,id=2)
     # and/or csv delimited (e.g., id=1,2) into a list.
     @validator('exclude', 'include', pre=True)
-    def _param_to_model_filter(cls, value):  # noqa: N805
+    def _param_to_model_filter(cls, value):
         return param_to_list(value)
 
     @validator('exclude', 'include', pre=True)
-    def _exclude_extra_include_value_to_snake(cls, value):  # noqa: N805
+    def _exclude_extra_include_value_to_snake(cls, value):
         return values_to_snake(value)
 
     @property

@@ -1,4 +1,4 @@
-@if (field && value !== null) {
+@if (field && (value !== null || field.type === 'send-status')) {
     @switch (field.type) {
         @case ('date') {
             {{ value | date: 'yyyy-MM-dd HH:mm:ss z' }}
@@ -23,6 +23,33 @@
                     {{ value }}
                 </div>
             }
+        }
+
+        @case ('category') {
+            {{ toTitleCase(value) }}
+        }
+        @case ('send-status') {
+            <div
+                class="d-flex align-items-center"
+                [style]="{ gap: 'var(--tcl-spacing-3)' }">
+                @if (value === 'success') {
+                    <tcl-svg-icon
+                        name="check"
+                        [style]="{ color: 'rgb(0, 128, 0)' }" />
+                    Success
+                } @else if (value === 'failed') {
+                    <tcl-svg-icon
+                        name="alert"
+                        [style]="{ color: 'rgb(212, 37, 52)' }" />
+                    Failed
+                } @else {
+                    Not Sent
+                }
+            </div>
+        }
+
+        @case ('json') {
+            <pre style="margin: 0; white-space: pre-wrap; word-break: break-word; font-size: 0.85em">{{ formatJson(value) }}</pre>
         }
 
         @default {

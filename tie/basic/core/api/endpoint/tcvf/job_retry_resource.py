@@ -28,14 +28,15 @@ import re
 from functools import cached_property
 
 import falcon
+from pydantic import BaseModel, Field, validator
+from spectree import Response
+
 from core.api.endpoint.tcvf.endpoint_base import EndpointBase
 from core.api.falcon_request import FalconRequest
 from core.api.falcon_response import FalconResponse
 from core.api.spec import spec, tag_job
 from core.api.validation.models import QueryParamModel
 from core.dao.job_dao import JobRequestDAO
-from pydantic import BaseModel, Field, validator
-from spectree import Response
 
 
 class JobStatusUpdateRequest(BaseModel):
@@ -59,7 +60,7 @@ class JobStatusUpdateRequest(BaseModel):
     )
 
     @validator('target_stage')
-    def _validate_target_stage(cls, v):  # noqa: N805
+    def _validate_target_stage(cls, v):
         """Validate target_stage contains only safe characters (prevent path traversal)."""
         if not re.match(r'^[a-zA-Z0-9_\- ]+$', v):
             raise ValueError(
@@ -270,6 +271,12 @@ class JobRetryResource(EndpointBase):
         job.status = target_status
         if request.clear_backoff:
             job.retry_after = None
+
+        # Clear retry state when resetting to pending (fresh start)
+        if target_status.casefold() == self.settings.job.status_pending.casefold():
+            job.failure_count = 0
+            job.retry_after = None
+            job.date_failed = None
 
         self.dao.save(job)
 

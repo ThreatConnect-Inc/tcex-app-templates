@@ -1,0 +1,154 @@
+<div class="page-container pb-medium-large px-medium-large d-flex flex-column">
+    <div class="d-flex pt-medium-large justify-content-between align-items-center mb-medium">
+        <h3>Notifications</h3>
+        <!-- <tcl-button
+            theme="primary"
+            [featureVersion]="featureVersion"
+            (click)="handleSendClick()">
+            Send Notification
+        </tcl-button> -->
+    </div>
+
+    <div class="align-items-end d-flex mb-small">
+        @if (filterFormConfig) {
+            <app-generated-form
+                class="d-flex"
+                #filterForm
+                [formConfig]="filterFormConfig"></app-generated-form>
+        }
+
+        <tcl-button
+            class="mr-medium pl-small"
+            theme="primary"
+            [featureVersion]="featureVersion"
+            [style.width.px]="600"
+            (onClick)="handleSearchClick()"
+            >Search</tcl-button
+        >
+    </div>
+
+    @if (table) {
+        <tcl-table
+            class="tc-new-tables table-layout-auto"
+            #dataTable
+            [autoLayout]="true"
+            [lazy]="true"
+            [pageSelectionOnly]="false"
+            [paginator]="true"
+            [resizableColumns]="false"
+            [rows]="paginator.pageSize"
+            [rowsPerPageOptions]="paginator.pageSizeOptions"
+            [scrollable]="false"
+            [showSpinningLoader]="!table.dataLoaded"
+            [totalRecords]="paginator.pageTotal"
+            [value]="table.data"
+            (closeSpinner)="table.dataLoaded = true"
+            (onPage)="paginator.pageChangedTcl($event)"
+            (onPageSelectionOnlyActive)="paginator.pageChanged($event)">
+            <ng-template tclTemplate="empty-message">
+                <tr>
+                    <td
+                        class="empty-message"
+                        colSpan="6">
+                        No notifications found
+                    </td>
+                </tr>
+            </ng-template>
+            <!-- Headers -->
+            <ng-template tclTemplate="header">
+                <tr>
+                    @for (col of table.dataColumns; track col) {
+                        <th>{{ col.header }}</th>
+                    }
+                    <th></th>
+                </tr>
+            </ng-template>
+            <!-- Rows -->
+            <ng-template
+                let-value
+                tclTemplate="body">
+                <tr
+                    class="clickable-row"
+                    (click)="handleRowClick(value)">
+                    @for (row of table.dataColumns; track row) {
+                        <td>
+                            <app-formatted-field
+                                [field]="row.fieldDisplay"
+                                [value]="value[row.field]"></app-formatted-field>
+                        </td>
+                    }
+                    <td></td>
+                </tr>
+            </ng-template>
+        </tcl-table>
+    }
+</div>
+
+<tcl-side-drawer
+    side="right"
+    [open]="showSideDrawer"
+    [titleText]="showSideDrawerTitle"
+    (openChange)="handleSidenavChange($event)">
+    @switch (sideDrawerContent) {
+        @case (SideDrawerContent.DETAILS) {
+            <div
+                class="container mt"
+                style="width: 95%">
+                @if (selectedNotification) {
+                    @for (field of detailsData; track field.field) {
+                        <div class="row mb-small">
+                            <div
+                                class="col-4"
+                                style="text-align: right">
+                                <b>{{ field.label }}</b>
+                            </div>
+                            <div class="col-8">
+                                @if (selectedNotification[field.field] !== null && selectedNotification[field.field] !== undefined) {
+                                    <app-formatted-field
+                                        [field]="field"
+                                        [value]="selectedNotification[field.field]"></app-formatted-field>
+                                } @else {
+                                    —
+                                }
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        }
+        <!-- @case (SideDrawerContent.SEND) {
+            <div class="d-flex flex-column p-medium">
+                <tcl-text-input
+                    class="mb-medium"
+                    label="Notification Type"
+                    [showCount]="false"
+                    [value]="newNotificationType"
+                    (onChange)="newNotificationType = $event">
+                </tcl-text-input>
+                <tcl-dropdown-v2
+                    class="mb-medium"
+                    label="Priority"
+                    [isPill]="true"
+                    [menuItems]="priorityOptions"
+                    (onSelect)="newPriority = $event.item.value">
+                </tcl-dropdown-v2>
+                <tcl-text-input
+                    class="mb-medium"
+                    label="Message"
+                    [showCount]="false"
+                    [value]="newMessage"
+                    (onChange)="newMessage = $event">
+                </tcl-text-input>
+                <div class="d-flex justify-content-end">
+                    <tcl-button
+                        theme="primary"
+                        [featureVersion]="featureVersion"
+                        [disabled]="!newMessage || sending"
+                        (click)="sendNotification()">
+                        Send
+                    </tcl-button>
+                </div>
+            </div>
+        } -->
+    }
+</tcl-side-drawer>

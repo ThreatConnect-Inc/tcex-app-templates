@@ -3,12 +3,13 @@
 from pathlib import Path
 
 import falcon
+from spectree import Response
+
 from core.api.endpoint.tcvf.endpoint_base import EndpointBase
 from core.api.falcon_request import FalconRequest
 from core.api.falcon_response import FalconResponse
 from core.api.spec import spec, tag_job
 from core.api.validation.models import QueryParamModel
-from spectree import Response
 
 
 class QueryParams(QueryParamModel):
@@ -39,10 +40,14 @@ class JobFileDownload(EndpointBase):
         if query_params.file_name.endswith('.jsondb') or query_params.file_name.endswith(
             '.jsondb.gz'
         ):
-            file_path = next(self.settings.base_path.rglob(f'*{job_id}.jsondb*'))
+            file_path = next(self.settings.base_path.rglob(f'*{job_id}.jsondb*'), None)
         else:
             path_parts = query_params.file_name.split('/')
-            job_dir = next(p for p in self.settings.base_path.rglob(f'*{job_id}') if p.is_dir())
+            job_dir = next(
+                (p for p in self.settings.base_path.rglob(f'*{job_id}') if p.is_dir()), None
+            )
+            if job_dir is None:
+                raise falcon.HTTPNotFound
 
             combined_path = job_dir.joinpath(*path_parts)
 

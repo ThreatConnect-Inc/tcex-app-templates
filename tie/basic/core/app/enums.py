@@ -19,6 +19,7 @@ from core.api.endpoint.tcvf.metric_processing_collection import (
     MetricProcessingCollection,
 )
 from core.api.endpoint.tcvf.metric_task_resource import MetricTaskResource
+from core.api.endpoint.tcvf.notification_collection import NotificationCollection
 from core.api.endpoint.tcvf.report_pdf_tracker_collection import (
     ReportPDFTrackerCollection,
 )
@@ -142,6 +143,7 @@ class ROUTES(Enum):
         SUPPORT_LOG_SEARCH_RESOURCE = Route('/api/support/log-search', SupportLogSearchResource)
         SUPERVISOR_RESOURCE = Route('/api/support/supervisor', SupervisorResource)
         HEALTH = Route('/api/health', HealthResource)
+        NOTIFICATION_COLLECTION = Route('/api/notification', NotificationCollection)
         REPORT_PDF_TRACKER_COLLECTION = Route('/api/report/pdf-tracker', ReportPDFTrackerCollection)
 
         # Example: Route that requires additional arguments during initialization

@@ -3,10 +3,11 @@
 from datetime import UTC, datetime
 from typing import ClassVar
 
+from pydantic import Extra, Field
+
 from core.json_db import Index
 from core.model.response.paginated_response import PaginatedResponseModel
 from core.model.tie.item_model import ItemModel
-from pydantic import Extra, Field
 
 
 class TiProcessingMetricModel(ItemModel):

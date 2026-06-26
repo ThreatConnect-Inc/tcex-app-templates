@@ -5,11 +5,12 @@ from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from typing import NamedTuple, TypeVar
 
+from tcex import TcEx
+
 from core.json_db import JsonDB
 from core.task.task_path_pipe_abc import TaskPathPipeABC, UploadError, UploadRetryError
 from model import JobRequestModel
 from model.settings_model import SettingModel
-from tcex import TcEx
 
 T = TypeVar('T')
 
@@ -134,7 +135,6 @@ class UploadABC(TaskPathPipeABC, ABC):
         self.log.info(f'action="run-task", status="start", request-id="{request_id}"')
 
         request = self.job_dao.get(request_id)
-        self._reset_counts(request)
 
         files = sorted(input_dir.iterdir())
         failed_files = []

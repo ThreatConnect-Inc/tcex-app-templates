@@ -6,6 +6,7 @@ import { JobsComponent } from './pages/jobs/jobs.component';
 import { TasksComponent } from './pages/tasks/tasks.component';
 import { DownloadComponent } from './pages/download/download.component';
 import { BatchErrorsComponent } from './pages/batch-errors/batch-errors.component';
+import { NotificationsComponent } from './pages/notifications/notifications.component';
 import { ReportPdfTrackerComponent } from './pages/report-pdf-tracker/report-pdf-tracker.component';
 
 const routes: Routes = [
@@ -14,6 +15,7 @@ const routes: Routes = [
     { path: 'tasks', component: TasksComponent },
     { path: 'download', component: DownloadComponent },
     { path: 'batchErrors', component: BatchErrorsComponent },
+    { path: 'notifications', component: NotificationsComponent },
     { path: 'reportPdfTrackers', component: ReportPdfTrackerComponent },
     { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
 ];

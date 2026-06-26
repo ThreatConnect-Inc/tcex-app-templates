@@ -6,6 +6,11 @@ import threading
 from collections.abc import Callable
 from typing import Any
 
+from tcex import TcEx
+from tcex.app.service.mqtt_message_broker import MqttMessageBroker
+from tcex.logger.trace_logger import TraceLogger
+from tcex.pleb.cached_property import cached_property
+
 from core.message_service.model.tcva.block_request_model import BlockRequestModel
 from core.message_service.model.tcva.discovery_request_model import (
     DiscoveryRequestModel,
@@ -22,10 +27,6 @@ from core.message_service.model.tcva.message_types import (
     message_types_investigate,
 )
 from core.model.model_base import ModelBase
-from tcex import TcEx
-from tcex.app.service.mqtt_message_broker import MqttMessageBroker
-from tcex.logger.trace_logger import TraceLogger
-from tcex.pleb.cached_property import cached_property
 
 _logger: TraceLogger = logging.getLogger('tcex')  # type: ignore
 

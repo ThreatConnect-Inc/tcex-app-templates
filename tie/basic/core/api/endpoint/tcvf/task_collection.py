@@ -1,5 +1,7 @@
 """Class for /api/task endpoint"""
 
+from spectree import Response
+
 from core.api.endpoint.tcvf.endpoint_base import EndpointBase
 from core.api.falcon_request import FalconRequest
 from core.api.falcon_response import FalconResponse
@@ -8,7 +10,6 @@ from core.api.validation.models.query_param_filter_pagination_model import (
     QueryParamFilterPaginationModel,
 )
 from core.model.tie.task_setting_model import TaskPaginatedResponseModel
-from spectree import Response
 
 
 class TaskCollection(EndpointBase):

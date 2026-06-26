@@ -1,8 +1,9 @@
 """Log Event Model for log search endpoint."""
 
+from pydantic import Field
+
 from core.model.model_base import BaseModel
 from core.model.response.paginated_response import PaginatedResponseModel
-from pydantic import Field
 
 
 class LogEventModel(BaseModel):

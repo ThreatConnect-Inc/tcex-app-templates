@@ -3,9 +3,10 @@
 from datetime import UTC, datetime
 from typing import ClassVar
 
+from pydantic import Field
+
 from core.json_db import Index
 from core.model.model_base import ModelBase
-from pydantic import Field
 
 
 class VersionManagerModel(ModelBase):

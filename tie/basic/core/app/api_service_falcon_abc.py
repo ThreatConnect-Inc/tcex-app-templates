@@ -8,6 +8,10 @@ from time import sleep, time
 from typing import cast
 
 import schedule
+from tcex.api.tc.v3.tql.tql_operator import TqlOperator
+from tcex.exit import ExitCode
+from tcex.logger.trace_logger import TraceLogger
+
 from app_inputs import AppBaseModel
 from core.api.falcon_app import FalconApp
 from core.api.spec import spec
@@ -23,9 +27,6 @@ from core.supervisor import Supervisor
 from core.task.tasks import Tasks
 from core.util.custom_handler import CustomHandler
 from model.settings_model import SettingModel
-from tcex.api.tc.v3.tql.tql_operator import TqlOperator
-from tcex.exit import ExitCode
-from tcex.logger.trace_logger import TraceLogger
 
 try:
     from migrations import Migrations
@@ -321,9 +322,13 @@ class ApiServiceFalconABC(ApiServiceAppABC, ABC):
 
     def loop_forever(self):
         """Run the app."""
-        self.initialize_app()
-        self.preflight_check_service.perform_checks()
-        # self.tcex.exit.exit(ExitCode.SUCCESS, 'App has been successfully Started')
+        try:
+            self.initialize_app()
+            self.preflight_check_service.perform_checks()
+        except Exception as ex:
+            self.tasks_obj.send_preflight_failure_notification(str(ex)[:80])
+            raise
+        self.tasks_obj.send_startup_notification()
         if self.migrations:
             self.migrations.migration_service.preform_migrations()
 
@@ -336,7 +341,7 @@ class ApiServiceFalconABC(ApiServiceAppABC, ABC):
         deadline = time() + delay_time
 
         self.log.debug(f'action=loop-forever, shutdown=True, max_delay_time={delay_time}')
-        while self.tasks_obj.alive() != 0 and time() < deadline:
+        while self.tasks_obj.alive() and time() < deadline:
             sleep(1)
 
         self.tasks_obj.kill_all()

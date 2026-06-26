@@ -2,6 +2,7 @@ bs4
 falcon<3.1.0
 psutil
 schedule
+setproctitle
 spectree[offline]==1.4.7
 tcex>=4.0.0,<4.1.0
 uuid6

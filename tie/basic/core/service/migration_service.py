@@ -2,9 +2,10 @@
 
 from pathlib import Path
 
+from packaging.version import parse
+
 from core.model.tie.version_manager_model import VersionManagerModel
 from core.service.sqlite_migration_service import SQLiteMigration
-from packaging.version import parse
 
 
 class MigrationService:

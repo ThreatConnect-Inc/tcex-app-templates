@@ -4,9 +4,10 @@ from datetime import UTC, datetime
 from typing import ClassVar
 
 import arrow
+from pydantic import Extra, Field, validator
+
 from core.json_db import Index
 from core.model.model_base import ModelBase
-from pydantic import Extra, Field, validator
 
 
 class JobRequestBaseModel(ModelBase):
@@ -104,11 +105,11 @@ class JobRequestBaseModel(ModelBase):
         return None
 
     @validator('status')
-    def _title_case(cls, v):  # noqa: N805
+    def _title_case(cls, v):
         return ' '.join([w.title() for w in v.split(' ')])
 
     @validator('status_icon', pre=True)
-    def _status_icon(cls, _, values):  # noqa: N805
+    def _status_icon(cls, _, values):
         status_icon_map = {
             'download in progress': 'file_download',
             'download complete': 'file_download',
@@ -116,6 +117,7 @@ class JobRequestBaseModel(ModelBase):
             'convert complete': 'change_circle',
             'failed': 'error_outline',
             'pending': 'help_outline',
+            'retry pending': 'replay',
             'upload in progress': 'file_upload',
             'upload complete': 'check',
         }

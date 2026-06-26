@@ -1,10 +1,11 @@
 """Class for /api/tc/app-config endpoint"""
 
+from spectree import Response
+
 from core.api.endpoint.tcvf.endpoint_base import EndpointBase
 from core.api.falcon_request import FalconRequest
 from core.api.falcon_response import FalconResponse
 from core.api.spec import spec, tag_job
-from spectree import Response
 
 
 class JobFiles(EndpointBase):

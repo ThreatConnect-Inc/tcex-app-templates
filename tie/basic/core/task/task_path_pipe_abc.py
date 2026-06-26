@@ -9,6 +9,8 @@ from functools import partial
 from pathlib import Path
 from uuid import UUID
 
+from pydantic import BaseModel
+
 from core.beacon import provide
 from core.task.task_abc import TaskABC
 from core.task.task_path_pipe_injectables import (
@@ -19,7 +21,6 @@ from core.task.task_path_pipe_injectables import (
 )
 from core.util.process_metadata import Metadata, ProcessMetadata
 from model import AdHocJobRequestModel
-from pydantic import BaseModel
 
 
 class UploadError(Exception):
@@ -271,9 +272,11 @@ class TaskPathPipeABC(TaskABC, ABC):
             self._task_date_fields_complete,
         )
 
-        # Clear any backoff/failure state on success
-        # This ensures future failures start fresh with correct 48h threshold
-        self._clear_failure_state_on_success(request_id)
+        # Clear any backoff/failure state only when the entire pipeline completes.
+        # Intermediate task success (e.g., Download succeeding before Convert fails again)
+        # should NOT reset failure_count, otherwise the job retries forever at count=1.
+        if self.task_settings.pipe_task_complete is True:
+            self._clear_failure_state_on_success(request_id)
 
         # Signal success to Supervisor (via namespace for cross-process communication)
         self.ns.task_result = {'success': True}
@@ -406,8 +409,8 @@ class TaskPathPipeABC(TaskABC, ABC):
         backoff = self.supervisor.compute_backoff(job.failure_count)
         job.retry_after = now + backoff
 
-        # Reset to Pending to restart from Download (clear all stage progress)
-        job.status = self.settings.job.status_pending
+        # Reset to Retry Pending to restart from Download (clear all stage progress)
+        job.status = self.settings.job.status_retry_pending
         job.date_download_start = None
         job.date_download_complete = None
         job.date_convert_start = None

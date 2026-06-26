@@ -9,6 +9,8 @@ from pathlib import Path
 from typing import NamedTuple, TypeVar
 
 import uuid6
+from tcex.api.tc.v2.batch import BatchSubmit
+
 from core.model.tie.batch_error_model import (
     JobBatchErrorIndexModel,
     UnknownBatchErrorModel,
@@ -17,7 +19,6 @@ from core.model.tie.batch_error_model import (
 )
 from core.task.upload_abc import UploadABC
 from model import JobRequestModel
-from tcex.api.tc.v2.batch import BatchSubmit
 
 T = TypeVar('T')
 

@@ -4,10 +4,11 @@ import re
 from functools import cached_property
 from pathlib import Path
 
+from tcex.api.tc.v2.batch import BatchSubmit
+
 from core.model.tie.task_setting_pipe_model import TaskSettingPipeModel
 from core.task.upload_ingest_abc import UploadIngestABC, WriteTypes
 from model import JobRequestModel
-from tcex.api.tc.v2.batch import BatchSubmit
 
 
 # TODO: Fix spelling to be consistent

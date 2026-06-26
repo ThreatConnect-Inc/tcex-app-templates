@@ -1,7 +1,8 @@
 html,
 body {
     height: 100%;
-    overflow: hidden;
+    overflow-x: auto;
+    overflow-y: hidden;
 }
 
 ul {
@@ -42,4 +43,11 @@ ul {
 .page-container {
     height: calc(100vh - 60px);
     overflow: scroll;
+}
+
+/* Fix chip-list "more" popover: solid background and scrollable */
+.all-chips-container {
+    background: var(--tcl-color-surface, #fff);
+    max-height: 250px;
+    overflow-y: auto;
 }

@@ -2,7 +2,7 @@
   ".gitignore": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "aed130ce2d25f5cca11e0dc6d4f7e30113622350cce150bdc7649aabe3b2505e",
+    "sha256": "1a62e637cfb4925b954d424a6fba6b639a5402f81930105bd5e7129ef34d7017",
     "template_path": "tie/basic/.gitignore"
   },
   ".gitlab-ci.yml": {
@@ -38,19 +38,19 @@
   "api/endpoint/adhoc_job_request_resource.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "e6bd3c129ec04835d1b32a03b39f765857112bb53713bd04b157df6db7ba6b61",
+    "sha256": "44c00430e509354abc0100dfaa290b9f7a9f71fe5c80fb4132f831f683aacc41",
     "template_path": "tie/basic/api/endpoint/adhoc_job_request_resource.py"
   },
   "api/endpoint/download_ti_resource.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "643a24a2a14ca3cd885f870584ffe84eb7760c6cc24b04ce689b46172f8f5c2c",
+    "sha256": "e0867f88515cf395b7ad6b364c3b50d39752bc2a83c3408e843b95c41da2ca5a",
     "template_path": "tie/basic/api/endpoint/download_ti_resource.py"
   },
   "api/endpoint/enrichment_response.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "4ddcd867ee9c14dfbd881e5478624fcd28e0b47529374dd9c4a266104d8aa867",
+    "sha256": "d2c3814252bf324054467a135b4687f99e387b0f29a777307871c557f5fdc64f",
     "template_path": "tie/basic/api/endpoint/enrichment_response.py"
   },
   "api/spec_tags.py": {
@@ -62,13 +62,13 @@
   "api/ui_config_builder.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "33642fd8e83f4769c1e9efe738a2f1ac4e9b72060a198b846a1c368708c4c31c",
+    "sha256": "41df7955d3d51f57ef1e40c69c48ff46b409b84a2e0890517d93ae2fcaf56e62",
     "template_path": "tie/basic/api/ui_config_builder.py"
   },
   "api_service_app.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "f66d01410ef97c4fae06a2213ab2b5ba1590afe832e90c3f2e1ddf0fbfde959f",
+    "sha256": "78f712757d46ca7776081513cee802530d59c90716896a64227538634fae4f92",
     "template_path": "tie/basic/api_service_app.py"
   },
   "attributes.json": {
@@ -98,13 +98,13 @@
   "core/api/endpoint/endpoint_base_abc.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "dde500daf94aecfc258261e4c7ba06b78f1f7fe0fce833f7461d18243c5348c4",
+    "sha256": "dedce354261947caf01645e5138abd20c08633893ca9dce0b6f32a41aab16b9a",
     "template_path": "tie/basic/core/api/endpoint/endpoint_base_abc.py"
   },
   "core/api/endpoint/tc_app_config.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "29169067370a3f949b9e45f916743537ef2728d8c647876049683cd3c34bf7d1",
+    "sha256": "25121b4707300f5306757b6e4fb9c4c8330586e982e482ba58fa5a115c26bc53",
     "template_path": "tie/basic/core/api/endpoint/tc_app_config.py"
   },
   "core/api/endpoint/tcva/__init__.py": {
@@ -116,7 +116,7 @@
   "core/api/endpoint/tcva/discovery_response.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "a49a5e28f130079ff72ec5060738215f89a4f7133ae1196ec3f33a929fa0d927",
+    "sha256": "192b8e7b34183ff82bacb5517d547ddb3add3f1af7d9ebdbcd1a805e9897b1c6",
     "template_path": "tie/basic/core/api/endpoint/tcva/discovery_response.py"
   },
   "core/api/endpoint/tcvf/__init__.py": {
@@ -128,25 +128,25 @@
   "core/api/endpoint/tcvf/batch_error_collection.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "0e874f75fdf60d2c1b7da5f0b50a7b7dabb862591fa398f10622c4213a987b4d",
+    "sha256": "8444f17b421196ce036ed52b73e7435427cc63b5c4bb1315679e28649cf1bd15",
     "template_path": "tie/basic/core/api/endpoint/tcvf/batch_error_collection.py"
   },
   "core/api/endpoint/tcvf/batch_error_counts_collection.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "91ba3bcd452ca7bd5913cd0e25534f21be4802fe84aa1680205b138e0ba7e470",
+    "sha256": "cc7f275d2666826a4e1f9d86dc00853de1a621090e5632dbfd4fbc79b0d8f21b",
     "template_path": "tie/basic/core/api/endpoint/tcvf/batch_error_counts_collection.py"
   },
   "core/api/endpoint/tcvf/batch_error_export_resource.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "858845a1bb8dcc057be2531230fcb007b33581f0faf5a98922703943fd9762aa",
+    "sha256": "7a513b373b7d6962c0c1db0af8933c60553203e450bab3caddd035fe98441e5a",
     "template_path": "tie/basic/core/api/endpoint/tcvf/batch_error_export_resource.py"
   },
   "core/api/endpoint/tcvf/download_files_resource.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "78ab699088a25a726cdeeef05eccd18fed277e7ee5294910df6649924b15b554",
+    "sha256": "994f083aba64dcb64658c9426ac53d85e09eae3c69dc42f0b2a28d6f864fea9e",
     "template_path": "tie/basic/core/api/endpoint/tcvf/download_files_resource.py"
   },
   "core/api/endpoint/tcvf/endpoint_base.py": {
@@ -158,79 +158,85 @@
   "core/api/endpoint/tcvf/health_resource.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "50daef6eb2367e36a9be27b868e98d768b6b9de70ef138cc8b340fa6b2b6b813",
+    "sha256": "8d214af0d44556f51881f9abdbbbe3e90cafcce274f27a33d95b6f9853de8714",
     "template_path": "tie/basic/core/api/endpoint/tcvf/health_resource.py"
   },
   "core/api/endpoint/tcvf/job_file_download.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "0d631293e54b90bb4f16f28004ae45589ce13ee9e6892d5e57aade1bdf96636b",
+    "sha256": "7c97e4badd4005b171bb2baf12cc91783fdf75954ad2fbef606a3a555ee160c5",
     "template_path": "tie/basic/core/api/endpoint/tcvf/job_file_download.py"
   },
   "core/api/endpoint/tcvf/job_files.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "343381cf8a238c0846b01aa91e8ad9378acbef4b2d70e5372cf11dab59b6ac93",
+    "sha256": "b8191a3effdd785202be75558c6103667d0abbcea46b8695648efdd24c8b05fc",
     "template_path": "tie/basic/core/api/endpoint/tcvf/job_files.py"
   },
   "core/api/endpoint/tcvf/job_retry_resource.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "d4302057e45454e7c082b4b7c697ab7045ca9413dfc0c4ba2e237c5c81d9a367",
+    "sha256": "326272a36603bef333ddc60c89fbedd263c3caae90c417e0420cbff5bf7a1270",
     "template_path": "tie/basic/core/api/endpoint/tcvf/job_retry_resource.py"
   },
   "core/api/endpoint/tcvf/metric_processing_collection.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "060f99b5686e6c4fbe8300aa24339f42687d00653b824b2af8f2895d291343db",
+    "sha256": "95fa60dd531c091fe452db41c92479aa3a1f34a3806d4551f6955210793766bc",
     "template_path": "tie/basic/core/api/endpoint/tcvf/metric_processing_collection.py"
   },
   "core/api/endpoint/tcvf/metric_task_resource.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "0c2e8551ab8d3877fc194c406f1dd33c6d111f98868c9eecbb0f6a8ba45cbf3c",
+    "sha256": "bd0d57ff107ec4503ad65bc330e1717ec25a1361ca30f509c140a1dd09a24996",
     "template_path": "tie/basic/core/api/endpoint/tcvf/metric_task_resource.py"
+  },
+  "core/api/endpoint/tcvf/notification_collection.py": {
+    "last_commit": "",
+    "managed": false,
+    "sha256": "4b8551491449023d0c76a902c28a3c2421c0e21373e7b14b7e734160dd2abdfb",
+    "template_path": "tie/basic/core/api/endpoint/tcvf/notification_collection.py"
   },
   "core/api/endpoint/tcvf/report_pdf_tracker_collection.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "451d9cadf4004708c14b7b4fea64ba863491d1ecb2b2a2a484f21d5f34838e1e",
+    "sha256": "80ec3738956b6eb53ee44a7aaf896bae567847c88e3390220146307db8369db7",
     "template_path": "tie/basic/core/api/endpoint/tcvf/report_pdf_tracker_collection.py"
   },
   "core/api/endpoint/tcvf/request_collection.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "ed4cb6579b476eff7bb6dd6157c0307f1512931a1d8a36c3c0f7519bf8667a30",
+    "sha256": "4a02d2491ecd1cf9b7fafdf8037ae5b19156b761da87a0b14a376a9bcbde6ca7",
     "template_path": "tie/basic/core/api/endpoint/tcvf/request_collection.py"
   },
   "core/api/endpoint/tcvf/supervisor_resource.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "369fc5f8938d41f6abed750e164c95ea2df64f907f29a8ac643d61f948906c81",
+    "sha256": "65a63aec84e56ff5b6daddeaaa24ba4934ee4ebdd5e57ec16398d0e821d920e9",
     "template_path": "tie/basic/core/api/endpoint/tcvf/supervisor_resource.py"
   },
   "core/api/endpoint/tcvf/support_log_search_resource.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "9f4723f3f8ba2cf9f35f785da187de5e531f86638f8a8e907f08dba759cc7273",
+    "sha256": "21f39dc2b34cabfdd7f08357602b32e08a6e0adbd8f52715157c21cca2244e6b",
     "template_path": "tie/basic/core/api/endpoint/tcvf/support_log_search_resource.py"
   },
   "core/api/endpoint/tcvf/task_collection.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "a280d3eefbbd06ed13866181e1c9b5dfa8ebb14437245ba2b5b3cc4761a246d1",
+    "sha256": "2d960a6da56038da70aac682ce8990cd0826662f5ecbc0884bdaf69233f2a872",
     "template_path": "tie/basic/core/api/endpoint/tcvf/task_collection.py"
   },
   "core/api/endpoint/tcvf/task_item.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "f593827152f667a12ecb258578068b30714c14884db4d84551c6342e461d8880",
+    "sha256": "a6997ab5b5a657f9a4a112b2ee932925d63be4ef6f4c16169372a109ce4acf7b",
     "template_path": "tie/basic/core/api/endpoint/tcvf/task_item.py"
   },
   "core/api/endpoint/tcvf/task_status_collection.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "dae361e504e85103600f345769cf71cec7f712115a58f06c5e4283e3620c96c6",
+    "sha256": "c3ab034a4010cc834147242c44a4d44834642fcb87a3574eb9b0424d119414e8",
     "template_path": "tie/basic/core/api/endpoint/tcvf/task_status_collection.py"
   },
   "core/api/error/__init__.py": {
@@ -260,7 +266,7 @@
   "core/api/falcon_app.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "f02671fb39b73f3211058858e9192ed3a6ffa4ef394bbd43175aba2b3ece31df",
+    "sha256": "0c00bc51f8aae78cf8da814fd0aa2f5eb10a3a6521dc5e805cf5f0fc992ac0e1",
     "template_path": "tie/basic/core/api/falcon_app.py"
   },
   "core/api/falcon_request.py": {
@@ -272,7 +278,7 @@
   "core/api/falcon_response.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "b1b561be79e1f1f69b3965026efed6ee104c3d0d78ff2304b932e2e26d38bb42",
+    "sha256": "12cafa477f0b4bd0b008f965ec1cab4a57a503535e3bd9254da426f31e4f3f6e",
     "template_path": "tie/basic/core/api/falcon_response.py"
   },
   "core/api/injectable/__init__.py": {
@@ -302,13 +308,13 @@
   "core/api/model_base.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "5b51c023e6a2eaf060e5ea318eec592227e79a65bebacab6e366fab0b598a39a",
+    "sha256": "2e4f1eb94a05f974c1556af308cda06a8f5f7a168f21ed6d5404e9ae307c63e1",
     "template_path": "tie/basic/core/api/model_base.py"
   },
   "core/api/spec.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "b326065f62ffa14163c9688f830f2d151af592a97834d10d91eb9015f298c94e",
+    "sha256": "9f090595295340fe607aaff66613d1343b337be088efb295469646d268ba86f3",
     "template_path": "tie/basic/core/api/spec.py"
   },
   "core/api/tcex/__init__.py": {
@@ -320,13 +326,13 @@
   "core/api/tcex/middleware.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "a75938091315e8539950f44aa17380bf2fa7461cae3a1673b85b0630407db6b5",
+    "sha256": "fb07ac6bcab506564c33225cc0007850bb1708b90132ab40e879482e1635420d",
     "template_path": "tie/basic/core/api/tcex/middleware.py"
   },
   "core/api/ui_config_builder_abc.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "b738b225b536dc596d9e833bae9c4491667b8f213df2f29ce85fe6e22f150721",
+    "sha256": "6b1659d09fa603647be50754e3169d638faef9397fd89ce27f120484a20d783c",
     "template_path": "tie/basic/core/api/ui_config_builder_abc.py"
   },
   "core/api/validation/__init__.py": {
@@ -338,7 +344,7 @@
   "core/api/validation/middleware.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "9788cd28d6eaf2a68481c2629d3698c34a3d4e8cf0804020fc862c65808c5d0c",
+    "sha256": "0413157d1a3040ed9c2bac24174de20eab198c7b940f243d066916b4b507b1bd",
     "template_path": "tie/basic/core/api/validation/middleware.py"
   },
   "core/api/validation/models/__init__.py": {
@@ -356,13 +362,13 @@
   "core/api/validation/models/query_param_filter_model.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "864e25938b4093ce233bc341da9db82d2d0c05d408a1c85e80cd8f2623fa4b03",
+    "sha256": "21608803c122ae24a23d25755310d89ded178643403045a53a37f971860f506e",
     "template_path": "tie/basic/core/api/validation/models/query_param_filter_model.py"
   },
   "core/api/validation/models/query_param_filter_pagination_model.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "17e238065edc0cddc62caa2f4b4c6edbb3db6cfbf3a701a81b649904e657bea6",
+    "sha256": "c8450a3be5fea7c013eeec6fa0883108a046a4bdef895d814a571b185ec029ad",
     "template_path": "tie/basic/core/api/validation/models/query_param_filter_pagination_model.py"
   },
   "core/api/validation/models/query_param_model.py": {
@@ -374,7 +380,7 @@
   "core/api/validation/util.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "b51293c07365950f47a27e2f157fdab24f7b713fba094bfa959fe0497fc63a97",
+    "sha256": "ee104f5d7689f78f3d3e04909834d143e7265ec89557c70bc3b172896845df0b",
     "template_path": "tie/basic/core/api/validation/util.py"
   },
   "core/app/__init__.py": {
@@ -386,13 +392,13 @@
   "core/app/api_service_app_abc.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "17d9946500c6d63c4dc5de8f547774755de84a4b7e1d597a8b0940afdfb517c1",
+    "sha256": "f194eb2a44e371ed2c70b66019e68644415eddca6d335bfc139e6e7e579a94a3",
     "template_path": "tie/basic/core/app/api_service_app_abc.py"
   },
   "core/app/api_service_falcon_abc.py": {
     "last_commit": "34d66df176013a9d2fee2452bd55c0611f54600d",
     "managed": false,
-    "sha256": "2bc8910f4afdde87721e39c9d06e50641e4e8e13a37f8a42a30df4ca0755a0e0",
+    "sha256": "4d5b0b702c55a508dd2f9de2381b88ba5122b3fe4182cbf9db8943d7a0a072cf",
     "template_path": "tie/basic/core/app/api_service_falcon_abc.py"
   },
   "core/app/app_lib.py": {
@@ -404,7 +410,7 @@
   "core/app/enums.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "5547f5777676976e0a69b28b1064fa30e83424a52ec7a87a8cdfd5e4206b7101",
+    "sha256": "003800799121984cf94cd73f0163544c88d2fbc917a53c4b2b88dd1cae068b5f",
     "template_path": "tie/basic/core/app/enums.py"
   },
   "core/beacon/__init__.py": {
@@ -434,13 +440,13 @@
   "core/dao/__init__.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "ec85f5653bc01a2570092484c36e8b187288184360871411d896e9eb41ce9067",
+    "sha256": "25bb35d3db306e35dda282e970b190275869c7d4e0e172a36bd01d778f017f5f",
     "template_path": "tie/basic/core/dao/__init__.py"
   },
   "core/dao/batch_error_dao.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "5f4a64309564551b3b5abeceb2bb79dceeac9e1db4926740371dc99347179cbf",
+    "sha256": "773fedeeeb19e5a4f05e0e7d7b4528216fefdd2388c71204108f7ce07597d4e9",
     "template_path": "tie/basic/core/dao/batch_error_dao.py"
   },
   "core/dao/doc_analysis_processed_items_dao.py": {
@@ -452,20 +458,26 @@
   "core/dao/doc_analysis_throttled_dao.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "0622e452ac9942d312e596346471570ae7926950ed3739713f7a6bd7f5316ab3",
+    "sha256": "e6a13bac9fc69f4f1f5826e272c24d586b661d133b4dc6ad1bcdd63c48be71e1",
     "template_path": "tie/basic/core/dao/doc_analysis_throttled_dao.py"
   },
   "core/dao/doc_analysis_tracker_dao.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "95ec7820bed4c79c8a5ff2e1602f8511aa68fac5c462f46abe1366de31a33ed4",
+    "sha256": "be282e37ea8da375040d8a3f8a1095cb4ee5df1c6560f4685dbc427732e3e5f1",
     "template_path": "tie/basic/core/dao/doc_analysis_tracker_dao.py"
   },
   "core/dao/job_dao.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "478723865ca48967179eaf34d6a7f21be3a051b51e269613f8a6b8ff7e40ca41",
+    "sha256": "cb332a9253a4ee158b5c24bcca6c9e546661efc1c6a78bb419cc13170ec07dc9",
     "template_path": "tie/basic/core/dao/job_dao.py"
+  },
+  "core/dao/notification_dao.py": {
+    "last_commit": "",
+    "managed": false,
+    "sha256": "5a4997e81ea056ff763f7352966be0a863df18e00440609c519c4788c42fbb27",
+    "template_path": "tie/basic/core/dao/notification_dao.py"
   },
   "core/dao/report_pdf_tracker_dao.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
@@ -482,7 +494,7 @@
   "core/json_db/dao.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "ca405a7db75558149f59ee851dfd6601eeb873a7d1db957965918529f1e6ae8d",
+    "sha256": "1f9f8c3ed627fbb16dc957629f97e190d59fc319b71cd20d0cda492d40d1b6c9",
     "template_path": "tie/basic/core/json_db/dao.py"
   },
   "core/json_db/json_db.py": {
@@ -530,19 +542,19 @@
   "core/message_service/message_handler/discovery_handler.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "1192e10c13ca274803d570ec4532d2f4048626a9737ff283fd27eeafdbcf88d0",
+    "sha256": "ac135a5967bcb68e121f4ab011f98127402fac070f81275156935e2d85e7c75b",
     "template_path": "tie/basic/core/message_service/message_handler/discovery_handler.py"
   },
   "core/message_service/message_handler/message_handler_abc.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "6dd7d6855dea63c9b09fc731a07c7bde59aa77bb818497ed795bde222cb01d89",
+    "sha256": "5facf3e30066ee9658fc9e32ef6ece3c91c6028591e098566997fbba197c6eb9",
     "template_path": "tie/basic/core/message_service/message_handler/message_handler_abc.py"
   },
   "core/message_service/message_service.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "12887824c1866a5692f06ec29295135a3a06c95077bbd79fc7f84a3bac992d4c",
+    "sha256": "39383721e0505cbcaf0f3cbd07e0ef290d904d125c16eaf381c18ded421e4c6f",
     "template_path": "tie/basic/core/message_service/message_service.py"
   },
   "core/message_service/model/__init__.py": {
@@ -560,73 +572,73 @@
   "core/message_service/model/tcva/block_acknowledge_model.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "a35eefdf7d2b022e620939df6289a6bcfc223454fce7d0d6de64f58a8eade756",
+    "sha256": "9d6a4aebe9e0b41b3fc5051ad2f8f5ab16014997e36349dc7a0ab724f68d4947",
     "template_path": "tie/basic/core/message_service/model/tcva/block_acknowledge_model.py"
   },
   "core/message_service/model/tcva/block_request_model.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "26aac80e9ff358e4e697a2d796e653ad90c490e1a6db36e5d8a68423c0930cb7",
+    "sha256": "00438bf724e463ab375b2484561cc5f6a97125a6f88c9dd4a8b1ca6d26aa6014",
     "template_path": "tie/basic/core/message_service/model/tcva/block_request_model.py"
   },
   "core/message_service/model/tcva/block_response_model.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "377a3fe213b142b810aadb6ee0451c25614e0b89766f7745b9627f5ecfdd4485",
+    "sha256": "192cc9afed6a4427ca5624a3a05c73535026a09a9d1b26eb99a190a5f4e60590",
     "template_path": "tie/basic/core/message_service/model/tcva/block_response_model.py"
   },
   "core/message_service/model/tcva/discovery_request_model.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "07ea7f65f6e858d9b8943ef921bf2e70fcfc8b1655fd54da2fec38615170e226",
+    "sha256": "baa66e0b0b5efb6c985c63c7fd71e0ddaf4cd6adc1ca6c682d96b4056d5b93e5",
     "template_path": "tie/basic/core/message_service/model/tcva/discovery_request_model.py"
   },
   "core/message_service/model/tcva/discovery_response_model.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "83fc613072e125cfa194c07a4f993634379cf02bd08262bd8e88ab48f284e59d",
+    "sha256": "146c52283cb103e711ca89a45dbf1655b451789d82cb094e4e9e4744f03de27e",
     "template_path": "tie/basic/core/message_service/model/tcva/discovery_response_model.py"
   },
   "core/message_service/model/tcva/enrichment_acknowledge_model.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "9ab0a76e40e13f761dc16d697381d6a4a39a02d6fa2b74bb115ad84a37fa5c7a",
+    "sha256": "24cfeb34fe7935e97afd6000834513cf99e266bf796e71afed255d79a609e590",
     "template_path": "tie/basic/core/message_service/model/tcva/enrichment_acknowledge_model.py"
   },
   "core/message_service/model/tcva/enrichment_request_model.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "6d2c1aab4b05be1911d0fbf030f77e30c25e126215d62e2d4668dba345e235c0",
+    "sha256": "0c44fb039bbc266334f9e3e71bf139fdaa51acd9f0fcef3cc41f473f440527db",
     "template_path": "tie/basic/core/message_service/model/tcva/enrichment_request_model.py"
   },
   "core/message_service/model/tcva/enrichment_response_model.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "31199178705dbffb2de19b94c949d56c62c06b6549448637222b3cdbd65b3a85",
+    "sha256": "5f73d4036f0fbb5d17a5a83d1ce2f433141281651c6aed17052b35bf267d4304",
     "template_path": "tie/basic/core/message_service/model/tcva/enrichment_response_model.py"
   },
   "core/message_service/model/tcva/enrichment_timeline_model.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "30563084fb76a0d9b1de87fc26a1e9d441803000aac69571eaf916f4ad33895a",
+    "sha256": "79d0f55ed48d091d461e24f77ddf820d920ac9041c14ae11e3598abcea72b6e6",
     "template_path": "tie/basic/core/message_service/model/tcva/enrichment_timeline_model.py"
   },
   "core/message_service/model/tcva/investigate_acknowledge_model.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "a812c37be5d58bc0a878f9cb16685d80d5793da871a7ecd854b21e34ff7320cf",
+    "sha256": "d43d4b5d6265f33c1068bdaf2ae916fdc3f52053283909d48ffb35a6ec465caf",
     "template_path": "tie/basic/core/message_service/model/tcva/investigate_acknowledge_model.py"
   },
   "core/message_service/model/tcva/investigate_request_model.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "29f7094ae8fc1753f4b3d6fe4d404f97c538a04ccdf2fd049dc30bda5c947454",
+    "sha256": "b2e25aae60600c40ed7eb5e7bcaf462db714c41918c95a5979b10777ecc81892",
     "template_path": "tie/basic/core/message_service/model/tcva/investigate_request_model.py"
   },
   "core/message_service/model/tcva/investigate_response_model.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "e0a18067e1b1b02ade37b9ca8a595f59d1c04147e7c7fc379c684378bd501b57",
+    "sha256": "2d6ba43e2980546040f08d84877cc8426ed95d8455827b7676a67ae344303c7f",
     "template_path": "tie/basic/core/message_service/model/tcva/investigate_response_model.py"
   },
   "core/message_service/model/tcva/message_types.py": {
@@ -644,7 +656,7 @@
   "core/model/log_event_model.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "1001ba082b2f8bf63dd51a3f3770900f1bdd3e9bf6e6fa588b6c9b1b98c0027d",
+    "sha256": "3f1e85bbc008bb087decffdf2e3926c92e0c4501f53728c12fbcd02f7c533057",
     "template_path": "tie/basic/core/model/log_event_model.py"
   },
   "core/model/model_base.py": {
@@ -692,7 +704,7 @@
   "core/model/settings_model_base.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "3eb69af648b9e106e893df5e6018d1f599a2c5cc29db3cee7cd6e6f5f9831732",
+    "sha256": "c71531fc95763fd6b6f04191b31b5f87c4dfdc6921ebcb8bb270b2ebce913b93",
     "template_path": "tie/basic/core/model/settings_model_base.py"
   },
   "core/model/tcva/__init__.py": {
@@ -746,7 +758,7 @@
   "core/model/tcvf/settings_model_base.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "e59ef49587948724a75b27f6229762dd1c0acb790d28c018f3c6d167e56daaaf",
+    "sha256": "75947e1b8c992f3a3a67e9cd64eec99ef55131e2be205390c7d16ca97d8a1cf3",
     "template_path": "tie/basic/core/model/tcvf/settings_model_base.py"
   },
   "core/model/tcvp/__init__.py": {
@@ -770,31 +782,31 @@
   "core/model/tie/__init__.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "5db37476e444eb9cdf45981358f3806ad2314652aac47a3ee28547f11ab8929b",
+    "sha256": "34cca93e0ecccdf24ad8640c731018bd03965acfa5bf37b205abd6f25658851c",
     "template_path": "tie/basic/core/model/tie/__init__.py"
   },
   "core/model/tie/batch_error_model.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "29e8eaef1021ff93935963e7fe7bb9ed5519a72962fc3c776a24ef95b476474d",
+    "sha256": "7371b4f81696cf47bc14b5ba2f075cc691191861cd6bde3f184c4880eeac48d8",
     "template_path": "tie/basic/core/model/tie/batch_error_model.py"
   },
   "core/model/tie/doc_analysis_processed_items_model.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "e5fbade2a93f14160656f4e2aec64ac1a37d1ec59dff14e1bf8130c21bd62062",
+    "sha256": "f8ba4c8604f625079196400dba108b121220be20259add21e68d6f4b8bf9ede1",
     "template_path": "tie/basic/core/model/tie/doc_analysis_processed_items_model.py"
   },
   "core/model/tie/doc_analysis_throttle_model.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "d40da235fd852eca9cf122e1c0d232357028953ef7925256fb426685ebccbbba",
+    "sha256": "c687ffa55a97d8ca39ef77adf091b246a3f581b5e6c9f1bf7a7e35d4764917e9",
     "template_path": "tie/basic/core/model/tie/doc_analysis_throttle_model.py"
   },
   "core/model/tie/doc_analysis_tracker_model.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "091047389af508da0101d4500b6909f444949e51ef257055fd95be4277439b94",
+    "sha256": "a6a64b654a5601002b2e2ba4e28109b79e4b0abe958ee4ab40e6bf028dfd7bde",
     "template_path": "tie/basic/core/model/tie/doc_analysis_tracker_model.py"
   },
   "core/model/tie/item_model.py": {
@@ -806,19 +818,25 @@
   "core/model/tie/job_request_base_model.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "e74ca8a72865b6e513947aa7229cfc3c4d7028aff286826a61f64e1740db83bd",
+    "sha256": "36dc2abd3f3606404a083083de5c096494699119a17262e311af290c7189180c",
     "template_path": "tie/basic/core/model/tie/job_request_base_model.py"
+  },
+  "core/model/tie/notification_model.py": {
+    "last_commit": "",
+    "managed": false,
+    "sha256": "f64e4752733032809931e0b5581b9b8b914a32734f3ae73aa492ebef30fc18c5",
+    "template_path": "tie/basic/core/model/tie/notification_model.py"
   },
   "core/model/tie/report_pdf_tracker_model.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "45ab457a9184f9fa3e07f4e0f8794998901cce3a1acdbaf6f5810d618af70e91",
+    "sha256": "0d996c6bc4e76d41afe5395acb0de34ad72198f7458016104e01e58dbc3f43fe",
     "template_path": "tie/basic/core/model/tie/report_pdf_tracker_model.py"
   },
   "core/model/tie/task_setting_model.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "9f97f1e594657a2a93dd4ccefa746cfcbc7e3c3744f7875ba973d405fd25afaf",
+    "sha256": "d450e68398b0f18c8131478b3a247ada77b9778623e77b41b9c4be50d6cf729e",
     "template_path": "tie/basic/core/model/tie/task_setting_model.py"
   },
   "core/model/tie/task_setting_pipe_model.py": {
@@ -830,13 +848,13 @@
   "core/model/tie/ti_processing_metric_model.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "25126de7936f5476a71c4b24757a6a1727653b3e2774781d14aa6791beeb4e36",
+    "sha256": "66d5ee70c95202150e595ec510ab75a30a13d0cc4c6cea0ee2cca641b3c87264",
     "template_path": "tie/basic/core/model/tie/ti_processing_metric_model.py"
   },
   "core/model/tie/version_manager_model.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "e42439cc836cb6803a1d927a049f47b539d8e1ea8d36621522e1f77898f838e1",
+    "sha256": "bd5a0a612c3b935036e3a2689b735631a07c7b96ddf0e693ffc68843d029bf12",
     "template_path": "tie/basic/core/model/tie/version_manager_model.py"
   },
   "core/more/__init__.py": {
@@ -860,7 +878,7 @@
   "core/more/paginator.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "6320b96cd6da16c934275d725b1513051843725b9b7e85b74322b70da48b1fac",
+    "sha256": "14b12fb795fd38c3de3d062578cddea5bbba9a3a2a99789ed5d6fd8030ea7a57",
     "template_path": "tie/basic/core/more/paginator.py"
   },
   "core/more/transform/__init__.py": {
@@ -878,13 +896,13 @@
   "core/more/transform/transform_abc.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "db79c8458424c121818c13364f9c004f71fbb3b596369dd2840581f239381f07",
+    "sha256": "8bd306d16d9785f3959eb71acc961c3c756fb705ce289d17a6d8aaedd1e0906e",
     "template_path": "tie/basic/core/more/transform/transform_abc.py"
   },
   "core/more/validation.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "19675da432dc709da8c1060d6baf081ac61b1ca3a7e4c83e8c6652f3dfbfa64b",
+    "sha256": "a798c26218fd953f4cf290d9f20561566368219dc0483f06b5abbe4e7f6107b6",
     "template_path": "tie/basic/core/more/validation.py"
   },
   "core/service/__init__.py": {
@@ -908,13 +926,13 @@
   "core/service/current_running_process.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "d3ae1aa587e010d6a4fb8f1a45faf26ebcd9dfc18c6302d00ae811af8f258656",
+    "sha256": "e679fb5889e63eb63bcc1913860353c4dd88ea7a029ce75b3338ed762c0e025e",
     "template_path": "tie/basic/core/service/current_running_process.py"
   },
   "core/service/error_handling.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "c5ab601b31c377aa5608cecdb44dcc9138c7bbafa2f000fc5b695c344e2fd619",
+    "sha256": "b518fe76f0db85990fb41449e6f2ea55a9c04844a79d632eddcfcc13563c3210",
     "template_path": "tie/basic/core/service/error_handling.py"
   },
   "core/service/managers/__init__.py": {
@@ -926,7 +944,7 @@
   "core/service/managers/operation_managers.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "3f790715f8c52f6e66396ee4fa0334b8927b6fd3dca9bdc794ff45a5c6ffffaf",
+    "sha256": "1dad03129b90c10605d8a3cd7c8e69cdf4dfccbd3559dac202a0ffa34131f08d",
     "template_path": "tie/basic/core/service/managers/operation_managers.py"
   },
   "core/service/metrics.py": {
@@ -938,25 +956,37 @@
   "core/service/migration_service.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "7c83482ada97c3fa154fe0599778c9c99224c60a5a3486665486b31c537da650",
+    "sha256": "0bc172af075e63cb7aa89305a3086f688cbeda3f3eb3a334896190320e830359",
     "template_path": "tie/basic/core/service/migration_service.py"
+  },
+  "core/service/notification_helper.py": {
+    "last_commit": "",
+    "managed": false,
+    "sha256": "5430a91c7fb28643392e84e933977eaf14c934bae973f651f2f6a22c0143130b",
+    "template_path": "tie/basic/core/service/notification_helper.py"
+  },
+  "core/service/notification_service.py": {
+    "last_commit": "",
+    "managed": false,
+    "sha256": "79c9f59dff86c76f6b78d6244955376e6666eb104f057a022f7526d2600433ac",
+    "template_path": "tie/basic/core/service/notification_service.py"
   },
   "core/service/preflight_check_service.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "85de01e031281cf98d354632bb07b5199b2616ef8cc3fa6946f3028ab0dff68e",
+    "sha256": "bf2c872b594e523cefa15ab6d65b73dea5b648ec5def8e967ad29c64cc87910d",
     "template_path": "tie/basic/core/service/preflight_check_service.py"
   },
   "core/service/sqlite_migration_service.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "74ed935ba3d0cc5b59fc3c68b2c361ff4fdaa60672d1e23bb1b9d9dc52e50b1f",
+    "sha256": "437a1fed8ff12d3eabd4149b3250268da6bc8cd942f405c8eeb3838c52f86330",
     "template_path": "tie/basic/core/service/sqlite_migration_service.py"
   },
   "core/service/writing_service.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "e667a995960b19e1c057bd89bf4525aeb5735a4d7556c5a4d57c211821fbc19b",
+    "sha256": "265de83dd7fa6e0433a77044b20b245a317f0bf51de1f03ec0b61454fa48c85f",
     "template_path": "tie/basic/core/service/writing_service.py"
   },
   "core/supervisor/__init__.py": {
@@ -968,13 +998,13 @@
   "core/supervisor/config.py": {
     "last_commit": "34d66df176013a9d2fee2452bd55c0611f54600d",
     "managed": false,
-    "sha256": "c4c5b0874f1a3af7581d756228cbcacf8e3c24ab495f4fd5febdfe11cc80e8b9",
+    "sha256": "b6136ec0865456341934686c70bf90352f8a6b0fabd8f3f0d9918ca02a7e2084",
     "template_path": "tie/basic/core/supervisor/config.py"
   },
   "core/supervisor/supervisor.py": {
     "last_commit": "34d66df176013a9d2fee2452bd55c0611f54600d",
     "managed": false,
-    "sha256": "9ee8e47ff73192e892440d041858e1fb86df90131745b10b71a7bb9258043f86",
+    "sha256": "656e9443aa8fa2b7b12d5b5e63c59a5499a4c8177712cef6efc218acc5390a38",
     "template_path": "tie/basic/core/supervisor/supervisor.py"
   },
   "core/task/__init__.py": {
@@ -986,7 +1016,7 @@
   "core/task/backfill_missing_report_abc.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "cea160c6a7889751fef3ebf243e203ef952a85800195403335231561d5dfea9b",
+    "sha256": "7c18b6311c57baf82c460c31e8098f6632e1a02683a8a82c4fd07fb638e4d1e1",
     "template_path": "tie/basic/core/task/backfill_missing_report_abc.py"
   },
   "core/task/cal_auth.py": {
@@ -998,43 +1028,43 @@
   "core/task/cleaner.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "d57d738a676f551d4b44a9119edfae1ae69fe725142f1aa801d707c325898286",
+    "sha256": "b8c608f2a6c2788a9ad89e507f7415659843e2c21c86f73b8ab6db9ed3028d4d",
     "template_path": "tie/basic/core/task/cleaner.py"
   },
   "core/task/doc_analysis_abc.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "df1f60e47095e4f5651fabe8ce46470953fe74b0fa07c0294bc471db18b914fe",
+    "sha256": "9a574fe68450c962ef259238000566bb728de98a95eb9fc81c558b0e14fd139b",
     "template_path": "tie/basic/core/task/doc_analysis_abc.py"
   },
   "core/task/download_abc.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "9ecd6eb4cb59ec53425cef12b780fd7c0972a940fb6d799c85c9b70cb09db740",
+    "sha256": "a8f8768fc829736b9ee7d1cabc3f5bc05e2154095c80b9cd6d19795ff882abe9",
     "template_path": "tie/basic/core/task/download_abc.py"
   },
   "core/task/metric_reporter.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "71e7b2f361a391fc1ca3c4d1ac6fbbee7bc89dba12b459b80e45d3a1ee4d39ce",
+    "sha256": "363da3417f150c11da4967585f81bbc03c4a341f1e7105bd5c7c03b047bb613b",
     "template_path": "tie/basic/core/task/metric_reporter.py"
   },
   "core/task/metric_reporter_redis.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "654199ba9db11a73e37f82901187f2421f1eb0bde7874e5e21f5b22009a31f7e",
+    "sha256": "7b244cf055a391933f8eb63a638e763d3e189c887fe0f8c594b31f2fd81fa1ad",
     "template_path": "tie/basic/core/task/metric_reporter_redis.py"
   },
   "core/task/task_abc.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "1c8a643f7d48cbbbd42abbcaf713691a42e3974da996eaea43333e99a6d01be5",
+    "sha256": "c2fb248a9731d1daa98012813882b23da87df4774c5080c2445603ee225599d0",
     "template_path": "tie/basic/core/task/task_abc.py"
   },
   "core/task/task_path_pipe_abc.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "b3e3b2395e03bbdef8066c62e549d3b17ea325075198c7be3a76af3b3e064de6",
+    "sha256": "85f477e502f18463b3b9f85e1c89420ffb1b39b3081e76508ec4ee5ecd78e7b3",
     "template_path": "tie/basic/core/task/task_path_pipe_abc.py"
   },
   "core/task/task_path_pipe_injectables.py": {
@@ -1046,25 +1076,25 @@
   "core/task/tasks.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "65f6c504453e16e5f43bffd9f77288681510d532f5db878a26e35cd9b15ce41e",
+    "sha256": "31e4ddbef9dfc2d8590e23e9e13fc187c6ff0a7f25af6615f1229ff18be67b24",
     "template_path": "tie/basic/core/task/tasks.py"
   },
   "core/task/upload_abc.py": {
     "last_commit": "34d66df176013a9d2fee2452bd55c0611f54600d",
     "managed": false,
-    "sha256": "bf57916c586923d1a52051628ae0d22e32a80f4dcd70d27b8f14d027d5f788f6",
+    "sha256": "0135e9197787480b74fbcb8d159e08670334a7d8ab9410f4b057618ee59c3de4",
     "template_path": "tie/basic/core/task/upload_abc.py"
   },
   "core/task/upload_egress_abc.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "c3f55570de4364a6eb99d0e0bc9bd5f8f91d048720d26f32539d801ab9e11a1c",
+    "sha256": "4d088a3420c021526badfdfa56eb26788382f0316979c865afabd069bc906415",
     "template_path": "tie/basic/core/task/upload_egress_abc.py"
   },
   "core/task/upload_ingest_abc.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "1c5b36a48e00615a091ecdbf97f15a2923ed8f1c886e6569bcb25a00a3f0fe70",
+    "sha256": "9795c2fe4d8bf0b272a874b0fbe1c606d3f3201f82a2e1d2b1c313b3ec6b3002",
     "template_path": "tie/basic/core/task/upload_ingest_abc.py"
   },
   "core/util/__init__.py": {
@@ -1088,7 +1118,7 @@
   "core/util/process_metadata.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "470a075ddc224f651c9796b84147b1255678fbe162148a60fc9bffa700116341",
+    "sha256": "0398a25b5d71e126509173d2bdec002bf7b9e995aa95132ea1080d6252aeda41",
     "template_path": "tie/basic/core/util/process_metadata.py"
   },
   "mapping/sample_transform.json": {
@@ -1106,7 +1136,7 @@
   "message_service/message_handler/enrichment_handler.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "e3a9502fb2cefc127168f93d60915bc221b98eaabfaadebd1acebf0712f1f8ff",
+    "sha256": "a25c1404a0dc8a35690735033de31e6c30b2664cbced245aa676b6fd776adce4",
     "template_path": "tie/basic/message_service/message_handler/enrichment_handler.py"
   },
   "migrations.py": {
@@ -1124,13 +1154,13 @@
   "model/job_request_model.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "5efa29c771d0a7a4bcde194274ee00cd1b4836da4e90db7d0621a450bb0fdff5",
+    "sha256": "94b0fe8577975ccfee34455b9390d6ac49f3b26b2ca50ff47c7116f73f21ffc9",
     "template_path": "tie/basic/model/job_request_model.py"
   },
   "model/settings_model.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "2995a6e145ab7c5de5e33a5958c88675332c15a866b631281112fc9653e91488",
+    "sha256": "d9d1554e3a86f57cd4c8c05a7dca1d31ebfaf62a0854ca3c9010dee5ad250357",
     "template_path": "tie/basic/model/settings_model.py"
   },
   "more/__init__.py": {
@@ -1160,13 +1190,13 @@
   "requirements.txt": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "23de7fc146c816add15cacedd9b951b71db2297b7a606d7c36f8de5ddd396cd6",
+    "sha256": "0f187781db9b8ee05e071eebaaac45e223f464480b08fcc026fc0fcf4cc50ea4",
     "template_path": "tie/basic/requirements.txt"
   },
   "run.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "bb505db26f3a32833a049eb5da6a7506b9c148f034c273587e9030bf633d0568",
+    "sha256": "79dbd13cc22e3333119428304b46cb2cb0521399e2ea82b9c2d52481f70f174c",
     "template_path": "tie/basic/run.py"
   },
   "scheduled_action/__init__.py": {
@@ -1178,7 +1208,7 @@
   "scheduled_action/actions.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "c36fd0c84c0406090bb0312d0979b087546705069a7428c6e8042c6923c37d16",
+    "sha256": "cbbb8acaab106c39bf94cc0e85692a2fc971610304d137bb5a0c05518de3eb84",
     "template_path": "tie/basic/scheduled_action/actions.py"
   },
   "sdk/__init__.py": {
@@ -1274,13 +1304,13 @@
   "task/ingest/upload.py": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "a321831b80bd9d5aa06e0072a84dcb0370e0dfcc31c6e554e0c90571d49622c1",
+    "sha256": "687383dab2923064dfb8372e58c7c7ef144ef6566fa98bef7f51a093d1bdda9c",
     "template_path": "tie/basic/task/ingest/upload.py"
   },
   "template.json": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "8c3f459023dbe83f472243a40ee6e5d32b75bd0e2372561f0f5fb5f446d1ddb5",
+    "sha256": "992888321d4e39d08fc1185f435e3e0abdf0ddd61a4ff54d6570d0ea2dfedcb0",
     "template_path": "tie/basic/template.json"
   },
   "tests/__init__.py": {
@@ -1358,7 +1388,7 @@
   "ui/src/app/app-routing.module.ts": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "480d0a95cf26b76691222a65fa8a1b25ec34f8d69a6246e0eb36456720c8eb75",
+    "sha256": "d9c7f625dbca210c45b8cc2739ade0d5610b1f8c63160507137a1d6febe68096",
     "template_path": "tie/basic/ui/src/app/app-routing.module.ts"
   },
   "ui/src/app/app.component.html": {
@@ -1382,13 +1412,13 @@
   "ui/src/app/app.component.ts": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "bd9136c37356e57ef50ce7c289de159b2ff9e0dc0d4d5304b4686cae77c34578",
+    "sha256": "3a49d2028cc74a319e71fde090663fd4fc8163a7e47847d77086a7eae162b658",
     "template_path": "tie/basic/ui/src/app/app.component.ts"
   },
   "ui/src/app/app.module.ts": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "bf4c91b1237f43c89b14dc7a532bf70598e0f393b9c9e04a9d968e4b24ee7f83",
+    "sha256": "162a2615fe28247cd1e4941525b592d328998cdea391e5f4644ae29e80412b87",
     "template_path": "tie/basic/ui/src/app/app.module.ts"
   },
   "ui/src/app/components/error-message/error-message.component.html": {
@@ -1418,19 +1448,13 @@
   "ui/src/app/components/formatted-field/formatted-field.component.html": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "1bdbb90e7a3dbe60c3df25582149288661e7bbbe0e735c6d4b3fea5937d001e4",
+    "sha256": "a149f94fbbf5627837f0555435503b3a8ba276adde0dad0cd681aebec7b492b2",
     "template_path": "tie/basic/ui/src/app/components/formatted-field/formatted-field.component.html"
-  },
-  "ui/src/app/components/formatted-field/formatted-field.component.scss": {
-    "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
-    "managed": false,
-    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "template_path": "tie/basic/ui/src/app/components/formatted-field/formatted-field.component.scss"
   },
   "ui/src/app/components/formatted-field/formatted-field.component.ts": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "f9804faf66c5cabbd448b246ec3ffbaa169d0fa3caeb6b7f06fdd180e140281b",
+    "sha256": "63cb2a565128c546155dbefe01753b6f555308b88ae2e04c95522744adb4d4c2",
     "template_path": "tie/basic/ui/src/app/components/formatted-field/formatted-field.component.ts"
   },
   "ui/src/app/components/generated-form/generated-form.component.html": {
@@ -1586,7 +1610,7 @@
   "ui/src/app/pages/batch-errors-table/batch-errors-table.component.ts": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "c9d85290425b544a37231797df0a8cef70037be14bdf0f8f6f4ea00bfd5db4a3",
+    "sha256": "256a129e8397bb1fdb5fa36bd326b447c019f9bd39fef40ba096c820dbd01bff",
     "template_path": "tie/basic/ui/src/app/pages/batch-errors-table/batch-errors-table.component.ts"
   },
   "ui/src/app/pages/batch-errors/batch-errors.component.html": {
@@ -1660,6 +1684,24 @@
     "managed": false,
     "sha256": "459641178b8f31f66680c04d9af0c9c6eb957b7b111c6cdbf2783445fe4cabb2",
     "template_path": "tie/basic/ui/src/app/pages/jobs/jobs.component.ts"
+  },
+  "ui/src/app/pages/notifications/notifications.component.html": {
+    "last_commit": "",
+    "managed": false,
+    "sha256": "b891ac51168d5aa59fe12cf81f05e7c950a66ca686c221d579aa82cba346e01d",
+    "template_path": "tie/basic/ui/src/app/pages/notifications/notifications.component.html"
+  },
+  "ui/src/app/pages/notifications/notifications.component.scss": {
+    "last_commit": "",
+    "managed": false,
+    "sha256": "b4747a0fcb4b7a4f15b8cdbba3c63402a1852d233cc88a467c9ffe54c5ad9902",
+    "template_path": "tie/basic/ui/src/app/pages/notifications/notifications.component.scss"
+  },
+  "ui/src/app/pages/notifications/notifications.component.ts": {
+    "last_commit": "",
+    "managed": false,
+    "sha256": "af6e3d0aa8f1afdc2662fa8118c36e18152b52296891c114105bfb2ec95b9f8e",
+    "template_path": "tie/basic/ui/src/app/pages/notifications/notifications.component.ts"
   },
   "ui/src/app/pages/pdf-uploads/pdf-uploads.component.html": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
@@ -1778,7 +1820,7 @@
   "ui/src/app/service/app-service/app.service.ts": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "4c9357e2e18d51a8f5aa2df1f7120998fda063f2fbcf3450cacc42f53c07d76a",
+    "sha256": "ac30f0b937effc23e4b2f78f37b4f8a1d0cb2a75d32c81196fe51565f23a1848",
     "template_path": "tie/basic/ui/src/app/service/app-service/app.service.ts"
   },
   "ui/src/app/service/base-service/base-http-error-response.ts": {
@@ -1835,6 +1877,18 @@
     "sha256": "5ac9e4ffa1fb699929251d5c9e65e7f5d127eb3ba3576641fdf72efa8a9f4e19",
     "template_path": "tie/basic/ui/src/app/service/metrics-service/metrics.service.ts"
   },
+  "ui/src/app/service/notification-service/notification-interface.ts": {
+    "last_commit": "",
+    "managed": false,
+    "sha256": "4390dc0a1e5a75b7aed6a289c9c0bf8e4eb0bc4b8426d0ddbd85d4cf9a1af14b",
+    "template_path": "tie/basic/ui/src/app/service/notification-service/notification-interface.ts"
+  },
+  "ui/src/app/service/notification-service/notification.service.ts": {
+    "last_commit": "",
+    "managed": false,
+    "sha256": "d4f8614909cc576588db49ac8a5ecf4145b333e598ed6e002d3fdeaf124085df",
+    "template_path": "tie/basic/ui/src/app/service/notification-service/notification.service.ts"
+  },
   "ui/src/app/service/pages/job-executions/job-executions.component.html": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
@@ -1862,7 +1916,7 @@
   "ui/src/app/service/pendo-service/pendo.service.ts": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "4ff08beec541091ec41a1cf13c1736ad963a76e3401d9debd6c52196999ba04c",
+    "sha256": "271b0fe3e0430291b59505f933516e20a0dac5f1cd379ccfbd31cfcbcd083cfd",
     "template_path": "tie/basic/ui/src/app/service/pendo-service/pendo.service.ts"
   },
   "ui/src/app/service/report-pdf-tracker-service/report-pdf-tracker-interface.ts": {
@@ -2000,7 +2054,7 @@
   "ui/src/styles.scss": {
     "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
     "managed": false,
-    "sha256": "3f87b187f8be78864e98dec369e933e61b093c88f9c727efbab9bf995485231e",
+    "sha256": "b19dfdd61fc067f7aae5fbaf64943597c79198f4ce3a5b264ef5b94bbbe18826",
     "template_path": "tie/basic/ui/src/styles.scss"
   },
   "ui/src/tc-global.scss": {

@@ -14,7 +14,7 @@ labels:
 - sample
 languageVersion: '3.11'
 listDelimiter: '|'
-minServerVersion: 7.2.0
+minServerVersion: 7.12.2
 note: Sample Notes
 notePerAction: []
 organization:
@@ -52,6 +52,32 @@ runtimeLevel: FeedApiService
 schemaVersion: 1.1.0
 sections:
 - params:
+  - default: 2 Hours
+    feedDeployer: true
+    serviceConfig: true
+    label: Notification Digest Interval
+    name: notification_digest_interval
+    note: How often pipeline health digest notifications are sent.
+    type: Choice
+    validValues:
+    - 1 Hour
+    - 2 Hours
+    - 3 Hours
+    - 4 Hours
+  - allowMultiple: true
+    feedDeployer: true
+    serviceConfig: true
+    default: App Startup|Job Retrying|Job Failed|Job Recovered
+    label: Notification Types
+    name: notification_types
+    note: Which notification types are sent via TC Notification API. Shutdown
+      notifications are always sent regardless of this setting.
+    type: MultiChoice
+    validValues:
+    - App Startup
+    - Job Retrying
+    - Job Failed
+    - Job Recovered
   - hidden: true
     label: Advanced Settings
     name: advanced_settings

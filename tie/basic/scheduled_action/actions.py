@@ -1,10 +1,11 @@
 """."""
 
+from tcex.logger.trace_logger import TraceLogger
+
 from core.dao.job_dao import JobRequestDAO
 from core.json_db import JsonDB
 from core.task.tasks import Tasks
 from model.settings_model import SettingModel
-from tcex.logger.trace_logger import TraceLogger
 
 
 def log_running_tasks(db: JsonDB, settings: SettingModel, log: TraceLogger):

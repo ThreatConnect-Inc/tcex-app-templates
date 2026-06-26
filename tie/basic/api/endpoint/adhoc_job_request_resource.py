@@ -3,12 +3,13 @@
 from datetime import UTC, datetime, timedelta
 from functools import cached_property
 
+from pydantic import Field, validator
+
 from core.api.endpoint.endpoint_base_abc import EndpointBaseABC
 from core.api.falcon_request import FalconRequest
 from core.api.falcon_response import FalconResponse
 from core.dao.job_dao import JobRequestDAO
 from core.model.model_base import ModelBase
-from pydantic import Field, validator
 
 from model.job_request_model import AdHocJobRequestModel  # isort:skip
 
@@ -21,7 +22,7 @@ class AdHocCreateRequest(ModelBase):
     sample_types: list[str] = Field([], description='')
 
     @validator('sample_types')
-    def validate_sample_types(cls, value):  # noqa: N805
+    def validate_sample_types(cls, value):
         """Validate the sample types."""
         return [type_.lower().strip() for type_ in value]
 

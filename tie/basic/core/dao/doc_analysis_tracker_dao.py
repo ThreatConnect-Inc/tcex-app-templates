@@ -23,6 +23,6 @@ class DocAnalysisTrackerDAO(JsonDBDAO[DocAnalysisTrackerModel]):
         """Find trackers for groups."""
         models = []
         for m in self.db.load_all(self.model, sort_by=SortBy.INDEX, sort_order=SortOrder.DESC):
-            if int(m.group_id) in group_ids or group_ids is None:
+            if group_ids is None or int(m.group_id) in group_ids:
                 models.append(m)
         return models

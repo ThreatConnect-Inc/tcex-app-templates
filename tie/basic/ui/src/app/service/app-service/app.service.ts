@@ -46,6 +46,11 @@ export interface AppConfig {
       details: FieldDisplay[];
       filters: Form;
     };
+    notifications: {
+      columns: FieldDisplay[];
+      details: FieldDisplay[];
+      filters: Form;
+    };
     owner: string;
     title: string;
     version: string;

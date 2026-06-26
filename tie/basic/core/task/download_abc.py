@@ -8,6 +8,8 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import TypeVar
 
+from tcex import TcEx
+
 from core.json_db import JsonDB
 
 # from more import Metrics
@@ -19,7 +21,6 @@ from core.task.tasks import Tasks
 from model import AdHocJobRequestModel
 from model.settings_model import SettingModel
 from sdk.sdk import SDK
-from tcex import TcEx
 
 T = TypeVar('T', bound=JobRequestBaseModel)
 
@@ -125,6 +126,7 @@ class DownloadABC(TaskPathPipeABC):
             self.settings.job.status_cancelled,
             self.settings.job.status_failed,
             self.settings.job.status_pending,
+            self.settings.job.status_retry_pending,
         ]
         throttle_statutes.extend(Tasks.status_final)
         # TODO fix this to account for different pipes
@@ -202,8 +204,8 @@ class DownloadABC(TaskPathPipeABC):
         backoff = self.supervisor.compute_backoff(job.failure_count)
         job.retry_after = now + backoff
 
-        # Keep status as pending (not failed) so it can be retried
-        job.status = self.settings.job.status_pending
+        # Keep status as retry pending (not failed) so it can be retried
+        job.status = self.settings.job.status_retry_pending
         self.job_dao.save(job)
 
         self.log.warning(

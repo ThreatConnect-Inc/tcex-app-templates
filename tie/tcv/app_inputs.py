@@ -3,11 +3,11 @@
 from datetime import timedelta
 from typing import ClassVar
 
-from core.model.settings_model_base import DEFAULT_FAILURE_THRESHOLD
 from pydantic import BaseModel, Extra, Field, validator
 from tcex.input.model.app_feed_api_service_model import AppFeedApiServiceModel
 
-ALL_SAMPLE_TYPES: set[str] = {'File', 'URL', 'Host', 'Event'}
+from core.model.settings_model_base import DEFAULT_FAILURE_THRESHOLD
+from core.service.notification_service import DIGEST_INTERVAL_MAP, NOTIFICATION_TYPES
 
 
 class AdvancedSettingsModel(BaseModel):
@@ -26,7 +26,7 @@ class AdvancedSettingsModel(BaseModel):
     max_retries: int = 10  # Max retries for individual jobs before permanent failure
 
     @validator('failure_threshold', pre=True)
-    def parse_failure_threshold(cls, value: str | float | timedelta) -> timedelta:  # noqa: N805
+    def parse_failure_threshold(cls, value: str | float | timedelta) -> timedelta:
         """Convert hours (int/string) or seconds (float from JSON) to timedelta."""
         if isinstance(value, timedelta):
             return value
@@ -43,11 +43,27 @@ class AppBaseModel(AppFeedApiServiceModel):
     # vv: ${OWNERS}
     # tc_owner: str
     sample_types: set[str] | None = Field(default_factory=set)
+    notification_digest_interval: timedelta = Field(default=timedelta(hours=2))
+    notification_types: list[str] = Field(
+        default=['app_startup', 'job_retrying', 'job_failed', 'job_recovered']
+    )
     # ${ORGANIZATION:TEXT:Advanced Settings}
     advanced_settings: AdvancedSettingsModel = AdvancedSettingsModel()
 
+    @validator('notification_digest_interval', pre=True)
+    def parse_digest_interval(cls, value: str | timedelta) -> timedelta:
+        """Convert Choice value to timedelta."""
+        if isinstance(value, timedelta):
+            return value
+        return DIGEST_INTERVAL_MAP.get(str(value), timedelta(hours=2))
+
+    @validator('notification_types', pre=True)
+    def parse_notification_types(cls, value: list) -> list[str]:
+        """Map display labels to internal values."""
+        return [NOTIFICATION_TYPES[v].category if v in NOTIFICATION_TYPES else v for v in value]
+
     @validator('sample_types', pre=True)
-    def validate_sample_types(cls, entries: str | None) -> set[str]:  # noqa: N805
+    def validate_sample_types(cls, entries: str | None) -> set[str]:
         """Validate and parse the supported types."""
         if not entries:
             return set()
@@ -55,7 +71,7 @@ class AppBaseModel(AppFeedApiServiceModel):
         return {entry.strip().lower() for entry in entries}
 
     @validator('advanced_settings', pre=True)
-    def validate_advanced_settings(cls, entries: str | None) -> dict:  # noqa: N805
+    def validate_advanced_settings(cls, entries: str | None) -> dict:
         """Validate and parse the advanced settings."""
         if not entries:
             return {}

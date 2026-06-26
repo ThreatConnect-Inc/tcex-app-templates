@@ -8,11 +8,12 @@ import traceback
 from typing import Generic, TypeVar
 
 import falcon
+from pydantic import BaseModel, ValidationError, parse_obj_as
+
 from core.api.error.util import error
 from core.api.falcon_request import FalconRequest
 from core.api.falcon_response import FalconResponse
 from core.api.model_base import ModelBase
-from pydantic import BaseModel, ValidationError, parse_obj_as
 
 # from core.api.validation.models import (
 #     QueryParamFilterModel,

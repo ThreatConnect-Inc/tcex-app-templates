@@ -5,7 +5,7 @@ from pathlib import Path
 from typing import ClassVar
 
 from arrow import arrow
-from pydantic import BaseModel, Extra
+from pydantic import BaseModel, Extra, Field
 
 
 class SettingModelBase(BaseModel):
@@ -14,7 +14,7 @@ class SettingModelBase(BaseModel):
     tc_owner: str
     base_path: Path
 
-    date_started: datetime = datetime.now(UTC)
+    date_started: datetime = Field(default_factory=lambda: datetime.now(UTC))
     extension_csv: str = '.csv'
     extension_gzip: str = '.gz'
     extension_bzip: str = '.bz'

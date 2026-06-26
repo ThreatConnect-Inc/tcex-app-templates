@@ -1,6 +1,9 @@
 """Class for /api/download/falcon-ti endpoint"""
 
 import falcon
+from pydantic import Field, validator
+from spectree import Response
+
 from core.api.endpoint.endpoint_base_abc import EndpointBaseABC
 from core.api.falcon_request import FalconRequest
 from core.api.falcon_response import FalconResponse
@@ -9,8 +12,6 @@ from core.api.validation.models.query_param_filter_model import QueryParamFilter
 from core.api.validation.models.query_param_model import param_to_list
 from core.model.model_base import ModelBase
 from more.transform.sample_transform import SampleTransform
-from pydantic import Field, validator
-from spectree import Response
 
 
 class GetQueryParamModel(QueryParamFilterModel):

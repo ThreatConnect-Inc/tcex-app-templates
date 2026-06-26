@@ -13,6 +13,7 @@ __pycache__
 # IDE Exclusions
 #-------------------------------------------------
 .c9
+.claude
 .idea
 .project
 .python-version

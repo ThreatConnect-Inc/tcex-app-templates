@@ -2,6 +2,9 @@
 
 import logging
 
+from pydantic import BaseModel
+from tcex.logger.trace_logger import TraceLogger
+
 from core.message_service.message_handler.message_handler_abc import MessageHandlerABC
 from core.message_service.model.tcva.discovery_request_model import (
     DiscoveryRequestModel,
@@ -9,8 +12,6 @@ from core.message_service.model.tcva.discovery_request_model import (
 from core.message_service.model.tcva.discovery_response_model import (
     DiscoveryResponseModel,
 )
-from pydantic import BaseModel
-from tcex.logger.trace_logger import TraceLogger
 
 _logger: TraceLogger = logging.getLogger('tcex')  # type: ignore
 

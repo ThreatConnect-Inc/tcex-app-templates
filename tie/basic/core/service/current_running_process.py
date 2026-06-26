@@ -92,7 +92,7 @@ class CurrentRunningProcess:
                     'reason': 'Duplicate service detected',
                 }
             ),
-            topic=self.existing_data['topic'],
+            topic=topic,
         )
         ex_msg = 'Preflight check for duplicate service.'
         raise RuntimeError(ex_msg)

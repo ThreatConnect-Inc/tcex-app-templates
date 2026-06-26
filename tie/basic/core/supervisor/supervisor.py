@@ -8,10 +8,11 @@ from typing import TYPE_CHECKING, Any
 from core.supervisor.config import SupervisorConfigModel
 
 if TYPE_CHECKING:
+    from tcex.exit.exit import Exit
+
     from core.dao.job_dao import JobRequestDAO
     from core.json_db import JsonDB
     from core.model.settings_model_base import SettingModelBase
-    from tcex.exit.exit import Exit
 
 logger = logging.getLogger('tcex')
 

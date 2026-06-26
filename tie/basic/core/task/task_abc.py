@@ -12,22 +12,24 @@ from typing import Generic, Protocol, TypeVar
 
 import arrow
 import schedule
-from core.beacon import inject, provide
-from core.dao.job_dao import JobRequestDAO
-from core.json_db import JsonDB
-from core.model.tie.job_request_base_model import JobRequestBaseModel
-from core.model.tie.task_setting_pipe_model import TaskSettingPipeModel
-from core.service.writing_service import WritingService
-from core.supervisor import Supervisor
-from core.task.task_path_pipe_injectables import UpdateHeartbeat
-from core.util.process_metadata import Metadata, ProcessMetadata
-from model.settings_model import SettingModel
 from pydantic.main import BaseModel
 from tcex import TcEx
 from tcex.logger.rotating_file_handler_custom import (
     RotatingFileHandlerCustom,
 )
 from tcex.logger.trace_logger import TraceLogger
+
+from core.beacon import inject, provide
+from core.dao.job_dao import JobRequestDAO
+from core.json_db import JsonDB
+from core.model.tie.job_request_base_model import JobRequestBaseModel
+from core.model.tie.task_setting_pipe_model import TaskSettingPipeModel
+from core.service.notification_helper import NotificationHelper
+from core.service.writing_service import WritingService
+from core.supervisor import Supervisor
+from core.task.task_path_pipe_injectables import UpdateHeartbeat
+from core.util.process_metadata import Metadata, ProcessMetadata
+from model.settings_model import SettingModel
 
 T = TypeVar('T', bound=JobRequestBaseModel)
 
@@ -46,6 +48,7 @@ class TaskNamespace(Protocol):
     api_limit_details: dict
     heartbeat: arrow.Arrow | None
     last_batch_failure: datetime | None
+    last_task_success: datetime | None
     task_result: TaskResult | None  # None=no event, set on success or failure
     unrecoverable_failure: bool
 
@@ -90,10 +93,10 @@ class TaskABC(ABC, Generic[T]):
 
     def __init__(
         self,
-        settings: SettingModel = inject(SettingModel),  # noqa: B008
-        tcex: TcEx = inject(TcEx),  # noqa: B008
-        db: JsonDB = inject(JsonDB),  # noqa: B008
-        supervisor: Supervisor = inject(Supervisor),  # noqa: B008
+        settings: SettingModel = inject(SettingModel),
+        tcex: TcEx = inject(TcEx),
+        db: JsonDB = inject(JsonDB),
+        supervisor: Supervisor = inject(Supervisor),
         *,
         request_schema: type[T] = JobRequestBaseModel,
     ):
@@ -116,6 +119,7 @@ class TaskABC(ABC, Generic[T]):
         # set default heartbeat
         self.ns.heartbeat = None
         self.ns.unrecoverable_failure = False
+        self.ns.last_task_success = None
         self.ns.task_result = None
         self.ns.last_batch_failure = datetime.now(UTC) - timedelta(days=90)
 
@@ -124,6 +128,11 @@ class TaskABC(ABC, Generic[T]):
             'reached': 'False',
             'date_set': arrow.Arrow.now(UTC),
         }
+
+    @cached_property
+    def notification_helper(self) -> NotificationHelper:
+        """Notification helper — lazily created for fork safety."""
+        return NotificationHelper(self.settings, self.tcex, self.db)
 
     @cached_property
     def namespace(self) -> TaskNamespace:
@@ -261,8 +270,8 @@ class TaskABC(ABC, Generic[T]):
 
     @property
     def pause(self):
-        """Return True if paused requested."""
-        self.task_settings.paused = False
+        """Return True if pause requested."""
+        self.task_settings.paused = True
 
     @property
     def process_metadata(self):
@@ -338,8 +347,19 @@ class TaskABC(ABC, Generic[T]):
         try:
             # run the task core logic
             self.run(*args, **kwargs)
+            self.ns.last_task_success = datetime.now(UTC)
         except Exception:
             self.log.exception(f'task-event=task-failed, task-name={self.task_settings.name}')
+            last_success = self.ns.last_task_success
+            threshold = self.settings.advanced_settings.failure_threshold
+            if last_success is not None and (datetime.now(UTC) - last_success) > threshold:
+                self.log.error(  # noqa: TRY400
+                    f'task-event=failure-threshold-exceeded, '
+                    f'task-name={self.task_settings.name}, '
+                    f'last-success={last_success}, '
+                    f'threshold={threshold}'
+                )
+                self.ns.unrecoverable_failure = True
 
     def schedule(self):
         """Schedule the task."""

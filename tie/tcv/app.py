@@ -216,6 +216,8 @@ class App(ApiServiceFalconABC):
             advanced_settings=self.model.advanced_settings,
             all_sample_types=['Event', 'URL', 'File', 'Host'],
             sample_types=self.model.sample_types,
+            notification_digest_interval=self.model.notification_digest_interval,
+            notification_types=self.model.notification_types,
             mb=self.message_broker_settings,
             name='Sample API Service',
             description='Sample API Service',

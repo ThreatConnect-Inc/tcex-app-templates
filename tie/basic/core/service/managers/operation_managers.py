@@ -39,7 +39,7 @@ AcceptFn: TypeAlias = Callable[[dict | list[dict]], None]
 TranslationDefinition: TypeAlias = dict[str, str] | Callable[[str], str] | str
 
 # inject default values for several dependencies
-deafult_task_output_dir = inject(TaskOutputDir)
+default_task_output_dir = inject(TaskOutputDir)
 default_json_db = inject(JsonDB)
 default_current_job = inject(CurrentJob)
 
@@ -106,9 +106,9 @@ def file_writer_manager(
     *,
     chunk_size=5_000,
     file_prefix: str = '',
-    file_seperator: str = '#',
+    file_separator: str = '#',
     file_extension: str = 'json.gz',
-    out_dir: Path = deafult_task_output_dir,
+    out_dir: Path = default_task_output_dir,
 ) -> Generator[AcceptFn]:
     """Create a manager that will write data to files on disk."""
 
@@ -121,7 +121,7 @@ def file_writer_manager(
             data_type,
         ]
         file_name_identifiers = [f for f in file_name_identifiers if f]
-        file_name = f'{file_seperator.join(file_name_identifiers)}.{file_extension}'
+        file_name = f'{file_separator.join(file_name_identifiers)}.{file_extension}'
         with gzip.open(out_dir / file_name, 'wt', encoding='utf-8', compresslevel=9) as f:
             json.dump(chunk, f, cls=CustomHandler)
 
@@ -216,9 +216,9 @@ def batch_writer_manager(
     *,
     chunk_size=5_000,
     file_name_prefix: str = '',
-    file_seperator: str = '#',
+    file_separator: str = '#',
     file_extension: str = 'json.gz',
-    out_dir: Path = deafult_task_output_dir,
+    out_dir: Path = default_task_output_dir,
 ) -> Generator[Callable[[BatchDict], None]]:
     """Create a manager that will write data to files on disk."""
     translate_fn = _get_translate_fn(translate_type)
@@ -231,7 +231,7 @@ def batch_writer_manager(
             data_type,
         ]
         file_name_identifiers = [f for f in file_name_identifiers if f]
-        file_name = f'{file_seperator.join(file_name_identifiers).lower()}.{file_extension}'
+        file_name = f'{file_separator.join(file_name_identifiers).lower()}.{file_extension}'
         with gzip.open(out_dir / file_name, 'wt', encoding='utf-8', compresslevel=9) as f:
             json.dump(chunk, f, cls=CustomHandler)
 
@@ -287,9 +287,9 @@ class ManagerBuilder:
         *,
         chunk_size=5_000,
         file_prefix: str = '',
-        file_seperator: str = '#',
+        file_separator: str = '#',
         file_extension: str = 'json.gz',
-        out_dir: Path = deafult_task_output_dir,
+        out_dir: Path = default_task_output_dir,
     ) -> Self:
         """Add a file writer manager to the builder."""
         self.managers.append(
@@ -297,7 +297,7 @@ class ManagerBuilder:
                 translate_type=translate_type,
                 chunk_size=chunk_size,
                 file_prefix=file_prefix,
-                file_seperator=file_seperator,
+                file_separator=file_separator,
                 file_extension=file_extension,
                 out_dir=out_dir,
             )
@@ -351,9 +351,9 @@ class ManagerBuilder:
         *,
         chunk_size=5_000,
         file_name_prefix: str = '',
-        file_seperator: str = '#',
+        file_separator: str = '#',
         file_extension: str = 'json.gz',
-        out_dir: Path = deafult_task_output_dir,
+        out_dir: Path = default_task_output_dir,
     ) -> Self:
         """Add a batch writer manager to the builder."""
         self.managers.append(
@@ -361,7 +361,7 @@ class ManagerBuilder:
                 translate_type=translate_type,
                 chunk_size=chunk_size,
                 file_name_prefix=file_name_prefix,
-                file_seperator=file_seperator,
+                file_separator=file_separator,
                 file_extension=file_extension,
                 out_dir=out_dir,
             )

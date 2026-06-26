@@ -2,9 +2,10 @@
 
 from uuid import UUID
 
+from pydantic import Extra, Field
+
 from core.message_service.model.tcva.message_types import MessageTypesBlockResponse
 from core.model.model_base import ModelBase
-from pydantic import Extra, Field
 
 
 class BlockResponseModel(ModelBase, extra=Extra.allow):

@@ -2,10 +2,11 @@
 
 import os
 
-from core.model.model_base import ModelBase
 from offapi import OpenAPITemplate
 from spectree import SpecTree, Tag
 from tcex.app.config.install_json import InstallJson
+
+from core.model.model_base import ModelBase
 
 ij = InstallJson()
 
@@ -108,4 +109,9 @@ tag_util = Tag(
 tag_service = Tag(
     name='[Internal] Service Provider',
     description='Endpoints related to the service provider',
+)
+
+tag_notification = Tag(
+    name='[Internal] Notification',
+    description='Endpoints related to pipeline health notifications',
 )

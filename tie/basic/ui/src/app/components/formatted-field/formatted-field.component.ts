@@ -9,7 +9,6 @@ import { TaskService } from 'src/app/service/tasks-service/tasks.service';
 @Component({
     selector: 'app-formatted-field',
     templateUrl: './formatted-field.component.html',
-    styleUrl: './formatted-field.component.scss',
 })
 export class FormattedFieldComponent implements OnInit {
     @Input() field: FieldDisplay;
@@ -20,6 +19,22 @@ export class FormattedFieldComponent implements OnInit {
     private readonly destroyRef = inject(DestroyRef);
 
     constructor(private taskService: TaskService) {}
+
+    /** Format a value as pretty-printed JSON */
+    formatJson(value: any): string {
+        try {
+            return JSON.stringify(value, null, 2);
+        } catch {
+            return String(value);
+        }
+    }
+
+    /** Convert snake_case to Title Case (e.g. "permanently_failed" → "Permanently Failed") */
+    toTitleCase(value: string): string {
+        return value
+            .replace(/_/g, ' ')
+            .replace(/\b\w/g, (c) => c.toUpperCase());
+    }
 
     ngOnInit(): void {
         this.taskService

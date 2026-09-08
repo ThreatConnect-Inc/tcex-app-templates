@@ -1,10 +1,19 @@
 <div class="parent bg-base01">
   <div class="header d-flex align-items-center border-bottom-border02 bg-base02 tester">
     <a class="pl-small pr-medium" href="/">
-      <img *ngIf="logoReady" alt="Logo" style="margin-left: 20px" [src]="logoImage" />
+      <img
+        *ngIf="logoReady"
+        alt="Logo"
+        class="app-logo"
+        style="margin-left: 20px"
+        [src]="logoImage"
+      />
     </a>
     <div class="d-flex flex-column">
       <h3>{{ (appConfig$ | async)?.ui.title }}</h3>
+      <div class="text-textTertiary align-self-bottom fontsize-subtext">
+        Version: {{ (appConfig$ | async)?.ui.version }} | Source: {{ (appConfig$ | async)?.ui.owner }}
+      </div>
     </div>
   </div>
 
@@ -41,12 +50,6 @@
   @if (showContent && !hideSideNav) {
     <div class="sidenav sidenav-container border-right-border02 pt-medium-large">
       <app-sidenav-menu *ngIf="viewSideNav"></app-sidenav-menu>
-      <!-- Build provenance, not navigation: pinned to the bottom of the column so it is
-           available without competing with the app title for the header. -->
-      <div class="sidenav__footer text-textTertiary fontsize-subtext">
-        <div>Version: {{ (appConfig$ | async)?.ui.version }}</div>
-        <div>Source: {{ (appConfig$ | async)?.ui.owner }}</div>
-      </div>
     </div>
 
     <div class="sidenav-action sidenav-container border-right-border02">

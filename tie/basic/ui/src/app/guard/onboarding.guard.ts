@@ -27,7 +27,14 @@ export const onboardingGuard: CanActivateFn = () => {
 };
 
 /**
- * Block in-app navigation away from an open stepper, and say why.
+ * Block in-app navigation away from Settings while onboarding is incomplete, and say why.
+ *
+ * Covers both halves of "can't leave yet": actively inside the stepper (`showStepper`),
+ * and sitting on the read-only Connection view before setup has even been started
+ * (`onboardingRequired`). Before this widened, that second case fell through to
+ * `onboardingGuard` instead — which bounces every other route straight back to `settings`
+ * with no explanation, so clicking a side-nav link while onboarding was outstanding but
+ * unstarted just silently did nothing. Same guard, same modal, either way.
  *
  * This is a hard block, NOT a confirmation, because there was never a real choice to
  * offer. `onboardingGuard` bounces every other route straight back to `settings`, so
@@ -47,4 +54,4 @@ export const onboardingGuard: CanActivateFn = () => {
  * The component owns the message because the component owns the modal.
  */
 export const discardStepperGuard: CanDeactivateFn<SettingsComponent> = (component) =>
-    component.showStepper ? component.blockNavDuringSetup() : true;
+    component.showStepper || component.onboardingRequired ? component.blockNavDuringSetup() : true;

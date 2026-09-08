@@ -89,6 +89,9 @@
                         (onClick)="handleValidate()"
                         >Validate</tcl-button
                     >
+                    @if (busy) {
+                        <tcl-loading-icon [size]="'20px'"></tcl-loading-icon>
+                    }
                     <!-- Same gate as the Settings page: nothing is saved until the server
                          has approved the candidate, and any edit clears that approval. -->
                     <tcl-button

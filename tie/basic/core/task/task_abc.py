@@ -340,7 +340,7 @@ class TaskABC(ABC, Generic[T]):
                 if self.process.is_alive():
                     return  # launch is prohibited if process is currently alive
                 self.process.join()
-                self.log.warning(
+                self.log.info(
                     f'task-event=process-exited, pid={self.process.pid}, '
                     f'exitcode={self.process.exitcode}'
                 )

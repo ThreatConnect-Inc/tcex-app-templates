@@ -80,6 +80,9 @@
                             (onClick)="handleValidate()"
                             >Validate</tcl-button
                         >
+                        @if (busy) {
+                            <tcl-loading-icon class="ml-small" [size]="'20px'"></tcl-loading-icon>
+                        }
                         <!-- Save stays disabled until the server says the candidate is good,
                              and any edit clears that result. -->
                         <tcl-button

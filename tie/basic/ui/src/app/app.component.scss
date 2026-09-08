@@ -23,29 +23,19 @@ $sidenav-right-min-width: 40rem;
 .header {
   grid-area: header;
   z-index: 1000;
+
+  // The SVG brand logos bake their own width/height into the file, so they've always
+  // rendered fine here. The non-SVG ones (e.g. the PNG dataminr logo, 2362x344px) have
+  // nothing constraining them and render at native resolution, blowing out this 60px row.
+  .app-logo {
+    max-height: 40px;
+    max-width: 160px;
+    object-fit: contain;
+  }
 }
 
 .sidenav {
   grid-area: sidenav;
-  display: flex;
-  flex-direction: column;
-
-  // The menu takes the slack and scrolls inside it. Without `min-height: 0` a long nav
-  // list grows the flex item instead, which pushes the footer past the `overflow: hidden`
-  // on `.sidenav-container` and out of sight.
-  app-sidenav-menu {
-    flex: 1 1 auto;
-    min-height: 0;
-    overflow-y: auto;
-  }
-}
-
-.sidenav__footer {
-  flex: 0 0 auto;
-  // What actually pins it to the bottom, and what keeps it below the menu rather than
-  // under it when the nav list is short.
-  margin-top: auto;
-  padding: 0.75rem 1rem;
 }
 
 .sidenav-action {

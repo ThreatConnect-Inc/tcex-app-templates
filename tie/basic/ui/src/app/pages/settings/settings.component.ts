@@ -124,6 +124,10 @@ export class SettingsComponent implements OnInit {
      * source of truth, and `this.values` gets re-seeded from the fresh defaults.
      */
     handleOnboardingComplete() {
+        this.alertMessageService.add({
+            summary: 'Setup complete.',
+            severity: 'success',
+        });
         this.onboardingService.refresh();
         this.appService.refresh();
         this.showStepper = false;

@@ -1,0 +1,103 @@
+// Centred like the Documentation page, but on the form's own measure rather than
+// Documentation's 62rem: the fields cap at 42rem, so a wider wrapper would leave the header
+// row and the Validate/Save row spanning well past the last field. 44rem keeps the title,
+// the fields, the check list, and the buttons on one set of edges.
+.settings {
+    margin-inline: auto;
+    max-width: 44rem;
+    width: 100%;
+}
+
+.settings-form {
+    display: flex;
+    flex-direction: column;
+    max-width: 44rem;
+
+    // Sections need real air between them — without it the next heading sits directly on
+    // the previous section's last control.
+    & + & {
+        margin-top: 2.5rem;
+    }
+}
+
+// Reads as a divider for the fields beneath it rather than floating text. Margins are
+// explicit because a bare `h4` carries browser defaults that fight the description.
+.settings-form__title {
+    border-bottom: 1px solid rgba(127, 127, 127, 0.25);
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    margin: 0 0 0.75rem;
+    opacity: 0.65;
+    padding-bottom: 0.5rem;
+    text-transform: uppercase;
+}
+
+.settings-checks {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    max-width: 44rem;
+}
+
+.settings-check {
+    align-items: flex-start;
+    display: flex;
+    font-size: 0.875rem;
+    gap: 0.5rem;
+    line-height: 1.4;
+}
+
+.settings-check--failed {
+    color: var(--tcl-error, #d42534);
+}
+
+.settings-check--warning {
+    color: var(--tcl-warning, #b26a00);
+}
+
+// The gated view: the read-only Connection section, then this. No fixed height — it has to
+// flow inside the existing `.page-container` scroll rather than stacking a second one.
+.settings-empty {
+    border: 1px solid var(--tcl-border01);
+    border-radius: var(--tcl-border-radius, 4px);
+    margin-top: 2.5rem;
+    max-width: 44rem;
+    padding: 1.5rem;
+}
+
+.settings-empty__title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0 0 0.5rem;
+}
+
+.settings-empty__body {
+    line-height: 1.5;
+    margin: 0 0 1.25rem;
+    max-width: 68ch;
+    opacity: 0.72;
+}
+
+
+// Said once for the group rather than repeated on every field it applies to.
+//
+// `44rem`, matching `.settings-form` above and `--field-measure` in
+// generated-form.component.scss. These used to be `68ch` (≈34rem at this font-size) while
+// the section rule ran to 44rem and the fields to 42rem, so a section header, its warning
+// callout and the inputs under it each stopped at a different right edge.
+.settings-form__description {
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    margin: 0 0 1.5rem;
+    max-width: 44rem;
+    opacity: 0.72;
+}
+
+// The callout form of a section description — see `severity` in `settings_form()`.
+.settings-form__callout {
+    display: block;
+    margin-bottom: 1.5rem;
+    max-width: 44rem;
+}

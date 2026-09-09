@@ -3,12 +3,12 @@
 import logging
 import multiprocessing
 import platform
+import threading
 import time
 from datetime import UTC
 
-import setproctitle
-
 import arrow
+import setproctitle
 from pydantic import BaseModel, Extra, root_validator
 
 logger = logging.getLogger('tcex')
@@ -85,18 +85,25 @@ class ProcessMetadata(multiprocessing.Process):
         )
         self.ns = ns
         self._metadata = metadata
+        self._parent_proctitle = setproctitle.getproctitle()
 
     def run(self):
-        """Set the OS-level process title before running the target."""
-        # setproctitle.setproctitle(f'tie-task: {self.name}')
+        """Run the target in the child process after fork.
 
-        args = ' '.join(
-            [
-                f'--tie.task={self.name.lower().replace(" ", "-")}',
-                f'--tie.started={int(time.time())}',
-            ]
-        )
-        setproctitle.setproctitle(f'{setproctitle.getproctitle()} {args}')
+        After fork on macOS, threads from the parent don't exist in the child, but any
+        locks they held are inherited in a permanently-locked state. Reset logging._lock
+        so _task_start_logger can acquire it without deadlocking.
+
+        setproctitle is also skipped: its C library holds a lock that the parent's threads
+        owned, causing the same deadlock. The proctitle is cosmetic; skipping it is safe.
+        """
+        logging._lock = threading.RLock()  # noqa: SLF001
+        if platform.platform().upper().startswith('LINUX'):
+            setproctitle.setproctitle(
+                f'{self._parent_proctitle} '
+                f'--tie.task={self.name.lower().replace(" ", "-")} '
+                f'--tie.started={int(time.time())}'
+            )
         super().run()
 
     @property

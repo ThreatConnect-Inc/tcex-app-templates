@@ -2,7 +2,7 @@ import { throwError } from 'rxjs';
 
 import { formatDate } from '@angular/common';
 import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { ErrorHandler, inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { BaseHttpErrorResponse } from './base-http-error-response';
@@ -17,7 +17,12 @@ interface QueryParamObject {
 })
 export abstract class BaseService {
     protected http: HttpClient = inject(HttpClient);
+    private _errorHandler: ErrorHandler = inject(ErrorHandler);
     constructor(public router: Router) {}
+
+    protected errorHandler(err: any): void {
+        this._errorHandler.handleError(err);
+    }
 
     public convertToHttpParams(queryParams: QueryParamObject): HttpParams {
         let httpParams = this.defaultParams();

@@ -48,7 +48,7 @@ class DownloadABC(TaskPathPipeABC):
         self.pipeline = pipeline
         self.metrics = None
         self.writing_service = WritingService(self.db, self.log)
-        self.preflight_checks = [self._is_throttled_preflight_check]
+        self.preflight_checks: list[Callable[[], bool]] = [self._is_throttled_preflight_check]
 
     def process_group(self, item, chunk, writer: WritingModel):
         """Process item."""
@@ -142,9 +142,13 @@ class DownloadABC(TaskPathPipeABC):
         return False
 
     def handle_run_error(
-        self, request_id: str, request_dir: Path, exception: Exception | None = None
+        self, request_id: str, request_dir: Path | None, exception: Exception | None = None
     ):
         """Handle download errors with per-job backoff.
+
+        `request_dir` is None when this is a watchdog timeout: Download launches before the
+        request directory exists (`launch_preflight_checks` passes request_id only), so a
+        download killed mid-flight has nothing on disk yet. Only `_mark_job_failed` reads it.
 
         UnrecoverableError: Fail immediately and shutdown (config errors, bad credentials)
         Ad-hoc jobs: Fail immediately (existing behavior)
@@ -185,7 +189,7 @@ class DownloadABC(TaskPathPipeABC):
 
         # Scheduled jobs: apply backoff/retry logic
         now = datetime.now(UTC)
-        max_retries = self.settings.advanced_settings.max_retries
+        max_retries = self.settings.app_settings.max_retries
 
         # Track failure timestamp for logging/debugging
         if job.date_failed is None:
@@ -216,7 +220,7 @@ class DownloadABC(TaskPathPipeABC):
             f'failing_since={job.date_failed}'
         )
 
-    def _mark_job_failed(self, job, request_dir: Path):
+    def _mark_job_failed(self, job, request_dir: Path | None):
         """Mark job as permanently failed after threshold exceeded."""
         job.status = self.settings.job.status_failed
         # date_failed already set, don't overwrite (preserves original failure time)
@@ -228,6 +232,12 @@ class DownloadABC(TaskPathPipeABC):
             f'request_id={job.request_id}, '
             f'failure_duration={datetime.now(UTC) - job.date_failed}'
         )
+
+        if request_dir is None:
+            self.log.warning(
+                f'task-event=job-failed-permanently-no-request-dir, request_id={job.request_id}'
+            )
+            return
 
         # Move to failed directory with error handling
         try:

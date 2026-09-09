@@ -54,3 +54,8 @@ repos:
         types_or: [ python, pyi ]
       - id: ruff-format
         types_or: [ python, pyi ]
+  - repo: https://github.com/pypa/pip-audit
+    rev: v2.9.0
+    hooks:
+      - id: pip-audit
+        args: ['--path', 'deps', '--vulnerability-service', 'osv']

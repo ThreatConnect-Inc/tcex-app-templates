@@ -1,0 +1,144 @@
+@if (showStepper) {
+    <!-- A SIBLING of the settings page-container below, never nested inside it. Both roots
+         carry `.page-container` (styles.scss — border-box, height: calc(100vh - 60px),
+         overflow: scroll) under `body { overflow-y: hidden }`. Nesting them stacks two
+         scroll containers that cannot both fit, which is the exact failure that previously
+         hid the Back/Finish buttons (see the note at onboarding.component.scss:1-6). -->
+    <app-onboarding (completed)="handleOnboardingComplete()"></app-onboarding>
+} @else {
+    <div class="page-container pb-medium-large px-medium-large d-flex flex-column">
+        <!-- Same centred column as the Documentation page, and it wraps the header too so the
+             title and the action row stay on the form's own left and right edges. -->
+        <div class="settings">
+            <div
+                class="d-flex pt-medium-large justify-content-between align-items-center mb-medium">
+                <h3>Settings</h3>
+            </div>
+
+            @if (visibleSections.length) {
+                <!-- One form per section, in the order the server declared them. The section
+                     IS the grouping — nothing reconstructs it from a flag on each field.
+                     While onboarding is incomplete this is only the non-stepper sections —
+                     see `visibleSections`. -->
+                @for (section of visibleSections; track section.name) {
+                    <div class="settings-form">
+                        <h4 class="settings-form__title">{{ section.name }}</h4>
+                        <!-- A callout when the section's prose is a caution rather than a
+                             label; a plain line otherwise, so a page of four sections is not
+                             four boxes. -->
+                        @if (section.alertType) {
+                            <tcl-alert-box
+                                class="settings-form__callout"
+                                [type]="section.alertType"
+                                [border]="true"
+                                [closable]="false"
+                                [message]="section.description"></tcl-alert-box>
+                        } @else if (section.description) {
+                            <p class="settings-form__description">{{ section.description }}</p>
+                        }
+                        <app-generated-form
+                            mode="settings"
+                            [formConfig]="section.form"
+                            (fieldChange)="handleFieldChange($event)"
+                            (validChange)="handleValidChange(section, $event)"></app-generated-form>
+                    </div>
+                }
+
+                <!-- Nothing here is editable while the gate is armed, so there is nothing to
+                     validate and nothing to save. -->
+                @if (!onboardingRequired) {
+                    @if (checks.length) {
+                        <div class="settings-checks">
+                            <!-- A failed check with severity 'warning' is shown but does not
+                                 gate Save — the server decides that, and `validated` follows
+                                 its answer. -->
+                            @for (check of checks; track $index) {
+                                <div
+                                    class="settings-check"
+                                    [class.settings-check--failed]="!check.passed && check.severity !== 'warning'"
+                                    [class.settings-check--warning]="!check.passed && check.severity === 'warning'">
+                                    <tcl-svg-icon
+                                        [color]="checkColor(check)"
+                                        [name]="check.passed ? 'check' : 'alert'" />
+                                    <div>
+                                        <div>{{ check.message }}</div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+
+                    <div class="d-flex justify-content-end align-items-center mt-medium">
+                        <!-- Gated on the form's own validity so a value the form already
+                             rejects never reaches the server. The field-level message says
+                             what is wrong; this stops the operator asking a question with a
+                             known answer. -->
+                        <tcl-button
+                            featureVersion="new-design"
+                            theme="secondary"
+                            [disabled]="busy || !formValid"
+                            (onClick)="handleValidate()"
+                            >Validate</tcl-button
+                        >
+                        @if (busy) {
+                            <tcl-loading-icon class="ml-small" [size]="'20px'"></tcl-loading-icon>
+                        }
+                        <!-- Save stays disabled until the server says the candidate is good,
+                             and any edit clears that result. -->
+                        <tcl-button
+                            class="ml-medium"
+                            featureVersion="new-design"
+                            theme="primary"
+                            [disabled]="busy || !validated"
+                            (onClick)="handleSave()"
+                            >Save</tcl-button
+                        >
+                    </div>
+                }
+            }
+
+            @if (onboardingRequired) {
+                <!-- Hand-rolled rather than tcl-empty-state: that component is @deprecated,
+                     hard-codes `height: 100vh` (which overflows a .page-container of
+                     calc(100vh - 60px)) and an icon at color="black" (invisible on the dark
+                     theme), and its content slot sits inside a <p>, so a slotted tcl-button
+                     is invalid markup. -->
+                <div class="settings-empty">
+                    <h4 class="settings-empty__title">Setup is not finished</h4>
+                    <p class="settings-empty__body">
+                        No ingestion will run until setup is complete. The connection details
+                        above are fixed at deploy time; everything else is collected in a short
+                        guided flow and can be changed here afterwards.
+                    </p>
+                    <tcl-button
+                        featureVersion="new-design"
+                        theme="primary"
+                        (onClick)="handleStartSetup()"
+                        >Start setup</tcl-button
+                    >
+                </div>
+            }
+        </div>
+    </div>
+}
+
+<!-- Reuses the app's existing confirmation modal (components/confirmation-modal, already
+     declared in app.module.ts and wrapping tcl-modal). Nothing new is built for this.
+
+     INFORMATIONAL, not a confirmation — `hideCancel` leaves a single acknowledge button.
+     It used to offer Discard / Keep editing, but the guard denies the navigation either
+     way (see `discardStepperGuard`), so both buttons led to the same place and Discard
+     looked broken. Every exit from this modal returns to the stepper, which is why
+     `cancelled` (mask click / Escape) and `confirmed` share one handler. -->
+<app-confirmation-modal
+    [config]="{
+        title: 'Finish setup first',
+        message: 'Setup has to be completed before you can leave this page. Your progress is kept — continue where you left off.',
+        confirmText: 'Continue setup',
+        confirmTheme: ButtonTheme.Primary,
+        hideCancel: true,
+        modalSize: 'small'
+    }"
+    [visible]="showDiscardConfirm"
+    (cancelled)="handleSetupBlockAcknowledged()"
+    (confirmed)="handleSetupBlockAcknowledged()"></app-confirmation-modal>

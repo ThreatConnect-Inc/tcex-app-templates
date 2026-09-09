@@ -1,5 +1,14 @@
 """Falcon Validation hook module."""
 
+# REVIEW (template cleanup, 2026-08-25): retained pending a decision -- confirm with the
+# team whether this is a supported extension point for app authors or leftover.
+# It was proposed for deletion, then kept because "no importers" does not prove much
+# in a template: files here exist to be used by apps built FROM it.
+# Evidence at the time:
+#   9 of its 10 functions are duplicated in core/api/validation/util.py, which is the copy
+#   actually wired up (core/api/validation/middleware.py imports from there). This one has no
+#   importers in the template or in any app.
+
 import json
 import logging
 import traceback

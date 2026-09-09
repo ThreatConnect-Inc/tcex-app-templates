@@ -1,0 +1,108 @@
+<div class="page-container pb-medium-large px-medium-large d-flex flex-column">
+    <div class="d-flex pt-medium-large justify-content-between align-items-center mb-medium">
+        <h3>Errors</h3>
+    </div>
+
+    <div
+        class="align-items-end d-flex mb-small"
+        style="gap: 0.5rem">
+        <tcl-text-input
+            label="Job ID"
+            [showClearTextIcon]="true"
+            [showCount]="false"
+            [style]="{ minWidth: '300px' }"
+            [value]="jobId"
+            (onChange)="handleJobIdChange($event)"
+            (onClearText)="handleClearClick()">
+        </tcl-text-input>
+        <tcl-button
+            [disabled]="loading"
+            [featureVersion]="featureVersion"
+            [theme]="ButtonTheme.Primary"
+            (onClick)="handleSearchClick()">
+            Search
+        </tcl-button>
+    </div>
+
+    <tcl-table
+        class="tc-new-tables table-layout-auto"
+        [autoLayout]="true"
+        [lazy]="true"
+        [paginator]="true"
+        [resizableColumns]="false"
+        [rows]="paginator.pageSize"
+        [rowsPerPageOptions]="paginator.pageSizeOptions"
+        [scrollable]="false"
+        [showSpinningLoader]="!table.dataLoaded"
+        [totalRecords]="paginator.pageTotal"
+        [value]="table.data"
+        (closeSpinner)="table.dataLoaded = true"
+        (onPage)="paginator.pageChangedTcl($event)">
+        <ng-template tclTemplate="empty-message">
+            <tr>
+                <td
+                    class="empty-message"
+                    [attr.colSpan]="table.dataColumns.length || 1">
+                    No errors found
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template tclTemplate="header">
+            <tr>
+                @for (col of table.dataColumns; track col) {
+                    <th>{{ col.header }}</th>
+                }
+            </tr>
+        </ng-template>
+        <ng-template
+            let-value
+            tclTemplate="body">
+            <tr
+                class="clickable"
+                (click)="handleRowClick(value)">
+                @for (col of table.dataColumns; track col) {
+                    <td>
+                        @if (col.type === 'date') {
+                            {{ value[col.field] | isoDate }}
+                        } @else if (col.type === 'json') {
+                            {{ value[col.field] | jsonFormat }}
+                        } @else {
+                            <span
+                                class="trunc"
+                                style="max-width: 300px; display: block">
+                                {{ value[col.field] }}
+                            </span>
+                        }
+                    </td>
+                }
+            </tr>
+        </ng-template>
+    </tcl-table>
+</div>
+
+<tcl-side-drawer
+    [open]="showSideDrawer"
+    [side]="DrawerSide.Right"
+    [titleText]="sideDrawerTitle"
+    (openChange)="handleSidenavChange($event)">
+    @if (selectedError) {
+        <div
+            class="d-flex flex-column"
+            style="gap: var(--tcl-spacing-5); width: 95%">
+            @for (field of detailFields; track field) {
+                <div>
+                    <b>{{ field.label }}:</b>
+                    @if (field.type === 'json') {
+                        <pre style="white-space: pre-wrap; word-break: break-all; font-size: 0.75rem">{{
+                            selectedError[field.field] | jsonFormat
+                        }}</pre>
+                    } @else if (field.type === 'date') {
+                        <p>{{ selectedError[field.field] | isoDate }}</p>
+                    } @else {
+                        <p>{{ selectedError[field.field] }}</p>
+                    }
+                </div>
+            }
+        </div>
+    }
+</tcl-side-drawer>

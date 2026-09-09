@@ -12,7 +12,7 @@
     "template_path": "api_service/basic/api_service_app.py"
   },
   "app.py": {
-    "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
+    "last_commit": "5287d686bf833d41b815dba82a9075aa0b342a07",
     "managed": false,
     "sha256": "b146eebb8097a57500cbb2dbc8459e9b833f19608c773d11cabd945ed92e83aa",
     "template_path": "api_service/basic/app.py"

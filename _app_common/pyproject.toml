@@ -33,6 +33,12 @@ reportArgumentType = false
 junit_family = "xunit2"
 # Directories to search for test files
 testpaths = ["tests"]
+# Test categories used by the tcex_testing framework. Registered here so
+# `pytest -m unit` works and unknown-mark warnings stay meaningful.
+markers = [
+    "unit: fixture-backed, no credentials or network required",
+    "integration: requires live ThreatConnect credentials (TC_API_*)",
+]
 
 [tool.ruff]
 # https://docs.astral.sh/ruff/

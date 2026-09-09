@@ -11,6 +11,7 @@ from tcex import TcEx
 from core.dao.job_dao import JobRequestDAO
 from core.json_db import JsonDB, where
 from core.json_db.dao import JsonDBDAO
+from core.json_db.json_db import SortOrder
 from core.model.tcvf.settings_model_base import SettingModelBase
 from core.model.tie.batch_error_model import BatchErrorModel, JobBatchErrorIndexModel
 from core.model.tie.notification_model import NotificationModel
@@ -88,13 +89,26 @@ class Cleaner(TaskABC):
             app_exception(ex, 'failure=failed-cleaning-files')
 
     def _clean_batch_errors(self):
-        """Clean files in the common directories."""
+        """Clean batch errors: remove orphans and enforce cap."""
         try:
             job_ids = self.job_dao.get_all_job_ids()
             for batch_error in self.batch_error_dao.get_all(
                 where={'request_id': where.not_(where.is_in(job_ids))}
             ):
                 self.batch_error_dao.delete(batch_error)
+
+            # Cap total batch errors to prevent unbounded growth. Read live off settings,
+            # not task_settings — task_settings is a @cached_property and Cleaner is a
+            # long-lived singleton, so baking a settings value in there would freeze it
+            # at first access (same bug class as Scheduler.frequency).
+            max_batch_errors = self.settings.app_settings.max_batch_errors
+            for path in self.db.get_paths(BatchErrorModel, sort_order=SortOrder.DESC)[
+                max_batch_errors:
+            ]:
+                try:
+                    path.unlink(missing_ok=True)
+                except OSError as ex:
+                    app_exception(ex, f'failure=failed-capping-batch-error, path={path}')
         except Exception as ex:
             # log exception
             app_exception(ex, 'failure=failed-cleaning-batch-errors')

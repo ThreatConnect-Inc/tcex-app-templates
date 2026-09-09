@@ -16,13 +16,17 @@ from app_inputs import AppBaseModel
 from core.api.falcon_app import FalconApp
 from core.api.spec import spec
 from core.app.api_service_app_abc import ApiServiceAppABC
-from core.app.enums import MESSAGE_HANDLERS, MIDDLEWARE, PREFLIGHT_CHECKS, ROUTES, TASKS
+from core.app.enums import (
+    MIDDLEWARE,
+    PREFLIGHT_CHECKS,
+    ROUTES,
+    TASKS,
+)
 from core.beacon import provide
 from core.json_db import JsonDB
-from core.message_service.message_service import MessageService
-from core.model.scheduled_action_model import ScheduledActionModel
 from core.model.tie.job_request_base_model import JobRequestBaseModel
 from core.service.preflight_check_service import PreflightCheckService
+from core.service.startup_state_service import StartupStateService
 from core.supervisor import Supervisor
 from core.task.tasks import Tasks
 from core.util.custom_handler import CustomHandler
@@ -46,8 +50,6 @@ class ApiServiceFalconABC(ApiServiceAppABC, ABC):
         self._preflight_checks = []
         self._tasks = {'pipe': [], 'standalone': []}
         self._middleware = []
-        self._message_handlers = {}
-        self._jobs = {}
         self.log = logger
         self.model: AppBaseModel = self.inputs.model  # type: ignore
         self.preflight_check_service = PreflightCheckService(self.tcex)
@@ -73,10 +75,14 @@ class ApiServiceFalconABC(ApiServiceAppABC, ABC):
         # Handle special "ALL_" cases (e.g., ROUTES.ALL_TIE)
         routes = routes or {}
         default = default or []
+
         for route in default[:]:  # Copy the list to avoid modifying while iterating
             if route == ROUTES.ALL_TIE:
                 self._routes.update(self.all_supported_routes.get('tie', {}))
                 default.remove(route)  # Remove it from further processing
+            elif route == ROUTES.ALL_TCVE:
+                self._routes.update(self.all_supported_routes.get('tcve', {}))
+                default.remove(route)
 
         # Loop through all supported route categories and register only matching ones
         for supported_routes in self.all_supported_routes.values():
@@ -131,27 +137,6 @@ class ApiServiceFalconABC(ApiServiceAppABC, ABC):
             if task:
                 self.tasks_obj.add_task_path_pipe(task)
 
-    def register_scheduled_actions(
-        self,
-        scheduled_actions: list[ScheduledActionModel] | None = None,
-        _: list | None = None,
-    ):
-        """Register scheduled actions."""
-        scheduled_actions = scheduled_actions or []
-        # for scheduled_action in default[:]:
-        #     middleware_instance = self.all_supported_middleware.get(middleware)
-        #     self._middleware[type(middleware_instance)] = middleware_instance
-        names = [action.name for action in scheduled_actions]
-        if len(names) != len(set(names)):
-            ex_msg = 'Scheduled actions must have unique names.'
-            raise RuntimeError(ex_msg)
-        for action in scheduled_actions or []:
-            if action:
-                job = schedule.every(action.interval.total_seconds()).seconds.do(
-                    action.fn, **action.kwargs
-                )
-                self._jobs[action.name] = job
-
     def register_middleware(
         self,
         middleware_list: list | None = None,
@@ -170,45 +155,6 @@ class ApiServiceFalconABC(ApiServiceAppABC, ABC):
             if middleware:
                 self.app.add_middleware(middleware)
 
-    @property
-    def message_broker_settings(self):
-        """Return the message broker settings."""
-        ex_msg = (
-            'message_broker_settings property if message broker is '
-            'being used must be implemented in child class.'
-        )
-        raise NotImplementedError(ex_msg)
-
-    @cached_property
-    def message_service(self) -> MessageService:
-        """Return the message service."""
-        topic = self.message_broker_settings.topic
-        provider_id = self.message_broker_settings.provider_id
-
-        if not topic or not provider_id:
-            ex_msg = 'Message Broker is not configured. Please set the topic and provider_id.'
-            raise RuntimeError(ex_msg)
-
-        return MessageService(self.tcex, topic, provider_id)
-
-    def register_message_handlers(
-        self,
-        handlers: dict[str, object] | None = None,
-        default: list[MESSAGE_HANDLERS] | None = None,
-    ):
-        """Register message handlers."""
-        handlers = handlers or {}
-        default = default or []
-
-        # for handler in default[:]:
-        #     handler_instance = self.all_supported_message_handlers.get(handler)
-        #     self._message_handlers[type(handler_instance)] = handler_instance
-        # self._message_handlers.update(handlers)
-        for feature, handler in self._message_handlers.items():
-            if handler:
-                self.message_service.add_message_handler(feature, handler)
-        self.message_service.listen()
-
     def _all_supported_types(self, enum: Enum) -> dict[Enum, object]:
         """Return all supported types."""
         return {resource: resource.value.get_resource(self) for resource in enum}
@@ -218,7 +164,7 @@ class ApiServiceFalconABC(ApiServiceAppABC, ABC):
         """Dynamically returns all supported routes categorized by type."""
         supported_routes = {}
 
-        # Iterate over all top-level categories in ROUTES (e.g., TIE, MESSAGE_HANDLERS)
+        # Iterate over all top-level categories in ROUTES (e.g., TIE, TCVE)
         for category in ROUTES:
             if not isinstance(category.value, type) or not issubclass(category.value, Enum):
                 continue  # Skip non-enum attributes like ALL_TIE
@@ -241,11 +187,6 @@ class ApiServiceFalconABC(ApiServiceAppABC, ABC):
     def all_supported_tasks(self) -> dict[TASKS, object]:
         """Return all tasks."""
         return self._all_supported_types(TASKS)
-
-    @cached_property
-    def all_supported_message_handlers(self) -> dict[MESSAGE_HANDLERS, object]:
-        """Return all message handlers."""
-        return {}
 
     @property
     def log_path(self):
@@ -270,10 +211,38 @@ class ApiServiceFalconABC(ApiServiceAppABC, ABC):
 
     def api_event_callback(self, environ, response_handler):
         """Create the API"""
+        self._record_app_base_url(environ)
         if not environ['PATH_INFO'].startswith('/'):
             environ['PATH_INFO'] = '/' + environ['PATH_INFO']
 
         return self.app(environ, response_handler)
+
+    def _record_app_base_url(self, environ):
+        """Remember the URL this app is actually being served at.
+
+        `request_url` is the full URL the platform received. tcex copies every key of the
+        incoming service message into the WSGI environ in snake_case
+        (`tcex/app/service/api_service.py`), so it arrives here for free. It is the only
+        honest source for a link back to this app: reconstructing one from `tc_api_path`,
+        `displayPath` and the package version guesses at three things the platform has
+        already told us, and a guess that 404s is worse than no link. This is the same
+        source the TAXII service app uses to build its own discovery URLs.
+
+        The base is the request URL minus whatever path THIS request asked for, so the
+        result is the app root no matter which endpoint happened to arrive first. Recorded
+        once — it cannot change for the life of the process, and a background task has no
+        request of its own to read.
+        """
+        request_url = environ.get('request_url')
+        if not request_url or self.tasks_obj.app_base_url:
+            return
+
+        # Read before the PATH_INFO normalisation below, so the suffix still matches what
+        # the platform put in `request_url`.
+        path = environ.get('PATH_INFO') or ''
+        if path and request_url.endswith(path):
+            request_url = request_url[: -len(path)]
+        self.tasks_obj.app_base_url = request_url.rstrip('/')
 
     @cached_property
     def settings(self) -> SettingModel:
@@ -290,6 +259,11 @@ class ApiServiceFalconABC(ApiServiceAppABC, ABC):
     def db(self):
         """Return database object."""
         return JsonDB(self.db_path, self.log, json_args={'cls': CustomHandler})
+
+    @cached_property
+    def startup_state_service(self) -> StartupStateService:
+        """Return the startup state service."""
+        return StartupStateService(self.db, self.tasks_obj.job_dao, self.log)
 
     @abstractmethod
     def initialize_app(self):
@@ -311,11 +285,6 @@ class ApiServiceFalconABC(ApiServiceAppABC, ABC):
         return TASKS
 
     @property
-    def message_handlers(self) -> type[MESSAGE_HANDLERS]:
-        """Return the message handlers."""
-        return MESSAGE_HANDLERS
-
-    @property
     def routes(self) -> type[ROUTES]:
         """Return the routes."""
         return ROUTES
@@ -328,9 +297,22 @@ class ApiServiceFalconABC(ApiServiceAppABC, ABC):
         except Exception as ex:
             self.tasks_obj.send_preflight_failure_notification(str(ex)[:80])
             raise
-        self.tasks_obj.send_startup_notification()
         if self.migrations:
             self.migrations.migration_service.preform_migrations()
+
+        # ORDER IS LOAD-BEARING. Must come after preform_migrations() — that call imports
+        # job records out of the legacy sqlite DB, and the onboarding auto-complete reads
+        # job history to tell an upgraded install from a fresh one. Must also come before
+        # _remove_pending_jobs() (which deletes job records) and before the
+        # schedule.run_pending() loop, so no scheduler tick sees the ungated state.
+        self.startup_state_service.reconcile()
+
+        # AFTER reconcile(), not before: send_startup_notification() also sends the
+        # "Setup Required" reminder, which reads onboarding state. Running it first meant
+        # every upgraded install — onboarding auto-completed by reconcile() a few lines
+        # down — sent a High-priority "no ingestion will run" alert to every operator on
+        # first boot, for an app that was already configured and about to resume.
+        self.tasks_obj.send_startup_notification()
 
         self._remove_pending_jobs()
 

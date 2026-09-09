@@ -1,7 +1,13 @@
 <div class="parent bg-base01">
   <div class="header d-flex align-items-center border-bottom-border02 bg-base02 tester">
     <a class="pl-small pr-medium" href="/">
-      <img alt="ThreatConnect" style="margin-left: 20px" [src]="logoImage" />
+      <img
+        *ngIf="logoReady"
+        alt="Logo"
+        class="app-logo"
+        style="margin-left: 20px"
+        [src]="logoImage"
+      />
     </a>
     <div class="d-flex flex-column">
       <h3>{{ (appConfig$ | async)?.ui.title }}</h3>
@@ -38,7 +44,10 @@
     </mat-sidenav-container>
     -->
 
-  @if (!hideSideNav) {
+  <!-- The nav stays visible during onboarding — the stepper is now rendered by the Settings
+       page, not as a full-page overlay. `showContent` only waits for the onboarding gate to
+       RESOLVE, so the nav does not render for a frame before `onboardingGuard` redirects. -->
+  @if (showContent && !hideSideNav) {
     <div class="sidenav sidenav-container border-right-border02 pt-medium-large">
       <app-sidenav-menu *ngIf="viewSideNav"></app-sidenav-menu>
     </div>

@@ -29,6 +29,8 @@ class TransformABC(ABC):  # noqa: B024
         specific_path: Path,
         request: JobRequestModel | None = None,
         base_path: Path = Path('mapping'),
+        *,
+        logger: logging.Logger = logger,
     ) -> None:
         """Initialize the TransformABC class with necessary properties."""
         self.request = request
@@ -37,7 +39,7 @@ class TransformABC(ABC):  # noqa: B024
         self.api = tcex.api
         self.base_path = base_path
         self.custom_fns = {}
-        self.log = logger
+        self.log: logging.Logger = logger
         self.fns = ProcessingFunctions(tcex)
 
         # Initialize transformation-specific properties

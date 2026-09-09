@@ -1,0 +1,44 @@
+<tcl-modal
+    [closable]="true"
+    [featureVersion]="featureVersion"
+    [header]="effectiveConfig.title"
+    [maxWidth]="effectiveConfig.maxWidth"
+    [modalSize]="effectiveConfig.modalSize"
+    [visible]="visible"
+    (onClose)="onModalClose()">
+    <div class="confirmation-modal-card">
+        <div class="confirmation-modal-body">
+            @if (effectiveConfig.icon) {
+                <div class="confirmation-modal-icon">
+                    <tcl-svg-icon
+                        size="2.5rem"
+                        [color]="effectiveConfig.icon.color"
+                        [name]="effectiveConfig.icon.name">
+                    </tcl-svg-icon>
+                </div>
+            }
+
+            <div class="confirmation-modal-message">
+                <p [innerHTML]="effectiveConfig.message"></p>
+            </div>
+        </div>
+
+        <div class="confirmation-modal-footer">
+            @if (!effectiveConfig.hideCancel) {
+                <tcl-button
+                    [featureVersion]="featureVersion"
+                    [theme]="effectiveConfig.cancelTheme"
+                    (onClick)="onCancel()">
+                    {{ effectiveConfig.cancelText }}
+                </tcl-button>
+            }
+
+            <tcl-button
+                [featureVersion]="featureVersion"
+                [theme]="effectiveConfig.confirmTheme"
+                (onClick)="onConfirm()">
+                {{ effectiveConfig.confirmText }}
+            </tcl-button>
+        </div>
+    </div>
+</tcl-modal>

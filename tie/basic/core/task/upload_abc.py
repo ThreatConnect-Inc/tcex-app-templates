@@ -61,7 +61,7 @@ class UploadABC(TaskPathPipeABC, ABC):
     def handle_run_error(
         self,
         request_id: str,
-        request_dir: Path,
+        request_dir: Path | None,
         exception: Exception | None = None,  # noqa: ARG002
     ):
         """Handle upload errors - mark as failed (no retry from Download)."""
@@ -135,6 +135,9 @@ class UploadABC(TaskPathPipeABC, ABC):
         self.log.info(f'action="run-task", status="start", request-id="{request_id}"')
 
         request = self.job_dao.get(request_id)
+        # Only reset counts on fresh runs, not retries (retries skip already-successful files)
+        if not request.date_upload_failure:
+            self._reset_counts(request)
 
         files = sorted(input_dir.iterdir())
         failed_files = []

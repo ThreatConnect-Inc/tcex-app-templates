@@ -1,0 +1,217 @@
+// `display: contents` keeps the wrappers out of the layout entirely, so a form without
+// sections or help text renders exactly as it did before either existed. This is the
+// `form` mode contract the ad-hoc, download-TI, and filter forms depend on.
+.form-group,
+.form-field {
+    display: contents;
+}
+
+.form-group--titled {
+    display: block;
+    margin-bottom: 1.5rem;
+    width: 100%;
+}
+
+.form-group__title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    margin: 0 0 0.75rem;
+    opacity: 0.7;
+    text-transform: uppercase;
+}
+
+// `__helper` is the terse Settings-page line, `__description` the full explanation. Only
+// one of them is ever resolved for a given mode (see `proseFor`), so they share a look.
+.form-group__description,
+.form-field__helper,
+.form-field__description {
+    font-size: 0.8125rem;
+    line-height: 1.4;
+    margin: 0.25rem 0 1rem;
+    opacity: 0.75;
+}
+
+
+// Structured modes render a documented settings form, not a compact input row: one field
+// per row, flush left, each field's help bound to the control it belongs to.
+:host(.generated-form--structured) {
+    display: block;
+    text-align: left;
+    // Both are load-bearing: `tcl-stepper` centres its step content. `text-align` fixes
+    // inherited centring; `width` stops the host shrinking to content if it centres via
+    // flexbox instead, which would drag every left-aligned field with it.
+    width: 100%;
+
+    // Long-form help is unreadable at full panel width. ONE measure for every element on
+    // the page — label, help text, callout, control and the section rule above them. It
+    // matches `.settings`/`.settings-form` in pages/settings/settings.component.scss on
+    // purpose: those set the column this form renders inside, and when the two disagreed
+    // the page showed three different right edges (section rule at 44rem, fields at 42rem,
+    // callouts and prose at 68ch ≈ 34rem). Change this and that together.
+    --field-measure: 44rem;
+
+    .form-group,
+    .form-field {
+        display: block;
+    }
+
+    .form-group,
+    .form-group--titled {
+        margin-bottom: 2.25rem;
+        width: auto;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+
+    // Reads as a divider for the fields beneath it, not floating centred text.
+    .form-group__title {
+        border-bottom: 1px solid rgba(127, 127, 127, 0.25);
+        margin: 0 0 1.25rem;
+        max-width: var(--field-measure);
+        opacity: 0.65;
+        padding-bottom: 0.5rem;
+    }
+
+    // Space between fields, tightness within one, so help text ownership is unambiguous.
+    .form-field {
+        margin-bottom: 2rem;
+        max-width: var(--field-measure);
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+
+    // The field's own heading, never the control's — `ownLabel` is false for both
+    // structured modes, so every label on the page is this one at this weight. Previously
+    // only card types landed here and everything else used the library control's lighter
+    // built-in label, which is what made the page look like some labels were emphasised.
+    .form-field__label-row {
+        align-items: center;
+        display: flex;
+        gap: 0.375rem;
+        margin-bottom: 0.25rem;
+    }
+
+    .form-field__label {
+        font-weight: 600;
+    }
+
+    // `help`, not `pointer`: it reveals text in place, it does not navigate. Line-height
+    // 0 keeps the inline-block icon from riding above the label's baseline.
+    .form-field__info-icon {
+        cursor: help;
+        display: inline-flex;
+        line-height: 0;
+    }
+
+    .form-field__helper,
+    .form-field__description,
+    .form-group__description {
+        line-height: 1.5;
+        max-width: var(--field-measure);
+        opacity: 0.72;
+    }
+
+    // Between the label and whatever comes next — a callout, or the control.
+    .form-field__helper,
+    .form-field__description {
+        margin: 0 0 0.5rem;
+    }
+
+    // Sits between the section rule and its first field, so it needs the larger gap that
+    // a field's own helper line does not.
+    .form-group__description {
+        margin: 0 0 1.5rem;
+    }
+
+    // Both structured modes, both callout kinds (warning and info): they sit between the
+    // description and the control. `tcl-alert-box` owns the styling — this only places it.
+    .form-field__callout {
+        display: block;
+        margin-bottom: 0.75rem;
+    }
+}
+
+// -- option cards ----------------------------------------------------------
+// Options that each need a paragraph of their own. The LIBRARY control inside the card
+// owns the input, the label, the subtext and the a11y semantics; this file owns only the
+// card chrome, the selected treatment, and the right-aligned `note` no library control
+// has. Nothing here can reach the label or subtext — they render inside the control's own
+// view encapsulation.
+
+.option-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.option-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 0.75rem 1rem;
+    // Left-aligned: these are paragraphs, and `tcl-stepper` centres its step content.
+    text-align: left;
+    cursor: pointer;
+    border: 1px solid var(--tcl-border01);
+    border-radius: var(--tcl-border-radius, 4px);
+    background: transparent;
+    color: inherit;
+
+    // Was `:hover:not(:disabled)` on a <button>. A div has no :disabled.
+    &:hover:not(.option-card--disabled) {
+        border-color: var(--tcl-border03);
+    }
+
+    // Was `&:focus-visible` on the <button>. A div is not focusable, so the ring has to
+    // follow focus INTO the library control — `:focus-within` is what keeps the whole-card
+    // focus affordance the <button> gave us for free. Without it the only focus indicator
+    // is the library control's own small outline, which on a card-sized target reads as a
+    // regression.
+    &:focus-within {
+        outline: 2px solid var(--tcl-borderFocus);
+        outline-offset: 2px;
+    }
+
+    // Was `&:disabled`.
+    &.option-card--disabled {
+        cursor: not-allowed;
+        opacity: 0.5;
+    }
+
+    // `multi-options` has no wrapper click handler (see the template — the checkbox
+    // stops propagation unconditionally), so its frame must not advertise itself as
+    // clickable.
+    &.option-card--inert {
+        cursor: default;
+    }
+
+    // The library control is the primary hit target; give it the card's width.
+    .option-card__control {
+        flex: 1 1 auto;
+    }
+}
+
+// A selected card needs a FILLED surface, not just a different border. `.option-card` sets
+// `background: transparent` above and nothing ever overrode it, so a picked card differed
+// from an unpicked one only by border colour and a 1px inset ring — too quiet against a
+// column of otherwise identical cards. This matches TC core's log-level selector: bright
+// primary border plus a filled surface. The border stays 1px and the ring stays inset so
+// the card does not resize on selection and the list stops jittering.
+.option-card--selected {
+    background: var(--tcl-activeMain);
+    border-color: var(--tcl-primary);
+    box-shadow: inset 0 0 0 1px var(--tcl-primary);
+}
+
+// The right-hand hint: muted and secondary, it qualifies the option rather than labelling
+// it. The only text in a card this file still owns.
+.option-card__note {
+    flex-shrink: 0;
+    font-size: 0.8125rem;
+    color: var(--tcl-textTertiary);
+}

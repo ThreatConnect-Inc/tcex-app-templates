@@ -100,7 +100,7 @@ class Supervisor:
         Note: Pipelines in upload stage are skipped - upload manages its own retry lifecycle.
         See UPLOAD_RETRY_REDESIGN_PLAN.md for rationale.
         """
-        threshold = self.settings.advanced_settings.failure_threshold
+        threshold = self.settings.app_settings.failure_threshold
         now = datetime.now(UTC)
 
         for pipeline in self.job_dao.get_known_pipelines():
@@ -205,7 +205,7 @@ class Supervisor:
         Returns:
             Dict of pipeline_name -> is_on_probation for each pipeline.
         """
-        threshold = self.settings.advanced_settings.failure_threshold
+        threshold = self.settings.app_settings.failure_threshold
         now = datetime.now(UTC)
         results = {}
 
@@ -226,7 +226,7 @@ class Supervisor:
                     f'supervisor-event=entering-probation, '
                     f'pipeline={pipeline}, '
                     f'time_since_baseline={time_since_baseline}, '
-                    f'threshold={self.settings.advanced_settings.failure_threshold}'
+                    f'threshold={self.settings.app_settings.failure_threshold}'
                 )
             else:
                 # Pipeline is healthy - no action needed
@@ -349,12 +349,12 @@ class Supervisor:
             f'pipeline={pipeline}, '
             f'last_completed={last_completed.isoformat()}, '
             f'duration={duration}, '
-            f'threshold={self.settings.advanced_settings.failure_threshold}'
+            f'threshold={self.settings.app_settings.failure_threshold}'
         )
 
         reason = (
             f'Pipeline "{pipeline}" has had no completed jobs '
-            f'for {duration} (threshold: {self.settings.advanced_settings.failure_threshold}).'
+            f'for {duration} (threshold: {self.settings.app_settings.failure_threshold}).'
         )
         self.request_shutdown(reason)
 
@@ -390,7 +390,7 @@ class Supervisor:
         This is the effective baseline: max(job_history_completion, manual_api_override).
         """
         now = datetime.now(UTC)
-        threshold = self.settings.advanced_settings.failure_threshold
+        threshold = self.settings.app_settings.failure_threshold
         health = {}
 
         for pipeline in self.job_dao.get_known_pipelines():
@@ -400,7 +400,7 @@ class Supervisor:
             health[pipeline] = {
                 'last_completed': (last_completed.isoformat() if last_completed else None),
                 'is_stale': (time_since > threshold.total_seconds() if time_since else False),
-                'threshold': str(self.settings.advanced_settings.failure_threshold),
+                'threshold': str(self.settings.app_settings.failure_threshold),
             }
 
         return health

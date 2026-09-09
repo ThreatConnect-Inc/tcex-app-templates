@@ -3,6 +3,7 @@
 from datetime import UTC, datetime, timedelta
 from functools import cached_property
 
+from core.model.onboarding_model import is_onboarding_complete
 from core.model.tie.task_setting_model import TaskSettingModel
 from core.task.task_abc import TaskABC
 from model import JobRequestModel
@@ -16,9 +17,32 @@ class Scheduler(TaskABC):
         super().__init__(settings, tcex, db)
         self.pipeline = pipeline
 
-        self.backfill = timedelta(hours=settings.advanced_settings.backfill)
-        self.backfill_frequency = timedelta(hours=settings.advanced_settings.backfill_frequency)
-        self.frequency = timedelta(hours=settings.advanced_settings.frequency)
+    @property
+    def backfill(self) -> timedelta:
+        """Return how far back the first scheduled run reaches.
+
+        A property, not a cached value, for the same reason as `frequency` below: this
+        moved onto `app_settings` and is now editable from the Settings UI, so caching it
+        in __init__ would pin the boot-time value on this long-lived singleton.
+        """
+        return timedelta(hours=self.settings.app_settings.backfill)
+
+    @property
+    def backfill_frequency(self) -> timedelta:
+        """Return the chunk size a scheduled time range is split into. Read live."""
+        return timedelta(hours=self.settings.app_settings.backfill_frequency)
+
+    @property
+    def frequency(self) -> timedelta:
+        """Return how often a new scheduled job is created.
+
+        Read fresh on every access rather than cached in __init__. A settings save
+        rebinds settings.app_settings (core/api/endpoint/tcvf/settings_resource.py),
+        so reading it here means a Poll Frequency change from the Settings UI takes
+        effect on the next tick instead of requiring an app restart. Scheduler is a
+        long-lived singleton, so caching this would pin the boot-time value forever.
+        """
+        return timedelta(hours=self.settings.app_settings.frequency)
 
     def launch_preflight_checks(self):
         """Run pre-flight check before launching task."""
@@ -55,6 +79,19 @@ class Scheduler(TaskABC):
     def run(self):
         """Run the task."""
         self.log.info(f'event=schedule-download, action=running-task, pipeline={self.pipeline}')
+
+        # Do not queue egress work until an admin has completed onboarding. On a fresh app
+        # the branch below has no prior job and goes straight to _add_backfill_jobs(), which
+        # would schedule against settings still at their seeded defaults.
+        # Checked here rather than in __init__ on purpose: Scheduler is a long-lived
+        # singleton, so a cached result would never observe onboarding completing later
+        # (see is_onboarding_complete's docstring).
+        if not is_onboarding_complete(self.db):
+            self.log.info(
+                'task-event=schedule-download, action=skip-schedule, reason=onboarding-incomplete'
+            )
+            return
+
         most_recent_job = self.job_dao.get_most_recent_scheduled_job(pipeline=self.pipeline)
         now = datetime.now(UTC)
 

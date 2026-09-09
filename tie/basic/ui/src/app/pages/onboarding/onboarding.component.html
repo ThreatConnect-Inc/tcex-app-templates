@@ -1,0 +1,108 @@
+<!-- Deliberately no close button, no skip link, and no route that reaches this page:
+     the only way past it is to complete it, or to call DELETE /api/onboarding. -->
+<div class="onboarding page-container">
+    <div class="onboarding__panel">
+        <!-- Deliberately not the vendor's name: the sections, their labels, and their
+             fields all come from `UIConfigBuilder.settings_form`, so an app that fills
+             that in gets its own wording without editing this template. -->
+        <h2 class="onboarding__title">Set up this feed</h2>
+        <p class="onboarding__intro">
+            These settings control what this engine ingests, how often it polls, and when it
+            notifies you. They can all be changed later on the Settings page.
+        </p>
+
+        @if (steps.length) {
+            <!-- `new-design` is what swaps the step accents off the orange
+                 --tc-branding-color-primary and onto --tcl-textLink / --tcl-success,
+                 matching the buttons below, which already ask for it. -->
+            <tcl-stepper
+                featureVersion="new-design"
+                [navigateOnClick]="true"
+                [(activeZeroIndex)]="stepIndex">
+                @for (step of steps; track step.name) {
+                    <ng-template
+                        tclStep
+                        [name]="step.name">
+                        @if (step.alertType) {
+                            <tcl-alert-box
+                                class="onboarding__step-callout"
+                                [type]="step.alertType"
+                                [border]="true"
+                                [closable]="false"
+                                [message]="step.description"></tcl-alert-box>
+                        } @else if (step.description) {
+                            <p class="onboarding__step-description">{{ step.description }}</p>
+                        }
+                        <app-generated-form
+                            mode="stepper"
+                            [formConfig]="step.form"
+                            (fieldChange)="handleFieldChange(step, $event)"
+                            (validChange)="handleValidChange(step, $event)"></app-generated-form>
+                    </ng-template>
+                }
+            </tcl-stepper>
+
+            @if (checks.length) {
+                <div class="onboarding__checks">
+                    @for (check of checks; track $index) {
+                        <div
+                            class="onboarding__check"
+                            [class.onboarding__check--warning]="
+                                !check.passed && check.severity === 'warning'
+                            ">
+                            <tcl-svg-icon
+                                [color]="checkColor(check)"
+                                [name]="check.passed ? 'check' : 'alert'" />
+                            <div>
+                                <div>{{ check.message }}</div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+
+            @if (errorMessage) {
+                <app-error-message [message]="errorMessage"></app-error-message>
+            }
+
+            <div class="onboarding__actions">
+                <tcl-button
+                    featureVersion="new-design"
+                    theme="tertiary"
+                    [disabled]="busy || stepIndex === 0"
+                    (onClick)="handleBack()"
+                    >Back</tcl-button
+                >
+                @if (!isLastStep) {
+                    <tcl-button
+                        featureVersion="new-design"
+                        theme="primary"
+                        [disabled]="busy || !activeStepValid"
+                        (onClick)="handleNext()"
+                        >Next</tcl-button
+                    >
+                } @else {
+                    <tcl-button
+                        featureVersion="new-design"
+                        theme="secondary"
+                        [disabled]="busy || !activeStepValid"
+                        (onClick)="handleValidate()"
+                        >Validate</tcl-button
+                    >
+                    @if (busy) {
+                        <tcl-loading-icon [size]="'20px'"></tcl-loading-icon>
+                    }
+                    <!-- Same gate as the Settings page: nothing is saved until the server
+                         has approved the candidate, and any edit clears that approval. -->
+                    <tcl-button
+                        featureVersion="new-design"
+                        theme="primary"
+                        [disabled]="busy || !validated"
+                        (onClick)="handleFinish()"
+                        >Finish setup</tcl-button
+                    >
+                }
+            </div>
+        }
+    </div>
+</div>

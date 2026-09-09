@@ -33,8 +33,19 @@ class Convert(TaskPathPipeABC):
         )
 
     def process_event(self, content, output_dir):
-        """Process example data."""
-        if 'event' not in self.settings.sample_types:
+        """Process example data.
+
+        Read through `settings.app_settings` at use time, never cached on the instance —
+        a settings save rebinds that record, so a Sample Types change takes effect on the
+        next file rather than on the next restart.
+        """
+        # Compared case-insensitively on purpose. The record holds whatever case its
+        # source used: seeded from the app inputs it is lowercased by
+        # `AppBaseModel.validate_sample_types`, saved from the Settings form it carries the
+        # `all_sample_types` catalogue's case ('Event'). A literal comparison would match
+        # one of those and silently skip the other — a no-match, not an error.
+        enabled = {str(entry).strip().lower() for entry in self.settings.app_settings.sample_types}
+        if 'event' not in enabled:
             self.tcex.log.info('event=convert, action=skip, reason=event-not-enabled')
             return
         self.tcex.log.info('event=convert, action=process-event')

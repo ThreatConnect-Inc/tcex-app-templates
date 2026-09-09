@@ -41,6 +41,10 @@ ul {
 }
 
 .page-container {
+    // `border-box` is load-bearing and there is no global reset for it: without it the
+    // height below sizes the *content* box, a page's own vertical padding pushes it past
+    // the viewport, and `body { overflow: hidden }` clips the remainder with no scrollbar.
+    box-sizing: border-box;
     height: calc(100vh - 60px);
     overflow: scroll;
 }

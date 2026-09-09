@@ -1,28 +1,81 @@
-Testing Auto
-===============================================================================
-Current testing framework does not support TIE apps.  But tcex has a 'run' command that
-takes in a json file of params.
+# Tests
 
-But the tcex run command does not include the code around accessing secret keys in vault.
+This app uses the `tcex_testing` framework, vendored at `tests/tcex_testing/`.
 
-So I added the requirements.txt file under tests so when created deps folders, it would include
-the deps_test which includes the testing module.
+Tests are written declaratively: a `Profile` names the pipeline tasks to run, the
+output files each should produce, and the assertions to make against them. The
+harness runs the pipeline and does the checking.
 
-And then I wrote test_run_local.py to run this TIE app so I could grab the keys from vault.
-Noticed that each test run will delete all the existing log files/data.
+## Layout
 
-Command:
-pyTest tests
+```
+tests/
+├── conftest.py          # sys.path setup only — no fixtures
+├── harness/
+│   ├── base.py          # AppTestCase — YOUR app wiring. Start here.
+│   └── mock_sdk.py      # MockSDK — fixture-backed vendor SDK
+├── fixtures/            # JSON fixture data (see below)
+├── test_pipeline.py     # worked example — adapt it
+└── tcex_testing/        # the framework. Do not edit — see "Updating".
+```
 
-Testing Manually
-===============================================================================
-Basically, the params are passed into the app for startup. For this TIE app, the command to
-run from the root of the project:
+## Getting started
 
-tcex run --config-json tests/local-test-run.json
+1. Fill in `harness/base.py`. Every `create_*` method is abstract and app-specific:
+   inputs, settings, DB, SDK, and job request. `run_pipeline_task()` needs to match
+   your task constructors.
+2. Fill in `harness/mock_sdk.py`, overriding only the SDK methods that reach the
+   vendor API. Everything else keeps running for real.
+3. Adapt `test_pipeline.py` and drop fixture JSON into `tests/fixtures/`.
 
-To clear out the log first and run:
-rm -fr log/* | tcex run --config-json tests/local-test-run.json
+## Fixtures
 
-And to run in debug mode for VSC:
-rm -fr log/* | tcex run --debug --debug-port 5678 --config-json tests/local-test-run.json
+Resolved per test, later overriding earlier for the same filename stem:
+
+1. `tests/fixtures/common/`
+2. `tests/fixtures/<TestClassName>/common/`
+3. `tests/fixtures/<TestClassName>/<test_name>/`
+
+A file `events.json` becomes `self._data['events']` inside `MockSDK`. Override is
+whole-file, not a merge — the most specific `events.json` replaces the rest.
+
+Two example fixtures ship with the template:
+
+```
+fixtures/common/events.json                                    3 sample records
+fixtures/TestDownload/test_download_handles_empty_response/
+    events.json                                                [] — overrides the above
+```
+
+That pair is what makes `test_download_writes_events` and
+`test_download_handles_empty_response` pass out of the box while sharing one
+MockSDK method. Replace the contents with your vendor's real response shape.
+
+## Running
+
+```bash
+pytest tests/                      # everything
+pytest tests/ -m unit              # fixture-backed only, no credentials
+pytest tests/ -m integration       # requires live TC credentials
+```
+
+Unit tests need no credentials. Integration tests that stage or upload TC objects
+need `TC_API_PATH`, `TC_API_ACCESS_ID`, `TC_API_SECRET_KEY`, and `TC_OWNER`. When
+those are unset the harness substitutes a no-op stager, so unit runs work offline;
+attempting to actually stage an object then fails with an explicit message rather
+than a bare `KeyError`.
+
+Set `TCEX_TESTING_NO_CLEANUP=1` to leave staged TC objects in place for inspection
+after a run.
+
+## Updating
+
+`tests/tcex_testing/` is delivered and maintained by the app template. Do not edit
+it — template updates overwrite files whose contents still match the template, so
+local edits are either lost or silently block the update.
+
+Everything outside `tcex_testing/` — `conftest.py`, `harness/`, `fixtures/`, and
+your test modules — belongs to this app and is left alone by updates.
+
+Found a framework bug? Fix it in `tcex-app-templates/tie/basic/tests/tcex_testing/`
+and let it flow back down, so the fix reaches every app instead of one.

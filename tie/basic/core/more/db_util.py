@@ -1,5 +1,14 @@
 """DB Util Module"""
 
+# REVIEW (template cleanup, 2026-08-25): retained pending a decision -- confirm with the
+# team whether this is a supported extension point for app authors or leftover.
+# It was proposed for deletion, then kept because "no importers" does not prove much
+# in a template: files here exist to be used by apps built FROM it.
+# Evidence at the time:
+#   Imports sqlalchemy, which is NOT in requirements.txt -- importing this module would raise
+#   ImportError. Predates the move to JsonDB. Apps that want it keep an app-local copy instead
+#   (see tcvf-mandiant-advantage-intel/more/db_util.py).
+
 import logging
 from sqlite3 import OperationalError
 from typing import Any

@@ -1,5 +1,7 @@
 """Query Param Filter Pagination Model."""
 
+from typing import ClassVar
+
 from pydantic import Field, validator
 
 from core.api.validation.models.query_param_filter_model import QueryParamFilterModel
@@ -9,21 +11,19 @@ from core.json_db import SortBy, SortOrder
 class QueryParamFilterPaginationModel(QueryParamFilterModel):
     """Query Param Filter Pagination Model."""
 
-    _not_unset_capable: list[str] = Field(
-        default=[
-            'by_alias',
-            'exclude',
-            'exclude_defaults',
-            'exclude_none',
-            'exclude_unset',
-            'extra',
-            'include',
-            'limit',
-            'offset',
-            'sort',
-            'sort_order',
-        ]
-    )
+    _not_unset_capable: ClassVar[list[str]] = [
+        'by_alias',
+        'exclude',
+        'exclude_defaults',
+        'exclude_none',
+        'exclude_unset',
+        'extra',
+        'include',
+        'limit',
+        'offset',
+        'sort',
+        'sort_order',
+    ]
 
     limit: int = Field(50, ge=0, le=500)
     offset: int = Field(0, ge=0)

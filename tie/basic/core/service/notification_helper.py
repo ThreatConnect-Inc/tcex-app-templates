@@ -8,7 +8,11 @@ from tcex import TcEx
 from core.json_db import JsonDB
 from core.model.settings_model_base import SettingModelBase
 from core.model.tie.notification_model import NotificationModel
-from core.service.notification_service import NOTIFICATION_TYPES, NotificationService, NotificationTypeConfig
+from core.service.notification_service import (
+    NOTIFICATION_TYPES,
+    NotificationService,
+    NotificationTypeConfig,
+)
 
 logger = logging.getLogger('tcex')
 
@@ -22,22 +26,29 @@ class NotificationHelper:
 
     Custom types must be registered in NOTIFICATION_TYPES before use (typically
     in app_inputs.py). Once registered, they integrate automatically with the
-    parse_notification_types validator and settings.notification_types opt-in.
+    parse_notification_types validator and settings.app_settings.notification_types opt-in.
 
     Examples:
         >>> # Register a custom type in app_inputs.py:
-        >>> NOTIFICATION_TYPES['Alert Source Errors'] = NotificationTypeConfig(
-        ...     category='alert_source_errors',
-        ...     priority='Medium',
-        ...     message_template='{count} source(s) failed to download',
+        >>> NOTIFICATION_TYPES['Alert Source Errors'] = (
+        ...     NotificationTypeConfig(
+        ...         category='alert_source_errors',
+        ...         priority='Medium',
+        ...         message_template='{count} source(s) failed to download',
+        ...     )
         ... )
 
         >>> # Use in a task (add as a cached_property for fork safety):
         >>> helper.notify('Alert Source Errors', send_now=True, count=3)
-        >>> helper.notify('Alert Source Errors', message='custom message', send_now=False)
+        >>> helper.notify(
+        ...     'Alert Source Errors',
+        ...     message='custom message',
+        ...     send_now=False,
+        ... )
     """
 
     def __init__(self, settings: SettingModelBase, tcex: TcEx, db: JsonDB):
+        """Initialize class properties."""
         self._settings = settings
         self._tcex = tcex
         self._db = db
@@ -75,18 +86,18 @@ class NotificationHelper:
         message_template is None.
 
         send_now=True sends immediately via the TC API (if the category is in
-        settings.notification_types) and stores in the DB.
+        settings.app_settings.notification_types) and stores in the DB.
         send_now=False stores in the DB only — visible in the Notifications UI.
         """
         if isinstance(notification_type, str):
-            if self._settings.notification_digest_interval is None:
+            if self._settings.app_settings.notification_digest_interval is None:
                 self.log.debug(
                     f'action=notify, type={notification_type!r}, '
                     f'status=skipped, reason=notifications_disabled'
                 )
                 return
             notification_config = NOTIFICATION_TYPES[notification_type]
-            notification_types = self._settings.notification_types or []
+            notification_types = self._settings.app_settings.notification_types or []
             should_send = send_now and notification_config.category in notification_types
         else:
             notification_config = notification_type
@@ -116,9 +127,7 @@ class NotificationHelper:
         status_text = None
 
         if should_send:
-            result = self._notification_service.send(
-                prefixed_message, notification_config.priority
-            )
+            result = self._notification_service.send(prefixed_message, notification_config.priority)
             send_status = result['send_status']
             status_code = result['status_code']
             status_text = result['status_text']

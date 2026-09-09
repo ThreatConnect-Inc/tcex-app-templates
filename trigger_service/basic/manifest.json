@@ -6,7 +6,7 @@
     "template_path": "trigger_service/basic/README.md"
   },
   "app.py": {
-    "last_commit": "4b491ad9c887023d3d83feb103e08394750895df",
+    "last_commit": "5287d686bf833d41b815dba82a9075aa0b342a07",
     "managed": false,
     "sha256": "73344e8fe6e2ba4a7b843638a94e5b23b075a5b6b18f4c250add495f5dd2de77",
     "template_path": "trigger_service/basic/app.py"

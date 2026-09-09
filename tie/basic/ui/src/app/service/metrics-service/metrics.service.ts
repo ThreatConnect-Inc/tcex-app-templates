@@ -15,9 +15,7 @@ export class MetricsService extends BaseService {
     getProcessingCollection(params: any): Observable<any> {
         return this.http.get<ApiResponseCollection<TIProcessingMetric>>(
             `${this.apiUrl}/processing`,
-            {
-                params: this.convertToHttpParams(params),
-            },
+            { params: this.convertToHttpParams(params) },
         );
     }
 

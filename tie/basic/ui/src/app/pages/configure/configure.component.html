@@ -1,0 +1,308 @@
+<div class="page-container pb-medium-large px-medium-large d-flex flex-column">
+    <div class="d-flex pt-medium-large justify-content-between align-items-center mb-medium">
+        <div
+            class="d-flex align-items-center"
+            style="gap: 0.5rem">
+            <h3 class="mb-0">Configure</h3>
+            @if (infoTooltip) {
+                <tcl-svg-icon
+                    class="configure-info-icon"
+                    color="var(--tcl-iconsActionable)"
+                    name="info"
+                    size="1.125rem"
+                    tooltipPosition="right"
+                    tooltipStyleClass="configure-info-tooltip"
+                    tooltipZIndex="10000"
+                    [escape]="true"
+                    [tclTooltip]="infoTooltip" />
+            }
+        </div>
+        <div
+            class="d-flex"
+            style="gap: 0.5rem">
+            <tcl-button
+                [featureVersion]="featureVersion"
+                [theme]="ButtonTheme.Primary"
+                (click)="openAdd()">
+                Add Config
+            </tcl-button>
+            @if (hasPendingChanges) {
+                <tcl-button
+                    [disabled]="saving"
+                    [featureVersion]="featureVersion"
+                    [theme]="ButtonTheme.Primary"
+                    (click)="openSaveConfirm()">
+                    Save Changes
+                </tcl-button>
+                <tcl-button
+                    [featureVersion]="featureVersion"
+                    [theme]="ButtonTheme.Secondary"
+                    (click)="discardChanges()">
+                    Discard
+                </tcl-button>
+            }
+        </div>
+    </div>
+
+    <tcl-table
+        class="tc-new-tables table-layout-auto"
+        #dataTable
+        [autoLayout]="true"
+        [lazy]="false"
+        [paginator]="false"
+        [resizableColumns]="false"
+        [scrollable]="false"
+        [showSpinningLoader]="!table.dataLoaded"
+        [value]="table.data"
+        (closeSpinner)="table.dataLoaded = true"
+        (onRowReorder)="onRowReorder($event)">
+        <ng-template tclTemplate="empty-message">
+            <tr>
+                <td
+                    class="empty-message"
+                    [attr.colSpan]="table.dataColumns.length + 3">
+                    No configurations found
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template tclTemplate="header">
+            <tr>
+                <th></th>
+                <th>#</th>
+                @for (col of table.dataColumns; track col) {
+                    <th>{{ col.header }}</th>
+                }
+                <th>Actions</th>
+            </tr>
+        </ng-template>
+        <ng-template
+            let-rowIndex="rowIndex"
+            let-value
+            tclTemplate="body">
+            <tr
+                [tclReorderableRow]="asIndex(rowIndex)"
+                (dragstart)="onRowDragStart($event, value)">
+                <td tclReorderableRowHandle>
+                    <tcl-svg-icon
+                        class="ui-table-reorderablerow-handle"
+                        name="drag-handle"
+                        [tclTooltip]="'Drag to reorder'" />
+                </td>
+                <td class="ui-table-reorderablerow-handle">{{ rowIndex + 1 }}</td>
+                @for (col of table.dataColumns; track col) {
+                    <td
+                        class="trunc ui-table-reorderablerow-handle"
+                        style="max-width: 200px">
+                        @if (Array.isArray(value[col.field])) {
+                            {{ value[col.field]?.join(', ') }}
+                        } @else {
+                            {{ value[col.field] }}
+                        }
+                    </td>
+                }
+                <td>
+                    <tcl-nested-menu
+                        buttonLabel="Options"
+                        menuSide="left"
+                        [buttonHeight]="28"
+                        [buttonIcon]="ButtonIcon.MiscMenuHorizontal"
+                        [featureVersion]="featureVersion"
+                        [itemHeight]="40"
+                        [list]="rowActionMenuItems"
+                        (selected)="handleConfigMenuAction($event, value, rowIndex)">
+                    </tcl-nested-menu>
+                </td>
+            </tr>
+        </ng-template>
+    </tcl-table>
+</div>
+
+<tcl-side-drawer
+    [open]="showSideDrawer"
+    [side]="DrawerSide.Right"
+    [titleText]="drawerTitle"
+    (openChange)="handleSidenavChange($event)">
+    @switch (drawerMode) {
+        @case (DrawerMode.EDIT) {
+            <div
+                class="d-flex flex-column"
+                style="gap: var(--tcl-spacing-5); width: 95%">
+                @for (field of formFields; track field.name) {
+                    @switch (field.type) {
+                        @case ('multi-select') {
+                            <tcl-dropdown-v2
+                                [label]="field.label"
+                                [isPill]="true"
+                                [menuItems]="dropdownMenuItems[field.name] || []"
+                                [required]="field.required"
+                                [advancedSettings]="field.name === 'owners' ? ownerDropdownSettings : {}"
+                                (onSelect)="onDropdownChange(field.name, $event)">
+                            </tcl-dropdown-v2>
+                        }
+                        @case ('select') {
+                            <tcl-dropdown-v2
+                                [label]="field.label"
+                                [menuItems]="dropdownMenuItems[field.name] || []"
+                                [required]="field.required"
+                                (onSelect)="onDropdownChange(field.name, $event)">
+                            </tcl-dropdown-v2>
+                        }
+                        @case ('textarea') {
+                            <div class="d-flex flex-column">
+                                <label class="mb-xsmall fontsize-body2 text-textTertiary d-flex align-items-center">
+                                    {{ field.label }}
+                                    @if (field.required) {
+                                        <span class="text-error ml-xsmall" aria-hidden="true">*</span>
+                                    }
+                                </label>
+                                <textarea
+                                    class="tql-textarea"
+                                    rows="4"
+                                    [value]="formValues[field.name] || ''"
+                                    (input)="onTextChange(field.name, $any($event.target).value)">
+                                </textarea>
+                            </div>
+                        }
+                        @default {
+                            <tcl-text-input
+                                [label]="field.label"
+                                [required]="field.required"
+                                [value]="formValues[field.name] || ''"
+                                (onChange)="onTextChange(field.name, $event)">
+                            </tcl-text-input>
+                        }
+                    }
+                }
+
+                @if (validationError) {
+                    <app-error-message [message]="validationError" />
+                } @else if (tqlValidated) {
+                    <div class="tql-valid-message">
+                        <tcl-svg-icon
+                            color="var(--tcl-success)"
+                            name="check-circle"
+                            size="1rem" />
+                        TQL is valid
+                        @if (tqlMatchCount !== null) {
+                            — {{ tqlMatchCount | number }} matching result{{ tqlMatchCount === 1 ? '' : 's' }}
+                        }
+                    </div>
+                }
+
+                <div
+                    class="d-flex justify-content-end"
+                    style="gap: var(--tcl-spacing-5)">
+                    <tcl-button
+                        [featureVersion]="featureVersion"
+                        [theme]="ButtonTheme.Secondary"
+                        (click)="showSideDrawer = false">
+                        Cancel
+                    </tcl-button>
+                    <tcl-button
+                        [disabled]="validating"
+                        [featureVersion]="featureVersion"
+                        [theme]="ButtonTheme.Secondary"
+                        (click)="validateTql()">
+                        @if (validating) {
+                            Validating...
+                        } @else {
+                            Validate TQL
+                        }
+                    </tcl-button>
+                    <tcl-button
+                        [disabled]="!tqlValidated"
+                        [featureVersion]="featureVersion"
+                        [theme]="ButtonTheme.Primary"
+                        (click)="applyLocalChange()">
+                        Apply
+                    </tcl-button>
+                </div>
+            </div>
+        }
+        @case (DrawerMode.SAVE_CONFIRM) {
+            <div
+                class="d-flex flex-column"
+                style="gap: var(--tcl-spacing-8); width: 95%">
+                <p>Choose how to apply your pending changes:</p>
+
+                <div class="save-option-cards">
+                    <label
+                        class="save-option-card"
+                        [class.selected]="selectedSaveMode === 'delta'">
+                        <input
+                            name="saveMode"
+                            type="radio"
+                            value="delta"
+                            [(ngModel)]="selectedSaveMode" />
+                        <div class="save-option-card-content">
+                            <span class="save-option-card-title">Save and Run Delta Update</span>
+                            <span class="save-option-card-desc">
+                                Only processes items added or modified since the last
+                                successful run. Faster and uses fewer API calls.
+                            </span>
+                        </div>
+                    </label>
+
+                    <label
+                        class="save-option-card"
+                        [class.selected]="selectedSaveMode === 'full'">
+                        <input
+                            name="saveMode"
+                            type="radio"
+                            value="full"
+                            [(ngModel)]="selectedSaveMode" />
+                        <div class="save-option-card-content">
+                            <span class="save-option-card-title">Save and Run Full Update</span>
+                            <span class="save-option-card-desc">
+                                Re-processes all items from scratch. Recommended after major
+                                configuration changes or if you suspect data drift.
+                            </span>
+                        </div>
+                    </label>
+                </div>
+
+                @if (validationError) {
+                    <app-error-message [message]="validationError" />
+                }
+
+                <div
+                    class="d-flex justify-content-end"
+                    style="gap: var(--tcl-spacing-5)">
+                    <tcl-button
+                        [featureVersion]="featureVersion"
+                        [theme]="ButtonTheme.Tertiary"
+                        (click)="showSideDrawer = false">
+                        Cancel
+                    </tcl-button>
+                    <tcl-button
+                        [disabled]="saving"
+                        [featureVersion]="featureVersion"
+                        [theme]="ButtonTheme.Primary"
+                        (click)="saveAllChanges(selectedSaveMode === 'full')">
+                        @if (saving) {
+                            Saving…
+                        } @else {
+                            Save
+                        }
+                    </tcl-button>
+                </div>
+            </div>
+        }
+    }
+</tcl-side-drawer>
+
+<app-confirmation-modal
+    [config]="{
+        title: 'Delete Configuration',
+        message: 'Are you sure you want to delete this configuration? This cannot be undone.',
+        confirmText: 'Delete',
+        cancelText: 'Cancel',
+        confirmTheme: ButtonTheme.Destructive,
+        cancelTheme: ButtonTheme.Secondary,
+        modalSize: 'small',
+    }"
+    [visible]="showDeleteConfirm"
+    (cancelled)="cancelDelete()"
+    (confirmed)="confirmDelete()"
+    (visibilityChange)="showDeleteConfirm = $event">
+</app-confirmation-modal>

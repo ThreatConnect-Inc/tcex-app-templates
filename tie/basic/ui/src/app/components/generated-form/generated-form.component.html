@@ -1,60 +1,234 @@
-@for (field of formConfig$ | async; track $index) {
-  @switch (field.type) {
-    @case ('select') {
-      <tcl-dropdown-v2
-        class="mr-medium"
-        maxMenuHeight="300px"
-        [errorText]="form[field.name].error"
-        [label]="field.label"
-        [labelIconTooltip]="field.info"
-        (onSelect)="handleChange($event, field.name)"
-        [isPill]="true"
-        [menuItems]="field.choices"
-        [required]="field.required"
-        [style.min-width.px]="200"
-      ></tcl-dropdown-v2>
-    }
-    @case ('multi-select') {
-      <tcl-dropdown-v2
-        class="mr-medium"
-        maxMenuHeight="300px"
-        [advancedSettings]="field.advancedSettings"
-        [errorText]="form[field.name].error"
-        [label]="field.label"
-        [labelIconTooltip]="field.info"
-        (onSelect)="handleChange($event, field.name)"
-        [isPill]="true"
-        [menuItems]="field.choices"
-        [required]="field.required"
-        [style.min-width.px]="field.minWidth"
-      ></tcl-dropdown-v2>
-    }
-    @case ('date') {
-      <tcl-calendar-v2
-        appendTo="body"
-        [showTime]="true"
-        [showSeconds]="true"
-        [showButtonBar]="true"
-        [calendarLabel]="field.label"
-        [error]="!!form[field.name].error"
-        [errorMessage]="form[field.name].error"
-        [required]="field.required"
-        [tooltipCalendar]="field.info"
-        (onSelect)="handleChange($event, field.name)"
-        (onClearClick)="handleChange(null, field.name)"
-      ></tcl-calendar-v2>
-    }
-    @default {
-      <tcl-text-input
-        class="mr-medium"
-        [error]="form[field.name].error"
-        [infoMessage]="field.info"
-        [label]="field.label"
-        [showCount]="false"
-        [required]="field.required"
-        [value]="field.default"
-        (onChange)="handleChange($event, field.name)"
-      ></tcl-text-input>
-    }
-  }
+@for (field of formConfig$ | async; track field.name) {
+    <div class="form-field">
+      <!-- Fixed order: heading, then prose, then the warning callout, then the control. A
+           stepper is teaching, not just collecting — the label names the decision, the
+           description explains it, and only then is the operator asked to make it. Plain
+           text by default: a callout is reserved for `warning`, so a page of ordinary
+           fields is not a wall of boxes.
+
+           The four prose keys are independent and a field may carry any combination:
+           `shortText` a terse line, `description` body text, `info` an info box,
+           `warning` a warning box. `proseFor` decides what surfaces for this mode; this
+           template just renders whatever came back, in this order. In `settings` mode
+           `description` and `info` arrive as `labelInfo` — the ⓘ below — so neither block
+           renders and the label, its one-line gist, and the control stay together.
+
+           The whole block is empty in `form` mode: `ownLabel` is unconditionally true
+           there and every prose key resolves to null, so a `display: contents` field
+           emits nothing of its own. See `proseFor` / `ownLabelFor`. -->
+      @if (!field.ownLabel) {
+        <span class="form-field__label-row">
+          <span class="form-field__label">{{ field.label }}</span>
+          <!-- Same control, options and a11y story as the ⓘ beside the Configure page
+               title (pages/configure/configure.component.html) — this is that pattern
+               applied per field, not a new one. `escape` is true because `labelInfo` is
+               app-authored prose, not markup. -->
+          @if (field.labelInfo) {
+            <tcl-svg-icon
+              class="form-field__info-icon"
+              color="var(--tcl-iconsActionable)"
+              name="info"
+              size="1rem"
+              tooltipPosition="right"
+              tooltipZIndex="10000"
+              [escape]="true"
+              [tclTooltip]="field.labelInfo" />
+          }
+        </span>
+      }
+      @if (field.shortText) {
+        <p class="form-field__helper">{{ field.shortText }}</p>
+      }
+      @if (field.description) {
+        <p class="form-field__description">{{ field.description }}</p>
+      }
+      <!-- Warning before info: the more emphatic box reads first. `[message]` only — the
+           old `[info]` binding on these boxes was what put a ⓘ INSIDE the callout, which
+           the stepper deliberately no longer has. -->
+      @if (field.warning) {
+        <tcl-alert-box
+          class="form-field__callout"
+          [type]="AlertBoxType.Warning"
+          [border]="true"
+          [closable]="false"
+          [message]="field.warning"
+        ></tcl-alert-box>
+      }
+      @if (field.info) {
+        <tcl-alert-box
+          class="form-field__callout"
+          [type]="AlertBoxType.Info"
+          [border]="true"
+          [closable]="false"
+          [message]="field.info"
+        ></tcl-alert-box>
+      }
+      @switch (field.type) {
+        @case ('select') {
+          <tcl-dropdown-v2
+            [disabled]="!!field.disabled"
+            class="mr-medium"
+            maxMenuHeight="300px"
+            [advancedSettings]="field.advancedSettings"
+            [errorText]="form[field.name].error"
+            [label]="field.ownLabel ? field.label : ''"
+            [labelIconTooltip]="field.tooltip ?? ''"
+            (onSelect)="handleChange($event, field.name)"
+            [isPill]="true"
+            [menuItems]="field.choices"
+            [required]="field.required"
+            [style.min-width.px]="200"
+          ></tcl-dropdown-v2>
+        }
+        @case ('multi-select') {
+          <tcl-dropdown-v2
+            [disabled]="!!field.disabled"
+            class="mr-medium"
+            maxMenuHeight="300px"
+            [advancedSettings]="field.advancedSettings"
+            [errorText]="form[field.name].error"
+            [label]="field.ownLabel ? field.label : ''"
+            [labelIconTooltip]="field.tooltip ?? ''"
+            (onSelect)="handleChange($event, field.name)"
+            [isPill]="true"
+            [menuItems]="field.choices"
+            [required]="field.required"
+            [style.min-width.px]="field.minWidth"
+          ></tcl-dropdown-v2>
+        }
+        <!-- `calendarLabel`, not `label` — tcl-calendar-v2 has no `label` input, so
+             binding one would be an NG8002. -->
+        @case ('date') {
+          <tcl-calendar-v2
+            [disabled]="!!field.disabled"
+            appendTo="body"
+            [showTime]="true"
+            [showSeconds]="true"
+            [showButtonBar]="true"
+            [calendarLabel]="field.ownLabel ? field.label : ''"
+            [error]="!!form[field.name].error"
+            [errorMessage]="form[field.name].error"
+            [required]="field.required"
+            [tooltipCalendar]="field.tooltip ?? ''"
+            (onSelect)="handleChange($event, field.name)"
+            (onClearClick)="handleChange(null, field.name)"
+          ></tcl-calendar-v2>
+        }
+        @case ('number') {
+          <tcl-text-input
+            [minValue]="field.minValue"
+            [maxValue]="field.maxValue"
+            [disabled]="!!field.disabled"
+            class="mr-medium"
+            type="number"
+            [error]="form[field.name].error"
+            [infoMessage]="field.tooltip ?? ''"
+            [label]="field.ownLabel ? field.label : ''"
+            [showCount]="false"
+            [required]="field.required"
+            [value]="field.textValue"
+            (onChange)="handleChange($event, field.name)"
+          ></tcl-text-input>
+        }
+        <!-- Kept for the apps that want a plain on/off. `radio` is the choice when each
+             side needs its own explanation before the operator picks one. `showLabel`
+             tracks `ownLabel` so the toggle does not reserve space for an empty label. -->
+        @case ('toggle') {
+          <tcl-toggle
+            [disabled]="!!field.disabled"
+            class="mr-medium"
+            [checked]="isToggleChecked(field)"
+            [label]="field.ownLabel ? field.label : ''"
+            [showLabel]="field.ownLabel"
+            [infoMessage]="field.tooltip ?? ''"
+            (toggle)="handleChange($event, field.name)"
+          ></tcl-toggle>
+        }
+        @case ('radio') {
+          <!-- Cards, not plain radios: each option carries a paragraph explaining what
+               choosing it costs. `tcl-radio-button` owns the input, the label, the subtext
+               and the a11y semantics; this template supplies only the card chrome and the
+               right-aligned `note`, which no library control has. The field label comes
+               from the shared `form-field__label` heading above, which is why `ownLabel`
+               is false for a card type in settings mode too. -->
+          <div class="option-cards" role="radiogroup" [attr.aria-label]="field.label">
+            @for (option of field.options; track option.value) {
+              <!-- The wrapper is clickable so the whole card is the hit target. Safe:
+                   `RadioButtonComponent.handleClick` stopImmediatePropagation()s clicks on
+                   the control body, so only label/subtext clicks reach here, and a second
+                   delivery of the SAME value is idempotent — handleClick returns early on
+                   `this.checked` and `handleChange`'s `radio` case assigns. -->
+              <div
+                class="option-card"
+                [class.option-card--selected]="isSelected(field, option)"
+                [class.option-card--disabled]="!!field.disabled"
+                (click)="field.disabled ? null : handleChange(option.value, field.name)"
+              >
+                <tcl-radio-button
+                  class="option-card__control"
+                  [name]="field.name"
+                  [value]="option.value"
+                  [label]="option.label"
+                  [subtext]="option.subtext ?? ''"
+                  [checked]="isSelected(field, option)"
+                  [disabled]="!!field.disabled"
+                  (onClick)="handleChange(option.value, field.name)"
+                ></tcl-radio-button>
+                @if (option.note) {
+                  <span class="option-card__note">{{ option.note }}</span>
+                }
+              </div>
+            }
+          </div>
+        }
+        @case ('multi-options') {
+          <!-- The same cards with checkbox semantics. `tcl-checkbox-v2` renders a real
+               square check where the radio renders a circle, so "pick many" reads without
+               any extra affordance. -->
+          <div class="option-cards" role="group" [attr.aria-label]="field.label">
+            @for (option of field.options; track option.value) {
+              <!-- NO wrapper (click) here, deliberately.
+                   `CheckboxV2Component.toggleCheckboxState` calls stopPropagation()
+                   UNCONDITIONALLY, so a wrapper handler would only ever fire for clicks on
+                   the card's own padding and `note` — and because `handleChange`'s
+                   `multi-options` case TOGGLES, that inconsistency is worse than an inert
+                   frame: the same visual gesture would sometimes toggle once and sometimes
+                   not at all depending on the pixel. `.option-card--inert` drops
+                   `cursor: pointer` so the frame does not claim to be clickable. -->
+              <div
+                class="option-card option-card--inert"
+                [class.option-card--selected]="isSelected(field, option)"
+                [class.option-card--disabled]="!!field.disabled"
+              >
+                <tcl-checkbox-v2
+                  class="option-card__control"
+                  [value]="option.value"
+                  [label]="option.label"
+                  [subtext]="option.subtext ?? ''"
+                  [state]="checkboxStateFor(field, option)"
+                  [disabled]="!!field.disabled"
+                  (onChange)="handleChange(option.value, field.name)"
+                ></tcl-checkbox-v2>
+                @if (option.note) {
+                  <span class="option-card__note">{{ option.note }}</span>
+                }
+              </div>
+            }
+          </div>
+        }
+        @default {
+          <tcl-text-input
+            [disabled]="!!field.disabled"
+            class="mr-medium"
+            [error]="form[field.name].error"
+            [infoMessage]="field.tooltip ?? ''"
+            [label]="field.ownLabel ? field.label : ''"
+            [showCount]="false"
+            [required]="field.required"
+            [value]="field.textValue"
+            (onChange)="handleChange($event, field.name)"
+          ></tcl-text-input>
+        }
+      }
+    </div>
 }

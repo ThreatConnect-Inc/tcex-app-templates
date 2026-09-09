@@ -1,5 +1,6 @@
 """Scheduled Task"""
 
+import datetime
 from abc import abstractmethod
 from collections.abc import Callable
 from typing import NamedTuple
@@ -47,6 +48,10 @@ class TaskSettingCustomModel(TaskSettingModel):
 
     pending_tag: str
     max_attempts: int
+    #: Once a group is past `max_attempts`, `run()` skips it entirely except for retrying
+    #: the tag removal itself — paced off the group's own `date_added` rather than anything
+    #: persisted, so this needs no state, just how often (in seconds) to check back.
+    retry_remove_tag_interval_seconds: int
 
 
 class CustomTag(NamedTuple):
@@ -95,10 +100,21 @@ class BackfillMissingReportABC(TaskABC):
         return False
 
     def _remove_tag(self, group: Group, tag):
-        """Remove PDF Pending tag."""
+        """Remove PDF Pending tag.
+
+        Deliberately swallows failures: this used to be called with nothing catching it,
+        so a single failed PUT (e.g. an upstream API error) would raise out of the entire
+        `run()` loop, abort every other group queued in that cycle, and skip the tracker
+        save for this group — leaving the tag in place forever and the group re-matching
+        `groups()` on every 15s poll indefinitely. Logging and moving on is what actually
+        keeps one bad group from taking the whole batch down with it.
+        """
         tag_delete_body = {'tags': {'data': [{'name': tag}], 'mode': 'delete'}}
-        self.tcex.session.tc.put(f'/v3/groups/{group.model.id}', json=tag_delete_body)
-        self.log.debug(f'action=remove-tag, Removed tag={tag}')
+        try:
+            self.tcex.session.tc.put(f'/v3/groups/{group.model.id}', json=tag_delete_body)
+            self.log.debug(f'action=remove-tag, Removed tag={tag}')
+        except Exception:
+            self.log.exception(f'action=remove-tag-failed, group={group.model.id}, tag={tag}')
 
     def _update_tracker(self, tracker: ReportPdfTrackerModel):
         """Find existing tracker."""
@@ -152,67 +168,94 @@ class BackfillMissingReportABC(TaskABC):
             for custom_tag in self.custom_tags:
                 # iterate over groups
                 for group in self.groups(custom_tag.name):
-                    # update the task heartbeat
-                    self.update_heartbeat()
-
-                    self.log.info(
-                        f'action=process-group, name={group.model.name} id={group.model.id}'
-                    )
-
-                    for attribute in group.attributes:
-                        if attribute.model.type == 'External ID':
-                            report_id = str(attribute.model.value)
-                            break
-                    else:
-                        self.log.error(
-                            'action=process-backfill-missing-report, '
-                            'error=no-external-id, '
-                            f'group-id={group.model.id}'
-                        )
-                        continue
-
-                    tracker = self.dao.find_next_for_group(report_id)
-                    tracker = tracker or ReportPdfTrackerModel(group_id=report_id, attempt_count=0)
-
-                    document = None
-                    try:
-                        document = custom_tag.processor(report_id)
-                    except DocumentRetrievalError as ex:
-                        self.handle_failure(tracker, str(ex), group, report_id, custom_tag)
-                        continue
-
-                    if document is None:
-                        self.handle_failure(
-                            tracker,
-                            'Failed to download document',
-                            group,
-                            report_id,
-                            custom_tag,
-                        )
-                        continue
-
-                    success, message = self._upload_report_pdf(group, document)
-                    if success:
-                        tracker.attempt_result = message
-                        self._remove_tag(group, custom_tag.name)
-                        self._update_tracker(tracker)
-                        if custom_tag.cleaner:
-                            custom_tag.cleaner(report_id)
-                    else:
-                        self.handle_failure(tracker, message, group, report_id, custom_tag)
+                    self._process_group(custom_tag, group)
         except Exception:
             self.log.exception('action=backfill-document, event=error')
+
+    def _process_group(self, custom_tag: CustomTag, group: Group):
+        """Attempt (or skip) one group for one custom tag. Split out of `run()` for C901/PLR0912."""
+        # update the task heartbeat
+        self.update_heartbeat()
+
+        self.log.info(f'action=process-group, name={group.model.name} id={group.model.id}')
+
+        report_id = self._external_id(group)
+        if report_id is None:
+            self.log.error(
+                'action=process-backfill-missing-report, '
+                'error=no-external-id, '
+                f'group-id={group.model.id}'
+            )
+            return
+
+        tracker = self.dao.find_next_for_group(report_id)
+        tracker = tracker or ReportPdfTrackerModel(group_id=report_id, attempt_count=0)
+
+        if self._skip_if_maxed(group, tracker, custom_tag):
+            return
+
+        document = None
+        try:
+            document = custom_tag.processor(report_id)
+        except DocumentRetrievalError as ex:
+            self.handle_failure(tracker, str(ex), group, report_id, custom_tag)
+            return
+
+        if document is None:
+            self.handle_failure(
+                tracker, 'Failed to download document', group, report_id, custom_tag
+            )
+            return
+
+        success, message = self._upload_report_pdf(group, document)
+        if not success:
+            self.handle_failure(tracker, message, group, report_id, custom_tag)
+            return
+
+        # Persist first: a `_remove_tag` failure must not be able to drop this save (it
+        # can't raise here either way now, but keep the ordering safe regardless of that).
+        tracker.attempt_result = message
+        self._update_tracker(tracker)
+        self._remove_tag(group, custom_tag.name)
+        if custom_tag.cleaner:
+            custom_tag.cleaner(report_id)
+
+    def _external_id(self, group: Group) -> str | None:
+        """Return the group's External ID attribute value, or None if it has none."""
+        for attribute in group.attributes:
+            if attribute.model.type == 'External ID':
+                return str(attribute.model.value)
+        return None
+
+    def _skip_if_maxed(
+        self, group: Group, tracker: ReportPdfTrackerModel, custom_tag: CustomTag
+    ) -> bool:
+        """Return True if this group is already past `max_attempts`.
+
+        Already past the ceiling — don't burn a real download/upload attempt on it, and
+        don't touch `attempt_count` either; it stays frozen at the cap. The tag *should*
+        have been removed already; this only re-tries that specific call, on an interval,
+        in case the removal itself is what's failing. Paced off `date_added` (stable,
+        already on the group) rather than persisting our own timestamp — lands in exactly
+        one ~15s poll window per interval, no state needed.
+        """
+        if not self._max_attempts_reached(group.model.id, tracker):
+            return False
+        elapsed = datetime.datetime.now(datetime.UTC) - group.model.date_added
+        interval = self.task_settings.retry_remove_tag_interval_seconds
+        if elapsed.total_seconds() % interval < self.task_settings.schedule_period:
+            self._remove_tag(group, custom_tag.name)
+        return True
 
     def handle_failure(self, tracker, message, group, report_id, custom_tag):
         """Handle failure of PDF download or upload."""
         tracker.attempt_result = message
-        tracker.attempt_count += 1
-        if self._max_attempts_reached(group.model.id, tracker) is True:
+        self._update_tracker(tracker)
+        if self._max_attempts_reached(group.model.id, tracker):
             # remove tag if we hit max retries
             self._remove_tag(group, custom_tag.name)
             if custom_tag.cleaner:
                 custom_tag.cleaner(report_id)
-        self._update_tracker(tracker)
 
     @cached_property
     def task_settings(self):
@@ -225,6 +268,7 @@ class BackfillMissingReportABC(TaskABC):
             max_execution_minutes=20,
             name='Monitor TI Reports',
             pending_tag='PDF Pending',
+            retry_remove_tag_interval_seconds=3600,
             schedule_period=15,
             schedule_unit='seconds',
         )

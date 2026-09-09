@@ -3,6 +3,7 @@
 from datetime import UTC, datetime, timedelta
 from functools import cached_property
 
+import falcon
 from pydantic import Field, validator
 
 from core.api.endpoint.endpoint_base_abc import EndpointBaseABC
@@ -10,6 +11,7 @@ from core.api.falcon_request import FalconRequest
 from core.api.falcon_response import FalconResponse
 from core.dao.job_dao import JobRequestDAO
 from core.model.model_base import ModelBase
+from core.model.onboarding_model import is_onboarding_complete
 
 from model.job_request_model import AdHocJobRequestModel  # isort:skip
 
@@ -42,6 +44,14 @@ class AdHocRequestResource(EndpointBaseABC):
         body: AdHocCreateRequest,
     ):
         """Create an ad-hoc job request."""
+        if not is_onboarding_complete(self.db):
+            raise falcon.HTTPConflict(
+                title='Onboarding Incomplete',
+                description=(
+                    'Setup is not finished — ad-hoc jobs cannot be queued until onboarding is '
+                    'complete.'
+                ),
+            )
         return self._add_backfill_jobs(body)
 
     def _add_job(self, start_time, end_time, body: AdHocCreateRequest) -> dict:
@@ -50,7 +60,6 @@ class AdHocRequestResource(EndpointBaseABC):
         job = AdHocJobRequestModel(
             date_queued=datetime.now(UTC),
             status=self.settings.job.status_pending,
-            advanced_settings=self.settings.advanced_settings,
             # additional_setting=body.additional_setting,
             start_time=start_time,
             end_time=end_time,
@@ -67,7 +76,7 @@ class AdHocRequestResource(EndpointBaseABC):
         """Add backfill jobs to the database."""
         start_time = body.start_time
         end_date = body.end_time
-        backfill_frequency = timedelta(hours=self.settings.advanced_settings.backfill_frequency)
+        backfill_frequency = timedelta(hours=self.settings.app_settings.backfill_frequency)
         jobs = []
 
         while start_time < end_date:

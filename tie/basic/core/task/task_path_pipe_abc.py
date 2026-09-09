@@ -43,6 +43,14 @@ class UnrecoverableError(Exception):
     """
 
 
+class TaskTimeoutError(Exception):
+    """Exception raised when a task is killed by the watchdog for exceeding max_execution_minutes.
+
+    Distinct from transient errors so that handle_run_error callers can identify
+    timeouts and avoid consuming the job's retry budget.
+    """
+
+
 class TaskPathPipeABC(TaskABC, ABC):
     """Tasks ABC Class
 
@@ -296,7 +304,14 @@ class TaskPathPipeABC(TaskABC, ABC):
         shutil.move(str(request_dir), self.task_settings.working_dir_out)
 
     def _task_complete_failed(self, request_id: str, request_dir: 'Path'):
-        """Run tasks startup logic."""
+        """Run tasks startup logic.
+
+        `request_dir` is always real here, so the move below is deliberately unguarded.
+        Download is the only task that reaches `handle_run_error` without a request dir,
+        and it overrides that method to use `_mark_job_failed` instead. Every caller of
+        this one — Convert via the base `handle_run_error`, Upload via its own — launches
+        through `launch_preflight_checks`, which does not launch without a request dir.
+        """
         # set db date fields to be updated
         try:
             self._task_set_status(request_id, 'failed', ['date_failed'])
@@ -347,9 +362,12 @@ class TaskPathPipeABC(TaskABC, ABC):
         return data.get('group') or data.get('indicator')
 
     def handle_run_error(
-        self, request_id: str, request_dir: Path, exception: Exception | None = None
+        self, request_id: str, request_dir: Path | None, exception: Exception | None = None
     ):
         """Handle task errors - reset to Pending to restart entire pipeline.
+
+        `request_dir` is None when called from `on_timeout` for a task that had not been
+        given one yet (Download — see that method). Only the filesystem cleanup below cares.
 
         This is the default behavior for non-download tasks (e.g., Convert).
         Download and Upload tasks override this with their own error handling.
@@ -391,7 +409,7 @@ class TaskPathPipeABC(TaskABC, ABC):
 
         # Scheduled jobs: apply backoff/retry logic with reset to Pending
         now = datetime.now(UTC)
-        max_retries = self.settings.advanced_settings.max_retries
+        max_retries = self.settings.app_settings.max_retries
 
         # Track failure timestamp for logging/debugging
         if job.date_failed is None:
@@ -436,6 +454,68 @@ class TaskPathPipeABC(TaskABC, ABC):
             f'action=restart-from-download'
         )
 
+    def on_timeout(self) -> None:
+        """Update job state after the watchdog kills this task for exceeding max_execution_minutes.
+
+        Runs in the main process because SIGKILL prevents the child from reaching handle_run_error.
+        request_id and request_dir are read from process metadata — set at launch time — so there
+        is no ambiguity about which job is being cleaned up.
+
+        A timeout means the task published no heartbeat for max_execution_minutes. Every work
+        loop beats while it runs, so this is a hang, not slow progress — it is treated as an
+        ordinary failure and CONSUMES one retry, which is what lets a permanently wedged job
+        reach max_retries and fail for good instead of relaunching forever.
+        """
+        try:
+            request_id = self.process._metadata['request_id']  # noqa: SLF001
+            raw_request_dir = self.process._metadata.get('request_dir')  # noqa: SLF001
+            # A missing request_dir is legitimate, NOT an error. Download launches before
+            # any request directory exists — it is the task that creates one — so it is the
+            # only task that can time out without one (Convert and Upload both launch with
+            # a directory they are about to consume).
+            #
+            # This used to `return` here, which meant every Download timeout got no cleanup
+            # at all: the job stayed "Download In Progress" with no date_completed or
+            # date_failed, the next watchdog tick skipped it for good because the process
+            # was already reaped, and _throttle_download() went on counting it as running
+            # until throttle_limit hung jobs blocked downloads entirely until restart.
+            #
+            # Passing None through is safe: handle_run_error only touches request_dir on
+            # the move-to-failed path, which is None-guarded below and in _mark_job_failed.
+            request_dir = Path(raw_request_dir) if raw_request_dir else None
+
+            # The task can finish between the watchdog's staleness check and the kill.
+            # Failing an already-terminal job would report work that reached ThreatConnect
+            # as failed, so re-read the record and leave it alone if it is already done.
+            #
+            # Terminal means completed or genuinely failed — NOT `date_failed is not None`.
+            # That field marks the START of a failure streak and is only cleared by
+            # `_clear_failure_state_on_success`, which runs only on the pipe's LAST task
+            # (`pipe_task_complete`). So a job whose Download failed once and then succeeded
+            # still carries date_failed into Convert, and testing it here skipped cleanup for
+            # precisely the case this method exists to handle — stranding the job at
+            # "<stage> In Progress" until a restart reconciled it.
+            job = self.job_dao.get(request_id)
+            job_failed = job.status.casefold() == self.settings.job.status_failed.casefold()
+            if job.date_completed is not None or job_failed:
+                self.log.info(
+                    f'task-event=timeout-cleanup-skip, '
+                    f'task-name={self.task_settings.name}, '
+                    f'request_id={request_id}, status={job.status}, reason=already-terminal'
+                )
+                return
+
+            self.log.warning(
+                f'task-event=timeout-cleanup, '
+                f'task-name={self.task_settings.name}, '
+                f'request_id={request_id}'
+            )
+            self.handle_run_error(request_id, request_dir, exception=TaskTimeoutError(request_id))
+        except Exception:
+            self.log.exception(
+                f'task-event=timeout-cleanup-failed, task-name={self.task_settings.name}'
+            )
+
     def launch(self, request_id: str, request_dir: Path | None = None, **kwargs):
         """Launch the task."""
         self.process = self.process_metadata(
@@ -445,7 +525,9 @@ class TaskPathPipeABC(TaskABC, ABC):
             ),
             kwargs=kwargs,
             request_id=request_id,
-            request_dir=str(request_dir),
+            # `str(None)` would store the literal 'None', which on_timeout would then
+            # turn into Path('None') and operate on a bogus relative path.
+            request_dir=str(request_dir) if request_dir is not None else None,
         )
         self.process.start()
 

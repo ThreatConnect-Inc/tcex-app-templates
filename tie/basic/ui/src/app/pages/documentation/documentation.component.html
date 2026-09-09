@@ -1,0 +1,18 @@
+<div class="page-container pb-medium-large px-medium-large d-flex flex-column">
+    <!-- Centred reading column. Left-hugging prose against a very wide viewport left the
+         right half of the page empty and made the line length hard to track. -->
+    <div class="documentation">
+        <div class="d-flex pt-medium-large justify-content-between align-items-center mb-medium">
+            <h3>Documentation</h3>
+        </div>
+
+        @if (errorMessage) {
+            <app-error-message [message]="errorMessage"></app-error-message>
+        } @else if (html) {
+            <div
+                class="markdown"
+                [innerHTML]="html | safeHtml"
+                (click)="handleAnchorClick($event)"></div>
+        }
+    </div>
+</div>

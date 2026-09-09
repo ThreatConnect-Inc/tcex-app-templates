@@ -22,6 +22,8 @@ from tcex.logger.trace_logger import TraceLogger
 from core.beacon import inject, provide
 from core.dao.job_dao import JobRequestDAO
 from core.json_db import JsonDB
+from core.model.model_base import ModelBase
+from core.model.response.paginated_response import PaginatedResponseModel
 from core.model.tie.job_request_base_model import JobRequestBaseModel
 from core.model.tie.task_setting_pipe_model import TaskSettingPipeModel
 from core.service.notification_helper import NotificationHelper
@@ -56,11 +58,35 @@ class TaskNamespace(Protocol):
 class TaskData(BaseModel):
     """Data model for process."""
 
-    process: Metadata | None
-    name: str | None
-    max_execution_minutes: int | None
-    schedule_period: int | None
-    schedule_unit: str | None
+    process: Metadata | None = None
+    name: str | None = None
+    max_execution_minutes: int | None = None
+    schedule_period: int | None = None
+    schedule_unit: str | None = None
+
+
+class TaskItemModel(ModelBase):
+    """Per-item response model for /api/task.
+
+    Wraps TaskData fields plus UI/admin fields (description, paused, slug, type,
+    index). All extra fields are Optional so the single-task-lookup and list
+    branches can share this one shape.
+    """
+
+    process: Metadata | None = None
+    name: str | None = None
+    max_execution_minutes: int | None = None
+    schedule_period: int | None = None
+    schedule_unit: str | None = None
+    description: str | None = None
+    paused: bool | None = None
+    slug: str | None = None
+    type: str | None = None
+    index: int | None = None
+
+
+class TaskPaginatedResponseModel(PaginatedResponseModel[TaskItemModel]):
+    """Paginated collection response wrapping TaskItemModel."""
 
 
 class TaskABC(ABC, Generic[T]):
@@ -241,6 +267,9 @@ class TaskABC(ABC, Generic[T]):
     def cleaner(self):
         """Clean up the task."""
 
+    def on_timeout(self) -> None:
+        """Called by the watchdog after this task is killed for exceeding max_execution_minutes."""
+
     @property
     def data(self) -> TaskData:
         """Return data for the task."""
@@ -311,6 +340,11 @@ class TaskABC(ABC, Generic[T]):
                 if self.process.is_alive():
                     return  # launch is prohibited if process is currently alive
                 self.process.join()
+                self.log.info(
+                    f'task-event=process-exited, pid={self.process.pid}, '
+                    f'exitcode={self.process.exitcode}'
+                )
+                self.process = None
 
             # run check for pause files
             self._check_pause_file()
@@ -351,7 +385,7 @@ class TaskABC(ABC, Generic[T]):
         except Exception:
             self.log.exception(f'task-event=task-failed, task-name={self.task_settings.name}')
             last_success = self.ns.last_task_success
-            threshold = self.settings.advanced_settings.failure_threshold
+            threshold = self.settings.app_settings.failure_threshold
             if last_success is not None and (datetime.now(UTC) - last_success) > threshold:
                 self.log.error(  # noqa: TRY400
                     f'task-event=failure-threshold-exceeded, '

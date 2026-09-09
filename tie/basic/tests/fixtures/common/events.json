@@ -1,0 +1,23 @@
+[
+  {
+    "created": "2026-01-15T09:30:00Z",
+    "id": "evt-1001",
+    "name": "Sample Event One",
+    "severity": "high",
+    "source": "sample-feed"
+  },
+  {
+    "created": "2026-01-15T10:15:00Z",
+    "id": "evt-1002",
+    "name": "Sample Event Two",
+    "severity": "medium",
+    "source": "sample-feed"
+  },
+  {
+    "created": "2026-01-15T11:00:00Z",
+    "id": "evt-1003",
+    "name": "Sample Event Three",
+    "severity": "low",
+    "source": "sample-feed"
+  }
+]

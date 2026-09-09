@@ -4,6 +4,15 @@
   "name": "TCV App Template",
   "releases": [
     {
+      "date": "2026-08-24",
+      "notes": [
+        "Added a Settings page and a first-run onboarding stepper.",
+        "Non-connection inputs are now configured in the Settings UI rather than at deployment. Set feedDeployer/serviceConfig to false for those params in app_spec.yml.",
+        "Not a breaking change for existing deployments: previously configured input values still flow into app_inputs and are seeded into the stored settings record on first boot, and an app with prior job history has onboarding auto-completed so it keeps ingesting without an admin running the stepper."
+      ],
+      "version": "1.0.2"
+    },
+    {
       "date": "2026-03-10",
       "notes": [
         "Added notification support to TIE apps (min server version 7.12.2)"
@@ -18,5 +27,5 @@
       "version": "1.0.0"
     }
   ],
-  "version": "1.0.1"
+  "version": "1.0.2"
 }

@@ -1,1 +1,20 @@
-tcex-app-testing
+# Test-only dependencies, installed into deps_tests/.
+#
+# The testing framework itself is NOT listed here — it is vendored at
+# tests/tcex_testing/ and delivered by the app template.
+#
+# Do NOT add `tcex-app-testing`. It is a different, unrelated legacy package and
+# nothing under tests/ imports it. Older apps carried it only because it happened
+# to pull the packages below in transitively; they are declared directly here
+# instead, so what the tests need is visible rather than incidental.
+#
+# `tcex` and `pydantic` are deliberately absent: they are production dependencies
+# and must resolve from deps/, not deps_tests/. conftest.py puts deps/ ahead of
+# deps_tests/ on sys.path so tests run against the same versions as production —
+# re-declaring them here risks shadowing pydantic v1 with v2.
+
+deepdiff
+fakeredis
+jmespath
+pytest
+requests

@@ -1,5 +1,13 @@
 """Callback Module"""
 
+# REVIEW (template cleanup, 2026-08-25): retained pending a decision -- confirm with the
+# team whether this is a supported extension point for app authors or leftover.
+# It was proposed for deletion, then kept because "no importers" does not prove much
+# in a template: files here exist to be used by apps built FROM it.
+# Evidence at the time:
+#   An ABC with no subclasses anywhere -- not in the template and not in any of the 16 apps
+#   checked. Either an extension point nobody has adopted yet, or leftover.
+
 from abc import ABC, abstractmethod
 from collections.abc import Callable
 

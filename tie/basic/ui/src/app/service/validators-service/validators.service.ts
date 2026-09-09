@@ -38,6 +38,14 @@ export class ValidatorsService {
     const errorMessage = validators
       .map((validator) => {
         const validatorFn = this.validatorsMap[validator.name];
+        // An unregistered name resolves to `undefined`. Calling it throws
+        // "is not a function", which aborts validateForm and takes the whole form
+        // down with it. A typo in a served validator name must not cost the user
+        // the page, so skip it and say so in the console.
+        if (typeof validatorFn !== 'function') {
+          console.warn(`Unknown validator "${validator.name}" - skipping.`);
+          return null;
+        }
         if (validator.config !== null && validator.config !== undefined) {
           return validatorFn(value, { form: form, ...validator.config });
         } else {
@@ -124,8 +132,10 @@ export class ValidatorsService {
     }
 
     if (Object.keys(config).includes('value')) {
-      if (Number(value) <= Number((config as any).value)) {
-        return `Input must be greater than or equal to${(config as any).value}`;
+      // `<`, not `<=` — the bound itself is allowed. The field branch above already
+      // reads this way; the value branch did not, so `gte {value: 1}` rejected 1.
+      if (Number(value) < Number((config as any).value)) {
+        return `Input must be greater than or equal to ${(config as any).value}`;
       }
     }
   }
@@ -138,7 +148,8 @@ export class ValidatorsService {
     }
 
     if (Object.keys(config).includes('value')) {
-      if (Number(value) >= Number((config as any).value)) {
+      // `>`, not `>=` — the bound itself is allowed. See the note in `gte`.
+      if (Number(value) > Number((config as any).value)) {
         return `Input must be less than or equal to ${(config as any).value}`;
       }
     }

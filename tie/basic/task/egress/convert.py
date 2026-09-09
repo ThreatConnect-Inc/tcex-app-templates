@@ -35,8 +35,13 @@ class Convert(TaskPathPipeABC):
         """Process example data."""
         # TODO: There is no way to utilize the transforms currently.
 
-        # if 'indicator' not in self.settings.sample_types:
-        #     self.tcex.log.info('event=convert, action=skip, reason=event-not-enabled')
+        # To gate on a selected sample type, normalize case first -- the record holds
+        # whatever case its source used (lowercased when seeded from app inputs, catalogue
+        # case when saved from the Settings form), so a literal comparison silently matches
+        # only one of them. See task/ingest/convert.py for the live version.
+        # enabled = {str(e).strip().lower() for e in self.settings.app_settings.sample_types}
+        # if 'indicator' not in enabled:
+        #     self.tcex.log.info('event=convert, action=skip, reason=indicator-not-enabled')
         #     return
         self.tcex.log.info('event=convert, action=writing-content, page-name=indicator')
         writer = WritingModel(page_name='indicator', output_dir=output_dir, force=True)

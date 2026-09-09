@@ -4,16 +4,12 @@ from datetime import datetime
 
 from pydantic import Field
 
-from app_inputs import AdvancedSettingsModel
-from core.json_db import Embedded
 from core.model.response.paginated_response import PaginatedResponseModel
 from core.model.tie.job_request_base_model import JobRequestBaseModel
 
 
 class JobRequestModel(JobRequestBaseModel):
     """Model Definition"""
-
-    advanced_settings: AdvancedSettingsModel = Embedded(AdvancedSettingsModel(), description='')
 
     # Custom properties
     start_time: datetime = Field(..., description='The start time for the job.')

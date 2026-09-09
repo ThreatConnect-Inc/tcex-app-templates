@@ -10,8 +10,6 @@ from typing import TYPE_CHECKING, NoReturn
 current_dir = Path(__file__).resolve().parent
 sys.path.insert(0, str(current_dir))
 
-from core.app.app_lib import AppLib  # noqa: E402
-
 if TYPE_CHECKING:
     from tcex import TcEx  # must be imported later, but also needed typing hints
 
@@ -20,11 +18,6 @@ if TYPE_CHECKING:
 
 class Run:
     """Run App"""
-
-    def __init__(self):
-        """Initialize class properties."""
-        app_lib = AppLib()
-        app_lib.update_path()
 
     @cached_property
     def app(self) -> 'App':

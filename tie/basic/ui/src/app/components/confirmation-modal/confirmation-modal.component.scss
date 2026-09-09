@@ -1,0 +1,61 @@
+.confirmation-modal-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+// A ROW, not a column: icon beside the message rather than centred above it. Stacked and
+// centred, a one-line confirmation floated in the middle of a wide dialog with its own
+// title left-aligned above it — the message did not line up with anything.
+.confirmation-modal-body {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.25rem 0 1rem;
+}
+
+.confirmation-modal-icon {
+    display: flex;
+    align-items: flex-start;
+    flex-shrink: 0;
+    // Nudge onto the first line's optical centre — the icon is 2.5rem against ~1.5 line-height.
+    line-height: 0;
+    padding-top: 0.125rem;
+}
+
+// Left-aligned so it sits under the dialog title rather than floating mid-dialog.
+.confirmation-modal-message {
+    text-align: left;
+
+    p {
+        margin: 0;
+        line-height: 1.5;
+        color: var(--tcl-textPrimary);
+    }
+}
+
+.confirmation-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 0.75rem;
+    padding-top: 1rem;
+    padding-bottom: 1.25rem;
+    border-top: 1px solid var(--tcl-borderColor, #e5e7eb);
+
+    tcl-button {
+        min-width: 80px;
+    }
+}
+
+:host ::ng-deep .modal.small {
+    min-height: fit-content !important;
+    padding-bottom: 0 !important;
+    // The `maxWidth` input alone did not hold — a one-sentence confirmation still rendered
+    // most of the viewport wide, which is what left the message marooned in dead space.
+    // Capped here for the same reason the two rules above are: this is where the library's
+    // own sizing gets corrected. `min()` so it still fits a narrow window.
+    max-width: min(32rem, calc(100vw - 2rem)) !important;
+}

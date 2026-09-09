@@ -18,12 +18,14 @@ import { RouterModule } from '@angular/router';
 
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import {
+    AlertBoxModule,
     AlertToastMessageService,
     AlertToastModule,
     BadgeModule,
     ButtonModule,
     CalendarV2Module,
     CardModule,
+    CheckboxV2Module,
     ChipListModule,
     CollapsibleCardModule,
     DropdownButtonModule,
@@ -32,13 +34,15 @@ import {
     IconButtonModule,
     InfoTooltipModule,
     InputTextareaDirectiveModule,
-    // LoadingIconModule,
+    LoadingIconModule,
     LoadingSpinnerModule,
     MenuItemModule,
+    ModalModule,
     NestedMenuModule,
     PendoModel,
     PendoModule,
     PillModule,
+    RadioButtonModule,
     SideDrawerModule,
     StepperModule,
     SvgIconModule,
@@ -53,6 +57,7 @@ import { MonacoEditorModule, NgxMonacoEditorConfig } from 'ngx-monaco-editor-v2'
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { ConfirmationModalComponent } from './components/confirmation-modal/confirmation-modal.component';
 import { ErrorMessageComponent } from './components/error-message/error-message.component';
 import { FormattedFieldComponent } from './components/formatted-field/formatted-field.component';
 import { GeneratedFormComponent } from './components/generated-form/generated-form.component';
@@ -61,13 +66,20 @@ import { errorHandlerProvider } from './error-handler/error-handler.provider';
 import { httpInterceptorProviders } from './interceptors/http-interceptor-providers';
 import { BatchErrorsTableComponent } from './pages/batch-errors-table/batch-errors-table.component';
 import { BatchErrorsComponent } from './pages/batch-errors/batch-errors.component';
+import { ConfigureComponent } from './pages/configure/configure.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { DocumentationComponent } from './pages/documentation/documentation.component';
 import { DownloadComponent } from './pages/download/download.component';
+import { EgressErrorsComponent } from './pages/egress-errors/egress-errors.component';
 import { JobsComponent } from './pages/jobs/jobs.component';
 import { NotificationsComponent } from './pages/notifications/notifications.component';
+import { OnboardingComponent } from './pages/onboarding/onboarding.component';
 import { ReportPdfTrackerComponent } from './pages/report-pdf-tracker/report-pdf-tracker.component';
+import { SettingsComponent } from './pages/settings/settings.component';
 import { TasksComponent } from './pages/tasks/tasks.component';
+import { IsoDatePipe } from './pipes/iso-date/iso-date.pipe';
 import { JsonFormatPipe } from './pipes/json-format/json-format.pipe';
+import { SafeHtmlPipe } from './pipes/safe-html/safe-html.pipe';
 import { WIN_PROVIDERS } from './service/window-service/window.service';
 
 export function onMonacoLoad() {
@@ -122,20 +134,29 @@ const monacoConfig: NgxMonacoEditorConfig = {
         AppComponent,
         BatchErrorsComponent,
         BatchErrorsTableComponent,
+        ConfigureComponent,
+        ConfirmationModalComponent,
         DashboardComponent,
+        DocumentationComponent,
         DownloadComponent,
-        GeneratedFormComponent,
-        FormattedFieldComponent,
-        JobsComponent,
+        EgressErrorsComponent,
         ErrorMessageComponent,
+        FormattedFieldComponent,
+        GeneratedFormComponent,
+        IsoDatePipe,
+        JobsComponent,
         JsonFormatPipe,
         NotificationsComponent,
+        OnboardingComponent,
         ReportPdfTrackerComponent,
+        SafeHtmlPipe,
+        SettingsComponent,
         SidenavMenuComponent,
         TasksComponent,
     ],
     bootstrap: [AppComponent],
     imports: [
+        AlertBoxModule,
         AlertToastModule,
         AppRoutingModule,
         BadgeModule,
@@ -144,6 +165,9 @@ const monacoConfig: NgxMonacoEditorConfig = {
         ButtonModule,
         CalendarV2Module,
         CardModule,
+        // Both are non-standalone, so the option cards in `generated-form` need their
+        // NgModules here — omitting either is an NG8001 at build time.
+        CheckboxV2Module,
         ChipListModule,
         ClipboardModule,
         CollapsibleCardModule,
@@ -154,7 +178,7 @@ const monacoConfig: NgxMonacoEditorConfig = {
         IconButtonModule,
         InfoTooltipModule,
         InputTextareaDirectiveModule,
-        // LoadingIconModule,
+        LoadingIconModule,
         LoadingSpinnerModule,
         MatButtonModule,
         MatCardModule,
@@ -166,12 +190,14 @@ const monacoConfig: NgxMonacoEditorConfig = {
         MatStepperModule,
         MatTableModule,
         MenuItemModule,
+        ModalModule,
         MonacoEditorModule.forRoot(monacoConfig),
         NestedMenuModule,
         NgxChartsModule,
         PendoModule,
         PillModule,
         // NgOptimizedImage,
+        RadioButtonModule,
         RouterModule,
         SideDrawerModule,
         StepperModule,

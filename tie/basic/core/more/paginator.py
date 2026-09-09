@@ -1,5 +1,6 @@
 """Database Paginator Module"""
 
+import contextlib
 import logging
 import urllib.parse
 from collections.abc import Iterable
@@ -75,7 +76,7 @@ class Paginator(Generic[T]):
     def page_data(self) -> list[T]:
         """Return page data."""
         iterator = iter(self.data)
-        try:
+        with contextlib.suppress(StopIteration):
             consumed = 0
             while consumed < self.params.offset:
                 consumed += 1
@@ -85,8 +86,6 @@ class Paginator(Generic[T]):
             while consumed < self.params.limit:
                 consumed += 1
                 self._loaded_data.append(next(iterator))
-        except StopIteration:
-            pass
 
         return self._loaded_data
 

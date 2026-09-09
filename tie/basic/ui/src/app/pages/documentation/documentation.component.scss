@@ -1,0 +1,129 @@
+.documentation {
+    margin-inline: auto;
+    max-width: 62rem;
+    width: 100%;
+}
+
+// Markdown is injected with [innerHTML], so it carries no component scoping
+// attributes — ::ng-deep is required for these rules to reach it.
+:host ::ng-deep .markdown {
+    line-height: 1.65;
+
+    h1,
+    h2,
+    h3,
+    h4 {
+        font-weight: 600;
+        // The page already has a "Documentation" chrome heading directly above, so the
+        // document's own title should not add a second full heading gap on top of it.
+        margin: 2em 0 0.5em;
+        // Anchor jumps from the table of contents land inside `.page-container`, so a
+        // target heading would otherwise sit flush against the top edge.
+        scroll-margin-top: 1rem;
+    }
+
+    > :first-child {
+        margin-top: 0;
+    }
+
+    h1 {
+        font-size: 1.75rem;
+    }
+
+    h2 {
+        border-bottom: 1px solid var(--tcl-border, rgba(128, 128, 128, 0.3));
+        font-size: 1.4rem;
+        padding-bottom: 0.25em;
+    }
+
+    h3 {
+        font-size: 1.15rem;
+    }
+
+    p,
+    ul,
+    ol,
+    blockquote,
+    table {
+        margin: 0 0 1em;
+    }
+
+    // Markers are set explicitly: the app's global resets strip them, which left every
+    // list in the guide rendering as unindented, undifferentiated lines.
+    ul,
+    ol {
+        padding-left: 1.5em;
+    }
+
+    ul {
+        list-style: disc outside;
+    }
+
+    ol {
+        list-style: decimal outside;
+    }
+
+    ul ul {
+        list-style: circle outside;
+    }
+
+    li {
+        margin-bottom: 0.25em;
+    }
+
+    a {
+        color: var(--tcl-link, #1a73e8);
+    }
+
+    code {
+        background: rgba(128, 128, 128, 0.15);
+        border-radius: 3px;
+        font-family: monospace;
+        font-size: 0.9em;
+        padding: 0.1em 0.35em;
+    }
+
+    pre {
+        background: rgba(128, 128, 128, 0.12);
+        border-radius: 4px;
+        overflow-x: auto;
+        padding: 0.75em 1em;
+
+        code {
+            background: none;
+            padding: 0;
+        }
+    }
+
+    blockquote {
+        border-left: 3px solid var(--tcl-border, rgba(128, 128, 128, 0.4));
+        margin-left: 0;
+        padding: 0.25em 1em;
+    }
+
+    table {
+        border-collapse: collapse;
+        display: block;
+        max-width: 100%;
+        overflow-x: auto;
+    }
+
+    th,
+    td {
+        border: 1px solid var(--tcl-border, rgba(128, 128, 128, 0.3));
+        padding: 0.4em 0.75em;
+        text-align: left;
+        vertical-align: top;
+    }
+
+    th {
+        background: rgba(128, 128, 128, 0.12);
+        font-weight: 600;
+    }
+
+    hr {
+        border: none;
+        border-top: 1px solid var(--tcl-border, rgba(128, 128, 128, 0.3));
+        margin: 2em 0;
+    }
+}

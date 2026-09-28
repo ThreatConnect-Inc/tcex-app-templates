@@ -72,9 +72,9 @@ class UIConfigBuilderABC:
         """Brand key used by the UI to select the logo.
 
         Override in concrete subclasses to change branding
-        (e.g. ``"vendor"``).  Default is ``"threatconnect"``.
+        (e.g. ``"vendor"``).  Default is ``"dataminr"``.
         """
-        return 'threatconnect'
+        return 'dataminr'
 
     # ------------------------------------------------------------------
     # Status helpers

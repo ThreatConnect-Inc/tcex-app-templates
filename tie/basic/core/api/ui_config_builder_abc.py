@@ -290,7 +290,7 @@ class UIConfigBuilderABC:
         Each section is::
 
             {
-                'name': 'Jobs',  # heading, and the stepper's step name
+                'name': 'Ingestion',  # heading, and the stepper's step name
                 'description': '...',  # optional prose under the heading
                 'stepper': False,  # optional; omit to include it in onboarding
                 'fields': [...],

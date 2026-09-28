@@ -4,7 +4,7 @@ from functools import cached_property
 from pathlib import Path
 
 from core.model.tie.task_setting_pipe_model import TaskSettingPipeModel
-from core.service.writing_service import WritingModel
+from core.service.managers.operation_managers import ManagerBuilder
 from core.task.download_abc import DownloadABC
 from model.job_request_model import JobRequestModel
 
@@ -14,20 +14,23 @@ class Download(DownloadABC):
 
     def download(self, output_dir: Path, request: JobRequestModel):  # noqa: ARG002
         """Download resources from provider."""
-        writer = WritingModel(page_name='indicator', output_dir=output_dir, update_metrics=True)
         indicators = self.tcex.api.tc.v3.indicators(params={'resultLimit': 10})
         max_indicators = 10
-        chunk = []
-        for counter, indicator in enumerate(indicators):
-            if counter >= max_indicators:
-                break
-            indicator = indicator.model.model_dump(
-                by_alias=True, exclude_none=True, exclude_unset=True
-            )
-            chunk.append(indicator)
-            chunk = self.writing_service.write_indicators(chunk, writer)
-        writer.force = True
-        self.writing_service.write_indicators(chunk, writer)
+        with (
+            ManagerBuilder()
+            .with_file_writer_manager(out_dir=output_dir)
+            .with_request_counts_manager('count_download_indicator')
+            .build()
+        ) as accept:
+            for counter, indicator in enumerate(indicators):
+                if counter >= max_indicators:
+                    break
+                accept(
+                    indicator.model.model_dump(
+                        by_alias=True, exclude_none=True, exclude_unset=True
+                    ),
+                    data_type='indicator',
+                )
 
     @cached_property
     def task_settings(self) -> TaskSettingPipeModel:

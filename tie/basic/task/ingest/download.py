@@ -4,7 +4,7 @@ from functools import cached_property
 from pathlib import Path
 
 from core.model.tie.task_setting_pipe_model import TaskSettingPipeModel
-from core.service.writing_service import WritingModel
+from core.service.managers.operation_managers import ManagerBuilder
 from core.task.download_abc import DownloadABC
 from model.job_request_model import JobRequestModel
 
@@ -14,15 +14,14 @@ class Download(DownloadABC):
 
     def download(self, output_dir: Path, request: JobRequestModel):
         """Download resources from provider."""
-        chunk = []
-        writer = WritingModel(page_name='event', output_dir=output_dir, update_metrics=True)
-
-        for item in self.sdk.events(request.start_time, request.end_time):
-            chunk.append(item)
-            chunk = self.writing_service.write_groups(chunk, writer)
-
-        writer.force = True
-        self.writing_service.write_groups(chunk, writer)
+        with (
+            ManagerBuilder()
+            .with_file_writer_manager(out_dir=output_dir)
+            .with_request_counts_manager('count_download_group')
+            .build()
+        ) as accept:
+            for item in self.sdk.events(request.start_time, request.end_time):
+                accept(item, data_type='event')
 
     @cached_property
     def task_settings(self) -> TaskSettingPipeModel:

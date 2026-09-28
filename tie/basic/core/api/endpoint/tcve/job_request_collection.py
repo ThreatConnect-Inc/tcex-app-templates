@@ -41,8 +41,8 @@ class JobRequestCollection(EndpointBaseABC):
         by_alias = req.get_param_as_bool('by_alias', default=False)
         request_id = req.get_param('request_id')
         job_type = req.get_param('job_type')
-        status_csv = req.get_param('status')
-        status_list = [s.strip() for s in status_csv.split(',')] if status_csv else None
+        status_list = req.get_param_as_list('status')
+        status_set = {s.strip().casefold() for s in status_list} if status_list else None
 
         offset = int(req.get_param('offset') or 0)
         limit = int(req.get_param('limit') or 50)
@@ -50,11 +50,11 @@ class JobRequestCollection(EndpointBaseABC):
         sort_order = SortOrder.DESC if sort_order_raw == 'desc' else SortOrder.ASC
 
         def _where(r: JobRequestModel) -> bool:
-            if job_type is not None and r.job_type.lower() != job_type.lower():
+            if job_type is not None and r.job_type.casefold() != job_type.casefold():
                 return False
-            if request_id is not None and request_id.lower() not in r.request_id.lower():
+            if request_id is not None and request_id.casefold() not in r.request_id.casefold():
                 return False
-            if status_list and r.status.lower() not in [s.lower() for s in status_list]:
+            if status_set and r.status.casefold() not in status_set:
                 return False
             return True
 

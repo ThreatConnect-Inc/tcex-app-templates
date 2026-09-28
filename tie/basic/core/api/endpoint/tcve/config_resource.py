@@ -7,12 +7,11 @@ from threading import Lock
 
 # third-party
 import falcon
-from model.tql_config_model import TqlConfigModel, TqlConfigPostModel
 from pydantic import ValidationError
-from records.tql_config_record import TqlConfigRecord
 
 # first-party
 from core.api.endpoint.endpoint_base_abc import EndpointBaseABC
+from core.model.tcve.tql_config_model import TqlConfigModel, TqlConfigPostModel
 
 
 class ConfigResource(EndpointBaseABC):
@@ -24,7 +23,7 @@ class ConfigResource(EndpointBaseABC):
         """Handle GET requests — return all TQL config records sorted by rank."""
         by_alias = req.get_param_as_bool('by_alias', default=False)
         records = sorted(
-            self.db.load_all(TqlConfigRecord),
+            self.db.load_all(TqlConfigModel),
             key=lambda r: r.rank,
         )
         resp.media = [
@@ -50,7 +49,7 @@ class ConfigResource(EndpointBaseABC):
             self.log.warning(f'configs: {configs}')
 
             # delete all existing TQL config records
-            for record in list(self.db.load_all(TqlConfigRecord)):
+            for record in list(self.db.load_all(TqlConfigModel)):
                 self.db.delete(record)
 
             if configs:
@@ -61,7 +60,7 @@ class ConfigResource(EndpointBaseABC):
                         c.version = new_version
 
                 for c in configs:
-                    record = TqlConfigRecord(
+                    record = TqlConfigModel(
                         rank=c.rank,
                         owners=','.join(c.owners),
                         sort_direction=c.sort_direction,

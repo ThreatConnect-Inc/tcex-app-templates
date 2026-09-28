@@ -4,7 +4,7 @@ import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
-import type { ConfigEntry } from '../../pages/configure/configure.component';
+import type { TqlConfig } from '../../pages/configure/configure.component';
 import { BaseService } from '../base-service/base.service';
 
 @Injectable({
@@ -17,9 +17,9 @@ export class ConfigService extends BaseService {
         super(router);
     }
 
-    public getConfig(): Observable<ConfigEntry[]> {
+    public getConfig(): Observable<TqlConfig[]> {
         return this.http
-            .get<ConfigEntry[]>(this.apiUrl, { params: this.defaultParams() })
+            .get<TqlConfig[]>(this.apiUrl, { params: this.defaultParams() })
             .pipe(
                 catchError((err) => {
                     this.errorHandler(err);

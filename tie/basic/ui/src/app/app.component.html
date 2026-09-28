@@ -12,7 +12,14 @@
     <div class="d-flex flex-column">
       <h3>{{ (appConfig$ | async)?.ui.title }}</h3>
       <div class="text-textTertiary align-self-bottom fontsize-subtext">
-        Version: {{ (appConfig$ | async)?.ui.version }} | Source: {{ (appConfig$ | async)?.ui.owner }}
+        @if ( (appConfig$ | async)?.ui.owner ) {
+          Version: {{ (appConfig$ | async)?.ui.version }} | Source: {{ (appConfig$ | async)?.ui.owner }}
+
+        }
+        @else {
+          Version: {{ (appConfig$ | async)?.ui.version }}
+
+        }
       </div>
     </div>
   </div>

@@ -400,15 +400,18 @@ export class GeneratedFormComponent implements OnChanges {
                 const text = choice?.text ?? choice;
                 const value = choice?.value ?? choice;
 
+                // `selected` is normally an array, but a single-select field's `default`
+                // can be a bare value rather than a one-element list -- `.includes` isn't
+                // valid on that, so fall back to a direct equality check.
+                const isSelected = Array.isArray(selected) ? selected.includes(value) : selected === value;
+
                 return {
                     ...multiSelectOptions,
                     text,
                     value,
                     type: field.type === 'select' ? MenuItemType.Default : MenuItemType.MultiSelect,
-                    checked: selected.includes(value)
-                        ? CheckboxState.Checked
-                        : CheckboxState.UnChecked,
-                    selected: selected.includes(value),
+                    checked: isSelected ? CheckboxState.Checked : CheckboxState.UnChecked,
+                    selected: isSelected,
                 };
             }) || []
         );

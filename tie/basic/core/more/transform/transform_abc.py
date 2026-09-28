@@ -8,10 +8,8 @@ from pathlib import Path
 
 from tcex import TcEx
 from tcex.api.tc.ti_transform.model import GroupTransformModel, IndicatorTransformModel
-from tcex.api.tc.ti_transform.ti_predefined_functions import (
-    ProcessingFunctions,
-    transform_builder_to_model,
-)
+from tcex.api.tc.ti_transform.ti_predefined_functions import ProcessingFunctions
+from tcex.api.tc.ti_transform.transform_builder import load
 
 from model import JobRequestModel
 from model.settings_model import SettingModel
@@ -71,7 +69,7 @@ class TransformABC(ABC):  # noqa: B024
         return data
 
     @cached_property
-    def transform_json(self) -> dict:
+    def transform_json(self) -> GroupTransformModel | IndicatorTransformModel:
         """Load and return transformation configuration from a JSON file."""
         config_path = self.base_path / self.specific_path
         if not config_path.exists():
@@ -81,6 +79,5 @@ class TransformABC(ABC):  # noqa: B024
         with config_path.open(encoding='utf-8') as file:
             data = json.load(file)
         data = self.pre_transform_hook(data)
-        data = transform_builder_to_model(data, self.fns)
-        data = self.post_transform_hook(data)
+        data = load(data, self.fns)
         return data

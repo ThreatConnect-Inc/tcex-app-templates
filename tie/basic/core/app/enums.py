@@ -73,6 +73,12 @@ except ImportError:
     ConfigResource = None
 
 try:
+    from core.api.endpoint.tcve.tc_info_resource import TcInfoResource
+except ImportError:
+    TcInfoResource = None
+
+
+try:
     from core.api.endpoint.tcve.job_request_collection import JobRequestCollection
 except ImportError:
     JobRequestCollection = None
@@ -225,15 +231,24 @@ class ROUTES(Enum):
         None, and the route is simply absent from the supported-route map.
         """
 
-        CONFIG = Route('/api/tql-config', ConfigResource)
+        CONFIG = Route('/api/tql-config', resource=ConfigResource)
         TEST_CONFIG = Route('/api/tql-config/test', TestConfigResource)
         JOB_REQUEST = Route('/api/job/request', JobRequestCollection)
         TASK_STATUS = Route('/api/task/status', TcveTaskStatusCollection)
         TASK = Route('/api/task', TcveTaskCollection)
         TASK_ITEM = Route('/api/task/{task_name}', TcveTaskCollection)
+        METRIC_TASK_RESOURCE = Route('/api/metric/task', MetricTaskResource)
         BATCH_ERROR = Route('/api/report/batch-error', TcveBatchErrorCollection)
         # Not a tcve-local resource -- this is the tcvf collection, already imported above.
         NOTIFICATION = Route('/api/notification', NotificationCollection)
+        APP_CONFIG = Route('/api/tc/app-config', TcAppConfig)
+        TC_CONFIG = Route('/api/tc-info', TcInfoResource)
+
+        SETTINGS = Route('/api/settings', SettingsResource)
+        SETTINGS_REVISIONS = Route('/api/settings/revisions', SettingsRevisionsResource)
+        SETTINGS_VALIDATE = Route('/api/settings/validate', SettingsValidateResource)
+        ONBOARDING = Route('/api/onboarding', OnboardingResource)
+        DOCS = Route('/api/docs', DocsResource)
 
     ALL_TIE = TIE
     ALL_TCVE = TCVE

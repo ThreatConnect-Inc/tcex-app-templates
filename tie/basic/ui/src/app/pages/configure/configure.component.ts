@@ -30,14 +30,31 @@ import { NxTable } from '../../modules/nx-utils/nx-table';
 import { AppService } from '../../service/app-service/app.service';
 import { ConfigService } from '../../service/config-service/config.service';
 
-export interface ConfigEntry {
+/** GET/display shape returned by `ConfigService.getConfig()` — camelCase, matches
+ *  `model/tql_config_model.py::TqlConfigModel`'s `by_alias=True` output. The index
+ *  signature keeps this compatible with the dynamic `formFields`-driven form below. */
+export interface TqlConfig {
     id?: string;
     rank: number;
+    owners?: string[];
+    types?: string[];
+    tql?: string;
+    sortField?: string;
+    sortDirection?: string;
+    version?: string;
     [key: string]: any;
 }
 
-export interface ConfigEntryPost {
+/** Write shape posted to `ConfigService.saveConfig()`/`testConfig()` — snake_case,
+ *  matches `model/tql_config_model.py::TqlConfigPostModel`. */
+export interface TqlConfigPost {
     rank: number;
+    owners?: string[];
+    types?: string[];
+    tql?: string;
+    sort_field?: string;
+    sort_direction?: string;
+    version?: string | null;
     [key: string]: any;
 }
 
@@ -68,7 +85,7 @@ export class ConfigureComponent implements OnInit {
     formFields: any[] = [];
     infoTooltip: string | null = null;
 
-    configs: ConfigEntry[] = [];
+    configs: TqlConfig[] = [];
     selectedIndex: number = -1;
     isNewConfig: boolean = false;
     hasPendingChanges: boolean = false;
@@ -102,7 +119,7 @@ export class ConfigureComponent implements OnInit {
         filterPlaceholder: 'Search owners...',
     };
 
-    private editConfig: ConfigEntry | null = null;
+    private editConfig: TqlConfig | null = null;
 
     constructor(
         private configService: ConfigService,
@@ -154,7 +171,7 @@ export class ConfigureComponent implements OnInit {
         this.refreshDynamicDropdowns();
     }
 
-    openEdit(config: ConfigEntry, index: number): void {
+    openEdit(config: TqlConfig, index: number): void {
         this.isNewConfig = false;
         this.editConfig = { ...config };
         this.selectedIndex = index;
@@ -176,7 +193,7 @@ export class ConfigureComponent implements OnInit {
         return i as number;
     }
 
-    onRowDragStart(event: DragEvent, config: ConfigEntry): void {
+    onRowDragStart(event: DragEvent, config: TqlConfig): void {
         this.ngZone.runOutsideAngular(() => {
             const ghost = document.createElement('div');
             const label = config.tql || config.name || 'Config';
@@ -204,7 +221,7 @@ export class ConfigureComponent implements OnInit {
         });
     }
 
-    handleConfigMenuAction(event: string, config: ConfigEntry, index: number): void {
+    handleConfigMenuAction(event: string, config: TqlConfig, index: number): void {
         if (event === 'edit') this.openEdit(config, index);
         if (event === 'delete') {
             this.pendingDeleteIndex = index;
@@ -307,7 +324,7 @@ export class ConfigureComponent implements OnInit {
             return;
         }
 
-        const config: ConfigEntry = {
+        const config: TqlConfig = {
             id: this.editConfig?.id,
             rank: this.editConfig?.rank ?? this.configs.length,
             ...this.formValues,
@@ -375,7 +392,7 @@ export class ConfigureComponent implements OnInit {
         }
     }
 
-    private initFormValues(config: ConfigEntry | null): void {
+    private initFormValues(config: TqlConfig | null): void {
         this.formValues = {};
         for (const field of this.formFields) {
             if (config) {
@@ -389,7 +406,7 @@ export class ConfigureComponent implements OnInit {
         this.rebuildDropdownMenuItems(config);
     }
 
-    private rebuildDropdownMenuItems(config: ConfigEntry | null): void {
+    private rebuildDropdownMenuItems(config: TqlConfig | null): void {
         for (const field of this.formFields) {
             if (field.type === 'multi-select' && field.choices) {
                 const selected = this.formValues[field.name] || [];
@@ -445,8 +462,8 @@ export class ConfigureComponent implements OnInit {
         }
     }
 
-    private buildConfigFromForm(): ConfigEntryPost {
-        const result: ConfigEntryPost = {
+    private buildConfigFromForm(): TqlConfigPost {
+        const result: TqlConfigPost = {
             rank: this.editConfig?.rank ?? this.configs.length,
         };
         for (const field of this.formFields) {

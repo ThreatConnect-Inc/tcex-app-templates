@@ -6,7 +6,7 @@ from functools import cached_property
 from pathlib import Path
 
 from core.model.tie.task_setting_pipe_model import TaskSettingPipeModel
-from core.service.writing_service import WritingModel
+from core.service.managers.operation_managers import ManagerBuilder
 from core.task.task_path_pipe_abc import TaskPathPipeABC
 from more.transform.sample_transform import SampleTransform
 
@@ -24,7 +24,6 @@ class Convert(TaskPathPipeABC):
         """Run the task."""
         self.tcex.log.info(f'event=convert, action=running-task, request_id={request_id}')
         self.request = self.job_dao.get(request_id)
-        self.writing_service.request = self.request
         self.process_files(
             input_dir,
             output_dir,
@@ -59,8 +58,8 @@ class Convert(TaskPathPipeABC):
             return
 
         self.tcex.log.info('event=convert, action=writing-batch, page-name=event')
-        writer = WritingModel(page_name='event', output_dir=output_dir, force=True)
-        self.writing_service.write_batch(data, writer)
+        with ManagerBuilder().with_batch_writer_manager(out_dir=output_dir).build() as accept:
+            accept(data, data_type='event')
 
     def process_files(self, input_dir: Path, output_dir: Path, prefix: str, *processors):
         """Process files with the given prefix using specified processors."""

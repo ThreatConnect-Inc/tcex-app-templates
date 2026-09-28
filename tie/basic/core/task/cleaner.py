@@ -25,6 +25,8 @@ class TaskSettingCustomModel(TaskSettingModel):
     """Custom model for cleaner task settings."""
 
     max_disk_percent_usage: int
+    max_done_working_dir_size_bytes: int
+    max_job_age_days: int
     max_jobs: int
     max_notification_age_days: int
 
@@ -52,41 +54,64 @@ class Cleaner(TaskABC):
         except Exception as ex:
             app_exception(ex, f'failure=failed-removing-file, filename={fqfn.name}')
 
-    def _clean_directories(self, seconds: int):
-        """Clean files in the common directories."""
+    def _job_request_dirs(self, dirname: str) -> list[Path]:
+        """Return the request directories directly under base_path/<dirname>."""
+        working_dir = Path(self.settings.base_path) / dirname
+        return [d for d in working_dir.glob('*') if d.is_dir()]
+
+    @staticmethod
+    def _dir_size(path: Path) -> int:
+        """Return the total on-disk size of a request directory."""
+        return sum(f.stat().st_size for f in path.rglob('*') if f.is_file())
+
+    def _remove_request_dir(self, request_dir: Path):
+        """Remove a single job request directory."""
+        self.log.info(f'task-event=remove-dir, directory={request_dir.resolve()}')
+        shutil.rmtree(request_dir)
+
+    def _trim_by_size(self, dirs: list[Path], max_bytes: int):
+        """Remove oldest request directories until total size is under max_bytes."""
+        dirs = sorted(dirs, key=lambda d: d.stat().st_mtime)
+        total = sum(self._dir_size(d) for d in dirs)
+        for request_dir in dirs:
+            if total <= max_bytes:
+                break
+            total -= self._dir_size(request_dir)
+            self._remove_request_dir(request_dir)
+
+    def _trim_by_disk_usage(self, dirs: list[Path]):
+        """Remove oldest request directories until disk usage is under the max percent."""
+        for request_dir in dirs:
+            if self._disk_usage < self.task_settings.max_disk_percent_usage:
+                break
+            self._remove_request_dir(request_dir)
+
+    def _clean_job_dirs(self):
+        """Clean done/failed job request directories by age, size, and disk usage."""
         try:
-            # iterate over all contents in "out" directory matching dirs ending with "_working_dir"
-            # TODO: In TCVE apps it didnt iterate over nested dirs.
-            working_dirs = [
-                wd
-                for pipeline_dir in Path(self.settings.base_path).glob('*')
-                for wd in pipeline_dir.glob('*_working_dir*')
-            ]
+            done_dirs = self._job_request_dirs('done_working_dir')
+            failed_dirs = self._job_request_dirs('failed_working_dir')
 
-            for working_dir in working_dirs:
-                # skip files
-                if not working_dir.is_dir():
-                    continue
+            # condition 1: remove any request dir older than max_job_age_days
+            max_age_seconds = self._days_to_seconds(self.task_settings.max_job_age_days)
+            for request_dir in done_dirs + failed_dirs:
+                if time.time() - request_dir.stat().st_mtime > max_age_seconds:
+                    self._remove_request_dir(request_dir)
 
-                # iterate over contents in the working directory
-                # processing/deleting request directories (timestamp#request_id)
-                for request_dir in working_dir.iterdir():
-                    # skip files
-                    if not request_dir.is_dir():
-                        continue
+            done_dirs = [d for d in done_dirs if d.exists()]
+            failed_dirs = [d for d in failed_dirs if d.exists()]
 
-                    # get the age of the request directory
-                    dir_age = time.time() - request_dir.stat().st_mtime
-                    if dir_age > seconds:
-                        self.log.info(
-                            'task-event=remove-dir, '
-                            f'directory={request_dir.resolve()}, '
-                            f'dir-age={dir_age}, '
-                            f'max-ttl={seconds}'
-                        )
-                        shutil.rmtree(request_dir)
+            # condition 2: cap the size of done_working_dir
+            self._trim_by_size(done_dirs, self.task_settings.max_done_working_dir_size_bytes)
+
+            # condition 3: remove oldest request dirs until disk usage is under the max percent
+            remaining = sorted(
+                (d for d in done_dirs + failed_dirs if d.exists()),
+                key=lambda d: d.stat().st_mtime,
+            )
+            self._trim_by_disk_usage(remaining)
         except Exception as ex:
-            app_exception(ex, 'failure=failed-cleaning-files')
+            app_exception(ex, 'failure=failed-cleaning-job-dirs')
 
     def _clean_batch_errors(self):
         """Clean batch errors: remove orphans and enforce cap."""
@@ -153,25 +178,8 @@ class Cleaner(TaskABC):
         self._clean_job_requests()
         self._clean_batch_errors()
 
-        # only launch cleaner if disk usage is greater than defined percentage
-        # remove directories until disk usage is less than defined percentage or 2 days
-        for days in reversed(range(2, 90)):  # TODO make a setting
-            percent_used = self._disk_usage
-            seconds = self._days_to_seconds(days)
-            if percent_used >= self.task_settings.max_disk_percent_usage:
-                self.log.info(
-                    f'task-event=launch-preflight-check, action={self.task_settings.name}, '
-                    f'base-path={self.settings.base_path}, days={days}, '
-                    f'percent-used={percent_used}%'
-                )
-                self._clean_directories(seconds)
-            else:
-                self.log.trace(
-                    f'task-event=launch-preflight-check-skip, action={self.task_settings.name}, '
-                    f'max-disk-percent-usage={self.task_settings.max_disk_percent_usage}, '
-                    f'reason=disk-usage-under-max-percent, percent-used={percent_used}, '
-                )
-                break
+        # clean done/failed job request directories
+        self._clean_job_dirs()
 
     def _clean_notifications(self):
         """Remove notifications older than max_notification_age_days."""
@@ -208,6 +216,8 @@ class Cleaner(TaskABC):
             schedule_period=2,
             schedule_unit='hours',
             max_disk_percent_usage=60,
+            max_done_working_dir_size_bytes=15 * 1024 * 1024 * 1024,  # 15 GB
+            max_job_age_days=28,
             max_jobs=500,
             max_ttl_batch_error=(60 * 60 * 24 * 90),  # 90 days
             max_notification_age_days=30,

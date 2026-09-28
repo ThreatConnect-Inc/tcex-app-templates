@@ -9,14 +9,13 @@ from tcex.api.tc.v3.object_collection_abc import ObjectCollectionABC
 
 from core.service.tcve.tql_iterator_service import (
     DynamicPageSizer,  # noqa: F401 - re-exported for backwards compatibility
-    TqlBuilder,
     TqlIteratorService,
 )
 from core.task.download_abc import DownloadABC
 
 logger = logging.getLogger('tcex')
 
-__all__ = ['DownloadEgressABC', 'DynamicPageSizer', 'TqlBuilder']
+__all__ = ['DownloadEgressABC', 'DynamicPageSizer']
 
 
 class DownloadEgressABC(DownloadABC, ABC):
@@ -39,7 +38,7 @@ class DownloadEgressABC(DownloadABC, ABC):
     def iterate(
         self,
         tc_object: ObjectCollectionABC,
-        tql: str | TqlBuilder,
+        tql: str,
         *,
         paginate_via_id: bool = False,
         dynamic_page_size: bool = False,
@@ -51,7 +50,7 @@ class DownloadEgressABC(DownloadABC, ABC):
 
         Args:
             tc_object: A tcex collection object (e.g. ``tcex.api.tc.v3.indicators()``).
-            tql: TQL query string or :class:`TqlBuilder` instance.
+            tql: TQL query string.
             paginate_via_id: Use ``sorting=ID ASC`` + ``ID > highest_id`` instead
                 of tcex's built-in ``next`` URL pagination. Required for
                 deterministic ordering and resume support.

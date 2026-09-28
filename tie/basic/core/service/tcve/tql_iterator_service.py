@@ -10,97 +10,12 @@ with no such dependency.
 
 import logging
 from collections.abc import Generator
-from datetime import datetime, timedelta
+from datetime import timedelta
 
 from requests import Response
 from tcex.api.tc.v3.object_collection_abc import ObjectCollectionABC
 
 logger = logging.getLogger('tcex')
-
-
-class TqlBuilder:
-    """Fluent TQL query builder.
-
-    Usage::
-
-        tql = (
-            TqlBuilder()
-            .owners(['TCI', 'Common Community'])
-            .indicator_types(['Address', 'Host'])
-            .date_range('lastModified', start, end)
-            .raw('confidence > 50')
-            .build()
-        )
-    """
-
-    def __init__(self):
-        """Initialize an empty builder."""
-        self._clauses: list[str] = []
-
-    # -- object types --
-
-    def owners(self, names: list[str]) -> 'TqlBuilder':
-        """Filter by owner names."""
-        if names:
-            quoted = ','.join(f'"{n}"' for n in names)
-            self._clauses.append(f'ownerName in ({quoted})')
-        return self
-
-    def indicator_types(self, types: list[str]) -> 'TqlBuilder':
-        """Filter by indicator type names (e.g. Address, Host, File:MD5)."""
-        if types:
-            # Strip sub-type qualifiers (File:MD5 -> File) and dedupe
-            base_types = {t.split(':')[0] for t in types}
-            quoted = ','.join(f'"{t}"' for t in sorted(base_types))
-            self._clauses.append(f'typeName in ({quoted})')
-        return self
-
-    def group_types(self, types: list[str]) -> 'TqlBuilder':
-        """Filter by group type names (e.g. Adversary, Campaign)."""
-        if types:
-            quoted = ','.join(f'"{t}"' for t in types)
-            self._clauses.append(f'typeName in ({quoted})')
-        return self
-
-    # -- date ranges --
-
-    def date_range(
-        self, field: str, start: str | datetime | None, end: str | datetime | None
-    ) -> 'TqlBuilder':
-        """Add a date range clause for the given field.
-
-        Args:
-            field: TQL field name (e.g. 'lastModified', 'dateAdded').
-            start: Inclusive start (ISO string or datetime). Omit for open-ended.
-            end: Exclusive end (ISO string or datetime). Omit for open-ended.
-        """
-        if start is not None:
-            self._clauses.append(f'{field} >= "{_to_iso(start)}"')
-        if end is not None:
-            self._clauses.append(f'{field} < "{_to_iso(end)}"')
-        return self
-
-    # -- raw / escape hatch --
-
-    def raw(self, tql: str) -> 'TqlBuilder':
-        """Append a raw TQL clause."""
-        if tql:
-            self._clauses.append(f'({tql})')
-        return self
-
-    # -- output --
-
-    def build(self) -> str:
-        """Return the assembled TQL string."""
-        return ' AND '.join(self._clauses)
-
-    def __str__(self) -> str:
-        """Return the assembled TQL string."""
-        return self.build()
-
-    def __bool__(self) -> bool:
-        """Return True if any clauses have been added."""
-        return bool(self._clauses)
 
 
 class DynamicPageSizer:
@@ -135,13 +50,6 @@ class DynamicPageSizer:
 
 
 _VALID_DIRECTIONS = {'ASC', 'DESC'}
-
-
-def _to_iso(value: str | datetime) -> str:
-    """Normalize a datetime or string to ISO format."""
-    if isinstance(value, datetime):
-        return value.strftime('%Y-%m-%dT%H:%M:%SZ')
-    return value
 
 
 def _validate_sorting(sorting: list[tuple[str, str]]) -> str:
@@ -182,7 +90,7 @@ class TqlIteratorService:
     def iterate(
         self,
         tc_object: ObjectCollectionABC,
-        tql: str | TqlBuilder,
+        tql: str,
         *,
         paginate_via_id: bool = False,
         dynamic_page_size: bool = False,
@@ -194,7 +102,7 @@ class TqlIteratorService:
 
         Args:
             tc_object: A tcex collection object (e.g. ``tcex.api.tc.v3.indicators()``).
-            tql: TQL query string or :class:`TqlBuilder` instance.
+            tql: TQL query string.
             paginate_via_id: Use ``sorting=ID ASC`` + ``ID > highest_id`` instead
                 of tcex's built-in ``next`` URL pagination. Required for
                 deterministic ordering and resume support.
